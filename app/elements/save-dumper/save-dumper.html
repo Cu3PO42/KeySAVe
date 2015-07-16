@@ -1,0 +1,16 @@
+<dom-module id="save-dumper">
+    <style>
+        :host {
+            display: block;
+        }
+    </style>
+    <link rel="import" type="css" href="../../styles/paper-material.css">
+    <template>
+        <paper-material elevation="1">
+            <file-input id="input" path="/Users/Cu3PO42/Downloads/main"></file-input>
+            <paper-button on-click="dump">Dump</paper-button>
+        </paper-material>
+        <pkm-list id="results"></pkm-list>
+    </template>
+    <script src="save-dumper.js"></script>
+</dom-module>

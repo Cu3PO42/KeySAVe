@@ -1,0 +1,16 @@
+<dom-module id="pkm-list">
+    <style>
+        :host {
+            display: block;
+        }
+    </style>
+    <link rel="import" type="css" href="../../styles/paper-material.css">
+    <template>
+        <paper-material elevation="1">
+            <template id="list" is="dom-repeat" items="{{pokemon}}">
+                <div>#<span>{{item.species}}</span> - <span>{{item.HP_IV}}</span>.<span>{{item.ATK_IV}}</span>.<span>{{item.DEF_IV}}</span>.<span>{{item.SPA_IV}}</span>.<span>{{item.SPD_IV}}</span>.<span>{{item.SPE_IV}}</span></div>
+            </template>
+        </paper-material>
+    </template>
+    <script src="pkm-list.js"></script>
+</dom-module>
