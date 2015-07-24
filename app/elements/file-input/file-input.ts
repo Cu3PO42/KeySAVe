@@ -8,6 +8,9 @@ class FileInput extends polymer.Base {
     @property({type: String, reflectToAttribute: true})
     path: string;
 
+    @property({type: String, reflectToAttribute: true})
+    buttonText: string;
+
     ipcClient: IpcClient;
 
     constructor() {
@@ -17,6 +20,9 @@ class FileInput extends polymer.Base {
         this.ipcClient.on("file-dialog-open-result", (reply) => {
             this.path = reply[0];
         });
+
+        if (this.buttonText === undefined)
+            this.buttonText = "Choose file";
     }
 
     openDialog() {

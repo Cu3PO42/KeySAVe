@@ -3,12 +3,21 @@
         :host {
             display: block;
         }
+
+        .horizontal {
+            display: flex;
+            align-items: center;
+        }
     </style>
     <link rel="import" type="css" href="../../styles/paper-material.css">
     <template>
         <paper-material elevation="1">
             <file-input id="input" path="/Users/Cu3PO42/Downloads/main"></file-input>
-            <paper-button on-click="dump">Dump</paper-button>
+            <div class="horizontal">
+                <paper-button on-click="dump">Dump</paper-button>
+                <paper-slider min="1" max="31" value="{{lowerBox}}" pin="true"></paper-slider>
+                <paper-slider min="{{lowerBox}}" max="31" value="{{upperBox}}" pin="true"></paper-slider>
+            </div>
         </paper-material>
         <pkm-list id="results"></pkm-list>
     </template>

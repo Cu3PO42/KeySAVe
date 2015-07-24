@@ -1,31 +1,43 @@
 /// <reference path="../typings/node/node.d.ts"/>
-/// <reference path="../core/KeySAVCoreJS.d.ts"/>
+/// <reference path="../typings/github-electron/github-electron.d.ts" />
 import ipcServer = require("electron-ipc-tunnel/server");
 import fs = require("fs");
-import KeySAVCore = require("../core/KeySAVCore");
+import KeySAV = require("keysavcore");
+import app = require("app");
 
 function bufToArr(buf: Buffer) {
-    var tmp: number[] = [];
+    var tmp: Uint8Array = new Uint8Array(buf.length);
     for (let i = 0; i < buf.length; i++) {
-        tmp.push(buf.readUInt8(i));
+        tmp[i] = buf.readUInt8(i);
     }
     return tmp;
 }
 
+
 export = function() {
-    ipcServer.on("dump-save", function(reply, path) {
-        fs.readFile(path, function(err, buf) {
+    var store = new KeySAV.Extensions.SaveKeyStore(process.cwd() + "/data");
+    app.on("window-all-closed", () => store.close());
+    ipcServer.on("dump-save", function(reply, args) {
+        fs.readFile(args.path, function(err, buf) {
             var arr = bufToArr(buf);
-            var res = [];
-            var reader = KeySAVCore.SaveBreaker.Load(arr);
-            var tmp;
-            for (let i = 0; i < 31*30; i++) {
-                tmp = reader.getPkx(i);
-                if (tmp !== null) {
-                    res.push(tmp);
+            if (arr.length > 0x100000)
+                arr = arr.subarray(arr.length % 0x100000);
+            KeySAV.Core.SaveBreaker.Load(arr, store.getKey.bind(store), function(e, reader: KeySAVCore.SaveReaderDecrypted) {
+                if (e) {
+                    // TODO notify client here
+                    console.log("muh error " + e);
+                    return;
                 }
-            }
-            reply("dump-save-result", res);
+                var res = [];
+                var tmp;
+                for (let i = 0 + 30*(args.lower-1); i < args.upper*30; i++) {
+                    tmp = reader.getPkx(i);
+                    if (tmp !== null) {
+                        res.push(tmp);
+                    }
+                }
+                reply("dump-save-result", res);
+            });
         });
     });
 };

@@ -23,14 +23,24 @@ var IpcClient = require("electron-ipc-tunnel/client");
         function SaveDumper() {
             var _this = this;
             _super.call(this);
+            this.lowerBox = 1;
+            this.upperBox = 31;
             this.ipcClient = new IpcClient();
             this.ipcClient.on("dump-save-result", function (res) {
                 _this.$.results.pokemon = res;
             });
         }
         SaveDumper.prototype.dump = function () {
-            this.ipcClient.send("dump-save", this.$.input.path);
+            this.ipcClient.send("dump-save", { path: this.$.input.path, lower: this.lowerBox, upper: this.upperBox });
         };
+        __decorate([
+            property({ type: Number }), 
+            __metadata('design:type', Number)
+        ], SaveDumper.prototype, "lowerBox");
+        __decorate([
+            property({ type: Number }), 
+            __metadata('design:type', Number)
+        ], SaveDumper.prototype, "upperBox");
         SaveDumper = __decorate([
             component("save-dumper"), 
             __metadata('design:paramtypes', [])
