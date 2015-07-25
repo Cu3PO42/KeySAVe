@@ -1,5 +1,3 @@
-/// <reference path="../../../bower_components/polymer-ts/polymer-ts.ts"/>
-/// <reference path="../../../typings/github-electron/github-electron.d.ts"/>
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -16,38 +14,27 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+/// <reference path="../../../bower_components/polymer-ts/polymer-ts.ts"/>
 var IpcClient = require("electron-ipc-tunnel/client");
 (function () {
-    var FileInput = (function (_super) {
-        __extends(FileInput, _super);
-        function FileInput() {
+    var BvDumper = (function (_super) {
+        __extends(BvDumper, _super);
+        function BvDumper() {
             var _this = this;
             _super.call(this);
             this.ipcClient = new IpcClient();
-            this.ipcClient.on("file-dialog-open-result", function (reply) {
-                if (reply !== undefined)
-                    _this.path = reply[0];
+            this.ipcClient.on("dump-bv-result", function (res) {
+                _this.$.results.pokemon = res;
             });
-            if (this.buttonText === undefined)
-                this.buttonText = "Choose file";
         }
-        FileInput.prototype.openDialog = function () {
-            var _this = this;
-            setTimeout(function () { return _this.ipcClient.send("file-dialog-open"); }, 350);
+        BvDumper.prototype.dump = function () {
+            this.ipcClient.send("dump-bv", { path: this.$.input.path });
         };
-        __decorate([
-            property({ type: String, reflectToAttribute: true }), 
-            __metadata('design:type', String)
-        ], FileInput.prototype, "path");
-        __decorate([
-            property({ type: String, reflectToAttribute: true }), 
-            __metadata('design:type', String)
-        ], FileInput.prototype, "buttonText");
-        FileInput = __decorate([
-            component("file-input"), 
+        BvDumper = __decorate([
+            component("bv-dumper"), 
             __metadata('design:paramtypes', [])
-        ], FileInput);
-        return FileInput;
+        ], BvDumper);
+        return BvDumper;
     })(polymer.Base);
-    createElement(FileInput);
+    createElement(BvDumper);
 })();

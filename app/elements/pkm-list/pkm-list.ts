@@ -42,7 +42,7 @@ class PkmList extends polymer.Base {
     pokemon: any[];
 
     formatPokemon(pkm) {
-        return pkmFormat("B{box!box} - {slot!row},{slot!column} - #{species!speciesName} - {nature!natureName} - {ability!abilityName} - {ivHp}.{ivAtk}.{ivDef}.{ivSpAtk}.{ivSpDef}.{ivSpe} - {hpType!typeName}", pkm);
+        return pkmFormat("B{box!box} - {slot!row},{slot!column} - {species!speciesName} - {nature!natureName} - {ability!abilityName} - {ivHp}.{ivAtk}.{ivDef}.{ivSpAtk}.{ivSpDef}.{ivSpe} - {hpType!typeName}", pkm);
     }
 }
 createElement(PkmList);

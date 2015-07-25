@@ -18,7 +18,8 @@ class FileInput extends polymer.Base {
         this.ipcClient = new IpcClient();
 
         this.ipcClient.on("file-dialog-open-result", (reply) => {
-            this.path = reply[0];
+            if (reply !== undefined)
+                this.path = reply[0];
         });
 
         if (this.buttonText === undefined)

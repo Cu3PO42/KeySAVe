@@ -1,0 +1,21 @@
+<dom-module id="bv-dumper">
+    <style>
+        :host {
+            display: block;
+        }
+
+        .horizontal {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+    <link rel="import" type="css" href="../../styles/paper-material.css">
+    <template>
+        <paper-material elevation="1">
+            <file-input id="input" path="/Users/Cu3PO42/Downloads/00000059 (13)"></file-input>
+            <paper-button on-click="dump">Dump</paper-button>
+        </paper-material>
+        <pkm-list id="results"></pkm-list>
+    </template>
+    <script src="bv-dumper.js"></script>
+</dom-module>

@@ -56,7 +56,7 @@ var fs = require("fs");
             _super.apply(this, arguments);
         }
         PkmList.prototype.formatPokemon = function (pkm) {
-            return pkmFormat("B{box!box} - {slot!row},{slot!column} - #{species!speciesName} - {nature!natureName} - {ability!abilityName} - {ivHp}.{ivAtk}.{ivDef}.{ivSpAtk}.{ivSpDef}.{ivSpe} - {hpType!typeName}", pkm);
+            return pkmFormat("B{box!box} - {slot!row},{slot!column} - {species!speciesName} - {nature!natureName} - {ability!abilityName} - {ivHp}.{ivAtk}.{ivDef}.{ivSpAtk}.{ivSpDef}.{ivSpe} - {hpType!typeName}", pkm);
         };
         __decorate([
             property({ type: Array }), 

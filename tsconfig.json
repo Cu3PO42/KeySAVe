@@ -371,6 +371,7 @@
         "./app/bower_components/polymer-ts/Sample/elements/my-simple.ts",
         "./app/bower_components/polymer-ts/Sample/elements/my-timer.ts",
         "./app/bower_components/polymer-ts/polymer-ts.ts",
+        "./app/elements/bv-dumper/bv-dumper.ts",
         "./app/elements/file-input/file-input.ts",
         "./app/elements/keysav-options/keysav-options.ts",
         "./app/elements/pkm-list/pkm-list.ts",
