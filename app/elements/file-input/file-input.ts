@@ -5,7 +5,7 @@ import IpcClient = require("electron-ipc-tunnel/client");
 (() => {
 @component("file-input")
 class FileInput extends polymer.Base {
-    @property({type: String, reflectToAttribute: true})
+    @property({type: String, reflectToAttribute: true, notify: true})
     path: string;
 
     @property({type: String, reflectToAttribute: true})

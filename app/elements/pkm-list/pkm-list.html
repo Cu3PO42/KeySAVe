@@ -1,5 +1,5 @@
 <dom-module id="pkm-list">
-    <style>
+    <style is="custom-style">
         :host {
             display: block;
         }
@@ -9,11 +9,12 @@
             font-size: 0.8em;
             white-space: nowrap;
             overflow-x: auto;
+            color: var(--primary-text-color);
         }
     </style>
     <link rel="import" type="css" href="../../styles/paper-material.css">
     <template>
-        <paper-material elevation="1">
+        <paper-material elevation="1" hidden$="{{isEmpty(pokemon)}}">
             <div class="container">
                 <template id="list" is="dom-repeat" items="{{pokemon}}">
                     <div>{{formatPokemon(item)}}</div>

@@ -17,7 +17,9 @@
     "filesGlob": [
         "./**/*.ts",
         "./**/*.tsx",
-        "!./node_modules/**/*"
+        "!./node_modules/**/*",
+        "!./**/bower_components/",
+        "!./KeySAVe-*/"
     ],
     "files": [
         "./KeySAVe-darwin-x64/KeySAVe.app/Contents/Resources/app/app/bower_components/polymer-ts/Sample/app.ts",
@@ -391,6 +393,7 @@
         "./main.ts",
         "./server/dumper.ts",
         "./server/file-dialog-service.ts",
+        "./typings/async/async.d.ts",
         "./typings/cuint/cuint.d.ts",
         "./typings/github-electron/github-electron.d.ts",
         "./typings/lodash/lodash.d.ts",

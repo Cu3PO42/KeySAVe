@@ -36,7 +36,7 @@ var IpcClient = require("electron-ipc-tunnel/client");
             setTimeout(function () { return _this.ipcClient.send("file-dialog-open"); }, 350);
         };
         __decorate([
-            property({ type: String, reflectToAttribute: true }), 
+            property({ type: String, reflectToAttribute: true, notify: true }), 
             __metadata('design:type', String)
         ], FileInput.prototype, "path");
         __decorate([

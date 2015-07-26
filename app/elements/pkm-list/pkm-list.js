@@ -54,9 +54,13 @@ var fs = require("fs");
         __extends(PkmList, _super);
         function PkmList() {
             _super.apply(this, arguments);
+            this.pokemon = [];
         }
         PkmList.prototype.formatPokemon = function (pkm) {
             return pkmFormat("B{box!box} - {slot!row},{slot!column} - {species!speciesName} - {nature!natureName} - {ability!abilityName} - {ivHp}.{ivAtk}.{ivDef}.{ivSpAtk}.{ivSpDef}.{ivSpe} - {hpType!typeName}", pkm);
+        };
+        PkmList.prototype.isEmpty = function (pkm) {
+            return pkm.length === 0;
         };
         __decorate([
             property({ type: Array }), 

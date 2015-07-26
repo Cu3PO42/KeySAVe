@@ -1,9 +1,15 @@
 /// <reference path="../typings/node/node.d.ts"/>
 /// <reference path="../typings/github-electron/github-electron.d.ts" />
+/// <reference path="../typings/async/async.d.ts" />
+/// <reference path="../typings/lodash/lodash.d.ts" />
+
 import ipcServer = require("electron-ipc-tunnel/server");
 import fs = require("fs");
 import KeySAV = require("keysavcore");
 import app = require("app");
+import async = require("async");
+import _ = require("lodash");
+import util = require("util");
 
 function bufToArr(buf: Buffer) {
     var tmp: Uint8Array = new Uint8Array(buf.length);
@@ -13,6 +19,9 @@ function bufToArr(buf: Buffer) {
     return tmp;
 }
 
+function padNumber(n) {
+    return ("00000" + n).slice(-5);
+}
 
 export = function() {
     var store = new KeySAV.Extensions.KeyStore(process.cwd() + "/data");
@@ -55,5 +64,50 @@ export = function() {
                 reply("dump-bv-result", res);
             });
         });
+    });
+    var bvBreakRes: KeySAVCore.BattleVideoBreakResult;
+    var savBreakRes: KeySAVCore.SaveBreakResult;
+    var breakInProgress: number;
+
+    ipcServer.on("break-key", function(reply, args) {
+        async.parallel([fs.readFile.bind(fs, args.file1), fs.readFile.bind(fs, args.file2)], function(err, res: Buffer[]) {
+            var files = _.map(res, bufToArr);
+            if (files[0].length === 28256 && files[1].length === 28256) {
+                breakInProgress = 1;
+                bvBreakRes = KeySAV.Core.BattleVideoBreaker.Break(files[0], files[1]);
+                reply("break-key-result", {success: bvBreakRes.success, path: "BV Key - " + args.file1.match(/^(\d+)/)[1] + ".bin", result: bvBreakRes.result})
+            } else {
+                breakInProgress = 2;
+                files = _.map(files, (f) => f.subarray(f.length % 0x100000));
+                savBreakRes = KeySAV.Core.SaveBreaker.Break(files[0], files[1]);
+                if (savBreakRes.success) {
+                    var resPkx = new KeySAV.Core.Structures.PKX.ctor$1(savBreakRes.resPkx, 0, 0, false);
+                    var path = util.format("SAV Key - %s - (%s.%s) - TSV %s.bin", resPkx.ot, padNumber(resPkx.tid), padNumber(resPkx.sid), ("0000"+resPkx.tsv).slice(-4));
+                } else {
+                    path = "";
+                }
+                reply("break-key-result", {success: savBreakRes.success, path: path, result: savBreakRes.result})
+            }
+        });
+    });
+
+    ipcServer.on("break-key-store", function(reply, args) {
+        switch(breakInProgress) {
+            case 1:
+                store.setKey(args.path, bvBreakRes.key);
+                breakInProgress = 0;
+                bvBreakRes = undefined;
+                break;
+            case 2:
+                store.setKey(args.path, savBreakRes.key.keyData, savBreakRes.key);
+                breakInProgress = 0;
+                savBreakRes = undefined;
+                break;
+        }
+    });
+
+    ipcServer.on("break-key-cancel", function() {
+        breakInProgress = 0;
+        bvBreakRes = savBreakRes = undefined;
     });
 };

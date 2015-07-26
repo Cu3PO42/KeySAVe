@@ -39,10 +39,14 @@ var pkmFormat = format.create({
 @component("pkm-list")
 class PkmList extends polymer.Base {
     @property({type: Array})
-    pokemon: any[];
+    pokemon: any[] = [];
 
     formatPokemon(pkm) {
         return pkmFormat("B{box!box} - {slot!row},{slot!column} - {species!speciesName} - {nature!natureName} - {ability!abilityName} - {ivHp}.{ivAtk}.{ivDef}.{ivSpAtk}.{ivSpDef}.{ivSpe} - {hpType!typeName}", pkm);
+    }
+
+    isEmpty(pkm) {
+        return pkm.length === 0;
     }
 }
 createElement(PkmList);
