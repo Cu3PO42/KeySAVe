@@ -8,7 +8,7 @@ import fs = require("fs");
 @component("keysav-options")
 class KeysavOptions extends polymer.Base {
     @property({type: String, reflectToAttribute: true, notify: true})
-    formatString: string = "B{box!box} - {slot!row},{slot!column} - {species!speciesName} - {nature!natureName} - {ability!abilityName} - {ivHp}.{ivAtk}.{ivDef}.{ivSpAtk}.{ivSpDef}.{ivSpe} - {hpType!typeName}";
+    formatString: string = "B{{box}} - {{row}},{{column}} - {{speciesName}} - {{natureName}} - {{abilityName}} - {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} - {{typeName hpType}}";
 
     @property({type: String})
     file1: string;

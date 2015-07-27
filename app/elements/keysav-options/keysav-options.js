@@ -25,7 +25,7 @@ var fs = require("fs");
         function KeysavOptions() {
             var _this = this;
             _super.call(this);
-            this.formatString = "B{box!box} - {slot!row},{slot!column} - {species!speciesName} - {nature!natureName} - {ability!abilityName} - {ivHp}.{ivAtk}.{ivDef}.{ivSpAtk}.{ivSpDef}.{ivSpe} - {hpType!typeName}";
+            this.formatString = "B{{box}} - {{row}},{{column}} - {{speciesName}} - {{natureName}} - {{abilityName}} - {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} - {{typeName hpType}}";
             this.ipcClient = new IpcClient();
             this.ipcClient.on("break-key-result", function (arg) {
                 _this.breakMessage = arg.result.match(/^.*$/gm);

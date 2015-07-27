@@ -1,6 +1,7 @@
 /// <reference path="../../../bower_components/polymer-ts/polymer-ts.ts"/>
+/// <reference path="../../../typings/handlebars/handlebars.d.ts"/>
 
-import format = require("string-format");
+import handlebars = require("handlebars");
 import fs = require("fs");
 
 (() => {
@@ -12,24 +13,24 @@ for (let file of ["de", "en", "es", "fr", "it", "ja", "ko"]) {
     }
 }
 
-var pkmFormat = format.create({
-    row: function(slot) {
-        return Math.floor(slot/6) + 1;
+var pkmFormat = handlebars.registerHelper({
+    row: function() {
+        return Math.floor(this.slot/6) + 1;
     },
-    column: function(slot) {
-        return slot%6 + 1;
+    column: function() {
+        return this.slot%6 + 1;
     },
-    box: function(box) {
-        return box+1;
+    box: function() {
+        return this.box+1;
     },
-    speciesName: function(speciesId) {
-        return nameData["en"]["species"][speciesId];
+    speciesName: function() {
+        return nameData["en"]["species"][this.species];
     },
-    natureName: function(natureId) {
-        return nameData["en"]["natures"][natureId];
+    natureName: function() {
+        return nameData["en"]["natures"][this.nature];
     },
-    abilityName: function(abilityId) {
-        return nameData["en"]["abilities"][abilityId];
+    abilityName: function() {
+        return nameData["en"]["abilities"][this.ability];
     },
     typeName: function(typeId) {
         return nameData["en"]["types"][typeId];
@@ -44,12 +45,19 @@ class PkmList extends polymer.Base {
     @property({type: String})
     formatString: string;
 
+    template: Handlebars.HandlebarsTemplateDelegate;
+
     formatPokemon(pkm) {
-        return pkmFormat(this.formatString, pkm);
+        return this.template(pkm);
     }
 
     isEmpty(pkm) {
         return pkm.length === 0;
+    }
+
+    @observe("formatString")
+    formatStringChanged(newValue, oldValue) {
+        this.template = handlebars.compile(newValue, {knownHelpers: ["box", "column", "row", "speciesName", "natureName", "abilityName", "typeName"]});
     }
 }
 createElement(PkmList);
