@@ -16,6 +16,9 @@ class SaveDumper extends polymer.Base {
     @property({type: String})
     path: string;
 
+    @property({type: String})
+    formatString: string;
+
     ipcClient: IpcClient;
     opened = false;
 

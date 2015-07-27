@@ -57,7 +57,7 @@ var fs = require("fs");
             this.pokemon = [];
         }
         PkmList.prototype.formatPokemon = function (pkm) {
-            return pkmFormat("B{box!box} - {slot!row},{slot!column} - {species!speciesName} - {nature!natureName} - {ability!abilityName} - {ivHp}.{ivAtk}.{ivDef}.{ivSpAtk}.{ivSpDef}.{ivSpe} - {hpType!typeName}", pkm);
+            return pkmFormat(this.formatString, pkm);
         };
         PkmList.prototype.isEmpty = function (pkm) {
             return pkm.length === 0;
@@ -66,6 +66,10 @@ var fs = require("fs");
             property({ type: Array }), 
             __metadata('design:type', Array)
         ], PkmList.prototype, "pokemon");
+        __decorate([
+            property({ type: String }), 
+            __metadata('design:type', String)
+        ], PkmList.prototype, "formatString");
         PkmList = __decorate([
             component("pkm-list"), 
             __metadata('design:paramtypes', [])

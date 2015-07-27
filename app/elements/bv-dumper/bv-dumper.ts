@@ -15,6 +15,9 @@ class BvDumper extends polymer.Base {
     @property({type: String})
     team = "my-team";
 
+    @property({type: String})
+    formatString: string;
+
     ipcClient: IpcClient;
     opened = false;
 
@@ -35,7 +38,7 @@ class BvDumper extends polymer.Base {
 
     dump() {
         if (this.opened)
-            this.ipcClient.send("dump-bv-dump", <any>(this.enemyDumpable && this.team === "enemy-team")|0);
+            this.ipcClient.send("dump-bv-dump", this.enemyDumpable && this.team === "enemy-team");
     }
 
     @observe("path")

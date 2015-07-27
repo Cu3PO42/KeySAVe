@@ -22,16 +22,27 @@
             justify-content: flex-end;
         }
 
-        #dialog {
+        paper-dialog {
             background-color: var(--text-primary-color);
-            color: var(--primary-text-color)
+            color: var(--primary-text-color);
+            text-align: center;
         }
 
-        #dialog > *:not(:first-child) {
+        paper-dialog > *:not(:first-child) {
             margin-top: 5px;
+        }
+
+        paper-textarea /deep/ textarea {
+            font-family: "Source Code Pro", monospace !important;
+            font-size: smaller !important;
+            letter-spacing: -1px;
         }
     </style>
     <template>
+        <paper-material elevation="1">
+            <h2>Formatting</h2>
+            <paper-textarea label="Format string" value="{{formatString}}"></paper-textarea>
+        </paper-material>
         <paper-material elevation="1">
             <div class="horizontal">
                 <h2>Break</h2>
@@ -40,13 +51,29 @@
             <file-input button-text="File 1" path="{{file1}}"></file-input>
             <file-input button-text="File 2" path="{{file2}}"></file-input>
         </paper-material>
-        <paper-dialog id="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation" modal>
+        <paper-dialog id="dialogBreakDone" entry-animation="scale-up-animation" exit-animation="fade-out-animation" modal>
             <template is="dom-repeat" items="{{breakMessage}}">
                 <div>{{item}}</div>
             </template>
             <div class="buttons">
                 <paper-button dialog-dismiss on-click="cancelBreak">Discard</paper-button>
                 <paper-button dialog-confirm on-click="saveBreak">Ok</paper-button>
+            </div>
+        </paper-dialog>
+        <paper-dialog id="dialogFileInvalid" entry-animation="scale-up-animation" exit-animation="fade-out-animation">
+            <div>
+                Sorry, this file is neither an encrypted save file nor a battle video!
+            </div>
+            <div class="buttons">
+                <paper-button dialog-confirm>Ok</paper-button>
+            </div>
+        </paper-dialog>
+        <paper-dialog id="dialogBreakNotSameFiles" entry-animation="scale-up-animation" exit-animation="fade-out-animation">
+            <div>
+                Please select the same type of file for both files.
+            </div>
+            <div class="buttons">
+                <paper-button dialog-confirm>Ok</paper-button>
             </div>
         </paper-dialog>
     </template>

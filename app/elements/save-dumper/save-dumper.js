@@ -76,6 +76,10 @@ var fs = require("fs");
             property({ type: String }), 
             __metadata('design:type', String)
         ], SaveDumper.prototype, "path");
+        __decorate([
+            property({ type: String }), 
+            __metadata('design:type', String)
+        ], SaveDumper.prototype, "formatString");
         Object.defineProperty(SaveDumper.prototype, "pathChange",
             __decorate([
                 observe("path"), 

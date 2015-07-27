@@ -41,8 +41,11 @@ class PkmList extends polymer.Base {
     @property({type: Array})
     pokemon: any[] = [];
 
+    @property({type: String})
+    formatString: string;
+
     formatPokemon(pkm) {
-        return pkmFormat("B{box!box} - {slot!row},{slot!column} - {species!speciesName} - {nature!natureName} - {ability!abilityName} - {ivHp}.{ivAtk}.{ivDef}.{ivSpAtk}.{ivSpDef}.{ivSpe} - {hpType!typeName}", pkm);
+        return pkmFormat(this.formatString, pkm);
     }
 
     isEmpty(pkm) {

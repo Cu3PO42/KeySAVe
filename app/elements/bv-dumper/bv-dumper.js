@@ -39,7 +39,7 @@ var fs = require("fs");
         }
         BvDumper.prototype.dump = function () {
             if (this.opened)
-                this.ipcClient.send("dump-bv-dump", (this.enemyDumpable && this.team === "enemy-team") | 0);
+                this.ipcClient.send("dump-bv-dump", this.enemyDumpable && this.team === "enemy-team");
         };
         BvDumper.prototype.pathChanged = function (newValue, oldValue) {
             var _this = this;
@@ -69,6 +69,10 @@ var fs = require("fs");
             property({ type: String }), 
             __metadata('design:type', Object)
         ], BvDumper.prototype, "team");
+        __decorate([
+            property({ type: String }), 
+            __metadata('design:type', String)
+        ], BvDumper.prototype, "formatString");
         Object.defineProperty(BvDumper.prototype, "pathChanged",
             __decorate([
                 observe("path"), 
