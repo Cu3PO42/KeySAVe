@@ -22,8 +22,9 @@ function padNumber(n) {
 module.exports = function () {
     var store = new KeySAV.Extensions.KeyStore(process.cwd() + "/data");
     app.on("window-all-closed", function () { return store.close(); });
-    ipcServer.on("dump-save", function (reply, args) {
-        fs.readFile(args.path, function (err, buf) {
+    var savDumper;
+    ipcServer.on("dump-save-open", function (reply, args) {
+        fs.readFile(args, function (err, buf) {
             var arr = bufToArr(buf);
             if (arr.length > 0x100000)
                 arr = arr.subarray(arr.length % 0x100000);
@@ -32,17 +33,22 @@ module.exports = function () {
                     console.log("muh error " + e);
                     return;
                 }
-                var res = [];
-                var tmp;
-                for (var i = 0 + 30 * (args.lower - 1); i < args.upper * 30; i++) {
-                    tmp = reader.getPkx(i);
-                    if (tmp !== null) {
-                        res.push(tmp);
-                    }
-                }
-                reply("dump-save-result", res);
+                savDumper = reader;
+                reply("dump-save-opened", {});
+                reader.scanSlots();
             });
         });
+    });
+    ipcServer.on("dump-save-dump", function (reply, args) {
+        var res = [];
+        var tmp;
+        for (var i = 0 + 30 * (args.lower - 1); i < args.upper * 30; i++) {
+            tmp = savDumper.getPkx(i);
+            if (tmp !== null) {
+                res.push(tmp);
+            }
+        }
+        reply("dump-save-dumped", res);
     });
     var bvDumper;
     ipcServer.on("dump-bv-open", function (reply, args) {
