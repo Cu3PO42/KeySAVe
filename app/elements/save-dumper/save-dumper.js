@@ -16,7 +16,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 /// <reference path="../../../bower_components/polymer-ts/polymer-ts.ts"/>
 /// <reference path="../../../typings/github-electron/github-electron.d.ts"/>
+/// <reference path="../../../typings/node/node.d.ts"/>
 var IpcClient = require("electron-ipc-tunnel/client");
+var fs = require("fs");
 (function () {
     var SaveDumper = (function (_super) {
         __extends(SaveDumper, _super);
@@ -31,7 +33,30 @@ var IpcClient = require("electron-ipc-tunnel/client");
             });
         }
         SaveDumper.prototype.dump = function () {
-            this.ipcClient.send("dump-save", { path: this.$.input.path, lower: this.lowerBox, upper: this.upperBox });
+            this.ipcClient.send("dump-save", { path: this.path, lower: this.lowerBox, upper: this.upperBox });
+        };
+        SaveDumper.prototype.pathChange = function (newPath, oldPath) {
+            var _this = this;
+            if (newPath !== "" && newPath !== undefined)
+                fs.stat(newPath, function (err, stats) {
+                    if (err) {
+                        _this.path = oldPath;
+                        _this.$.dialog.toggle();
+                    }
+                    else
+                        switch (stats.size) {
+                            case 0x100000:
+                            case 0x10009C:
+                            case 0x10019A:
+                            case 0x76000:
+                            case 0x65600:
+                                break;
+                            default:
+                                _this.path = oldPath;
+                                _this.$.dialog.toggle();
+                                break;
+                        }
+                });
         };
         __decorate([
             property({ type: Number }), 
@@ -41,6 +66,17 @@ var IpcClient = require("electron-ipc-tunnel/client");
             property({ type: Number }), 
             __metadata('design:type', Number)
         ], SaveDumper.prototype, "upperBox");
+        __decorate([
+            property({ type: String }), 
+            __metadata('design:type', String)
+        ], SaveDumper.prototype, "path");
+        Object.defineProperty(SaveDumper.prototype, "pathChange",
+            __decorate([
+                observe("path"), 
+                __metadata('design:type', Function), 
+                __metadata('design:paramtypes', [Object, Object]), 
+                __metadata('design:returntype', Object)
+            ], SaveDumper.prototype, "pathChange", Object.getOwnPropertyDescriptor(SaveDumper.prototype, "pathChange")));
         SaveDumper = __decorate([
             component("save-dumper"), 
             __metadata('design:paramtypes', [])

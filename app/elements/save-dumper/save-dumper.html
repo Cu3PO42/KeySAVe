@@ -1,5 +1,5 @@
 <dom-module id="save-dumper">
-    <style>
+    <style is="custom-style">
         :host {
             display: block;
         }
@@ -8,11 +8,27 @@
             display: flex;
             align-items: center;
         }
+
+        paper-dialog {
+            background-color: var(--text-primary-color);
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: flex-end;
+            color: var(--accent-color);
+        }
     </style>
     <link rel="import" type="css" href="../../styles/paper-material.css">
     <template>
+        <paper-dialog id="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation">
+            <div>Sorry, but this is not a valid save file!</div>
+            <div class="buttons">
+                <paper-button dialog-confirm>Ok</paper-button>
+            </div>
+        </paper-dialog>
         <paper-material elevation="1">
-            <file-input id="input" path="/Users/Cu3PO42/Downloads/main"></file-input>
+            <file-input id="input" path="{{path}}"></file-input>
             <div class="horizontal">
                 <paper-button on-click="dump">Dump</paper-button>
                 <paper-slider min="1" max="31" value="{{lowerBox}}" pin="true"></paper-slider>

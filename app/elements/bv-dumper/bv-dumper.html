@@ -8,14 +8,36 @@
             display: flex;
             align-items: center;
         }
+
+        paper-dialog {
+            background-color: var(--text-primary-color);
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: flex-end;
+            color: var(--accent-color);
+        }
     </style>
     <link rel="import" type="css" href="../../styles/paper-material.css">
     <template>
         <paper-material elevation="1">
-            <file-input id="input" path="/Users/Cu3PO42/Downloads/00000059 (13)"></file-input>
-            <paper-button on-click="dump">Dump</paper-button>
+            <file-input id="input" path="{{path}}"></file-input>
+            <div class="horizontal">
+                <paper-button on-click="dump">Dump</paper-button>
+                <paper-radio-group selected="{{team}}" hidden$="{{not(enemyDumpable)}}">
+                        <paper-radio-button name="my-team">My Team</paper-radio-button>
+                        <paper-radio-button name="enemy-team">Enemy Team</paper-radio-button>
+                </paper-radio-group>
+            </div>
         </paper-material>
         <pkm-list id="results"></pkm-list>
+        <paper-dialog id="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation">
+            <div>Sorry, but this is not a valid battle video!</div>
+            <div class="buttons">
+                <paper-button dialog-confirm>Ok</paper-button>
+            </div>
+        </paper-dialog>
     </template>
     <script src="bv-dumper.js"></script>
 </dom-module>

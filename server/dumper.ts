@@ -49,24 +49,33 @@ export = function() {
             });
         });
     });
-    ipcServer.on("dump-bv", function(reply, args) {
-        fs.readFile(args.path, function(err, buf) {
+
+    var bvDumper: KeySAVCore.BattleVideoReader;
+
+    ipcServer.on("dump-bv-open", function(reply, args) {
+        fs.readFile(args, function(err, buf) {
             var arr = bufToArr(buf);
             KeySAV.Core.BattleVideoBreaker.Load(arr, store.getBvKey.bind(store), function(e, reader: KeySAVCore.BattleVideoReader) {
-                var res = [];
-                var tmp;
-                for (let i = 0; i < 6; ++i) {
-                    tmp = reader.getPkx(i, 0);
-                    if (tmp !== null) {
-                        res.push(tmp);
-                    }
-                }
-                reply("dump-bv-result", res);
+                bvDumper = reader;
+                reply("dump-bv-opened", {enemyDumpable: reader.get_DumpsEnemy()});
             });
         });
     });
-    var bvBreakRes: KeySAVCore.BattleVideoBreakResult;
-    var savBreakRes: KeySAVCore.SaveBreakResult;
+
+    ipcServer.on("dump-bv-dump", function(reply, args) {
+        var res = [];
+        var tmp;
+        for (let i = 0; i < 6; ++i) {
+            tmp = bvDumper.getPkx(i, args);
+            if (tmp !== null) {
+                res.push(tmp);
+            }
+        }
+        reply("dump-bv-dumped", res);
+    });
+
+    var bvBreakRes: KeySAVCore.Structures.BattleVideoBreakResult;
+    var savBreakRes: KeySAVCore.Structures.SaveBreakResult;
     var breakInProgress: number;
 
     ipcServer.on("break-key", function(reply, args) {
@@ -75,7 +84,7 @@ export = function() {
             if (files[0].length === 28256 && files[1].length === 28256) {
                 breakInProgress = 1;
                 bvBreakRes = KeySAV.Core.BattleVideoBreaker.Break(files[0], files[1]);
-                reply("break-key-result", {success: bvBreakRes.success, path: "BV Key - " + args.file1.match(/^(\d+)/)[1] + ".bin", result: bvBreakRes.result})
+                reply("break-key-result", {success: bvBreakRes.success, path: "BV Key - " + (args.file1.match(/(\d+)[^\/\\]*$/)||{1: "00000000"})[1] + ".bin", result: bvBreakRes.result})
             } else {
                 breakInProgress = 2;
                 files = _.map(files, (f) => f.subarray(f.length % 0x100000));

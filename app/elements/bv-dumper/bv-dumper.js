@@ -15,21 +15,67 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 /// <reference path="../../../bower_components/polymer-ts/polymer-ts.ts"/>
+/// <reference path="../../../typings/node/node.d.ts"/>
 var IpcClient = require("electron-ipc-tunnel/client");
+var fs = require("fs");
 (function () {
     var BvDumper = (function (_super) {
         __extends(BvDumper, _super);
         function BvDumper() {
             var _this = this;
             _super.call(this);
+            this.enemyDumpable = false;
+            this.team = "my-team";
+            this.opened = false;
             this.ipcClient = new IpcClient();
-            this.ipcClient.on("dump-bv-result", function (res) {
+            this.ipcClient.on("dump-bv-opened", function (res) {
+                _this.enemyDumpable = res.enemyDumpable;
+                console.log(res);
+                _this.opened = true;
+            });
+            this.ipcClient.on("dump-bv-dumped", function (res) {
                 _this.$.results.pokemon = res;
             });
         }
         BvDumper.prototype.dump = function () {
-            this.ipcClient.send("dump-bv", { path: this.$.input.path });
+            if (this.opened)
+                this.ipcClient.send("dump-bv-dump", (this.enemyDumpable && this.team === "enemy-team") | 0);
         };
+        BvDumper.prototype.pathChanged = function (newValue, oldValue) {
+            var _this = this;
+            if (newValue !== "" && newValue !== undefined)
+                fs.stat(newValue, function (err, stats) {
+                    if (err !== null || stats.size !== 28256) {
+                        _this.path = oldValue;
+                        _this.$.dialog.toggle();
+                    }
+                    else {
+                        _this.ipcClient.send("dump-bv-open", _this.path);
+                    }
+                });
+        };
+        BvDumper.prototype.not = function (val) {
+            return !val;
+        };
+        __decorate([
+            property({ type: String }), 
+            __metadata('design:type', String)
+        ], BvDumper.prototype, "path");
+        __decorate([
+            property({ type: Boolean }), 
+            __metadata('design:type', Object)
+        ], BvDumper.prototype, "enemyDumpable");
+        __decorate([
+            property({ type: String }), 
+            __metadata('design:type', Object)
+        ], BvDumper.prototype, "team");
+        Object.defineProperty(BvDumper.prototype, "pathChanged",
+            __decorate([
+                observe("path"), 
+                __metadata('design:type', Function), 
+                __metadata('design:paramtypes', [Object, Object]), 
+                __metadata('design:returntype', Object)
+            ], BvDumper.prototype, "pathChanged", Object.getOwnPropertyDescriptor(BvDumper.prototype, "pathChanged")));
         BvDumper = __decorate([
             component("bv-dumper"), 
             __metadata('design:paramtypes', [])
