@@ -53,7 +53,7 @@ class KeysavOptions extends polymer.Base {
 
     saveBreak() {
         if (this.breakResult.success) {
-            this.ipcClient.send("file-dialog-save", <{options: GitHubElectron.Dialog.OpenDialogOptions}>{options: {defaultPath: process.cwd() + "/data/" + this.breakResult.path, extensions: ["bin"]}});
+            this.ipcClient.send("file-dialog-save", <{options: GitHubElectron.Dialog.OpenDialogOptions}>{options: {defaultPath: this.breakResult.path, extensions: ["bin"]}});
         } else {
             this.ipcClient.send("break-key-cancel");
         }

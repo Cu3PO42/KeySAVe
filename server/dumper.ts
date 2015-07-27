@@ -2,6 +2,7 @@
 /// <reference path="../typings/github-electron/github-electron.d.ts" />
 /// <reference path="../typings/async/async.d.ts" />
 /// <reference path="../typings/lodash/lodash.d.ts" />
+/// <reference path="../typings/path-extra/path-extra.d.ts" />
 
 import ipcServer = require("electron-ipc-tunnel/server");
 import fs = require("fs");
@@ -10,6 +11,7 @@ import app = require("app");
 import async = require("async");
 import _ = require("lodash");
 import util = require("util");
+import path = require("path-extra");
 
 function bufToArr(buf: Buffer) {
     var tmp: Uint8Array = new Uint8Array(buf.length);
@@ -23,8 +25,16 @@ function padNumber(n) {
     return ("00000" + n).slice(-5);
 }
 
+function mkdirOptional(path) {
+    if (!fs.existsSync(path))
+        fs.mkdirSync(path);
+}
+
 export = function() {
-    var store = new KeySAV.Extensions.KeyStore(process.cwd() + "/data");
+    var dataDirectory = path.join(path.homedir(), "Documents", "KeySAVe", "data");
+    mkdirOptional(path.join(path.homedir(), "Documents", "KeySAVe"));
+    mkdirOptional(dataDirectory);
+    var store = new KeySAV.Extensions.KeyStore(dataDirectory);
     app.on("window-all-closed", () => store.close());
 
     // TODO actually replace this by an interface or something
@@ -38,7 +48,7 @@ export = function() {
             KeySAV.Core.SaveBreaker.Load(arr, store.getSaveKey.bind(store), function(e, reader: KeySAVCore.SaveReaderDecrypted) {
                 if (e) {
                     // TODO notify client here
-                    console.log("muh error " + e);
+                    reply("dump-save-nokey");
                     return;
                 }
                 savDumper = reader;
@@ -66,6 +76,10 @@ export = function() {
         fs.readFile(args, function(err, buf) {
             var arr = bufToArr(buf);
             KeySAV.Core.BattleVideoBreaker.Load(arr, store.getBvKey.bind(store), function(e, reader: KeySAVCore.BattleVideoReader) {
+                if (e) {
+                    reply("dump-bv-nokey");
+                    return;
+                }
                 bvDumper = reader;
                 reply("dump-bv-opened", {enemyDumpable: reader.get_DumpsEnemy()});
             });
@@ -94,24 +108,25 @@ export = function() {
             if (files[0].length === 28256 && files[1].length === 28256) {
                 breakInProgress = 1;
                 bvBreakRes = KeySAV.Core.BattleVideoBreaker.Break(files[0], files[1]);
-                reply("break-key-result", {success: bvBreakRes.success, path: "BV Key - " + (args.file1.match(/(\d+)[^\/\\]*$/)||{1: "00000000"})[1] + ".bin", result: bvBreakRes.result})
+                reply("break-key-result", {success: bvBreakRes.success, path: path.join(dataDirectory, "BV Key - " + (args.file1.match(/(\d+)[^\/\\]*$/)||{1: "00000000"})[1] + ".bin"), result: bvBreakRes.result})
             } else {
                 breakInProgress = 2;
                 files = _.map(files, (f) => f.subarray(f.length % 0x100000));
                 savBreakRes = KeySAV.Core.SaveBreaker.Break(files[0], files[1]);
                 if (savBreakRes.success) {
                     var resPkx = new KeySAV.Core.Structures.PKX.ctor$1(savBreakRes.resPkx, 0, 0, false);
-                    var path = util.format("SAV Key - %s - (%s.%s) - TSV %s.bin", resPkx.ot, padNumber(resPkx.tid), padNumber(resPkx.sid), ("0000"+resPkx.tsv).slice(-4));
+                    var savePath = path.join(dataDirectory, util.format("SAV Key - %s - (%s.%s) - TSV %s.bin", resPkx.ot, padNumber(resPkx.tid), padNumber(resPkx.sid), ("0000"+resPkx.tsv).slice(-4)));
                 } else {
-                    path = "";
+                    savePath = "";
                 }
-                reply("break-key-result", {success: savBreakRes.success, path: path, result: savBreakRes.result})
+                reply("break-key-result", {success: savBreakRes.success, path: savePath, result: savBreakRes.result})
             }
         });
     });
 
     ipcServer.on("break-key-store", function(reply, args) {
-        switch(breakInProgress) {
+        // TODO Fix a grammar error here. switch() doesn't work
+        switch (breakInProgress) {
             case 1:
                 store.setKey(args.path, bvBreakRes.key);
                 breakInProgress = 0;

@@ -2,6 +2,7 @@
 /// <reference path="../typings/github-electron/github-electron.d.ts" />
 /// <reference path="../typings/async/async.d.ts" />
 /// <reference path="../typings/lodash/lodash.d.ts" />
+/// <reference path="../typings/path-extra/path-extra.d.ts" />
 var ipcServer = require("electron-ipc-tunnel/server");
 var fs = require("fs");
 var KeySAV = require("keysavcore");
@@ -9,6 +10,7 @@ var app = require("app");
 var async = require("async");
 var _ = require("lodash");
 var util = require("util");
+var path = require("path-extra");
 function bufToArr(buf) {
     var tmp = new Uint8Array(buf.length);
     for (var i = 0; i < buf.length; i++) {
@@ -19,8 +21,15 @@ function bufToArr(buf) {
 function padNumber(n) {
     return ("00000" + n).slice(-5);
 }
+function mkdirOptional(path) {
+    if (!fs.existsSync(path))
+        fs.mkdirSync(path);
+}
 module.exports = function () {
-    var store = new KeySAV.Extensions.KeyStore(process.cwd() + "/data");
+    var dataDirectory = path.join(path.homedir(), "Documents", "KeySAVe", "data");
+    mkdirOptional(path.join(path.homedir(), "Documents", "KeySAVe"));
+    mkdirOptional(dataDirectory);
+    var store = new KeySAV.Extensions.KeyStore(dataDirectory);
     app.on("window-all-closed", function () { return store.close(); });
     var savDumper;
     ipcServer.on("dump-save-open", function (reply, args) {
@@ -30,7 +39,7 @@ module.exports = function () {
                 arr = arr.subarray(arr.length % 0x100000);
             KeySAV.Core.SaveBreaker.Load(arr, store.getSaveKey.bind(store), function (e, reader) {
                 if (e) {
-                    console.log("muh error " + e);
+                    reply("dump-save-nokey");
                     return;
                 }
                 savDumper = reader;
@@ -55,6 +64,10 @@ module.exports = function () {
         fs.readFile(args, function (err, buf) {
             var arr = bufToArr(buf);
             KeySAV.Core.BattleVideoBreaker.Load(arr, store.getBvKey.bind(store), function (e, reader) {
+                if (e) {
+                    reply("dump-bv-nokey");
+                    return;
+                }
                 bvDumper = reader;
                 reply("dump-bv-opened", { enemyDumpable: reader.get_DumpsEnemy() });
             });
@@ -80,7 +93,7 @@ module.exports = function () {
             if (files[0].length === 28256 && files[1].length === 28256) {
                 breakInProgress = 1;
                 bvBreakRes = KeySAV.Core.BattleVideoBreaker.Break(files[0], files[1]);
-                reply("break-key-result", { success: bvBreakRes.success, path: "BV Key - " + (args.file1.match(/(\d+)[^\/\\]*$/) || { 1: "00000000" })[1] + ".bin", result: bvBreakRes.result });
+                reply("break-key-result", { success: bvBreakRes.success, path: path.join(dataDirectory, "BV Key - " + (args.file1.match(/(\d+)[^\/\\]*$/) || { 1: "00000000" })[1] + ".bin"), result: bvBreakRes.result });
             }
             else {
                 breakInProgress = 2;
@@ -88,12 +101,12 @@ module.exports = function () {
                 savBreakRes = KeySAV.Core.SaveBreaker.Break(files[0], files[1]);
                 if (savBreakRes.success) {
                     var resPkx = new KeySAV.Core.Structures.PKX.ctor$1(savBreakRes.resPkx, 0, 0, false);
-                    var path = util.format("SAV Key - %s - (%s.%s) - TSV %s.bin", resPkx.ot, padNumber(resPkx.tid), padNumber(resPkx.sid), ("0000" + resPkx.tsv).slice(-4));
+                    var savePath = path.join(dataDirectory, util.format("SAV Key - %s - (%s.%s) - TSV %s.bin", resPkx.ot, padNumber(resPkx.tid), padNumber(resPkx.sid), ("0000" + resPkx.tsv).slice(-4)));
                 }
                 else {
-                    path = "";
+                    savePath = "";
                 }
-                reply("break-key-result", { success: savBreakRes.success, path: path, result: savBreakRes.result });
+                reply("break-key-result", { success: savBreakRes.success, path: savePath, result: savBreakRes.result });
             }
         });
     });

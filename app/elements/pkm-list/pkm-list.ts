@@ -9,7 +9,7 @@ var nameData: { [language: string]: { [data: string]: string[] }} = {};
 for (let file of ["de", "en", "es", "fr", "it", "ja", "ko"]) {
     let data = nameData[file] = {};
     for (let names of ["abilities", "forms", "items", "moves", "natures", "species", "types"]) {
-        data[names] = fs.readFileSync(process.cwd() + "/names/" + file + "/" + names  + ".txt", {encoding: "utf-8"}).split("\n");
+        data[names] = fs.readFileSync(__dirname + "/../names/" + file + "/" + names  + ".txt", {encoding: "utf-8"}).split("\n");
     }
 }
 

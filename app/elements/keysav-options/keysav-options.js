@@ -49,7 +49,7 @@ var fs = require("fs");
         };
         KeysavOptions.prototype.saveBreak = function () {
             if (this.breakResult.success) {
-                this.ipcClient.send("file-dialog-save", { options: { defaultPath: process.cwd() + "/data/" + this.breakResult.path, extensions: ["bin"] } });
+                this.ipcClient.send("file-dialog-save", { options: { defaultPath: this.breakResult.path, extensions: ["bin"] } });
             }
             else {
                 this.ipcClient.send("break-key-cancel");

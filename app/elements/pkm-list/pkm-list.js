@@ -25,7 +25,7 @@ var fs = require("fs");
         var data = nameData[file] = {};
         for (var _b = 0, _c = ["abilities", "forms", "items", "moves", "natures", "species", "types"]; _b < _c.length; _b++) {
             var names = _c[_b];
-            data[names] = fs.readFileSync(process.cwd() + "/names/" + file + "/" + names + ".txt", { encoding: "utf-8" }).split("\n");
+            data[names] = fs.readFileSync(__dirname + "/../names/" + file + "/" + names + ".txt", { encoding: "utf-8" }).split("\n");
         }
     }
     var pkmFormat = handlebars.registerHelper({
