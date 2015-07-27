@@ -36,6 +36,10 @@ var fs = require("fs");
             this.ipcClient.on("dump-bv-dumped", function (res) {
                 _this.$.results.pokemon = res;
             });
+            this.ipcClient.on("dump-bv-nokey", function () {
+                _this.path = "";
+                _this.$.dialogNokey.toggle();
+            });
         }
         BvDumper.prototype.dump = function () {
             if (this.opened)
@@ -47,10 +51,11 @@ var fs = require("fs");
                 fs.stat(newValue, function (err, stats) {
                     if (err !== null || stats.size !== 28256) {
                         _this.path = oldValue;
-                        _this.$.dialog.toggle();
+                        _this.$.dialogInvalid.toggle();
                     }
                     else {
                         _this.ipcClient.send("dump-bv-open", _this.path);
+                        _this.opened = false;
                     }
                 });
         };

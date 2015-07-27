@@ -35,6 +35,10 @@ var fs = require("fs");
             this.ipcClient.on("dump-save-dumped", function (res) {
                 _this.$.results.pokemon = res;
             });
+            this.ipcClient.on("dump-save-nokey", function () {
+                _this.path = "";
+                _this.$.dialogNokey.toggle();
+            });
         }
         SaveDumper.prototype.dump = function () {
             if (this.opened)
@@ -46,7 +50,7 @@ var fs = require("fs");
                 fs.stat(newPath, function (err, stats) {
                     if (err) {
                         _this.path = oldPath;
-                        _this.$.dialog.toggle();
+                        _this.$.dialogInvalid.toggle();
                     }
                     else
                         switch (stats.size) {
@@ -56,10 +60,11 @@ var fs = require("fs");
                             case 0x76000:
                             case 0x65600:
                                 _this.ipcClient.send("dump-save-open", _this.path);
+                                _this.opened = false;
                                 break;
                             default:
                                 _this.path = oldPath;
-                                _this.$.dialog.toggle();
+                                _this.$.dialogInvalid.toggle();
                                 break;
                         }
                 });

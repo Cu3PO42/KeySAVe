@@ -33,6 +33,11 @@ class SaveDumper extends polymer.Base {
         this.ipcClient.on("dump-save-dumped", (res) => {
             this.$.results.pokemon = res;
         });
+
+        this.ipcClient.on("dump-save-nokey", () => {
+            this.path = "";
+            this.$.dialogNokey.toggle();
+        });
     }
 
     dump() {
@@ -46,7 +51,7 @@ class SaveDumper extends polymer.Base {
             fs.stat(newPath, (err, stats) => {
                 if (err) {
                     this.path = oldPath;
-                    this.$.dialog.toggle();
+                    this.$.dialogInvalid.toggle();
                 } else switch (stats.size) {
                     case 0x100000:
                     case 0x10009C:
@@ -54,10 +59,11 @@ class SaveDumper extends polymer.Base {
                     case 0x76000:
                     case 0x65600:
                         this.ipcClient.send("dump-save-open", this.path);
+                        this.opened = false;
                         break;
                     default:
                         this.path = oldPath;
-                        this.$.dialog.toggle();
+                        this.$.dialogInvalid.toggle();
                         break;
                 }
             });

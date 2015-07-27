@@ -21,8 +21,14 @@
     </style>
     <link rel="import" type="css" href="../../styles/paper-material.css">
     <template>
-        <paper-dialog id="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation">
+        <paper-dialog id="dialogInvalid" entry-animation="scale-up-animation" exit-animation="fade-out-animation">
             <div>Sorry, but this is not a valid save file!</div>
+            <div class="buttons">
+                <paper-button dialog-confirm>Ok</paper-button>
+            </div>
+        </paper-dialog>
+        <paper-dialog id="dialogNokey" entry-animation="scale-up-animation" exit-animation="fade-out-animation">
+            <div>You have to break for this save first!</div>
             <div class="buttons">
                 <paper-button dialog-confirm>Ok</paper-button>
             </div>

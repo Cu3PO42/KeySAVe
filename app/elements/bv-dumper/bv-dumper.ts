@@ -34,6 +34,11 @@ class BvDumper extends polymer.Base {
         this.ipcClient.on("dump-bv-dumped", (res) => {
             this.$.results.pokemon = res;
         });
+
+        this.ipcClient.on("dump-bv-nokey", () => {
+            this.path = "";
+            this.$.dialogNokey.toggle();
+        });
     }
 
     dump() {
@@ -47,9 +52,10 @@ class BvDumper extends polymer.Base {
             fs.stat(newValue, (err, stats) => {
                 if (err !== null || stats.size !== 28256) {
                     this.path = oldValue;
-                    this.$.dialog.toggle();
+                    this.$.dialogInvalid.toggle();
                 } else {
                     this.ipcClient.send("dump-bv-open", this.path);
+                    this.opened = false;
                 }
             });
     }

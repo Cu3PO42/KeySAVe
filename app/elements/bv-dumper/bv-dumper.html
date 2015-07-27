@@ -32,8 +32,14 @@
             </div>
         </paper-material>
         <pkm-list id="results" format-string="{{formatString}}"></pkm-list>
-        <paper-dialog id="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation">
+        <paper-dialog id="dialogInvalid" entry-animation="scale-up-animation" exit-animation="fade-out-animation">
             <div>Sorry, but this is not a valid battle video!</div>
+            <div class="buttons">
+                <paper-button dialog-confirm>Ok</paper-button>
+            </div>
+        </paper-dialog>
+        <paper-dialog id="dialogNokey" entry-animation="scale-up-animation" exit-animation="fade-out-animation">
+            <div>You have to break for this video first!</div>
             <div class="buttons">
                 <paper-button dialog-confirm>Ok</paper-button>
             </div>
