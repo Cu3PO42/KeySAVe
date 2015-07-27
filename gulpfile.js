@@ -132,7 +132,7 @@ gulp.task('html', function () {
 });
 
 // Clean Output Directory
-gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
+gulp.task('clean', del.bind(null, ['.tmp', 'dist', 'build', 'release']));
 
 // Watch Files For Changes & Reload
 gulp.task('serve', ['styles', 'elements', 'images'], function () {
@@ -196,6 +196,45 @@ gulp.task('default', ['clean'], function (cb) {
     'elements',
     ['jshint', 'images', 'fonts', 'html'],
     cb);
+});
+
+gulp.task('copyBuild', function() {
+    // TODO get production dependencies here
+    var build = gulp.src(['dist/**/*', 'names/**/*', 'node_modules/keysavcore/**/*', 'node_modules/handlebars/**/*', 'node_modules/lodash/**/*', 'server/**/*.js', 'package.json'], {base: '.'});
+    var mainJs = gulp.src('main.js')
+    .pipe($.replace("app/index.html", "dist/index.html"))
+    return merge(build, mainJs).pipe(gulp.dest('build'));
+});
+
+
+gulp.task('buildElectron', function() {
+    var packageJson = require("./build/package.json");
+    return gulp.src("")
+    .pipe($.electron({
+        src: "./build",
+        packageJson: packageJson,
+        release: "./release",
+        cache: "./cache",
+        version: "v0.29.2",
+        platforms: ["darwin-x64"],
+        platformResources: {
+            darwin: {
+                CFBundleDisplayName: packageJson.name,
+                CFBundleIdentifier: packageJson.name,
+                CFBundleName: packageJson.name,
+                CFBundleVersion: packageJson.version,
+                icon: "keysave-logo.icns"
+            }
+        }
+    }))
+    .pipe(gulp.dest(""))
+});
+
+gulp.task('build', ['default'], function(cb) {
+    runSequence(
+        'copyBuild',
+        'buildElectron',
+        cb);
 });
 
 // Load tasks for web-component-tester

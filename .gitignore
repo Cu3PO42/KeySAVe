@@ -3,3 +3,6 @@ dist/
 bower_components/
 app/bower_components/
 KeySAVe-*/
+build/
+cache/
+release/

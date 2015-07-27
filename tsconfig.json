@@ -20,6 +20,8 @@
         "!./node_modules/**/*",
         "!./**/bower_components/**/*",
         "!./build/**/*",
+        "!./cache/**/*",
+        "!./release/**/*",
         "!./typings/**/*"
     ],
     "files": [
