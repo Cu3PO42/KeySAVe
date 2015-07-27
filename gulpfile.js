@@ -200,9 +200,9 @@ gulp.task('default', ['clean'], function (cb) {
 
 gulp.task('copyBuild', function() {
     // TODO get production dependencies here
-    var build = gulp.src(['dist/**/*', 'names/**/*', 'node_modules/keysavcore/**/*', 'node_modules/handlebars/**/*', 'node_modules/lodash/**/*', 'server/**/*.js', 'package.json'], {base: '.'});
+    var build = gulp.src(['app/**/*', '!app/**/*.ts', 'names/**/*', 'node_modules/{keysavcore,handlebars,lodash}/**/*', 'server/**/*.js', 'package.json'], {base: '.'});
     var mainJs = gulp.src('main.js')
-    .pipe($.replace("app/index.html", "dist/index.html"))
+    //.pipe($.replace("app/index.html", "dist/index.html"))
     return merge(build, mainJs).pipe(gulp.dest('build'));
 });
 
@@ -215,13 +215,13 @@ gulp.task('buildElectron', function() {
         packageJson: packageJson,
         release: "./release",
         cache: "./cache",
-        version: "v0.29.2",
+        version: "v0.30.1",
         platforms: ["darwin-x64"],
         platformResources: {
             darwin: {
-                CFBundleDisplayName: packageJson.name,
-                CFBundleIdentifier: packageJson.name,
-                CFBundleName: packageJson.name,
+                CFBundleDisplayName: "KeySAVe",
+                CFBundleIdentifier: "com.cu3po42.keysave",
+                CFBundleName: "KeySAVe",
                 CFBundleVersion: packageJson.version,
                 icon: "keysave-logo.icns"
             }

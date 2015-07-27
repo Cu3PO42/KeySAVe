@@ -44,6 +44,7 @@
   "dependencies": {
     "electron-ipc-tunnel": "cu3po42/electron-ipc-tunnel",
     "handlebars": "^3.0.3",
+    "keysavcore": "^0.2.0",
     "lodash": "^3.10.0"
   }
 }
