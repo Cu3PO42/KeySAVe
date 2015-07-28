@@ -200,7 +200,7 @@ gulp.task('default', ['clean'], function (cb) {
 
 gulp.task('copyBuild', function() {
     // TODO get production dependencies here
-    var build = gulp.src(['app/**/*', '!app/**/*.ts', 'names/**/*', 'node_modules/{keysavcore,handlebars,lodash}/**/*', 'server/**/*.js', 'package.json'], {base: '.'});
+    var build = gulp.src(['app/**/*', '!app/**/*.ts', 'names/**/*', 'node_modules/{keysavcore,handlebars,lodash,electron-ipc-tunnel}/**/*', 'server/**/*.js', 'package.json'], {base: '.'});
     var mainJs = gulp.src('main.js')
     //.pipe($.replace("app/index.html", "dist/index.html"))
     return merge(build, mainJs).pipe(gulp.dest('build'));
