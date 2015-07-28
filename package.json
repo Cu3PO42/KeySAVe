@@ -42,6 +42,7 @@
     "web-component-tester": "^3.1.3"
   },
   "dependencies": {
+    "async": "^1.4.0",
     "electron-ipc-tunnel": "cu3po42/electron-ipc-tunnel",
     "handlebars": "^3.0.3",
     "keysavcore": "^0.2.0",
