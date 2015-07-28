@@ -125,5 +125,5 @@ var fs = require("fs");
         ], KeysavOptions);
         return KeysavOptions;
     })(polymer.Base);
-    createElement(KeysavOptions);
+    polymer.createElement(KeysavOptions);
 })();

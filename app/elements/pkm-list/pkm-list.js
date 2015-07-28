@@ -87,5 +87,5 @@ var fs = require("fs");
         ], PkmList);
         return PkmList;
     })(polymer.Base);
-    createElement(PkmList);
+    polymer.createElement(PkmList);
 })();

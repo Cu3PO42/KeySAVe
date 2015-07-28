@@ -91,5 +91,5 @@ var fs = require("fs");
         ], BvDumper);
         return BvDumper;
     })(polymer.Base);
-    createElement(BvDumper);
+    polymer.createElement(BvDumper);
 })();

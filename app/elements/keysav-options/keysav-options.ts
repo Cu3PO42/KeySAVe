@@ -97,5 +97,5 @@ class KeysavOptions extends polymer.Base {
         this.updateFileBase("file2", oldValue);
     }
 }
-createElement(KeysavOptions);
+polymer.createElement(KeysavOptions);
 })()

@@ -49,5 +49,5 @@ var IpcClient = require("electron-ipc-tunnel/client");
         ], FileInput);
         return FileInput;
     })(polymer.Base);
-    createElement(FileInput);
+    polymer.createElement(FileInput);
 })();

@@ -60,5 +60,5 @@ class PkmList extends polymer.Base {
         this.template = handlebars.compile(newValue, {knownHelpers: ["box", "column", "row", "speciesName", "natureName", "abilityName", "typeName"]});
     }
 }
-createElement(PkmList);
+polymer.createElement(PkmList);
 })()

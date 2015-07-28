@@ -98,5 +98,5 @@ var fs = require("fs");
         ], SaveDumper);
         return SaveDumper;
     })(polymer.Base);
-    createElement(SaveDumper);
+    polymer.createElement(SaveDumper);
 })();
