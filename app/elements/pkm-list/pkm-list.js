@@ -49,6 +49,9 @@ var fs = require("fs");
         },
         typeName: function (typeId) {
             return nameData["en"]["types"][typeId];
+        },
+        toJson: function (e) {
+            return new handlebars.SafeString(JSON.stringify(e));
         }
     });
     var PkmList = (function (_super) {

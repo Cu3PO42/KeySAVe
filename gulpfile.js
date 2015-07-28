@@ -218,14 +218,20 @@ gulp.task('buildElectron', function() {
         release: "./release",
         cache: "./cache",
         version: "v0.30.1",
-        platforms: ["darwin-x64"],
+        platforms: ["darwin-x64", "win32-ia32"],
         platformResources: {
             darwin: {
                 CFBundleDisplayName: "KeySAVe",
                 CFBundleIdentifier: "com.cu3po42.keysave",
                 CFBundleName: "KeySAVe",
                 CFBundleVersion: packageJson.version,
-                icon: "keysave-logo.icns"
+                icon: "resources/keysave-logo.icns"
+            },
+            win: {
+                "version-string": packageJson.version,
+                "file-version": packageJson.version,
+                "product-version": packageJson.version,
+                "icon": "resources/keysave-logo.ico"
             }
         }
     }))

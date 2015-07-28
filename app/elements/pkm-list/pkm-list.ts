@@ -34,6 +34,9 @@ var pkmFormat = handlebars.registerHelper({
     },
     typeName: function(typeId) {
         return nameData["en"]["types"][typeId];
+    },
+    toJson: function(e) {
+        return new handlebars.SafeString(JSON.stringify(e));
     }
     });
 
