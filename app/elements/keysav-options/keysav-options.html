@@ -41,6 +41,7 @@
     <template>
         <paper-material elevation="1">
             <h2>Formatting</h2>
+            <paper-select items="[[formatNames]]" selected="{{selectedFormat}}"></paper-select>
             <paper-textarea label="Format string" value="{{formatString}}"></paper-textarea>
         </paper-material>
         <paper-material elevation="1">

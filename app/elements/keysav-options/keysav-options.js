@@ -1,3 +1,7 @@
+/// <reference path="../../../bower_components/polymer-ts/polymer-ts.ts"/>
+/// <reference path="../../../typings/github-electron/github-electron.d.ts" />
+/// <reference path="../../../typings/node/node.d.ts" />
+/// <reference path="../../../typings/path-extra/path-extra.d.ts" />
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -14,19 +18,54 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-/// <reference path="../../../bower_components/polymer-ts/polymer-ts.ts"/>
-/// <reference path="../../../typings/github-electron/github-electron.d.ts" />
-/// <reference path="../../../typings/node/node.d.ts" />
 var IpcClient = require("electron-ipc-tunnel/client");
 var fs = require("fs");
+var path = require("path-extra");
+function mkdirOptional(path) {
+    if (!fs.existsSync(path))
+        fs.mkdirSync(path);
+}
 (function () {
+    var keysavDir = path.join(path.homedir(), "Documents", "KeySAVe");
+    var configFile = path.join(keysavDir, "config.json");
+    mkdirOptional(keysavDir);
+    var config;
+    if (fs.existsSync(configFile))
+        config = JSON.parse(fs.readFileSync(path.join(keysavDir, "config.json"), { encoding: "utf-8" }));
+    else
+        config = {
+            formattingOptions: [
+                {
+                    name: "Default",
+                    format: "B{{box}} - {{row}},{{column}} - {{speciesName}} - {{natureName}} - {{abilityName}} - {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} - {{typeName hpType}} [{{esv}}]"
+                },
+                {
+                    name: "Reddit",
+                    format: "B{{box}} | {{row}},{{column}} | {{speciesName}} | {{natureName}} | {{abilityName}} | {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} | {{typeName hpType}} [{{esv}}]"
+                },
+                {
+                    name: "TSV",
+                    format: "B{{box}} - {{row}},{{column}} - {{esv}} - {{tsv}}"
+                },
+                {
+                    name: "Custom",
+                    format: ""
+                },
+                {
+                    name: "JSON",
+                    format: "{{toJSON this}}"
+                }
+            ]
+        };
     var KeysavOptions = (function (_super) {
         __extends(KeysavOptions, _super);
         function KeysavOptions() {
             var _this = this;
             _super.call(this);
-            this.formatString = "B{{box}} - {{row}},{{column}} - {{speciesName}} - {{natureName}} - {{abilityName}} - {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} - {{typeName hpType}}";
+            this.formattingOptions = [];
             this.ipcClient = new IpcClient();
+            this.formattingOptions = config.formattingOptions;
+            this.formatString = this.formattingOptions[0].format;
             this.ipcClient.on("break-key-result", function (arg) {
                 _this.breakMessage = arg.result.match(/^.*$/gm);
                 _this.breakResult = arg;
@@ -40,7 +79,13 @@ var fs = require("fs");
                     _this.ipcClient.send("break-key-cancel");
                 }
             });
+            window.addEventListener("beforeunload", function (e) {
+                fs.writeFileSync(configFile, JSON.stringify({ formattingOptions: _this.formattingOptions }, null, 4), { encoding: "utf-8" });
+            }, false);
         }
+        KeysavOptions.prototype.formatNames = function (formattingOptions) {
+            return formattingOptions.map(function (e) { return e.name; });
+        };
         KeysavOptions.prototype.break = function () {
             if (this.file1Type === this.file2Type && this.file1Type !== undefined)
                 this.ipcClient.send("break-key", { file1: this.file1, file2: this.file2 });
@@ -89,6 +134,14 @@ var fs = require("fs");
         KeysavOptions.prototype.file2Changed = function (newValue, oldValue) {
             this.updateFileBase("file2", oldValue);
         };
+        KeysavOptions.prototype.selectedFormatChanged = function (newValue, oldValue) {
+            if (this.formattingOptions !== undefined && this.formatString !== undefined) {
+                this.formatString = this.formattingOptions[newValue].format;
+            }
+        };
+        KeysavOptions.prototype.formatStringChanged = function (formatString) {
+            this.formattingOptions[this.selectedFormat].format = this.formatString;
+        };
         __decorate([
             property({ type: String, reflectToAttribute: true, notify: true }), 
             __metadata('design:type', String)
@@ -105,6 +158,21 @@ var fs = require("fs");
             property({ type: Array }), 
             __metadata('design:type', Array)
         ], KeysavOptions.prototype, "breakMessage");
+        __decorate([
+            property({ type: Array }), 
+            __metadata('design:type', Object)
+        ], KeysavOptions.prototype, "formattingOptions");
+        __decorate([
+            property({ type: Number }), 
+            __metadata('design:type', Number)
+        ], KeysavOptions.prototype, "selectedFormat");
+        Object.defineProperty(KeysavOptions.prototype, "formatNames",
+            __decorate([
+                computed({ type: Array }), 
+                __metadata('design:type', Function), 
+                __metadata('design:paramtypes', [Object]), 
+                __metadata('design:returntype', Object)
+            ], KeysavOptions.prototype, "formatNames", Object.getOwnPropertyDescriptor(KeysavOptions.prototype, "formatNames")));
         Object.defineProperty(KeysavOptions.prototype, "file1Changed",
             __decorate([
                 observe("file1"), 
@@ -119,6 +187,20 @@ var fs = require("fs");
                 __metadata('design:paramtypes', [Object, Object]), 
                 __metadata('design:returntype', Object)
             ], KeysavOptions.prototype, "file2Changed", Object.getOwnPropertyDescriptor(KeysavOptions.prototype, "file2Changed")));
+        Object.defineProperty(KeysavOptions.prototype, "selectedFormatChanged",
+            __decorate([
+                observe("selectedFormat"), 
+                __metadata('design:type', Function), 
+                __metadata('design:paramtypes', [Object, Object]), 
+                __metadata('design:returntype', Object)
+            ], KeysavOptions.prototype, "selectedFormatChanged", Object.getOwnPropertyDescriptor(KeysavOptions.prototype, "selectedFormatChanged")));
+        Object.defineProperty(KeysavOptions.prototype, "formatStringChanged",
+            __decorate([
+                observe("formatString"), 
+                __metadata('design:type', Function), 
+                __metadata('design:paramtypes', [Object]), 
+                __metadata('design:returntype', Object)
+            ], KeysavOptions.prototype, "formatStringChanged", Object.getOwnPropertyDescriptor(KeysavOptions.prototype, "formatStringChanged")));
         KeysavOptions = __decorate([
             component("keysav-options"), 
             __metadata('design:paramtypes', [])

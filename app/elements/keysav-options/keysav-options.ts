@@ -1,14 +1,55 @@
 /// <reference path="../../../bower_components/polymer-ts/polymer-ts.ts"/>
 /// <reference path="../../../typings/github-electron/github-electron.d.ts" />
 /// <reference path="../../../typings/node/node.d.ts" />
+/// <reference path="../../../typings/path-extra/path-extra.d.ts" />
+
 import IpcClient = require("electron-ipc-tunnel/client");
 import fs = require("fs");
+import path = require("path-extra");
+
+function mkdirOptional(path) {
+    if (!fs.existsSync(path))
+        fs.mkdirSync(path);
+}
 
 (() => {
+var keysavDir = path.join(path.homedir(), "Documents", "KeySAVe");
+var configFile = path.join(keysavDir, "config.json");
+mkdirOptional(keysavDir);
+
+var config;
+if (fs.existsSync(configFile))
+    config = JSON.parse(fs.readFileSync(path.join(keysavDir, "config.json"), {encoding: "utf-8"}))
+else
+    config = {
+        formattingOptions: [
+            {
+                name: "Default",
+                format: "B{{box}} - {{row}},{{column}} - {{speciesName}} - {{natureName}} - {{abilityName}} - {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} - {{typeName hpType}} [{{esv}}]"
+            },
+            {
+                name: "Reddit",
+                format: "B{{box}} | {{row}},{{column}} | {{speciesName}} | {{natureName}} | {{abilityName}} | {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} | {{typeName hpType}} [{{esv}}]"
+            },
+            {
+                name: "TSV",
+                format: "B{{box}} - {{row}},{{column}} - {{esv}} - {{tsv}}"
+            },
+            {
+                name: "Custom",
+                format: ""
+            },
+            {
+                name: "JSON",
+                format: "{{toJSON this}}"
+            }
+        ]
+    };
+
 @component("keysav-options")
 class KeysavOptions extends polymer.Base {
     @property({type: String, reflectToAttribute: true, notify: true})
-    formatString: string = "B{{box}} - {{row}},{{column}} - {{speciesName}} - {{natureName}} - {{abilityName}} - {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} - {{typeName hpType}}";
+    formatString: string;
 
     @property({type: String})
     file1: string;
@@ -19,6 +60,18 @@ class KeysavOptions extends polymer.Base {
     @property({type: Array})
     breakMessage: string[];
 
+    @property({type: Array})
+    formattingOptions = [
+    ];
+
+    @property({type: Number})
+    selectedFormat: number;
+
+    @computed({type: Array})
+    formatNames(formattingOptions) {
+        return formattingOptions.map((e) => e.name);
+    }
+
     ipcClient: IpcClient;
     breakResult;
 
@@ -28,6 +81,9 @@ class KeysavOptions extends polymer.Base {
     constructor() {
         super();
         this.ipcClient = new IpcClient();
+
+        this.formattingOptions = config.formattingOptions;
+        this.formatString = this.formattingOptions[0].format;
 
         this.ipcClient.on("break-key-result", (arg) => {
             this.breakMessage = arg.result.match(/^.*$/gm);
@@ -42,6 +98,10 @@ class KeysavOptions extends polymer.Base {
                 this.ipcClient.send("break-key-cancel");
             }
         });
+
+        window.addEventListener("beforeunload", (e) => {
+            fs.writeFileSync(configFile, JSON.stringify({formattingOptions: this.formattingOptions}, null, 4), {encoding: "utf-8"});
+        }, false);
     }
 
     break() {
@@ -95,6 +155,18 @@ class KeysavOptions extends polymer.Base {
     @observe("file2")
     file2Changed(newValue, oldValue) {
         this.updateFileBase("file2", oldValue);
+    }
+
+    @observe("selectedFormat")
+    selectedFormatChanged(newValue, oldValue) {
+        if (this.formattingOptions !== undefined && this.formatString !== undefined) {
+            this.formatString = this.formattingOptions[newValue].format;
+        }
+    }
+
+    @observe("formatString")
+    formatStringChanged(formatString) {
+        this.formattingOptions[this.selectedFormat].format = this.formatString;
     }
 }
 polymer.createElement(KeysavOptions);

@@ -41,6 +41,12 @@ var localization = require("keysavcore/Localization");
         typeName: function (typeId) {
             return localization.en.types[typeId];
         },
+        esv: function () {
+            return ("0000" + this.esv).slice(-4);
+        },
+        tsv: function () {
+            return ("0000" + this.tsv).slice(-4);
+        },
         toJson: function (e) {
             return new handlebars.SafeString(JSON.stringify(e));
         }
