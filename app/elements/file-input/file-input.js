@@ -33,7 +33,7 @@ var IpcClient = require("electron-ipc-tunnel/client");
         }
         FileInput.prototype.openDialog = function () {
             var _this = this;
-            setTimeout(function () { return _this.ipcClient.send("file-dialog-open"); }, 350);
+            setTimeout(function () { return _this.ipcClient.send("file-dialog-open", { options: _this.options }); }, 350);
         };
         __decorate([
             property({ type: String, reflectToAttribute: true, notify: true }), 
@@ -43,6 +43,10 @@ var IpcClient = require("electron-ipc-tunnel/client");
             property({ type: String, reflectToAttribute: true }), 
             __metadata('design:type', String)
         ], FileInput.prototype, "buttonText");
+        __decorate([
+            property({ type: Object }), 
+            __metadata('design:type', Object)
+        ], FileInput.prototype, "options");
         FileInput = __decorate([
             component("file-input"), 
             __metadata('design:paramtypes', [])

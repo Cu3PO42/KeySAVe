@@ -19,11 +19,17 @@ class SaveDumper extends polymer.Base {
     @property({type: String})
     formatString: string;
 
+    @property({type: Object})
+    fileOptions: GitHubElectron.Dialog.OpenDialogOptions;
+
     ipcClient: IpcClient;
     opened = false;
 
     constructor() {
         super();
+
+        this.fileOptions = {filters: [{name: "SAV (1MB)", extensions: ["bin", "sav"]}, {name: "Main File", extensions: [""]}]}
+
         this.ipcClient = new IpcClient();
 
         this.ipcClient.on("dump-save-opened", (res) => {

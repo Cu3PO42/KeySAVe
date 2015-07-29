@@ -11,6 +11,9 @@ class FileInput extends polymer.Base {
     @property({type: String, reflectToAttribute: true})
     buttonText: string;
 
+    @property({type: Object})
+    options: any;
+
     ipcClient: IpcClient;
 
     constructor() {
@@ -27,7 +30,7 @@ class FileInput extends polymer.Base {
     }
 
     openDialog() {
-        setTimeout(() => this.ipcClient.send("file-dialog-open"), 350);
+        setTimeout(() => this.ipcClient.send("file-dialog-open", {options: this.options}), 350);
     }
 }
 polymer.createElement(FileInput);

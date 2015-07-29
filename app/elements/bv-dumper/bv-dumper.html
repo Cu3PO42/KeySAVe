@@ -22,7 +22,7 @@
     <link rel="import" type="css" href="../../styles/paper-material.css">
     <template>
         <paper-material elevation="1">
-            <file-input id="input" path="{{path}}"></file-input>
+            <file-input id="input" path="{{path}}" options="[[fileOptions]]"></file-input>
             <div class="horizontal">
                 <paper-button on-click="dump">Dump</paper-button>
                 <paper-radio-group selected="{{team}}" hidden$="{{not(enemyDumpable)}}">

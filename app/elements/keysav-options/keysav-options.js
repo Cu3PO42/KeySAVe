@@ -63,6 +63,7 @@ function mkdirOptional(path) {
             var _this = this;
             _super.call(this);
             this.formattingOptions = [];
+            this.fileOptions = { filters: [{ name: "SAV (1MB)", extensions: ["bin", "sav"] }, { name: "Main File", extensions: [""] }, { name: "Battle Video", extensions: [""] }] };
             this.ipcClient = new IpcClient();
             this.formattingOptions = config.formattingOptions;
             this.formatString = this.formattingOptions[0].format;
@@ -94,7 +95,7 @@ function mkdirOptional(path) {
         };
         KeysavOptions.prototype.saveBreak = function () {
             if (this.breakResult.success) {
-                this.ipcClient.send("file-dialog-save", { options: { defaultPath: this.breakResult.path, extensions: ["bin"] } });
+                this.ipcClient.send("file-dialog-save", { options: { defaultPath: this.breakResult.path, filters: [{ name: "Key file", extensions: ["bin"] }] } });
             }
             else {
                 this.ipcClient.send("break-key-cancel");
@@ -166,6 +167,10 @@ function mkdirOptional(path) {
             property({ type: Number }), 
             __metadata('design:type', Number)
         ], KeysavOptions.prototype, "selectedFormat");
+        __decorate([
+            property({ type: Object }), 
+            __metadata('design:type', Object)
+        ], KeysavOptions.prototype, "fileOptions");
         Object.defineProperty(KeysavOptions.prototype, "formatNames",
             __decorate([
                 computed({ type: Array }), 

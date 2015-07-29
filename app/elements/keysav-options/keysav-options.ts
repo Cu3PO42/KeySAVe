@@ -67,6 +67,9 @@ class KeysavOptions extends polymer.Base {
     @property({type: Number})
     selectedFormat: number;
 
+    @property({type: Object})
+    fileOptions: GitHubElectron.Dialog.OpenDialogOptions;
+
     @computed({type: Array})
     formatNames(formattingOptions) {
         return formattingOptions.map((e) => e.name);
@@ -80,6 +83,9 @@ class KeysavOptions extends polymer.Base {
 
     constructor() {
         super();
+
+        this.fileOptions = {filters: [{name: "SAV (1MB)", extensions: ["bin", "sav"]}, {name: "Main File", extensions: [""]}, {name: "Battle Video", extensions: [""]}]}
+
         this.ipcClient = new IpcClient();
 
         this.formattingOptions = config.formattingOptions;
@@ -113,7 +119,7 @@ class KeysavOptions extends polymer.Base {
 
     saveBreak() {
         if (this.breakResult.success) {
-            this.ipcClient.send("file-dialog-save", <{options: GitHubElectron.Dialog.OpenDialogOptions}>{options: {defaultPath: this.breakResult.path, extensions: ["bin"]}});
+            this.ipcClient.send("file-dialog-save", <{options: GitHubElectron.Dialog.OpenDialogOptions}>{options: {defaultPath: this.breakResult.path, filters: [{name: "Key file", extensions: ["bin"]}]}});
         } else {
             this.ipcClient.send("break-key-cancel");
         }

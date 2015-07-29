@@ -49,8 +49,8 @@
                 <h2>Break</h2>
                 <paper-button on-click="break" raised>Break</paper-button>
             </div>
-            <file-input button-text="File 1" path="{{file1}}"></file-input>
-            <file-input button-text="File 2" path="{{file2}}"></file-input>
+            <file-input button-text="File 1" path="{{file1}}" options="[[fileOptions]]"></file-input>
+            <file-input button-text="File 2" path="{{file2}}" options="[[fileOptions]]"></file-input>
         </paper-material>
         <paper-dialog id="dialogBreakDone" entry-animation="scale-up-animation" exit-animation="fade-out-animation" modal>
             <template is="dom-repeat" items="{{breakMessage}}">

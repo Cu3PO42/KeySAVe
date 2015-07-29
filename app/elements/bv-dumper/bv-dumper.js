@@ -27,6 +27,7 @@ var fs = require("fs");
             this.enemyDumpable = false;
             this.team = "my-team";
             this.opened = false;
+            this.fileOptions = { filters: [{ name: "Battle Video", extensions: [""] }] };
             this.ipcClient = new IpcClient();
             this.ipcClient.on("dump-bv-opened", function (res) {
                 _this.enemyDumpable = res.enemyDumpable;
@@ -78,6 +79,10 @@ var fs = require("fs");
             property({ type: String }), 
             __metadata('design:type', String)
         ], BvDumper.prototype, "formatString");
+        __decorate([
+            property({ type: Object }), 
+            __metadata('design:type', Object)
+        ], BvDumper.prototype, "fileOptions");
         Object.defineProperty(BvDumper.prototype, "pathChanged",
             __decorate([
                 observe("path"), 

@@ -28,6 +28,7 @@ var fs = require("fs");
             this.lowerBox = 1;
             this.upperBox = 31;
             this.opened = false;
+            this.fileOptions = { filters: [{ name: "SAV (1MB)", extensions: ["bin", "sav"] }, { name: "Main File", extensions: [""] }] };
             this.ipcClient = new IpcClient();
             this.ipcClient.on("dump-save-opened", function (res) {
                 _this.opened = true;
@@ -85,6 +86,10 @@ var fs = require("fs");
             property({ type: String }), 
             __metadata('design:type', String)
         ], SaveDumper.prototype, "formatString");
+        __decorate([
+            property({ type: Object }), 
+            __metadata('design:type', Object)
+        ], SaveDumper.prototype, "fileOptions");
         Object.defineProperty(SaveDumper.prototype, "pathChange",
             __decorate([
                 observe("path"), 

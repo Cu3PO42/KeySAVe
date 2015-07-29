@@ -18,11 +18,17 @@ class BvDumper extends polymer.Base {
     @property({type: String})
     formatString: string;
 
+    @property({type: Object})
+    fileOptions: GitHubElectron.Dialog.OpenDialogOptions;
+
     ipcClient: IpcClient;
     opened = false;
 
     constructor() {
         super()
+
+        this.fileOptions = {filters: [{name: "Battle Video", extensions: [""]}]}
+
         this.ipcClient = new IpcClient();
 
         this.ipcClient.on("dump-bv-opened", (res) => {
