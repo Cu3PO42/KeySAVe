@@ -46,7 +46,7 @@
     "async": "^1.4.0",
     "electron-ipc-tunnel": "cu3po42/electron-ipc-tunnel",
     "handlebars": "^3.0.3",
-    "keysavcore": "^0.2.0",
+    "keysavcore": "^0.3.1",
     "lodash": "^3.10.0",
     "path-extra": "^1.0.3"
   }

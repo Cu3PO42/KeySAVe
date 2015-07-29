@@ -17,17 +17,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var handlebars = require("handlebars");
-var fs = require("fs");
+var localization = require("keysavcore/Localization");
 (function () {
-    var nameData = {};
-    for (var _i = 0, _a = ["de", "en", "es", "fr", "it", "ja", "ko"]; _i < _a.length; _i++) {
-        var file = _a[_i];
-        var data = nameData[file] = {};
-        for (var _b = 0, _c = ["abilities", "forms", "items", "moves", "natures", "species", "types"]; _b < _c.length; _b++) {
-            var names = _c[_b];
-            data[names] = fs.readFileSync(__dirname + "/../names/" + file + "/" + names + ".txt", { encoding: "utf-8" }).split("\n");
-        }
-    }
     var pkmFormat = handlebars.registerHelper({
         row: function () {
             return Math.floor(this.slot / 6) + 1;
@@ -39,16 +30,16 @@ var fs = require("fs");
             return this.box + 1;
         },
         speciesName: function () {
-            return nameData["en"]["species"][this.species];
+            return localization.en.species[this.species];
         },
         natureName: function () {
-            return nameData["en"]["natures"][this.nature];
+            return localization.en.natures[this.nature];
         },
         abilityName: function () {
-            return nameData["en"]["abilities"][this.ability];
+            return localization.en.abilities[this.ability];
         },
         typeName: function (typeId) {
-            return nameData["en"]["types"][typeId];
+            return localization.en.types[typeId];
         },
         toJson: function (e) {
             return new handlebars.SafeString(JSON.stringify(e));
