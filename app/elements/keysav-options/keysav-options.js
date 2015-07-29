@@ -53,7 +53,7 @@ function mkdirOptional(path) {
                 },
                 {
                     name: "JSON",
-                    format: "{{toJSON this}}"
+                    format: "{{toJson this}}"
                 }
             ]
         };
