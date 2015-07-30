@@ -15,8 +15,8 @@ class BvDumper extends polymer.Base {
     @property({type: String})
     team = "my-team";
 
-    @property({type: String})
-    formatString: string;
+    @property({type: Object})
+    format: any;
 
     @property({type: Object})
     fileOptions: GitHubElectron.Dialog.OpenDialogOptions;

@@ -76,9 +76,9 @@ var fs = require("fs");
             __metadata('design:type', Object)
         ], BvDumper.prototype, "team");
         __decorate([
-            property({ type: String }), 
-            __metadata('design:type', String)
-        ], BvDumper.prototype, "formatString");
+            property({ type: Object }), 
+            __metadata('design:type', Object)
+        ], BvDumper.prototype, "format");
         __decorate([
             property({ type: Object }), 
             __metadata('design:type', Object)

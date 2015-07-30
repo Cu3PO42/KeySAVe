@@ -65,15 +65,16 @@ class KeysavOptions extends polymer.Base {
     ];
 
     @property({type: Number})
-    selectedFormat: number;
+    selectedFormatIndex: number;
+
+    @property({type: Object, notify: true})
+    selectedFormat: any;
 
     @property({type: Object})
     fileOptions: GitHubElectron.Dialog.OpenDialogOptions;
 
-    @computed({type: Array})
-    formatNames(formattingOptions) {
-        return formattingOptions.map((e) => e.name);
-    }
+    @property({type: Array, computed: "getFormatNames(formattingOptions.*)"})
+    formatNames: string[];
 
     ipcClient: IpcClient;
     breakResult;
@@ -89,7 +90,7 @@ class KeysavOptions extends polymer.Base {
         this.ipcClient = new IpcClient();
 
         this.formattingOptions = config.formattingOptions;
-        this.formatString = this.formattingOptions[0].format;
+        this.selectedFormat = this.formattingOptions[0];
 
         this.ipcClient.on("break-key-result", (arg) => {
             this.breakMessage = arg.result.match(/^.*$/gm);
@@ -163,16 +164,20 @@ class KeysavOptions extends polymer.Base {
         this.updateFileBase("file2", oldValue);
     }
 
-    @observe("selectedFormat")
-    selectedFormatChanged(newValue, oldValue) {
-        if (this.formattingOptions !== undefined && this.formatString !== undefined) {
-            this.formatString = this.formattingOptions[newValue].format;
+    @observe("selectedFormatIndex")
+    selectedFormatIndexChanged(newValue, oldValue) {
+        if (this.formattingOptions !== undefined && this.selectedFormat !== undefined) {
+            this.selectedFormat = this.formattingOptions[newValue];
         }
     }
 
-    @observe("formatString")
-    formatStringChanged(formatString) {
-        this.formattingOptions[this.selectedFormat].format = this.formatString;
+    selectedFormatNameChanged(e) {
+        if (this.selectedFormat)
+            this.notifyPath("formattingOptions."+this.selectedFormatIndex+".name", this.selectedFormat.name, false);
+    }
+
+    getFormatNames(change) {
+        return change.base.map((e) => e.name);
     }
 }
 polymer.createElement(KeysavOptions);

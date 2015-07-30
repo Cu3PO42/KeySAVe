@@ -66,7 +66,7 @@ function mkdirOptional(path) {
             this.fileOptions = { filters: [{ name: "SAV (1MB)", extensions: ["bin", "sav"] }, { name: "Main File", extensions: [""] }, { name: "Battle Video", extensions: [""] }] };
             this.ipcClient = new IpcClient();
             this.formattingOptions = config.formattingOptions;
-            this.formatString = this.formattingOptions[0].format;
+            this.selectedFormat = this.formattingOptions[0];
             this.ipcClient.on("break-key-result", function (arg) {
                 _this.breakMessage = arg.result.match(/^.*$/gm);
                 _this.breakResult = arg;
@@ -84,9 +84,6 @@ function mkdirOptional(path) {
                 fs.writeFileSync(configFile, JSON.stringify({ formattingOptions: _this.formattingOptions }, null, 4), { encoding: "utf-8" });
             }, false);
         }
-        KeysavOptions.prototype.formatNames = function (formattingOptions) {
-            return formattingOptions.map(function (e) { return e.name; });
-        };
         KeysavOptions.prototype.break = function () {
             if (this.file1Type === this.file2Type && this.file1Type !== undefined)
                 this.ipcClient.send("break-key", { file1: this.file1, file2: this.file2 });
@@ -135,13 +132,17 @@ function mkdirOptional(path) {
         KeysavOptions.prototype.file2Changed = function (newValue, oldValue) {
             this.updateFileBase("file2", oldValue);
         };
-        KeysavOptions.prototype.selectedFormatChanged = function (newValue, oldValue) {
-            if (this.formattingOptions !== undefined && this.formatString !== undefined) {
-                this.formatString = this.formattingOptions[newValue].format;
+        KeysavOptions.prototype.selectedFormatIndexChanged = function (newValue, oldValue) {
+            if (this.formattingOptions !== undefined && this.selectedFormat !== undefined) {
+                this.selectedFormat = this.formattingOptions[newValue];
             }
         };
-        KeysavOptions.prototype.formatStringChanged = function (formatString) {
-            this.formattingOptions[this.selectedFormat].format = this.formatString;
+        KeysavOptions.prototype.selectedFormatNameChanged = function (e) {
+            if (this.selectedFormat)
+                this.notifyPath("formattingOptions." + this.selectedFormatIndex + ".name", this.selectedFormat.name, false);
+        };
+        KeysavOptions.prototype.getFormatNames = function (change) {
+            return change.base.map(function (e) { return e.name; });
         };
         __decorate([
             property({ type: String, reflectToAttribute: true, notify: true }), 
@@ -166,18 +167,19 @@ function mkdirOptional(path) {
         __decorate([
             property({ type: Number }), 
             __metadata('design:type', Number)
+        ], KeysavOptions.prototype, "selectedFormatIndex");
+        __decorate([
+            property({ type: Object, notify: true }), 
+            __metadata('design:type', Object)
         ], KeysavOptions.prototype, "selectedFormat");
         __decorate([
             property({ type: Object }), 
             __metadata('design:type', Object)
         ], KeysavOptions.prototype, "fileOptions");
-        Object.defineProperty(KeysavOptions.prototype, "formatNames",
-            __decorate([
-                computed({ type: Array }), 
-                __metadata('design:type', Function), 
-                __metadata('design:paramtypes', [Object]), 
-                __metadata('design:returntype', Object)
-            ], KeysavOptions.prototype, "formatNames", Object.getOwnPropertyDescriptor(KeysavOptions.prototype, "formatNames")));
+        __decorate([
+            property({ type: Array, computed: "getFormatNames(formattingOptions.*)" }), 
+            __metadata('design:type', Array)
+        ], KeysavOptions.prototype, "formatNames");
         Object.defineProperty(KeysavOptions.prototype, "file1Changed",
             __decorate([
                 observe("file1"), 
@@ -192,20 +194,13 @@ function mkdirOptional(path) {
                 __metadata('design:paramtypes', [Object, Object]), 
                 __metadata('design:returntype', Object)
             ], KeysavOptions.prototype, "file2Changed", Object.getOwnPropertyDescriptor(KeysavOptions.prototype, "file2Changed")));
-        Object.defineProperty(KeysavOptions.prototype, "selectedFormatChanged",
+        Object.defineProperty(KeysavOptions.prototype, "selectedFormatIndexChanged",
             __decorate([
-                observe("selectedFormat"), 
+                observe("selectedFormatIndex"), 
                 __metadata('design:type', Function), 
                 __metadata('design:paramtypes', [Object, Object]), 
                 __metadata('design:returntype', Object)
-            ], KeysavOptions.prototype, "selectedFormatChanged", Object.getOwnPropertyDescriptor(KeysavOptions.prototype, "selectedFormatChanged")));
-        Object.defineProperty(KeysavOptions.prototype, "formatStringChanged",
-            __decorate([
-                observe("formatString"), 
-                __metadata('design:type', Function), 
-                __metadata('design:paramtypes', [Object]), 
-                __metadata('design:returntype', Object)
-            ], KeysavOptions.prototype, "formatStringChanged", Object.getOwnPropertyDescriptor(KeysavOptions.prototype, "formatStringChanged")));
+            ], KeysavOptions.prototype, "selectedFormatIndexChanged", Object.getOwnPropertyDescriptor(KeysavOptions.prototype, "selectedFormatIndexChanged")));
         KeysavOptions = __decorate([
             component("keysav-options"), 
             __metadata('design:paramtypes', [])

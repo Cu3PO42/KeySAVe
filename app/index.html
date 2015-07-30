@@ -54,15 +54,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
                     <section data-route="bv">
-                        <bv-dumper format-string="[[formatString]]"></bv-dumper>
+                        <bv-dumper format="[[selectedFormat]]"></bv-dumper>
                     </section>
 
                     <section data-route="sav">
-                        <save-dumper format-string="[[formatString]]"></save-dumper>
+                        <save-dumper format="[[selectedFormat]]"></save-dumper>
                     </section>
 
                     <section data-route="options">
-                        <keysav-options format-string="{{formatString}}"></keysav-options>
+                        <keysav-options selected-format="{{selectedFormat}}"></keysav-options>
                     </section>
                 </iron-pages>
             </div>

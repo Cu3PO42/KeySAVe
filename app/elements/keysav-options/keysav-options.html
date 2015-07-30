@@ -8,6 +8,11 @@
             justify-content: space-between;
         }
 
+        #format-name {
+            flex-grow: 1;
+            margin-left: 1em;
+        }
+
         paper-button[dialog-confirm] {
             font-weight: bold;
             color: var(--accent-color);
@@ -41,8 +46,13 @@
     <template>
         <paper-material elevation="1">
             <h2>Formatting</h2>
-            <paper-select items="[[formatNames]]" selected="{{selectedFormat}}"></paper-select>
-            <paper-textarea label="Format string" value="{{formatString}}"></paper-textarea>
+            <div class="horizontal">
+                <paper-select items="[[formatNames]]" selected="{{selectedFormatIndex}}"></paper-select>
+                <paper-input id="format-name" label="Format Name" value="{{selectedFormat.name}}" on-value-changed="selectedFormatNameChanged"></paper-input>
+                <paper-icon-button icon="icons:add"></paper-icon-button>
+                <paper-icon-button icon="icons:delete"></paper-icon-button>
+            </div>
+            <paper-textarea label="Format string" value="{{selectedFormat.format}}"></paper-textarea>
         </paper-material>
         <paper-material elevation="1">
             <div class="horizontal">

@@ -83,9 +83,9 @@ var fs = require("fs");
             __metadata('design:type', String)
         ], SaveDumper.prototype, "path");
         __decorate([
-            property({ type: String }), 
-            __metadata('design:type', String)
-        ], SaveDumper.prototype, "formatString");
+            property({ type: Object }), 
+            __metadata('design:type', Object)
+        ], SaveDumper.prototype, "format");
         __decorate([
             property({ type: Object }), 
             __metadata('design:type', Object)
