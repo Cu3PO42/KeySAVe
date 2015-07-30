@@ -37,15 +37,15 @@ function mkdirOptional(path) {
             formattingOptions: [
                 {
                     name: "Default",
-                    format: "B{{box}} - {{row}},{{column}} - {{speciesName}} - {{natureName}} - {{abilityName}} - {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} - {{typeName hpType}} [{{esv}}]"
+                    format: "B{{box}} - {{row}},{{column}} - {{speciesName}} ({{genderString}}) - {{natureName}} - {{abilityName}} - {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} - {{typeName hpType}} [{{esv}}]"
                 },
                 {
                     name: "Reddit",
-                    format: "B{{box}} | {{row}},{{column}} | {{speciesName}} | {{natureName}} | {{abilityName}} | {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} | {{typeName hpType}} [{{esv}}]"
+                    format: "B{{box}} | {{row}},{{column}} | {{speciesName}} ({{genderString}}) | {{natureName}} | {{abilityName}} | {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} | {{typeName hpType}} [{{esv}}]"
                 },
                 {
                     name: "TSV",
-                    format: "B{{box}} - {{row}},{{column}} - {{esv}} - {{tsv}}"
+                    format: "B{{box}} - {{row}},{{column}} - {{ot}} - {{tid}} - {{sid}} - {{tsv}}"
                 },
                 {
                     name: "JSON",
