@@ -47,6 +47,9 @@ var localization = require("keysavcore/Localization");
         tsv: function () {
             return ("0000" + this.tsv).slice(-4);
         },
+        language: function () {
+            return localization.en.languageTags[this.otLang];
+        },
         toJson: function (e) {
             return new handlebars.SafeString(JSON.stringify(e));
         }
