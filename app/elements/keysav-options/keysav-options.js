@@ -48,10 +48,6 @@ function mkdirOptional(path) {
                     format: "B{{box}} - {{row}},{{column}} - {{esv}} - {{tsv}}"
                 },
                 {
-                    name: "Custom",
-                    format: ""
-                },
-                {
                     name: "JSON",
                     format: "{{toJson this}}"
                 }
