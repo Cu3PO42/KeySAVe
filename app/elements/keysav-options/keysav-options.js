@@ -51,7 +51,8 @@ function mkdirOptional(path) {
                     name: "JSON",
                     format: "{{toJson this}}"
                 }
-            ]
+            ],
+            selectedFormatIndex: 0
         };
     var KeysavOptions = (function (_super) {
         __extends(KeysavOptions, _super);
@@ -62,7 +63,8 @@ function mkdirOptional(path) {
             this.fileOptions = { filters: [{ name: "SAV (1MB)", extensions: ["bin", "sav"] }, { name: "Main File", extensions: [""] }, { name: "Battle Video", extensions: [""] }] };
             this.ipcClient = new IpcClient();
             this.formattingOptions = config.formattingOptions;
-            this.selectedFormat = this.formattingOptions[0];
+            this.selectedFormatIndex = config.selectedFormatIndex;
+            this.selectedFormat = this.formattingOptions[config.selectedFormatIndex];
             this.ipcClient.on("break-key-result", function (arg) {
                 _this.breakMessage = arg.result.match(/^.*$/gm);
                 _this.breakResult = arg;
@@ -77,7 +79,7 @@ function mkdirOptional(path) {
                 }
             });
             window.addEventListener("beforeunload", function (e) {
-                fs.writeFileSync(configFile, JSON.stringify({ formattingOptions: _this.formattingOptions }, null, 4), { encoding: "utf-8" });
+                fs.writeFileSync(configFile, JSON.stringify({ formattingOptions: _this.formattingOptions, selectedFormatIndex: _this.selectedFormatIndex }, null, 4), { encoding: "utf-8" });
             }, false);
         }
         KeysavOptions.prototype.break = function () {

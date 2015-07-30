@@ -39,7 +39,8 @@ else
                 name: "JSON",
                 format: "{{toJson this}}"
             }
-        ]
+        ],
+        selectedFormatIndex: 0
     };
 
 @component("keysav-options")
@@ -86,7 +87,8 @@ class KeysavOptions extends polymer.Base {
         this.ipcClient = new IpcClient();
 
         this.formattingOptions = config.formattingOptions;
-        this.selectedFormat = this.formattingOptions[0];
+        this.selectedFormatIndex = config.selectedFormatIndex;
+        this.selectedFormat = this.formattingOptions[config.selectedFormatIndex];
 
         this.ipcClient.on("break-key-result", (arg) => {
             this.breakMessage = arg.result.match(/^.*$/gm);
@@ -103,7 +105,7 @@ class KeysavOptions extends polymer.Base {
         });
 
         window.addEventListener("beforeunload", (e) => {
-            fs.writeFileSync(configFile, JSON.stringify({formattingOptions: this.formattingOptions}, null, 4), {encoding: "utf-8"});
+            fs.writeFileSync(configFile, JSON.stringify({formattingOptions: this.formattingOptions, selectedFormatIndex: this.selectedFormatIndex}, null, 4), {encoding: "utf-8"});
         }, false);
     }
 
