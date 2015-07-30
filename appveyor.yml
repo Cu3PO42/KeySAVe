@@ -1,4 +1,4 @@
-version: {build}
+version: "{build}"
 
 # Test against this version of Node.js
 environment:
@@ -18,7 +18,7 @@ install:
 test_script: off
 
 # Don't actually build.
-build:
+build_script:
   - gulp build
 
 cache:
