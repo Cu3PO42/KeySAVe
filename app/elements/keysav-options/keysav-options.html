@@ -47,7 +47,7 @@
         <paper-material elevation="1">
             <h2>Formatting</h2>
             <div class="horizontal">
-                <paper-select items="[[formatNames]]" selected="{{selectedFormatIndex}}"></paper-select>
+                <paper-select items="[[formatNames]]" selected="{{selectedFormatIndex}}" resize="true"></paper-select>
                 <paper-input id="format-name" label="Format Name" value="{{selectedFormat.name}}" on-value-changed="selectedFormatNameChanged"></paper-input>
                 <paper-icon-button icon="icons:add" on-tap="addFormatOption"></paper-icon-button>
                 <paper-icon-button icon="icons:delete" on-tap="deleteFormatOption"></paper-icon-button>

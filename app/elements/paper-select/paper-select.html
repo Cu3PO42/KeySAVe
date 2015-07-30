@@ -175,6 +175,11 @@ distributed under MIT license.
                 opened: {
                     type: Boolean,
                     value: false
+                },
+
+                resize: {
+                    type: Boolean,
+                    value: false
                 }
             },
 
@@ -194,7 +199,8 @@ distributed under MIT license.
                 return opened ? "icons:arrow-drop-up" : "icons:arrow-drop-down";
             },
 
-            attached: function() {
+            // TODO Check width of host
+            setWidth: function() {
                 var maxLength = 0;
                 for (var i = 0; i < this.items.length; ++i) {
                     if (this.items[i].length > maxLength)
@@ -206,9 +212,16 @@ distributed under MIT license.
                 this.$.dropdown.style.width = this.$.button.style.width = maxLength + "em";
             },
 
+            attached: function() {
+                this.setWidth();
+            },
+
             itemsChanged: function(newValue, oldValue) {
                 if (newValue.length <= this.selected && newValue.length > 0) {
                     this.selected = newValue.length-1;
+                }
+                if (this.resize) {
+                    this.setWidth();
                 }
             }
         });
