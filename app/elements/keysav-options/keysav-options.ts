@@ -179,6 +179,19 @@ class KeysavOptions extends polymer.Base {
     getFormatNames(change) {
         return change.base.map((e) => e.name);
     }
+
+    addFormatOption() {
+        this.push("formattingOptions", {name: "Custom Formatting Option", format: ""});
+        this.selectedFormatIndex = this.formattingOptions.length-1;
+    }
+
+    deleteFormatOption() {
+        if (this.formattingOptions.length > 0)
+        {
+            this.splice("formattingOptions", this.selectedFormatIndex, 1);
+            this.selectedFormat = this.formattingOptions[this.selectedFormatIndex];
+        }
+    }
 }
 polymer.createElement(KeysavOptions);
 })()

@@ -144,6 +144,16 @@ function mkdirOptional(path) {
         KeysavOptions.prototype.getFormatNames = function (change) {
             return change.base.map(function (e) { return e.name; });
         };
+        KeysavOptions.prototype.addFormatOption = function () {
+            this.push("formattingOptions", { name: "Custom Formatting Option", format: "" });
+            this.selectedFormatIndex = this.formattingOptions.length - 1;
+        };
+        KeysavOptions.prototype.deleteFormatOption = function () {
+            if (this.formattingOptions.length > 0) {
+                this.splice("formattingOptions", this.selectedFormatIndex, 1);
+                this.selectedFormat = this.formattingOptions[this.selectedFormatIndex];
+            }
+        };
         __decorate([
             property({ type: String, reflectToAttribute: true, notify: true }), 
             __metadata('design:type', String)

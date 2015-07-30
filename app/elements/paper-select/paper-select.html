@@ -157,7 +157,10 @@ distributed under MIT license.
                     }
                 },
 
-                items: Array,
+                items: {
+                    type: Array,
+                    observer: 'itemsChanged'
+                },
                 selected: {
                     type: Number,
                     value: 0,
@@ -201,6 +204,12 @@ distributed under MIT license.
                 maxLength = Math.min(15, maxLength);
 
                 this.$.dropdown.style.width = this.$.button.style.width = maxLength + "em";
+            },
+
+            itemsChanged: function(newValue, oldValue) {
+                if (newValue.length <= this.selected && newValue.length > 0) {
+                    this.selected = newValue.length-1;
+                }
             }
         });
     </script>
