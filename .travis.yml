@@ -1,0 +1,23 @@
+language: node_js
+node_js:
+- iojs
+before_script:
+- npm install -g gulp
+- npm install -g bower
+- bower install
+script: gulp build
+addons:
+  apt:
+    packages:
+    - wine
+sudo: false
+deploy:
+    provider: releases
+    skip_cleanup: true
+    api_key:
+        secure: I+GSJYSswagiie3yIf4rV5YTlYVRwmnBviKlNiyaenLg02XZeE1yIfcAvH2E7qovyCsHRG9pgH9NcHQGZX9SWAMYG/D5E8vHNK6yKgSeWPNefz8PY80JLdgFVSEAifQxKWAKPibReR/ncaMtfsfMmXdD1xc2TXjmL4v0wstArdRKcYDVj8O7S8YnxbkTTFJxwmV6OItxOTZ7l8LHI76Qm1O7OBnKDYm1x844ePtswfah5dE1mSpQSUjeGEGHrv0zUdfCdSFJdp9y80ASd5vsJSAmiMionnJI01jrhKk41/gO/tYVxGl5HMjtvZ7+MGp0yVBQgmx6mi4gCXWkEQjf81Es4DfiV8l85l85vfP+9Irf4soKLWyP64alzg07IUZQRohttFVZ9uA4BWuv1Gn2pKjRMsfWC/apEH5KlvCkkYDh9VWe7YXrFwzXHRJkzYAly/nSarS/PSbW0R4ZQdgG+W4HjReUMnOJIryt2+n6jRHfgXVmgxLJ9lkw1uCByVxPPUR51Hx6Auz5743seb/MF22AhSwAuBUErq89oONHOAysiUSHT1+Cbhg7bXUiCeLg1dOLtlhqiKJa/ALqwFrRzRAgncFVQ+cAgF2jH4ar7/9bH4hurgFcl3MyVKJRuF/s+mX9bvh1xoJw4dAOls/oiDsedh1i4LUzXkDESm1z+OY=
+    file_glob: true
+    file: releases/v0.30.1/KeySAVe-*.zip
+    on:
+        repo: Cu3PO42/KeySAVe
+        tags: true
