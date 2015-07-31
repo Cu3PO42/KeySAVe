@@ -25,22 +25,22 @@ else
         formattingOptions: [
             {
                 name: "Default",
-                header: "ABC",
+                header: "Box - Slot - Species (Gender) - Nature - Ability - HP.ATK.DEF.SPATK.SPDEF.SPE - HP [ESV]",
                 format: "B{{box}} - {{row}},{{column}} - {{speciesName}} ({{genderString}}) - {{natureName}} - {{abilityName}} - {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} - {{typeName hpType}} [{{esv}}]"
             },
             {
                 name: "Reddit",
-                header: "ABC",
+                header: "Box | Slot | Species (Gender) | Nature | Ability | HP.ATK.DEF.SPATK.SPDEF.SPE | HP [ESV]",
                 format: "B{{box}} | {{row}},{{column}} | {{speciesName}} ({{genderString}}) | {{natureName}} | {{abilityName}} | {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} | {{typeName hpType}} [{{esv}}]"
             },
             {
                 name: "TSV",
-                header: "ABC",
+                header: "Box - Slot - OT - TID - SID - TSV",
                 format: "B{{box}} - {{row}},{{column}} - {{ot}} - {{tid}} - {{sid}} - {{tsv}}"
             },
             {
                 name: "JSON",
-                header: "ABC",
+                header: "",
                 format: "{{toJson this}}"
             }
         ],

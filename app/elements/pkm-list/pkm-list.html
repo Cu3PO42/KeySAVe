@@ -18,7 +18,7 @@
             <div class="container">
                 <div>{{formatHeader}}</div>
                 <template id="list" is="dom-repeat" items="{{pokemon}}">
-                    <div>{{formatPokemon(item)}}</div>
+                    <div>{{formatPokemon(item, template)}}</div>
                 </template>
             </div>
         </paper-material>
