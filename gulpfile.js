@@ -238,7 +238,7 @@ gulp.task('buildElectron', function() {
     .pipe(gulp.dest(""))
 });
 
-gulp.task('build', ['default'], function(cb) {
+gulp.task('build', [], function(cb) {
     runSequence(
         'copyBuild',
         'buildElectron',
