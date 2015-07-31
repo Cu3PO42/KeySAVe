@@ -41,6 +41,12 @@ var localization = require("keysavcore/Localization");
         typeName: function (typeId) {
             return localization.en.types[typeId];
         },
+        moveName: function (moveId) {
+            return moveId ? localization.en.moves[moveId] : "";
+        },
+        ballName: function () {
+            return localization.en.items[this.ball];
+        },
         esv: function () {
             return ("0000" + this.esv).slice(-4);
         },
@@ -87,7 +93,7 @@ var localization = require("keysavcore/Localization");
             var _this = this;
             this.debounce("compileTemplate", function () {
                 _this.formatCache = {};
-                _this.template = handlebars.compile(newValue, { knownHelpers: ["box", "column", "row", "speciesName", "natureName", "abilityName", "typeName"] });
+                _this.template = handlebars.compile(newValue, { knownHelpers: ["box", "column", "row", "speciesName", "natureName", "abilityName", "typeName", "moveName", "ballName", "esv", "tsv", "language", "genderString", "toJson"] });
             }, 500);
         };
         PkmList.prototype.filterRestrictionsChanged = function (lowerBox, upperBox) {
