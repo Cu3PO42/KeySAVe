@@ -16,6 +16,7 @@
     <template>
         <paper-material elevation="1" hidden$="{{isEmpty(pokemon)}}">
             <div class="container">
+                <div>{{formatHeader}}</div>
                 <template id="list" is="dom-repeat" items="{{pokemon}}">
                     <div>{{formatPokemon(item)}}</div>
                 </template>

@@ -25,18 +25,22 @@ else
         formattingOptions: [
             {
                 name: "Default",
+                header: "ABC",
                 format: "B{{box}} - {{row}},{{column}} - {{speciesName}} ({{genderString}}) - {{natureName}} - {{abilityName}} - {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} - {{typeName hpType}} [{{esv}}]"
             },
             {
                 name: "Reddit",
+                header: "ABC",
                 format: "B{{box}} | {{row}},{{column}} | {{speciesName}} ({{genderString}}) | {{natureName}} | {{abilityName}} | {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} | {{typeName hpType}} [{{esv}}]"
             },
             {
                 name: "TSV",
+                header: "ABC",
                 format: "B{{box}} - {{row}},{{column}} - {{ot}} - {{tid}} - {{sid}} - {{tsv}}"
             },
             {
                 name: "JSON",
+                header: "ABC",
                 format: "{{toJson this}}"
             }
         ],

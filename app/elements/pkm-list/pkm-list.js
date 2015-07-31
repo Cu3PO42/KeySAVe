@@ -87,6 +87,10 @@ var localization = require("keysavcore/Localization");
             property({ type: String }), 
             __metadata('design:type', String)
         ], PkmList.prototype, "formatString");
+        __decorate([
+            property({ type: String }), 
+            __metadata('design:type', String)
+        ], PkmList.prototype, "formatHeader");
         Object.defineProperty(PkmList.prototype, "formatStringChanged",
             __decorate([
                 observe("formatString"), 

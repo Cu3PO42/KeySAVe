@@ -50,7 +50,7 @@ var pkmFormat = handlebars.registerHelper({
     toJson: function(e) {
         return new handlebars.SafeString(JSON.stringify(e));
     }
-    });
+});
 
 @component("pkm-list")
 class PkmList extends polymer.Base {
@@ -59,6 +59,9 @@ class PkmList extends polymer.Base {
 
     @property({type: String})
     formatString: string;
+
+    @property({type: String})
+    formatHeader: string;
 
     template: Handlebars.HandlebarsTemplateDelegate;
 
