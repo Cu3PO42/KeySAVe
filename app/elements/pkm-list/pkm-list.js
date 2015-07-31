@@ -69,15 +69,29 @@ var localization = require("keysavcore/Localization");
         function PkmList() {
             _super.apply(this, arguments);
             this.pokemon = [];
+            this.formatCache = {};
         }
         PkmList.prototype.formatPokemon = function (pkm) {
-            return this.template(pkm);
+            if (this.formatCache[pkm.pid])
+                return this.formatCache[pkm.pid];
+            else
+                return this.formatCache[pkm.pid] = this.template(pkm);
         };
         PkmList.prototype.isEmpty = function (pkm) {
             return pkm.length === 0;
         };
+        PkmList.prototype.filterPokemon = function (pkm) {
+            return (this.lowerBox === undefined || pkm.box + 1 >= this.lowerBox) && (this.upperBox === undefined || pkm.box < this.upperBox);
+        };
         PkmList.prototype.formatStringChanged = function (newValue, oldValue) {
-            this.template = handlebars.compile(newValue, { knownHelpers: ["box", "column", "row", "speciesName", "natureName", "abilityName", "typeName"] });
+            var _this = this;
+            this.debounce("compileTemplate", function () {
+                _this.formatCache = {};
+                _this.template = handlebars.compile(newValue, { knownHelpers: ["box", "column", "row", "speciesName", "natureName", "abilityName", "typeName"] });
+            }, 500);
+        };
+        PkmList.prototype.filterRestrictionsChanged = function (lowerBox, upperBox) {
+            this.$.list.render();
         };
         __decorate([
             property({ type: Array }), 
@@ -91,6 +105,14 @@ var localization = require("keysavcore/Localization");
             property({ type: String }), 
             __metadata('design:type', String)
         ], PkmList.prototype, "formatHeader");
+        __decorate([
+            property({ type: Number }), 
+            __metadata('design:type', Number)
+        ], PkmList.prototype, "lowerBox");
+        __decorate([
+            property({ type: Number }), 
+            __metadata('design:type', Number)
+        ], PkmList.prototype, "upperBox");
         Object.defineProperty(PkmList.prototype, "formatStringChanged",
             __decorate([
                 observe("formatString"), 
@@ -98,6 +120,13 @@ var localization = require("keysavcore/Localization");
                 __metadata('design:paramtypes', [Object, Object]), 
                 __metadata('design:returntype', Object)
             ], PkmList.prototype, "formatStringChanged", Object.getOwnPropertyDescriptor(PkmList.prototype, "formatStringChanged")));
+        Object.defineProperty(PkmList.prototype, "filterRestrictionsChanged",
+            __decorate([
+                observe("lowerBox, upperBox"), 
+                __metadata('design:type', Function), 
+                __metadata('design:paramtypes', [Object, Object]), 
+                __metadata('design:returntype', Object)
+            ], PkmList.prototype, "filterRestrictionsChanged", Object.getOwnPropertyDescriptor(PkmList.prototype, "filterRestrictionsChanged")));
         PkmList = __decorate([
             component("pkm-list"), 
             __metadata('design:paramtypes', [])

@@ -27,12 +27,8 @@ var fs = require("fs");
             _super.call(this);
             this.lowerBox = 1;
             this.upperBox = 31;
-            this.opened = false;
             this.fileOptions = { filters: [{ name: "SAV (1MB)", extensions: ["bin", "sav"] }, { name: "Main File", extensions: [""] }] };
             this.ipcClient = new IpcClient();
-            this.ipcClient.on("dump-save-opened", function (res) {
-                _this.opened = true;
-            });
             this.ipcClient.on("dump-save-dumped", function (res) {
                 _this.$.results.pokemon = res;
             });
@@ -41,10 +37,6 @@ var fs = require("fs");
                 _this.$.dialogNokey.toggle();
             });
         }
-        SaveDumper.prototype.dump = function () {
-            if (this.opened)
-                this.ipcClient.send("dump-save-dump", { lower: this.lowerBox, upper: this.upperBox });
-        };
         SaveDumper.prototype.pathChange = function (newPath, oldPath) {
             var _this = this;
             if (newPath !== "" && newPath !== undefined)
@@ -60,8 +52,7 @@ var fs = require("fs");
                             case 0x10019A:
                             case 0x76000:
                             case 0x65600:
-                                _this.ipcClient.send("dump-save-open", _this.path);
-                                _this.opened = false;
+                                _this.ipcClient.send("dump-save", _this.path);
                                 break;
                             default:
                                 _this.path = oldPath;

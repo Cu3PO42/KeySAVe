@@ -31,8 +31,7 @@ module.exports = function () {
     mkdirOptional(dataDirectory);
     var store = new KeySAV.Extensions.KeyStore(dataDirectory);
     app.on("window-all-closed", function () { return store.close(); });
-    var savDumper;
-    ipcServer.on("dump-save-open", function (reply, args) {
+    ipcServer.on("dump-save", function (reply, args) {
         fs.readFile(args, function (err, buf) {
             var arr = bufToArr(buf);
             if (arr.length > 0x100000)
@@ -42,22 +41,19 @@ module.exports = function () {
                     reply("dump-save-nokey");
                     return;
                 }
-                savDumper = reader;
-                reply("dump-save-opened", {});
-                reader.scanSlots();
+                var res = [];
+                var tmp;
+                for (var i = 0; i < 31 * 30; i++) {
+                    tmp = reader.getPkx(i);
+                    if (tmp !== null) {
+                        res.push(tmp);
+                    }
+                }
+                reply("dump-save-dumped", res);
             });
         });
     });
     ipcServer.on("dump-save-dump", function (reply, args) {
-        var res = [];
-        var tmp;
-        for (var i = 0 + 30 * (args.lower - 1); i < args.upper * 30; i++) {
-            tmp = savDumper.getPkx(i);
-            if (tmp !== null) {
-                res.push(tmp);
-            }
-        }
-        reply("dump-save-dumped", res);
     });
     var bvDumper;
     ipcServer.on("dump-bv-open", function (reply, args) {

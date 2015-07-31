@@ -63,19 +63,41 @@ class PkmList extends polymer.Base {
     @property({type: String})
     formatHeader: string;
 
+    @property({type: Number})
+    lowerBox: number;
+
+    @property({type: Number})
+    upperBox: number;
+
     template: Handlebars.HandlebarsTemplateDelegate;
+    private formatCache: {[pid: number]: string} = {};
 
     formatPokemon(pkm) {
-        return this.template(pkm);
+        if (this.formatCache[pkm.pid])
+            return this.formatCache[pkm.pid];
+        else
+            return this.formatCache[pkm.pid] = this.template(pkm);
     }
 
     isEmpty(pkm) {
         return pkm.length === 0;
     }
 
+    filterPokemon(pkm) {
+        return (this.lowerBox === undefined || pkm.box+1 >= this.lowerBox) && (this.upperBox === undefined || pkm.box < this.upperBox);
+    }
+
     @observe("formatString")
     formatStringChanged(newValue, oldValue) {
-        this.template = handlebars.compile(newValue, {knownHelpers: ["box", "column", "row", "speciesName", "natureName", "abilityName", "typeName"]});
+        this.debounce("compileTemplate", () => {
+            this.formatCache = {};
+            this.template = handlebars.compile(newValue, {knownHelpers: ["box", "column", "row", "speciesName", "natureName", "abilityName", "typeName"]});
+        }, 500);
+    }
+
+    @observe("lowerBox, upperBox")
+    filterRestrictionsChanged(lowerBox, upperBox) {
+        this.$.list.render();
     }
 }
 polymer.createElement(PkmList);

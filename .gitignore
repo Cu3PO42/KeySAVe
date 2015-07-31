@@ -6,3 +6,4 @@ KeySAVe-*/
 build/
 cache/
 release/
+.tmp/

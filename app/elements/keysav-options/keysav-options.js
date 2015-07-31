@@ -147,7 +147,7 @@ function mkdirOptional(path) {
             return change.base.map(function (e) { return e.name; });
         };
         KeysavOptions.prototype.addFormatOption = function () {
-            this.push("formattingOptions", { name: "Custom Formatting Option", format: "" });
+            this.push("formattingOptions", { name: "Custom Formatting Option", format: "", header: "" });
             this.selectedFormatIndex = this.formattingOptions.length - 1;
         };
         KeysavOptions.prototype.deleteFormatOption = function () {

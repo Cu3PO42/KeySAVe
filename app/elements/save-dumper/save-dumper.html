@@ -36,12 +36,11 @@
         <paper-material elevation="1">
             <file-input id="input" path="{{path}}" options="[[fileOptions]]"></file-input>
             <div class="horizontal">
-                <paper-button on-click="dump">Dump</paper-button>
                 <paper-slider min="1" max="31" value="{{lowerBox}}" pin="true"></paper-slider>
                 <paper-slider min="{{lowerBox}}" max="31" value="{{upperBox}}" pin="true"></paper-slider>
             </div>
         </paper-material>
-        <pkm-list id="results" format-string="{{format.format}}" format-header="{{format.header}}"></pkm-list>
+        <pkm-list id="results" format-string="{{format.format}}" format-header="{{format.header}}" lower-box="{{lowerBox}}" upper-box="{{upperBox}}"></pkm-list>
     </template>
     <script src="save-dumper.js"></script>
 </dom-module>

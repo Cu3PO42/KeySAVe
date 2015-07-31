@@ -23,7 +23,6 @@ class SaveDumper extends polymer.Base {
     fileOptions: GitHubElectron.Dialog.OpenDialogOptions;
 
     ipcClient: IpcClient;
-    opened = false;
 
     constructor() {
         super();
@@ -31,10 +30,6 @@ class SaveDumper extends polymer.Base {
         this.fileOptions = {filters: [{name: "SAV (1MB)", extensions: ["bin", "sav"]}, {name: "Main File", extensions: [""]}]}
 
         this.ipcClient = new IpcClient();
-
-        this.ipcClient.on("dump-save-opened", (res) => {
-            this.opened = true;
-        });
 
         this.ipcClient.on("dump-save-dumped", (res) => {
             this.$.results.pokemon = res;
@@ -44,11 +39,6 @@ class SaveDumper extends polymer.Base {
             this.path = "";
             this.$.dialogNokey.toggle();
         });
-    }
-
-    dump() {
-        if (this.opened)
-            this.ipcClient.send("dump-save-dump", {lower: this.lowerBox, upper: this.upperBox});
     }
 
     @observe("path")
@@ -64,8 +54,7 @@ class SaveDumper extends polymer.Base {
                     case 0x10019A:
                     case 0x76000:
                     case 0x65600:
-                        this.ipcClient.send("dump-save-open", this.path);
-                        this.opened = false;
+                        this.ipcClient.send("dump-save", this.path);
                         break;
                     default:
                         this.path = oldPath;
