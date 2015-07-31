@@ -25,27 +25,26 @@ var fs = require("fs");
             var _this = this;
             _super.call(this);
             this.enemyDumpable = false;
-            this.team = "my-team";
-            this.opened = false;
+            this.team = "myTeam";
             this.fileOptions = { filters: [{ name: "Battle Video", extensions: [""] }] };
             this.ipcClient = new IpcClient();
-            this.ipcClient.on("dump-bv-opened", function (res) {
-                _this.enemyDumpable = res.enemyDumpable;
-                console.log(res);
-                _this.opened = true;
-            });
             this.ipcClient.on("dump-bv-dumped", function (res) {
-                _this.$.results.pokemon = res;
+                _this.enemyDumpable = res.enemyDumpable;
+                _this.myTeam = res.myTeam;
+                if (res.enemyDumpable) {
+                    _this.enemyTeam = res.enemyTeam;
+                }
+                else {
+                    _this.enemyTeam = [];
+                    _this.team = "myTeam";
+                }
+                _this.$.results.pokemon = _this[_this.team];
             });
             this.ipcClient.on("dump-bv-nokey", function () {
                 _this.path = "";
                 _this.$.dialogNokey.toggle();
             });
         }
-        BvDumper.prototype.dump = function () {
-            if (this.opened)
-                this.ipcClient.send("dump-bv-dump", this.enemyDumpable && this.team === "enemy-team");
-        };
         BvDumper.prototype.pathChanged = function (newValue, oldValue) {
             var _this = this;
             if (newValue !== "" && newValue !== undefined)
@@ -55,10 +54,12 @@ var fs = require("fs");
                         _this.$.dialogInvalid.toggle();
                     }
                     else {
-                        _this.ipcClient.send("dump-bv-open", _this.path);
-                        _this.opened = false;
+                        _this.ipcClient.send("dump-bv", _this.path);
                     }
                 });
+        };
+        BvDumper.prototype.teamChanged = function (newValue, oldValue) {
+            this.$.results.pokemon = this[newValue];
         };
         BvDumper.prototype.not = function (val) {
             return !val;
@@ -90,6 +91,13 @@ var fs = require("fs");
                 __metadata('design:paramtypes', [Object, Object]), 
                 __metadata('design:returntype', Object)
             ], BvDumper.prototype, "pathChanged", Object.getOwnPropertyDescriptor(BvDumper.prototype, "pathChanged")));
+        Object.defineProperty(BvDumper.prototype, "teamChanged",
+            __decorate([
+                observe("team"), 
+                __metadata('design:type', Function), 
+                __metadata('design:paramtypes', [Object, Object]), 
+                __metadata('design:returntype', Object)
+            ], BvDumper.prototype, "teamChanged", Object.getOwnPropertyDescriptor(BvDumper.prototype, "teamChanged")));
         BvDumper = __decorate([
             component("bv-dumper"), 
             __metadata('design:paramtypes', [])

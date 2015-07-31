@@ -53,10 +53,7 @@ module.exports = function () {
             });
         });
     });
-    ipcServer.on("dump-save-dump", function (reply, args) {
-    });
-    var bvDumper;
-    ipcServer.on("dump-bv-open", function (reply, args) {
+    ipcServer.on("dump-bv", function (reply, args) {
         fs.readFile(args, function (err, buf) {
             var arr = bufToArr(buf);
             KeySAV.Core.BattleVideoBreaker.Load(arr, store.getBvKey.bind(store), function (e, reader) {
@@ -64,21 +61,21 @@ module.exports = function () {
                     reply("dump-bv-nokey");
                     return;
                 }
-                bvDumper = reader;
-                reply("dump-bv-opened", { enemyDumpable: reader.get_DumpsEnemy() });
+                var myTeam = [], enemyTeam = [];
+                var tmp;
+                for (var i = 0; i < 6; ++i) {
+                    tmp = reader.getPkx(i, false);
+                    if (tmp !== null) {
+                        myTeam.push(tmp);
+                    }
+                    tmp = reader.getPkx(i, true);
+                    if (tmp !== null) {
+                        enemyTeam.push(tmp);
+                    }
+                }
+                reply("dump-bv-dumped", { enemyDumpable: reader.get_DumpsEnemy(), myTeam: myTeam, enemyTeam: enemyTeam });
             });
         });
-    });
-    ipcServer.on("dump-bv-dump", function (reply, args) {
-        var res = [];
-        var tmp;
-        for (var i = 0; i < 6; ++i) {
-            tmp = bvDumper.getPkx(i, args);
-            if (tmp !== null) {
-                res.push(tmp);
-            }
-        }
-        reply("dump-bv-dumped", res);
     });
     var bvBreakRes;
     var savBreakRes;

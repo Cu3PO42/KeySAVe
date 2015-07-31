@@ -13,7 +13,7 @@ class BvDumper extends polymer.Base {
     enemyDumpable = false;
 
     @property({type: String})
-    team = "my-team";
+    team = "myTeam";
 
     @property({type: Object})
     format: any;
@@ -22,7 +22,8 @@ class BvDumper extends polymer.Base {
     fileOptions: GitHubElectron.Dialog.OpenDialogOptions;
 
     ipcClient: IpcClient;
-    opened = false;
+    myTeam: any[];
+    enemyTeam: any[];
 
     constructor() {
         super()
@@ -31,25 +32,22 @@ class BvDumper extends polymer.Base {
 
         this.ipcClient = new IpcClient();
 
-        this.ipcClient.on("dump-bv-opened", (res) => {
-            this.enemyDumpable = res.enemyDumpable;
-            console.log(res);
-            this.opened = true;
-        });
-
         this.ipcClient.on("dump-bv-dumped", (res) => {
-            this.$.results.pokemon = res;
+            this.enemyDumpable = res.enemyDumpable;
+            this.myTeam = res.myTeam;
+            if (res.enemyDumpable) {
+                this.enemyTeam = res.enemyTeam;
+            } else {
+                this.enemyTeam = [];
+                this.team = "myTeam";
+            }
+            this.$.results.pokemon = this[this.team];
         });
 
         this.ipcClient.on("dump-bv-nokey", () => {
             this.path = "";
             this.$.dialogNokey.toggle();
         });
-    }
-
-    dump() {
-        if (this.opened)
-            this.ipcClient.send("dump-bv-dump", this.enemyDumpable && this.team === "enemy-team");
     }
 
     @observe("path")
@@ -60,10 +58,14 @@ class BvDumper extends polymer.Base {
                     this.path = oldValue;
                     this.$.dialogInvalid.toggle();
                 } else {
-                    this.ipcClient.send("dump-bv-open", this.path);
-                    this.opened = false;
+                    this.ipcClient.send("dump-bv", this.path);
                 }
             });
+    }
+
+    @observe("team")
+    teamChanged(newValue, oldValue) {
+        this.$.results.pokemon = this[newValue];
     }
 
     not(val) {

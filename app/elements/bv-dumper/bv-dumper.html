@@ -24,10 +24,9 @@
         <paper-material elevation="1">
             <file-input id="input" path="{{path}}" options="[[fileOptions]]"></file-input>
             <div class="horizontal">
-                <paper-button on-click="dump">Dump</paper-button>
-                <paper-radio-group selected="{{team}}" hidden$="{{not(enemyDumpable)}}">
-                        <paper-radio-button name="my-team">My Team</paper-radio-button>
-                        <paper-radio-button name="enemy-team">Enemy Team</paper-radio-button>
+                <paper-radio-group selected="{{team}}">
+                        <paper-radio-button name="myTeam">My Team</paper-radio-button>
+                        <paper-radio-button name="enemyTeam" disabled="{{not(enemyDumpable)}}">Enemy Team</paper-radio-button>
                 </paper-radio-group>
             </div>
         </paper-material>
