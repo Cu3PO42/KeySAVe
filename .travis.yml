@@ -21,3 +21,9 @@ deploy:
     on:
         repo: Cu3PO42/KeySAVe
         tags: true
+
+cache:
+    directories:
+        - node_modules
+        - bower_components
+        - cache
