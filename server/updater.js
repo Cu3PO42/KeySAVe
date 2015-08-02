@@ -11,8 +11,6 @@ module.exports = function () {
                 ipcServer.on("update-do", function () {
                     res.update(path.normalize(path.join(__dirname, "..")), function (e) {
                         if (e) {
-                            console.log("Didn't update.");
-                            console.log(e);
                             return;
                         }
                         child_process.exec(process.execPath);
@@ -20,9 +18,6 @@ module.exports = function () {
                     });
                 });
                 reply("update-available");
-            }
-            else {
-                console.log("no update available");
             }
         });
     });

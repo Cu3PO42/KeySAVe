@@ -13,8 +13,8 @@ export = () => {
                 ipcServer.on("update-do", () => {
                     res.update(path.normalize(path.join(__dirname, "..")), (e) => {
                         if (e) {
-                            console.log("Didn't update.");
-                            console.log(e);
+                            //console.log("Didn't update.");
+                            //console.log(e);
                             return;
                         }
                         child_process.exec(process.execPath);
@@ -22,8 +22,6 @@ export = () => {
                     });
                 });
                 reply("update-available");
-            } else {
-                console.log("no update available");
             }
         })
     });
