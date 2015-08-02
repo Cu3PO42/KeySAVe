@@ -14,13 +14,9 @@ var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
 var del = require('del');
 var runSequence = require('run-sequence');
-var browserSync = require('browser-sync');
-var reload = browserSync.reload;
 var merge = require('merge-stream');
 var path = require('path');
 var fs = require('fs');
-var glob = require('glob');
-var historyApiFallback = require('connect-history-api-fallback');
 
 // Clean Output Directory
 gulp.task('clean', del.bind(null, ['build', 'release']));
