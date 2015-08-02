@@ -1,11 +1,9 @@
 language: node_js
 node_js:
 - iojs
-before_script:
-- npm install -g gulp
-- npm install -g bower
-- bower install
-script: gulp build
+script:
+- npm run bower
+- npm run build
 addons:
   apt:
     packages:
