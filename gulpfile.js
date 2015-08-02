@@ -218,7 +218,7 @@ gulp.task('buildElectron', function() {
         release: "./release",
         cache: "./cache",
         version: "v0.30.1",
-        platforms: ["darwin-x64", "win32-ia32"],
+        platforms: ["darwin-x64", "win32-ia32", "linux-ia32", "linux-x64"],
         platformResources: {
             darwin: {
                 CFBundleDisplayName: "KeySAVe",
