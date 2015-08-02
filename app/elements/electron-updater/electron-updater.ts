@@ -3,6 +3,9 @@ import IpcClient = require("electron-ipc-tunnel/client");
 (() => {
 @component("electron-updater")
 class ElectronUpdater extends polymer.Base {
+    @property({type: Boolean})
+    updateInProgress: boolean;
+
     ipcClient: IpcClient;
 
     attached() {
@@ -17,6 +20,12 @@ class ElectronUpdater extends polymer.Base {
 
     update() {
         this.ipcClient.send("update-do");
+        this.updateInProgress = true;
+        this.async(() => this.$.dialog.refit());
+    }
+
+    not(e) {
+        return !e;
     }
 }
 polymer.createElement(ElectronUpdater);

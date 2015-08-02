@@ -19,15 +19,34 @@
             display: flex;
             justify-content: flex-end;
         }
+
+        paper-dialog {
+            text-align: center;
+        }
+
+        paper-spinner {
+            margin-top: 2em;
+        }
     </style>
     <template>
         <paper-dialog id="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation" modal>
-            <div>
-                A new update is available. Do you want to install it now?
+            <div hidden$="{{updateInProgress}}">
+                <div>
+                    A new update is available. Do you want to install it now?
+                </div>
+                <div class="buttons">
+                    <paper-button dialog-dismiss>Discard</paper-button>
+                    <paper-button dialog-confirm on-click="update">Ok</paper-button>
+                </div>
             </div>
-            <div class="buttons">
-                <paper-button dialog-dismiss>Discard</paper-button>
-                <paper-button dialog-confirm on-click="update">Ok</paper-button>
+            <div hidden$="{{not(updateInProgress)}}">
+                <div>
+                    The update is downloading.
+                </div>
+                <div>
+                    KeySAV<sup>e</sup> will restart after it is installed.
+                </div>
+                <paper-spinner active="{{updateInProgress}}"></paper-spinner>
             </div>
         </paper-dialog>
     </template>

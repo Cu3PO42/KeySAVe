@@ -31,8 +31,18 @@ var IpcClient = require("electron-ipc-tunnel/client");
             this.ipcClient.send("update-query");
         };
         ElectronUpdater.prototype.update = function () {
+            var _this = this;
             this.ipcClient.send("update-do");
+            this.updateInProgress = true;
+            this.async(function () { return _this.$.dialog.refit(); });
         };
+        ElectronUpdater.prototype.not = function (e) {
+            return !e;
+        };
+        __decorate([
+            property({ type: Boolean }), 
+            __metadata('design:type', Boolean)
+        ], ElectronUpdater.prototype, "updateInProgress");
         ElectronUpdater = __decorate([
             component("electron-updater"), 
             __metadata('design:paramtypes', [])
