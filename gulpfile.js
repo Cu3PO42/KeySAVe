@@ -238,10 +238,16 @@ gulp.task('buildElectron', function() {
     .pipe(gulp.dest(""))
 });
 
+gulp.task('buildUpdate', function() {
+    return gulp.src("build/**/*")
+    .pipe($.zip("KeySAVe-" + require("./package.json").version + "-update-any.zip"))
+    .pipe(gulp.dest("release"));
+});
+
 gulp.task('build', ['clean'], function(cb) {
     runSequence(
         'copyBuild',
-        'buildElectron',
+        ['buildElectron', 'buildUpdate'],
         cb);
 });
 

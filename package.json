@@ -37,6 +37,7 @@
     "gulp-uncss": "^1.0.1",
     "gulp-useref": "^1.1.2",
     "gulp-vulcanize": "^6.0.0",
+    "gulp-zip": "^3.0.2",
     "jshint-stylish": "^2.0.0",
     "merge-stream": "^0.1.7",
     "opn": "^1.0.0",
