@@ -78,10 +78,12 @@ var localization = require("keysavcore/Localization");
             this.formatCache = {};
         }
         PkmList.prototype.formatPokemon = function (pkm) {
-            if (this.formatCache[pkm.pid])
-                return this.formatCache[pkm.pid];
+            var uuid = pkm.box * 30 + pkm.slot;
+            var cached = this.formatCache[uuid];
+            if (cached)
+                return cached;
             else
-                return this.formatCache[pkm.pid] = this.template(pkm);
+                return this.formatCache[uuid] = this.template(pkm);
         };
         PkmList.prototype.isEmpty = function (pkm) {
             return pkm.length === 0;

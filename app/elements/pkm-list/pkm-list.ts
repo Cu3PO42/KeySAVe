@@ -79,10 +79,12 @@ class PkmList extends polymer.Base {
     private formatCache: {[pid: number]: string} = {};
 
     formatPokemon(pkm) {
-        if (this.formatCache[pkm.pid])
-            return this.formatCache[pkm.pid];
+        var uuid = pkm.box*30+pkm.slot;
+        var cached = this.formatCache[uuid];
+        if (cached)
+            return cached;
         else
-            return this.formatCache[pkm.pid] = this.template(pkm);
+            return this.formatCache[uuid] = this.template(pkm);
     }
 
     isEmpty(pkm) {
