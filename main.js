@@ -4,6 +4,7 @@ var app = require("app");
 var BrowserWindow = require("browser-window");
 var FileDialogServices = require("./server/file-dialog-service");
 var Dumper = require("./server/dumper");
+var Updater = require("./server/updater");
 var mainWindow;
 app.on("window-all-closed", function () {
     app.quit();
@@ -16,4 +17,5 @@ app.on("ready", function () {
     });
     FileDialogServices(mainWindow);
     Dumper();
+    Updater(mainWindow);
 });

@@ -6,6 +6,7 @@ import BrowserWindow = require("browser-window");
 import CrashReporter = require("crash-reporter");
 import FileDialogServices = require("./server/file-dialog-service");
 import Dumper = require("./server/dumper");
+import Updater = require("./server/updater");
 
 var mainWindow: GitHubElectron.BrowserWindow;
 
@@ -23,4 +24,5 @@ app.on("ready", () => {
 
     FileDialogServices(mainWindow);
     Dumper();
+    Updater(mainWindow);
 })

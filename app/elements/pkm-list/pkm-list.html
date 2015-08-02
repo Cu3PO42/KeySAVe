@@ -16,9 +16,9 @@
     <template>
         <paper-material elevation="1" hidden$="{{isEmpty(pokemon)}}">
             <div class="container">
-                <div hidden$="{{isEmpty(formatHeader)}}">{{formatHeader}}</div>
+                <div hidden$="{{isEmpty(formatHeader)}}" inner-h-t-m-l="{{formatHeader}}"></div>
                 <template id="list" is="dom-repeat" items="{{pokemon}}" filter="filterPokemon">
-                    <div>{{formatPokemon(item, template)}}</div>
+                    <div inner-h-t-m-l="{{formatPokemon(item, template)}}"></div>
                 </template>
             </div>
         </paper-material>
