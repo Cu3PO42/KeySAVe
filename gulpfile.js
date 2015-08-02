@@ -26,8 +26,7 @@ gulp.task('default', ['build'], function () {
 });
 
 gulp.task('copyBuild', function() {
-    // TODO get production dependencies here
-    var build = gulp.src(['app/**/*', '!app/**/*.ts', 'names/**/*', 'node_modules/{keysavcore,handlebars,lodash,electron-ipc-tunnel,electron-gh-releases-updater,async,path-extra}/**/*', 'server/**/*.js', 'package.json'], {base: '.'});
+    var build = gulp.src(['app/**/*', '!app/**/*.ts', 'names/**/*', 'node_modules/{' + Object.keys(require('./package.json').dependencies).join(',') + '}/**/*', 'server/**/*.js', 'package.json'], {base: '.'});
     var mainJs = gulp.src('main.js')
     var bowerComponents = gulp.src('bower_components/**/*').pipe(gulp.dest('build/app/bower_components'));
     //.pipe($.replace("app/index.html", "dist/index.html"))
