@@ -50,7 +50,7 @@
                 <paper-select items="[[formatNames]]" selected="{{selectedFormatIndex}}" resize="true"></paper-select>
                 <paper-input id="format-name" label="Format Name" value="{{selectedFormat.name}}" on-value-changed="selectedFormatNameChanged"></paper-input>
                 <paper-icon-button icon="icons:add" on-tap="addFormatOption"></paper-icon-button>
-                <paper-icon-button icon="icons:delete" on-tap="deleteFormatOption"></paper-icon-button>
+                <paper-icon-button icon="icons:delete" on-tap="deleteFormatOption" disabled="{{selectedFormat.isDefault}}"></paper-icon-button>
             </div>
             <paper-textarea label="Format header" value="{{selectedFormat.header}}"></paper-textarea>
             <paper-textarea label="Format string" value="{{selectedFormat.format}}"></paper-textarea>

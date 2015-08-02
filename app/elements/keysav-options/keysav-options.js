@@ -21,6 +21,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var IpcClient = require("electron-ipc-tunnel/client");
 var fs = require("fs");
 var path = require("path-extra");
+var _ = require("lodash");
 function mkdirOptional(path) {
     if (!fs.existsSync(path))
         fs.mkdirSync(path);
@@ -29,45 +30,51 @@ function mkdirOptional(path) {
     var keysavDir = path.join(path.homedir(), "Documents", "KeySAVe");
     var configFile = path.join(keysavDir, "config.json");
     mkdirOptional(keysavDir);
-    var config;
+    var config = {
+        "defaultFormattingOptions": [
+            {
+                "name": "Default",
+                "isDefault": true,
+                "header": "Box - Slot - Species (Gender) - Nature - Ability - HP.ATK.DEF.SPATK.SPDEF.SPE - HP [ESV]",
+                "format": "B{{box}} - {{row}},{{column}} - {{speciesName}} ({{genderString}}) - {{natureName}} - {{abilityName}} - {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} - {{typeName hpType}} [{{esv}}]"
+            },
+            {
+                "name": "Reddit",
+                "isDefault": true,
+                "header": "Box | Slot | Species (Gender) | Nature | Ability | HP.ATK.DEF.SPATK.SPDEF.SPE | HP [ESV]",
+                "format": "B{{box}} | {{row}},{{column}} | {{speciesName}} ({{genderString}}) | {{natureName}} | {{abilityName}} | {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} | {{typeName hpType}} [{{esv}}]"
+            },
+            {
+                "name": "TSV",
+                "isDefault": true,
+                "header": "Box - Slot - OT - TID - SID - TSV",
+                "format": "B{{box}} - {{row}},{{column}} - {{ot}} - {{tid}} - {{sid}} - {{tsv}}"
+            },
+            {
+                "name": "JSON",
+                "isDefault": true,
+                "header": "",
+                "format": "{{toJson this}}"
+            },
+            {
+                "name": "CSV",
+                "isDefault": true,
+                "header": "Box,Row,Column,Species,Gender,Nature,Ability,HP,ATK,DEF,SPATK,SPDEF,SPE,Hidden Power,ESV,TSV,Nickname,OT,Ball,TID,SID,HP EV,ATK EV,DEF EV,SPA EV,SPD EV,SPE EV,Move 1,Move 2,Move 3,Move 4,Relearn 1,Relearn 2,Relearn 3,Relearn 4,Shiny,Egg",
+                "format": "{{box}},{{row}},{{column}},{{speciesName}},{{genderString}},{{natureName}},{{abilityName}},{{ivHp}},{{ivAtk}},{{ivSpAtk}},{{ivSpDef}},{{ivSpe}},{{typeName hpType}},{{esv}},{{tsv}},{{nickname}},{{ot}},{{ballName}},{{tid}},{{sid}},{{evHp}},{{evAtk}},{{evDef}},{{evSpAtk}},{{evSpDef}},{{evSpe}},{{moveName move1}},{{moveName move2}},{{moveName move3}},{{moveName move4}},{{moveName eggMove1}},{{moveName eggMove2}},{{moveName eggMove3}},{{moveName eggMove4}},{{isShiny}},{{isEgg}}"
+            },
+            {
+                "name": "CSV (Raw data)",
+                "isDefault": true,
+                "header": "Box,Row,Column,Species,Gender,Nature,Ability,HP,ATK,DEF,SPATK,SPDEF,SPE,Hidden Power,ESV,TSV,Nickname,OT,Ball,TID,SID,HP EV,ATK EV,DEF EV,SPA EV,SPD EV,SPE EV,Move 1,Move 2,Move 3,Move 4,Relearn 1,Relearn 2,Relearn 3,Relearn 4,Shiny,Egg",
+                "format": "{{box}},{{row}},{{column}},{{species}},{{gender}},{{nature}},{{ability}},{{ivHp}},{{ivAtk}},{{ivSpAtk}},{{ivSpDef}},{{ivSpe}},{{hpType}},{{esv}},{{tsv}},{{nickname}},{{ot}},{{ball}},{{tid}},{{sid}},{{evHp}},{{evAtk}},{{evDef}},{{evSpAtk}},{{evSpDef}},{{evSpe}},{{move1}},{{move2}},{{move3}},{{move4}},{{eggMove1}},{{eggMove2}},{{eggMove3}},{{eggMove4}},{{isShiny}},{{isEgg}}"
+            }
+        ],
+        "selectedFormatIndex": 0
+    };
     if (fs.existsSync(configFile))
-        config = JSON.parse(fs.readFileSync(path.join(keysavDir, "config.json"), { encoding: "utf-8" }));
-    else
-        config = {
-            formattingOptions: [
-                {
-                    name: "Default",
-                    header: "Box - Slot - Species (Gender) - Nature - Ability - HP.ATK.DEF.SPATK.SPDEF.SPE - HP [ESV]",
-                    format: "B{{box}} - {{row}},{{column}} - {{speciesName}} ({{genderString}}) - {{natureName}} - {{abilityName}} - {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} - {{typeName hpType}} [{{esv}}]"
-                },
-                {
-                    name: "Reddit",
-                    header: "Box | Slot | Species (Gender) | Nature | Ability | HP.ATK.DEF.SPATK.SPDEF.SPE | HP [ESV]",
-                    format: "B{{box}} | {{row}},{{column}} | {{speciesName}} ({{genderString}}) | {{natureName}} | {{abilityName}} | {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} | {{typeName hpType}} [{{esv}}]"
-                },
-                {
-                    name: "TSV",
-                    header: "Box - Slot - OT - TID - SID - TSV",
-                    format: "B{{box}} - {{row}},{{column}} - {{ot}} - {{tid}} - {{sid}} - {{tsv}}"
-                },
-                {
-                    name: "JSON",
-                    header: "",
-                    format: "{{toJson this}}"
-                },
-                {
-                    name: "CSV",
-                    header: "Box,Row,Column,Species,Gender,Nature,Ability,HP,ATK,DEF,SPATK,SPDEF,SPE,Hidden Power,ESV,TSV,Nickname,OT,Ball,TID,SID,HP EV,ATK EV,DEF EV,SPA EV,SPD EV,SPE EV,Move 1,Move 2,Move 3,Move 4,Relearn 1,Relearn 2,Relearn 3,Relearn 4,Shiny,Egg",
-                    format: "{{box}},{{row}},{{column}},{{speciesName}},{{genderString}},{{natureName}},{{abilityName}},{{ivHp}},{{ivAtk}},{{ivSpAtk}},{{ivSpDef}},{{ivSpe}},{{typeName hpType}},{{esv}},{{tsv}},{{nickname}},{{ot}},{{ballName}},{{tid}},{{sid}},{{evHp}},{{evAtk}},{{evDef}},{{evSpAtk}},{{evSpDef}},{{evSpe}},{{moveName move1}},{{moveName move2}},{{moveName move3}},{{moveName move4}},{{moveName eggMove1}},{{moveName eggMove2}},{{moveName eggMove3}},{{moveName eggMove4}},{{isShiny}},{{isEgg}}"
-                },
-                {
-                    name: "CSV (Raw data)",
-                    header: "Box,Row,Column,Species,Gender,Nature,Ability,HP,ATK,DEF,SPATK,SPDEF,SPE,Hidden Power,ESV,TSV,Nickname,OT,Ball,TID,SID,HP EV,ATK EV,DEF EV,SPA EV,SPD EV,SPE EV,Move 1,Move 2,Move 3,Move 4,Relearn 1,Relearn 2,Relearn 3,Relearn 4,Shiny,Egg",
-                    format: "{{box}},{{row}},{{column}},{{species}},{{gender}},{{nature}},{{ability}},{{ivHp}},{{ivAtk}},{{ivSpAtk}},{{ivSpDef}},{{ivSpe}},{{hpType}},{{esv}},{{tsv}},{{nickname}},{{ot}},{{ball}},{{tid}},{{sid}},{{evHp}},{{evAtk}},{{evDef}},{{evSpAtk}},{{evSpDef}},{{evSpe}},{{move1}},{{move2}},{{move3}},{{move4}},{{eggMove1}},{{eggMove2}},{{eggMove3}},{{eggMove4}},{{isShiny}},{{isEgg}}"
-                }
-            ],
-            selectedFormatIndex: 0
-        };
+        _.extend(config, JSON.parse(fs.readFileSync(path.join(keysavDir, "config.json"), { encoding: "utf-8" })));
+    Array.prototype.push.apply(config.defaultFormattingOptions, config.formattingOptions);
+    config.formattingOptions = config.defaultFormattingOptions;
     var KeysavOptions = (function (_super) {
         __extends(KeysavOptions, _super);
         function KeysavOptions() {
@@ -93,7 +100,7 @@ function mkdirOptional(path) {
                 }
             });
             window.addEventListener("beforeunload", function (e) {
-                fs.writeFileSync(configFile, JSON.stringify({ formattingOptions: _this.formattingOptions, selectedFormatIndex: _this.selectedFormatIndex }, null, 4), { encoding: "utf-8" });
+                fs.writeFileSync(configFile, JSON.stringify({ formattingOptions: _.filter(_this.formattingOptions, function (e) { return !e.isDefault; }), selectedFormatIndex: _this.selectedFormatIndex }, null, 4), { encoding: "utf-8" });
             }, false);
         }
         KeysavOptions.prototype.break = function () {
@@ -161,7 +168,7 @@ function mkdirOptional(path) {
             this.selectedFormatIndex = this.formattingOptions.length - 1;
         };
         KeysavOptions.prototype.deleteFormatOption = function () {
-            if (this.formattingOptions.length > 0) {
+            if (this.formattingOptions.length > 1) {
                 this.splice("formattingOptions", this.selectedFormatIndex, 1);
                 this.selectedFormat = this.formattingOptions[this.selectedFormatIndex];
             }
