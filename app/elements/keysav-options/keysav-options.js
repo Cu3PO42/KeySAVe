@@ -164,7 +164,11 @@ function mkdirOptional(path) {
             return change.base.map(function (e) { return e.name; });
         };
         KeysavOptions.prototype.addFormatOption = function () {
-            this.push("formattingOptions", { name: "Custom Formatting Option", format: "", header: "" });
+            this.push("formattingOptions", { name: "Custom Formatting Option", format: "", header: "", isDefault: false });
+            this.selectedFormatIndex = this.formattingOptions.length - 1;
+        };
+        KeysavOptions.prototype.cloneFormatOption = function () {
+            this.push("formattingOptions", _.defaults({ isDefault: false, name: this.selectedFormat.name + " (Clone)" }, this.selectedFormat));
             this.selectedFormatIndex = this.formattingOptions.length - 1;
         };
         KeysavOptions.prototype.deleteFormatOption = function () {

@@ -202,7 +202,12 @@ class KeysavOptions extends polymer.Base {
     }
 
     addFormatOption() {
-        this.push("formattingOptions", {name: "Custom Formatting Option", format: "", header: ""});
+        this.push("formattingOptions", {name: "Custom Formatting Option", format: "", header: "", isDefault: false});
+        this.selectedFormatIndex = this.formattingOptions.length-1;
+    }
+
+    cloneFormatOption() {
+        this.push("formattingOptions", _.defaults({isDefault: false, name: this.selectedFormat.name + " (Clone)"}, this.selectedFormat));
         this.selectedFormatIndex = this.formattingOptions.length-1;
     }
 
