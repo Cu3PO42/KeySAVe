@@ -30,7 +30,7 @@
     "electron-gh-releases-updater": "^0.1.0",
     "electron-ipc-tunnel": "^1.0.1",
     "handlebars": "^3.0.3",
-    "keysavcore": "^0.3.3",
+    "keysavcore": "^0.3.4",
     "lodash": "^3.10.0",
     "path-extra": "^1.0.3"
   }
