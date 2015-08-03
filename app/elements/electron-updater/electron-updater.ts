@@ -4,7 +4,7 @@ import IpcClient = require("electron-ipc-tunnel/client");
 @component("electron-updater")
 class ElectronUpdater extends polymer.Base {
     @property({type: Boolean})
-    updateInProgress: boolean;
+    updateInProgress: boolean = false;
 
     ipcClient: IpcClient;
 

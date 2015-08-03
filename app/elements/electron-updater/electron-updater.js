@@ -21,6 +21,7 @@ var IpcClient = require("electron-ipc-tunnel/client");
         __extends(ElectronUpdater, _super);
         function ElectronUpdater() {
             _super.apply(this, arguments);
+            this.updateInProgress = false;
         }
         ElectronUpdater.prototype.attached = function () {
             var _this = this;

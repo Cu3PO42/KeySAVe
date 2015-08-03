@@ -6,7 +6,7 @@
             text-align: center;
         }
 
-        paper-button[dialog-confirm] {
+        .update-btn {
             font-weight: bold;
             color: var(--accent-color);
         }
@@ -36,7 +36,7 @@
                 </div>
                 <div class="buttons">
                     <paper-button dialog-dismiss>Discard</paper-button>
-                    <paper-button dialog-confirm on-click="update">Ok</paper-button>
+                    <paper-button on-click="update" class="update-btn">Ok</paper-button>
                 </div>
             </div>
             <div hidden$="{{not(updateInProgress)}}">
