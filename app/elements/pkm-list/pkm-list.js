@@ -66,6 +66,9 @@ var localization = require("keysavcore/Localization");
                     return "-";
             }
         },
+        gameVersionString: function () {
+            return localization.en.games[this.gameVersion];
+        },
         toJson: function (e) {
             return new handlebars.SafeString(JSON.stringify(e));
         }
@@ -95,7 +98,7 @@ var localization = require("keysavcore/Localization");
             var _this = this;
             this.debounce("compileTemplate", function () {
                 _this.formatCache = {};
-                _this.template = handlebars.compile(newValue, { knownHelpers: ["box", "column", "row", "speciesName", "natureName", "abilityName", "typeName", "moveName", "ballName", "esv", "tsv", "language", "genderString", "toJson"] });
+                _this.template = handlebars.compile(newValue, { knownHelpers: ["box", "column", "row", "speciesName", "natureName", "abilityName", "typeName", "moveName", "ballName", "esv", "tsv", "language", "genderString", "gameVersionString", "toJson"] });
             }, 500);
         };
         PkmList.prototype.filterRestrictionsChanged = function (lowerBox, upperBox) {
