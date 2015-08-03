@@ -48,7 +48,7 @@
             <h2>Formatting</h2>
             <div class="horizontal">
                 <paper-select items="[[formatNames]]" selected="{{selectedFormatIndex}}" resize="true"></paper-select>
-                <paper-input id="format-name" label="Format Name" value="{{selectedFormat.name}}" on-value-changed="selectedFormatNameChanged"></paper-input>
+                <paper-input id="format-name" label="Format Name" value="{{selectedFormat.name}}" on-value-changed="selectedFormatNameChanged" disabled="{{selectedFormat.isDefault}}"></paper-input>
                 <div>
                     <paper-icon-button icon="icons:create" on-tap="cloneFormatOption"></paper-icon-button>
                     <paper-tooltip>Clone</paper-tooltip>
