@@ -62,8 +62,8 @@
                     <paper-tooltip>Delete</paper-tooltip>
                 </div>
             </div>
-            <paper-textarea label="Format header" value="{{selectedFormat.header}}"></paper-textarea>
-            <paper-textarea label="Format string" value="{{selectedFormat.format}}"></paper-textarea>
+            <paper-textarea label="Format header" value="{{selectedFormat.header}}" disabled="{{selectedFormat.isDefault}}"></paper-textarea>
+            <paper-textarea label="Format string" value="{{selectedFormat.format}}" disabled="{{selectedFormat.isDefault}}"></paper-textarea>
         </paper-material>
         <paper-material elevation="1">
             <div class="horizontal">
