@@ -18,6 +18,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var handlebars = require("handlebars");
 var localization = require("keysavcore/Localization");
+handlebars.registerHelper(require("handlebars-helper-moment")());
 (function () {
     var handlebarsHelpers = {
         row: function () {
@@ -86,6 +87,8 @@ var localization = require("keysavcore/Localization");
         }
     };
     handlebars.registerHelper(handlebarsHelpers);
+    var knownHelpers = Object.keys(handlebarsHelpers);
+    knownHelpers.push("moment");
     var PkmList = (function (_super) {
         __extends(PkmList, _super);
         function PkmList() {
@@ -111,7 +114,7 @@ var localization = require("keysavcore/Localization");
             var _this = this;
             this.debounce("compileTemplate", function () {
                 _this.formatCache = {};
-                _this.template = handlebars.compile(newValue, { knownHelpers: Object.keys(handlebarsHelpers) });
+                _this.template = handlebars.compile(newValue, { knownHelpers: knownHelpers });
             }, 500);
         };
         PkmList.prototype.filterRestrictionsChanged = function (lowerBox, upperBox) {

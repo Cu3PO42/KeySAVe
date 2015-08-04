@@ -5,6 +5,8 @@ import handlebars = require("handlebars");
 import fs = require("fs");
 import localization = require("keysavcore/Localization");
 
+handlebars.registerHelper(require("handlebars-helper-moment")());
+
 (() => {
 var handlebarsHelpers: {[helper: string]: Function} = {
     row: function() {
@@ -75,6 +77,9 @@ var handlebarsHelpers: {[helper: string]: Function} = {
 
 handlebars.registerHelper(handlebarsHelpers);
 
+var knownHelpers = Object.keys(handlebarsHelpers);
+knownHelpers.push("moment");
+
 @component("pkm-list")
 class PkmList extends polymer.Base {
     @property({type: Array})
@@ -116,7 +121,7 @@ class PkmList extends polymer.Base {
     formatStringChanged(newValue, oldValue) {
         this.debounce("compileTemplate", () => {
             this.formatCache = {};
-            this.template = handlebars.compile(newValue, {knownHelpers: Object.keys(handlebarsHelpers)});
+            this.template = handlebars.compile(newValue, {knownHelpers: knownHelpers});
         }, 500);
     }
 
