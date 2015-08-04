@@ -36,6 +36,9 @@ var handlebarsHelpers: {[helper: string]: Function} = {
     itemName: function(itemId) {
         return itemId ? localization.en.items[itemId] : "";
     },
+    ballImage: function(ball) {
+        return "[](/" + localization.en.items[this.ball].replace(" ", "").replace("é", "e").toLowerCase() + ")"
+    },
     esv: function() {
         return ("0000"+this.esv).slice(-4);
     },
