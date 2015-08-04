@@ -88,6 +88,12 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
         shinyMark: function () {
             return this.isShiny ? "★" : "";
         },
+        regionName: function () {
+            return localization.en.regions[this.gameVersion];
+        },
+        countryName: function () {
+            return localization.en.countries[this.countryID];
+        },
         toJson: function (e) {
             return new handlebars.SafeString(JSON.stringify(e));
         }
