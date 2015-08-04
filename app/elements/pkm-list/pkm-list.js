@@ -69,6 +69,9 @@ var localization = require("keysavcore/Localization");
         gameVersionString: function () {
             return localization.en.games[this.gameVersion];
         },
+        stepsToHatch: function () {
+            return this.isEgg * (this.otFriendship - 1) * 256;
+        },
         toJson: function (e) {
             return new handlebars.SafeString(JSON.stringify(e));
         }
@@ -98,7 +101,7 @@ var localization = require("keysavcore/Localization");
             var _this = this;
             this.debounce("compileTemplate", function () {
                 _this.formatCache = {};
-                _this.template = handlebars.compile(newValue, { knownHelpers: ["box", "column", "row", "speciesName", "natureName", "abilityName", "typeName", "moveName", "ballName", "esv", "tsv", "language", "genderString", "gameVersionString", "toJson"] });
+                _this.template = handlebars.compile(newValue, { knownHelpers: ["box", "column", "row", "speciesName", "natureName", "abilityName", "typeName", "moveName", "ballName", "esv", "tsv", "language", "genderString", "gameVersionString", "stepsToHatch", "toJson"] });
             }, 500);
         };
         PkmList.prototype.filterRestrictionsChanged = function (lowerBox, upperBox) {

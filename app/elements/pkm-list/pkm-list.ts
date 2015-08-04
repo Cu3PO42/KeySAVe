@@ -56,6 +56,9 @@ handlebars.registerHelper({
     gameVersionString: function() {
         return localization.en.games[this.gameVersion];
     },
+    stepsToHatch: function() {
+        return this.isEgg * (this.otFriendship-1) * 256;
+    },
     toJson: function(e) {
         return new handlebars.SafeString(JSON.stringify(e));
     }
@@ -102,7 +105,7 @@ class PkmList extends polymer.Base {
     formatStringChanged(newValue, oldValue) {
         this.debounce("compileTemplate", () => {
             this.formatCache = {};
-            this.template = handlebars.compile(newValue, {knownHelpers: ["box", "column", "row", "speciesName", "natureName", "abilityName", "typeName", "moveName", "ballName", "esv", "tsv", "language", "genderString", "gameVersionString", "toJson"]});
+            this.template = handlebars.compile(newValue, {knownHelpers: ["box", "column", "row", "speciesName", "natureName", "abilityName", "typeName", "moveName", "ballName", "esv", "tsv", "language", "genderString", "gameVersionString", "stepsToHatch", "toJson"]});
         }, 500);
     }
 
