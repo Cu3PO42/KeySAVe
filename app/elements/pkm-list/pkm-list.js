@@ -76,8 +76,8 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
         hasHa: function () {
             return this.abilityNum === 4;
         },
-        hasHaString: function () {
-            return this.abilityNum === 4 ? "✓" : "✗";
+        checkmark: function (condition) {
+            return condition ? "✓" : "✗";
         },
         pentagon: function () {
             return this.gameVersion >= 24 && this.gameVersion <= 27 ? "⬟" : "";
