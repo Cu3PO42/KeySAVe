@@ -70,6 +70,9 @@ var handlebarsHelpers: {[helper: string]: Function} = {
     pentagon: function() {
         return this.gameVersion >= 24 && this.gameVersion <= 27 ? "⬟" : "";
     },
+    shinyMark: function() {
+        return this.isShiny ? "★" : "";
+    },
     toJson: function(e) {
         return new handlebars.SafeString(JSON.stringify(e));
     }
@@ -121,7 +124,10 @@ class PkmList extends polymer.Base {
     formatStringChanged(newValue, oldValue) {
         this.debounce("compileTemplate", () => {
             this.formatCache = {};
-            this.template = handlebars.compile(newValue, {knownHelpers: knownHelpers});
+            try {
+                this.template = handlebars.compile(newValue, {knownHelpers: knownHelpers});
+            }
+            catch (e) {}
         }, 500);
     }
 

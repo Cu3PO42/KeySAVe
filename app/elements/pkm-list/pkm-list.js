@@ -82,6 +82,9 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
         pentagon: function () {
             return this.gameVersion >= 24 && this.gameVersion <= 27 ? "⬟" : "";
         },
+        shinyMark: function () {
+            return this.isShiny ? "★" : "";
+        },
         toJson: function (e) {
             return new handlebars.SafeString(JSON.stringify(e));
         }
@@ -114,7 +117,10 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             var _this = this;
             this.debounce("compileTemplate", function () {
                 _this.formatCache = {};
-                _this.template = handlebars.compile(newValue, { knownHelpers: knownHelpers });
+                try {
+                    _this.template = handlebars.compile(newValue, { knownHelpers: knownHelpers });
+                }
+                catch (e) { }
             }, 500);
         };
         PkmList.prototype.filterRestrictionsChanged = function (lowerBox, upperBox) {
