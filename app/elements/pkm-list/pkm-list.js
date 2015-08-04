@@ -19,7 +19,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var handlebars = require("handlebars");
 var localization = require("keysavcore/Localization");
 (function () {
-    handlebars.registerHelper({
+    var handlebarsHelpers = {
         row: function () {
             return Math.floor(this.slot / 6) + 1;
         },
@@ -72,10 +72,17 @@ var localization = require("keysavcore/Localization");
         stepsToHatch: function () {
             return this.isEgg * (this.otFriendship - 1) * 256;
         },
+        hasHa: function () {
+            return this.abilityNum === 4;
+        },
+        hasHaString: function () {
+            return this.abilityNum === 4 ? "✓" : "✗";
+        },
         toJson: function (e) {
             return new handlebars.SafeString(JSON.stringify(e));
         }
-    });
+    };
+    handlebars.registerHelper(handlebarsHelpers);
     var PkmList = (function (_super) {
         __extends(PkmList, _super);
         function PkmList() {
@@ -101,7 +108,7 @@ var localization = require("keysavcore/Localization");
             var _this = this;
             this.debounce("compileTemplate", function () {
                 _this.formatCache = {};
-                _this.template = handlebars.compile(newValue, { knownHelpers: ["box", "column", "row", "speciesName", "natureName", "abilityName", "typeName", "moveName", "ballName", "esv", "tsv", "language", "genderString", "gameVersionString", "stepsToHatch", "toJson"] });
+                _this.template = handlebars.compile(newValue, { knownHelpers: Object.keys(handlebarsHelpers) });
             }, 500);
         };
         PkmList.prototype.filterRestrictionsChanged = function (lowerBox, upperBox) {

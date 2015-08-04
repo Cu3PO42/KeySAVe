@@ -6,7 +6,7 @@ import fs = require("fs");
 import localization = require("keysavcore/Localization");
 
 (() => {
-handlebars.registerHelper({
+var handlebarsHelpers: {[helper: string]: Function} = {
     row: function() {
         return Math.floor(this.slot/6) + 1;
     },
@@ -59,10 +59,18 @@ handlebars.registerHelper({
     stepsToHatch: function() {
         return this.isEgg * (this.otFriendship-1) * 256;
     },
+    hasHa: function() {
+        return this.abilityNum === 4;
+    },
+    hasHaString: function() {
+        return this.abilityNum === 4 ? "✓" : "✗";
+    },
     toJson: function(e) {
         return new handlebars.SafeString(JSON.stringify(e));
     }
-});
+};
+
+handlebars.registerHelper(handlebarsHelpers);
 
 @component("pkm-list")
 class PkmList extends polymer.Base {
@@ -105,7 +113,7 @@ class PkmList extends polymer.Base {
     formatStringChanged(newValue, oldValue) {
         this.debounce("compileTemplate", () => {
             this.formatCache = {};
-            this.template = handlebars.compile(newValue, {knownHelpers: ["box", "column", "row", "speciesName", "natureName", "abilityName", "typeName", "moveName", "ballName", "esv", "tsv", "language", "genderString", "gameVersionString", "stepsToHatch", "toJson"]});
+            this.template = handlebars.compile(newValue, {knownHelpers: Object.keys(handlebarsHelpers)});
         }, 500);
     }
 
