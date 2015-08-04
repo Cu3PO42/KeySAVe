@@ -107,6 +107,9 @@ var localization = require("keysavcore/Localization");
         PkmList.prototype.filterRestrictionsChanged = function (lowerBox, upperBox) {
             this.$.list.render();
         };
+        PkmList.prototype.pokemonChanged = function (newValue, oldValue) {
+            this.formatCache = {};
+        };
         __decorate([
             property({ type: Array }), 
             __metadata('design:type', Array)
@@ -141,6 +144,13 @@ var localization = require("keysavcore/Localization");
                 __metadata('design:paramtypes', [Object, Object]), 
                 __metadata('design:returntype', Object)
             ], PkmList.prototype, "filterRestrictionsChanged", Object.getOwnPropertyDescriptor(PkmList.prototype, "filterRestrictionsChanged")));
+        Object.defineProperty(PkmList.prototype, "pokemonChanged",
+            __decorate([
+                observe("pokemon"), 
+                __metadata('design:type', Function), 
+                __metadata('design:paramtypes', [Object, Object]), 
+                __metadata('design:returntype', Object)
+            ], PkmList.prototype, "pokemonChanged", Object.getOwnPropertyDescriptor(PkmList.prototype, "pokemonChanged")));
         PkmList = __decorate([
             component("pkm-list"), 
             __metadata('design:paramtypes', [])

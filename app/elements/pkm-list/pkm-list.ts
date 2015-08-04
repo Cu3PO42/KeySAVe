@@ -113,6 +113,11 @@ class PkmList extends polymer.Base {
     filterRestrictionsChanged(lowerBox, upperBox) {
         this.$.list.render();
     }
+
+    @observe("pokemon")
+    pokemonChanged(newValue, oldValue) {
+        this.formatCache = {};
+    }
 }
 polymer.createElement(PkmList);
 })()
