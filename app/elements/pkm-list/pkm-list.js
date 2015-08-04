@@ -19,7 +19,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var handlebars = require("handlebars");
 var localization = require("keysavcore/Localization");
 (function () {
-    var pkmFormat = handlebars.registerHelper({
+    handlebars.registerHelper({
         row: function () {
             return Math.floor(this.slot / 6) + 1;
         },
@@ -56,8 +56,8 @@ var localization = require("keysavcore/Localization");
         language: function () {
             return localization.en.languageTags[this.otLang];
         },
-        genderString: function () {
-            switch (this.gender) {
+        genderString: function (gender) {
+            switch (gender) {
                 case 0:
                     return "♂";
                 case 1:

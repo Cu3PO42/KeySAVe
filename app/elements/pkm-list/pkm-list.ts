@@ -6,7 +6,7 @@ import fs = require("fs");
 import localization = require("keysavcore/Localization");
 
 (() => {
-var pkmFormat = handlebars.registerHelper({
+handlebars.registerHelper({
     row: function() {
         return Math.floor(this.slot/6) + 1;
     },
@@ -43,8 +43,8 @@ var pkmFormat = handlebars.registerHelper({
     language: function() {
         return localization.en.languageTags[this.otLang];
     },
-    genderString: function() {
-        switch (this.gender) {
+    genderString: function(gender) {
+        switch (gender) {
             case 0:
                 return "♂";
             case 1:
