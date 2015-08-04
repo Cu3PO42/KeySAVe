@@ -44,8 +44,8 @@ var localization = require("keysavcore/Localization");
         moveName: function (moveId) {
             return moveId ? localization.en.moves[moveId] : "";
         },
-        ballName: function () {
-            return localization.en.items[this.ball];
+        itemName: function (itemId) {
+            return itemId ? localization.en.items[itemId] : "";
         },
         esv: function () {
             return ("0000" + this.esv).slice(-4);
