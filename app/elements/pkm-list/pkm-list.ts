@@ -65,6 +65,9 @@ var handlebarsHelpers: {[helper: string]: Function} = {
     hasHaString: function() {
         return this.abilityNum === 4 ? "✓" : "✗";
     },
+    pentagon: function() {
+        return this.gameVersion >= 24 && this.gameVersion <= 27 ? "⬟" : "";
+    },
     toJson: function(e) {
         return new handlebars.SafeString(JSON.stringify(e));
     }
