@@ -63,11 +63,11 @@
                 </div>
             </div>
             <div class="horizontal">
+                <paper-textarea label="Format header" value="{{selectedFormat.header}}" disabled="{{selectedFormat.isDefault}}"></paper-textarea>
                 <div>
-                    <paper-textarea label="Format header" value="{{selectedFormat.header}}" disabled="{{selectedFormat.isDefault}}"></paper-textarea>
+                    <paper-icon-button icon="icons:autorenew" on-tap="generateHeader" disabled="{{selectedFormat.isDefault}}"></paper-icon-button>
                     <paper-tooltip>Reset</paper-tooltip>
                 </div>
-                <paper-icon-button icon="icons:autorenew" on-tap="generateHeader" disabled="{{selectedFormat.isDefault}}"></paper-icon-button>
             </div>
             <paper-textarea label="Format string" value="{{selectedFormat.format}}" disabled="{{selectedFormat.isDefault}}"></paper-textarea>
         </paper-material>
