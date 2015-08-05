@@ -82,6 +82,14 @@ var handlebarsHelpers: {[helper: string]: Function} = {
     shinyMark: function() {
         return this.isShiny ? "★" : "";
     },
+    markings: function() {
+        return ((this.markings&0x01 ? "●" : "◯")
+              + (this.markings&0x02 ? "▲" : "△")
+              + (this.markings&0x04 ? "■" : "□")
+              + (this.markings&0x08 ? "♥" : "♡")
+              + (this.markings&0x10 ? "★" : "☆")
+              + (this.markings&0x20 ? "◆" : "◇"));
+    },
     regionName: function() {
         return localization.en.regions[this.gameVersion];
     },
