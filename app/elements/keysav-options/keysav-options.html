@@ -62,7 +62,13 @@
                     <paper-tooltip>Delete</paper-tooltip>
                 </div>
             </div>
-            <paper-textarea label="Format header" value="{{selectedFormat.header}}" disabled="{{selectedFormat.isDefault}}"></paper-textarea>
+            <div class="horizontal">
+                <div>
+                    <paper-textarea label="Format header" value="{{selectedFormat.header}}" disabled="{{selectedFormat.isDefault}}"></paper-textarea>
+                    <paper-tooltip>Reset</paper-tooltip>
+                </div>
+                <paper-icon-button icon="icons:autorenew" on-tap="generateHeader" disabled="{{selectedFormat.isDefault}}"></paper-icon-button>
+            </div>
             <paper-textarea label="Format string" value="{{selectedFormat.format}}" disabled="{{selectedFormat.isDefault}}"></paper-textarea>
         </paper-material>
         <paper-material elevation="1">

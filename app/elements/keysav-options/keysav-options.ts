@@ -7,6 +7,7 @@ import IpcClient = require("electron-ipc-tunnel/client");
 import fs = require("fs");
 import path = require("path-extra");
 import _ = require("lodash");
+import handlebars = require("handlebars");
 
 function mkdirOptional(path) {
     if (!fs.existsSync(path))
@@ -212,11 +213,111 @@ class KeysavOptions extends polymer.Base {
     }
 
     deleteFormatOption() {
-        if (this.formattingOptions.length > 1)
-        {
+        if (this.formattingOptions.length > 1) {
             this.splice("formattingOptions", this.selectedFormatIndex, 1);
             this.selectedFormat = this.formattingOptions[this.selectedFormatIndex];
         }
+    }
+
+    generateHeader() {
+        try {
+            this.set("selectedFormat.header", handlebars.compile(this.selectedFormat.format)({
+                ec: "Encryption Key",
+                pid: "PID",
+                exp: "Experience Points",
+                evHp: "HP EV",
+                evAtk: "ATK EV",
+                evDef: "DEF EV",
+                evSpAtk: "SPATK EV",
+                evSpDef: "SPDEF EV",
+                evSpe: "SPE EV",
+                ivHp: "HP IV",
+                ivAtk: "ATK IV",
+                ivDef: "DEF IV",
+                ivSpAtk: "SPATK IV",
+                ivSpDef: "SPDEF IV",
+                ivSpe: "SPE IV",
+                contestStatCool: "Contest Stat Cool",
+                contestStatBeauty: "Contest Stat Beauty",
+                contestStatCute: "Contest Stat Cute",
+                contestStatSmart: "Contest Stat Smart",
+                contestStatTough: "Contest Stat Tough",
+                hpType: "HP Type",
+                nickname: "Nickname",
+                notOT: "Not OT",
+                ot: "OT",
+                pkrsStrain: "Pokérus Strain",
+                pkrsDuration: "Pokérus Duration",
+                levelMet: "Met Level",
+                otGender: "OT Gender",
+                isEgg: true,
+                isNick: true,
+                isShiny: true,
+                isGhost: true,
+                isFatefulEncounter: true,
+                ability: "Ability",
+                abilityNum: "Ability Number",
+                nature: "Nature",
+                species: "Species",
+                heldItem: "Held Item",
+                tid: "Trainer ID",
+                sid: "Secret ID",
+                move1: "Move 1",
+                move2: "Move 2",
+                move3: "Move 3",
+                move4: "Move 4",
+                move1Pp: "Move 1 PP",
+                move2Pp: "Move 2 PP",
+                move3Pp: "Move 3 PP",
+                move4Pp: "Move 4 PP",
+                move1Ppu: "Move 1 PP Up",
+                move2Ppu: "Move 2 PP Up",
+                move3Ppu: "Move 3 PP Up",
+                move4Ppu: "Move 4 PP Up",
+                eggMove1: "Eggmove 1",
+                eggMove2: "Eggmove 2",
+                eggMove3: "Eggmove 3",
+                eggMove4: "Eggmove 4",
+                ribbonSet1: "Ribbon Set 1",
+                ribbonSet2: "Ribbon Set 2",
+                ribbonSet3: "Ribbon Set 3",
+                ribbonSet4: "Ribbon Set 4",
+                chk: "Checksum",
+                slot: "Slot",
+                form: "Form",
+                gender: "Gender",
+                metDate: "Date Met",
+                eggDate: "Date Hatched"
+            }, { helpers: {
+                typeName: function(e) { return e; },
+                moveName: function(e) { return e; },
+                itemName: function(e) { return e; },
+                genderString: function(e) { return e; },
+                checkmark: function(e) { return e; },
+                toJson: function(e) { return "JSON"; },
+                moment: function(e) { return e; },
+                row: function() { return "Row"; },
+                column: function() { return "Column"; },
+                box: function() { return "Box"; },
+                speciesName: function() { return "Species"; },
+                formName: function() { return "Form"; },
+                natureName: function() { return "Nature"; },
+                abilityName: function() { return "Ability"; },
+                ballImage: function() { return "Ball Image"; },
+                esv: function() { return "ESV"; },
+                tsv: function() { return "TSV"; },
+                language: function() { return "Language"; },
+                gameVersionString: function() { return "Game Version"; },
+                stepsToHatch: function() { return "Steps To Hatch"; },
+                pentagon: function() { return "Pentagon"; },
+                shinyMark: function() { return "Shiny"; },
+                markings: function() { return "Markings"; },
+                regionName: function() { return "Region"; },
+                countryName: function() { return "Country"; },
+                hasHa: function() { return true; },
+            }}));
+        }
+        catch (e) {console.log(e);}
     }
 }
 polymer.createElement(KeysavOptions);
