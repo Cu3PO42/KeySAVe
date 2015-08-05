@@ -33,6 +33,12 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
         speciesName: function () {
             return localization.en.species[this.species];
         },
+        hasAlternateForm: function () {
+            return !!localization.en.forms[this.species];
+        },
+        formName: function () {
+            return localization.en.forms[this.species] ? localization.en.forms[this.species][this.form] : "";
+        },
         natureName: function () {
             return localization.en.natures[this.nature];
         },
