@@ -22,6 +22,7 @@ var fs = require("fs");
 var localization = require("keysavcore/Localization");
 var remote = require("remote");
 var IpcClient = require("electron-ipc-tunnel/client");
+var path = require("path");
 handlebars.registerHelper(require("handlebars-helper-moment")());
 (function () {
     var clipboard = remote.require("clipboard");
@@ -129,15 +130,16 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             this.formatCache = {};
             this.ipcClient = new IpcClient();
             this.ipcClient.on("file-dialog-save-result", function (filename) {
-                fs.writeFile(filename, _this.$.container.innerText, { encoding: "utf-8" }, function (err) {
-                    if (err === null) {
-                        _this.dialogResult = "File saved successfully!";
-                    }
-                    else {
-                        _this.dialogResult = "Couldn't save file. Please try again.";
-                    }
-                    _this.$.dialog.toggle();
-                });
+                if (filename)
+                    fs.writeFile(filename, _this.$.container.innerText, { encoding: "utf-8" }, function (err) {
+                        if (err === null) {
+                            _this.dialogResult = "File saved successfully!";
+                        }
+                        else {
+                            _this.dialogResult = "Couldn't save file. Please try again.";
+                        }
+                        _this.$.dialog.toggle();
+                    });
             });
         }
         PkmList.prototype.formatPokemon = function (pkm) {
@@ -158,7 +160,21 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             clipboard.write({ text: this.$.container.innerText, html: this.$.container.innerHTML });
         };
         PkmList.prototype.save = function () {
-            this.ipcClient.send("file-dialog-save");
+            var ext;
+            var filters;
+            if (this.formatName.toLowerCase().indexOf("csv") !== -1) {
+                ext = ".csv";
+                filters = [{ name: "CSV", extensions: ["csv"] }];
+            }
+            else if (this.formatName.toLowerCase().indexOf("json") !== -1) {
+                ext = ".json";
+                filters = [{ name: "JSON", extensions: ["json"] }];
+            }
+            else {
+                ext = ".txt";
+                filters = [{ name: "Text", extensions: ["txt"] }];
+            }
+            this.ipcClient.send("file-dialog-save", { options: { defaultPath: path.basename(this.fileName, path.extname(this.fileName)) + ext, filters: filters } });
         };
         PkmList.prototype.formatStringChanged = function (newValue, oldValue) {
             var _this = this;
@@ -189,6 +205,10 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             __metadata('design:type', String)
         ], PkmList.prototype, "formatHeader");
         __decorate([
+            property({ type: String }), 
+            __metadata('design:type', String)
+        ], PkmList.prototype, "formatName");
+        __decorate([
             property({ type: Number }), 
             __metadata('design:type', Number)
         ], PkmList.prototype, "lowerBox");
@@ -196,6 +216,10 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             property({ type: Number }), 
             __metadata('design:type', Number)
         ], PkmList.prototype, "upperBox");
+        __decorate([
+            property({ type: String }), 
+            __metadata('design:type', String)
+        ], PkmList.prototype, "fileName");
         __decorate([
             property({ type: String }), 
             __metadata('design:type', String)

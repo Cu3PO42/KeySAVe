@@ -7,6 +7,7 @@ import fs = require("fs");
 import localization = require("keysavcore/Localization");
 import remote = require("remote");
 import IpcClient = require("electron-ipc-tunnel/client");
+import path = require("path");
 
 handlebars.registerHelper(require("handlebars-helper-moment")());
 
@@ -122,11 +123,17 @@ class PkmList extends polymer.Base {
     @property({type: String})
     formatHeader: string;
 
+    @property({type: String})
+    formatName: string;
+
     @property({type: Number})
     lowerBox: number;
 
     @property({type: Number})
     upperBox: number;
+
+    @property({type: String})
+    fileName: string;
 
     @property({type: String})
     dialogResult: string;
@@ -141,15 +148,16 @@ class PkmList extends polymer.Base {
         this.ipcClient = new IpcClient();
 
         this.ipcClient.on("file-dialog-save-result", (filename) => {
-            fs.writeFile(filename, this.$.container.innerText, {encoding: "utf-8"}, (err) => {
-                if (err === null) {
-                    this.dialogResult = "File saved successfully!";
-                }
-                else {
-                    this.dialogResult = "Couldn't save file. Please try again.";
-                }
-                this.$.dialog.toggle();
-            });
+            if (filename)
+                fs.writeFile(filename, this.$.container.innerText, {encoding: "utf-8"}, (err) => {
+                    if (err === null) {
+                        this.dialogResult = "File saved successfully!";
+                    }
+                    else {
+                        this.dialogResult = "Couldn't save file. Please try again.";
+                    }
+                    this.$.dialog.toggle();
+                });
         });
     }
 
@@ -175,7 +183,21 @@ class PkmList extends polymer.Base {
     }
 
     save() {
-        this.ipcClient.send("file-dialog-save");
+        var ext: string;
+        var filters: any[];
+        if (this.formatName.toLowerCase().indexOf("csv") !== -1) {
+            ext = ".csv"
+            filters = [{name: "CSV", extensions: ["csv"]}]
+        }
+        else if (this.formatName.toLowerCase().indexOf("json") !== -1) {
+            ext = ".json"
+            filters = [{name: "JSON", extensions: ["json"]}]
+        }
+        else {
+            ext = ".txt"
+            filters = [{name: "Text", extensions: ["txt"]}];
+        }
+        this.ipcClient.send("file-dialog-save", {options: {defaultPath: path.basename(this.fileName, path.extname(this.fileName))+ext, filters: filters}});
     }
 
     @observe("formatString")
