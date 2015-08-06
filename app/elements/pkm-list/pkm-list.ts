@@ -216,24 +216,32 @@ class PkmList extends polymer.Base {
     }
 
     export() {
-        var pkm = _(this.pokemon, this.filterPokemon.bind(this))
+        var pkm = _.filter(this.pokemon, this.filterPokemon.bind(this))
+        var ghosts = 0;
         fs.readdirAsync(dbDirectory)
-        .then((err, files) => {
+        .then((files) => {
             return Promise.resolve(pkm).map((pkm: KeySAVCore.Structures.PKX) => {
+                if (pkm.isGhost) {
+                    ++ghosts;
+                    return;
+                }
                 var fileName = ("000" + pkm.species).slice(-3) + " - " + pkm.nickname + " - " + pkm.pid.toString(16) + " - " + pkm.ec.toString(16);
                 var counter = 0;
-                if (_.includes(files, fileName)) {
+                if (_.includes(files, fileName + ".pk6")) {
                     ++counter;
-                    while (_.includes(files, fileName + " (" + counter + ")" + ".pk6")) ++counter;
+                    while (_.includes(files, fileName + " (" + counter + ").pk6")) ++counter;
                 }
+                fileName += (counter ? " (" + counter + ")" : "")+".pk6";
+                files.push(fileName);
                 return fs.writeFileAsync(path.join(dbDirectory, fileName), new Buffer(pkm.data));
             });
         })
         .then(() => {
-            this.dialogResult = "Saved " + pkm.length + "Pokémon.";
+            this.dialogResult = "Saved " + (pkm.length-ghosts) + " Pokémon.";
             this.$.dialog.toggle();
         })
-        .catch(() => {
+        .catch((e) => {
+            console.log(e);
             this.dialogResult = "An error occured.";
             this.$.dialog.toggle();
         });

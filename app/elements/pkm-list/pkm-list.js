@@ -190,25 +190,33 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
         };
         PkmList.prototype.export = function () {
             var _this = this;
-            var pkm = _(this.pokemon, this.filterPokemon.bind(this));
+            var pkm = _.filter(this.pokemon, this.filterPokemon.bind(this));
+            var ghosts = 0;
             fs.readdirAsync(dbDirectory)
-                .then(function (err, files) {
+                .then(function (files) {
                 return Promise.resolve(pkm).map(function (pkm) {
+                    if (pkm.isGhost) {
+                        ++ghosts;
+                        return;
+                    }
                     var fileName = ("000" + pkm.species).slice(-3) + " - " + pkm.nickname + " - " + pkm.pid.toString(16) + " - " + pkm.ec.toString(16);
                     var counter = 0;
-                    if (_.includes(files, fileName)) {
+                    if (_.includes(files, fileName + ".pk6")) {
                         ++counter;
-                        while (_.includes(files, fileName + " (" + counter + ")" + ".pk6"))
+                        while (_.includes(files, fileName + " (" + counter + ").pk6"))
                             ++counter;
                     }
+                    fileName += (counter ? " (" + counter + ")" : "") + ".pk6";
+                    files.push(fileName);
                     return fs.writeFileAsync(path.join(dbDirectory, fileName), new Buffer(pkm.data));
                 });
             })
                 .then(function () {
-                _this.dialogResult = "Saved " + pkm.length + "Pokémon.";
+                _this.dialogResult = "Saved " + (pkm.length - ghosts) + " Pokémon.";
                 _this.$.dialog.toggle();
             })
-                .catch(function () {
+                .catch(function (e) {
+                console.log(e);
                 _this.dialogResult = "An error occured.";
                 _this.$.dialog.toggle();
             });
