@@ -1,6 +1,8 @@
 /// <reference path="../../../bower_components/polymer-ts/polymer-ts.ts"/>
 /// <reference path="../../../typings/handlebars/handlebars.d.ts"/>
 /// <reference path="../../../typings/github-electron/github-electron.d.ts" />
+/// <reference path="../../../typings/path-extra/path-extra.d.ts" />
+/// <reference path="../../../typings/bluebird/bluebird.d.ts" />
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -22,9 +24,19 @@ var fs = require("fs");
 var localization = require("keysavcore/Localization");
 var remote = require("remote");
 var IpcClient = require("electron-ipc-tunnel/client");
-var path = require("path");
+var path = require("path-extra");
+var Promise = require("bluebird");
+var _ = require("lodash");
+Promise.promisifyAll(fs);
 handlebars.registerHelper(require("handlebars-helper-moment")());
 (function () {
+    function mkdirOptional(path) {
+        if (!fs.existsSync(path))
+            fs.mkdirSync(path);
+    }
+    var dbDirectory = path.join(path.homedir(), "Documents", "KeySAVe", "db");
+    mkdirOptional(path.join(path.homedir(), "Documents", "KeySAVe"));
+    mkdirOptional(dbDirectory);
     var clipboard = remote.require("clipboard");
     var handlebarsHelpers = {
         row: function () {
@@ -175,6 +187,31 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
                 filters = [{ name: "Text", extensions: ["txt"] }];
             }
             this.ipcClient.send("file-dialog-save", { options: { defaultPath: path.basename(this.fileName, path.extname(this.fileName)) + ext, filters: filters } });
+        };
+        PkmList.prototype.export = function () {
+            var _this = this;
+            var pkm = _(this.pokemon, this.filterPokemon.bind(this));
+            fs.readdirAsync(dbDirectory)
+                .then(function (err, files) {
+                return Promise.resolve(pkm).map(function (pkm) {
+                    var fileName = ("000" + pkm.species).slice(-3) + " - " + pkm.nickname + " - " + pkm.pid.toString(16) + " - " + pkm.ec.toString(16);
+                    var counter = 0;
+                    if (_.includes(files, fileName)) {
+                        ++counter;
+                        while (_.includes(files, fileName + " (" + counter + ")" + ".pk6"))
+                            ++counter;
+                    }
+                    return fs.writeFileAsync(path.join(dbDirectory, fileName), new Buffer(pkm.data));
+                });
+            })
+                .then(function () {
+                _this.dialogResult = "Saved " + pkm.length + "Pokémon.";
+                _this.$.dialog.toggle();
+            })
+                .catch(function () {
+                _this.dialogResult = "An error occured.";
+                _this.$.dialog.toggle();
+            });
         };
         PkmList.prototype.formatStringChanged = function (newValue, oldValue) {
             var _this = this;

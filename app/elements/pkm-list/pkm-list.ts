@@ -1,17 +1,32 @@
 /// <reference path="../../../bower_components/polymer-ts/polymer-ts.ts"/>
 /// <reference path="../../../typings/handlebars/handlebars.d.ts"/>
 /// <reference path="../../../typings/github-electron/github-electron.d.ts" />
+/// <reference path="../../../typings/path-extra/path-extra.d.ts" />
+/// <reference path="../../../typings/bluebird/bluebird.d.ts" />
 
 import handlebars = require("handlebars");
 import fs = require("fs");
 import localization = require("keysavcore/Localization");
 import remote = require("remote");
 import IpcClient = require("electron-ipc-tunnel/client");
-import path = require("path");
+import path = require("path-extra");
+import Promise = require("bluebird");
+import _ = require("lodash");
+
+Promise.promisifyAll(fs);
 
 handlebars.registerHelper(require("handlebars-helper-moment")());
 
 (() => {
+function mkdirOptional(path) {
+    if (!fs.existsSync(path))
+        fs.mkdirSync(path);
+}
+
+var dbDirectory = path.join(path.homedir(), "Documents", "KeySAVe", "db");
+mkdirOptional(path.join(path.homedir(), "Documents", "KeySAVe"));
+mkdirOptional(dbDirectory);
+
 var clipboard = remote.require("clipboard");
 
 var handlebarsHelpers: {[helper: string]: Function} = {
@@ -198,6 +213,30 @@ class PkmList extends polymer.Base {
             filters = [{name: "Text", extensions: ["txt"]}];
         }
         this.ipcClient.send("file-dialog-save", {options: {defaultPath: path.basename(this.fileName, path.extname(this.fileName))+ext, filters: filters}});
+    }
+
+    export() {
+        var pkm = _(this.pokemon, this.filterPokemon.bind(this))
+        fs.readdirAsync(dbDirectory)
+        .then((err, files) => {
+            return Promise.resolve(pkm).map((pkm: KeySAVCore.Structures.PKX) => {
+                var fileName = ("000" + pkm.species).slice(-3) + " - " + pkm.nickname + " - " + pkm.pid.toString(16) + " - " + pkm.ec.toString(16);
+                var counter = 0;
+                if (_.includes(files, fileName)) {
+                    ++counter;
+                    while (_.includes(files, fileName + " (" + counter + ")" + ".pk6")) ++counter;
+                }
+                return fs.writeFileAsync(path.join(dbDirectory, fileName), new Buffer(pkm.data));
+            });
+        })
+        .then(() => {
+            this.dialogResult = "Saved " + pkm.length + "Pokémon.";
+            this.$.dialog.toggle();
+        })
+        .catch(() => {
+            this.dialogResult = "An error occured.";
+            this.$.dialog.toggle();
+        });
     }
 
     @observe("formatString")

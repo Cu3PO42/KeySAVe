@@ -29,7 +29,7 @@
             <div class="align-right"><paper-button dialog-confirm>Ok</paper-button></div>
         </paper-dialog>
         <div class="align-right" hidden$="{{isEmpty(pokemon)}}">
-            <paper-icon-button icon="icons:file-download"></paper-icon-button>
+            <paper-icon-button icon="icons:file-download" on-tap="export"></paper-icon-button>
             <paper-icon-button icon="icons:save" on-tap="save"></paper-icon-button>
             <paper-icon-button icon="icons:content-copy" on-tap="copyClipboard"></paper-icon-button>
         </div>
