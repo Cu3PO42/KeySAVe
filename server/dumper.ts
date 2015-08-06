@@ -48,6 +48,7 @@ export = function() {
                     reply("dump-save-nokey");
                     return;
                 }
+                reader.scanSlots();
                 var res = [];
                 var tmp;
                 for (let i = 0; i < 31*30; i++) {
