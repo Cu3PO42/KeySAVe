@@ -11,9 +11,23 @@
             overflow-x: auto;
             color: var(--primary-text-color);
         }
+
+        .align-right {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        paper-material {
+            margin-top: 0 !important;
+        }
     </style>
     <link rel="import" type="css" href="../../styles/paper-material.css">
     <template>
+        <div class="align-right" hidden$="{{isEmpty(pokemon)}}">
+            <paper-icon-button icon="icons:file-download"></paper-icon-button>
+            <paper-icon-button icon="icons:save"></paper-icon-button>
+            <paper-icon-button icon="icons:content-copy"></paper-icon-button>
+        </div>
         <paper-material elevation="1" hidden$="{{isEmpty(pokemon)}}">
             <div class="container">
                 <div hidden$="{{isEmpty(formatHeader)}}" inner-h-t-m-l="{{formatHeader}}"></div>
