@@ -1,5 +1,6 @@
 /// <reference path="../../../bower_components/polymer-ts/polymer-ts.ts"/>
 /// <reference path="../../../typings/handlebars/handlebars.d.ts"/>
+/// <reference path="../../../typings/github-electron/github-electron.d.ts" />
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -18,8 +19,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var handlebars = require("handlebars");
 var localization = require("keysavcore/Localization");
+var remote = require("remote");
 handlebars.registerHelper(require("handlebars-helper-moment")());
 (function () {
+    var clipboard = remote.require("clipboard");
     var handlebarsHelpers = {
         row: function () {
             return Math.floor(this.slot / 6) + 1;
@@ -135,6 +138,9 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
         };
         PkmList.prototype.filterPokemon = function (pkm) {
             return (this.lowerBox === undefined || pkm.box + 1 >= this.lowerBox) && (this.upperBox === undefined || pkm.box < this.upperBox);
+        };
+        PkmList.prototype.copyClipboard = function () {
+            clipboard.write({ text: this.$.container.innerText, html: this.$.container.innerHTML });
         };
         PkmList.prototype.formatStringChanged = function (newValue, oldValue) {
             var _this = this;

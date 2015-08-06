@@ -1,13 +1,17 @@
 /// <reference path="../../../bower_components/polymer-ts/polymer-ts.ts"/>
 /// <reference path="../../../typings/handlebars/handlebars.d.ts"/>
+/// <reference path="../../../typings/github-electron/github-electron.d.ts" />
 
 import handlebars = require("handlebars");
 import fs = require("fs");
 import localization = require("keysavcore/Localization");
+import remote = require("remote");
 
 handlebars.registerHelper(require("handlebars-helper-moment")());
 
 (() => {
+var clipboard = remote.require("clipboard");
+
 var handlebarsHelpers: {[helper: string]: Function} = {
     row: function() {
         return Math.floor(this.slot/6) + 1;
@@ -141,6 +145,10 @@ class PkmList extends polymer.Base {
 
     filterPokemon(pkm) {
         return (this.lowerBox === undefined || pkm.box+1 >= this.lowerBox) && (this.upperBox === undefined || pkm.box < this.upperBox);
+    }
+
+    copyClipboard() {
+        clipboard.write({text: this.$.container.innerText, html: this.$.container.innerHTML});
     }
 
     @observe("formatString")

@@ -4,7 +4,7 @@
             display: block;
         }
 
-        .container {
+        #container {
             font-family: "Fira Mono", monospace;
             font-size: 0.8em;
             white-space: nowrap;
@@ -26,10 +26,10 @@
         <div class="align-right" hidden$="{{isEmpty(pokemon)}}">
             <paper-icon-button icon="icons:file-download"></paper-icon-button>
             <paper-icon-button icon="icons:save"></paper-icon-button>
-            <paper-icon-button icon="icons:content-copy"></paper-icon-button>
+            <paper-icon-button icon="icons:content-copy" on-tap="copyClipboard"></paper-icon-button>
         </div>
         <paper-material elevation="1" hidden$="{{isEmpty(pokemon)}}">
-            <div class="container">
+            <div id="container">
                 <div hidden$="{{isEmpty(formatHeader)}}" inner-h-t-m-l="{{formatHeader}}"></div>
                 <template id="list" is="dom-repeat" items="{{pokemon}}" filter="filterPokemon">
                     <div inner-h-t-m-l="{{formatPokemon(item, template)}}"></div>
