@@ -1,6 +1,7 @@
 <link href="../../bower_components/paper-dialog/paper-dialog.html" rel="import">
 <dom-module id="keysav-options">
     <link rel="import" type="css" href="../../styles/paper-material.css">
+    <link rel="import" type="css" href="../../styles/paper-dialog.css">
     <style is="custom-style">
         .horizontal {
             display: flex;
@@ -11,26 +12,6 @@
         #format-name {
             flex-grow: 1;
             margin-left: 1em;
-        }
-
-        paper-button[dialog-confirm] {
-            font-weight: bold;
-            color: var(--accent-color);
-        }
-
-        paper-button[dialog-dismiss] {
-            color: black;
-        }
-
-        .buttons {
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        paper-dialog {
-            background-color: var(--text-primary-color);
-            color: var(--primary-text-color);
-            text-align: center;
         }
 
         paper-dialog > *:not(:first-child) {

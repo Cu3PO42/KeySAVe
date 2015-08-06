@@ -1,0 +1,14 @@
+paper-dialog paper-button {
+    color: var(--accent-color);
+}
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+
+paper-dialog {
+    background-color: var(--text-primary-color);
+    color: var(--primary-text-color);
+    text-align: center;
+}
