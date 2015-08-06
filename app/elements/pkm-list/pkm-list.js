@@ -18,8 +18,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var handlebars = require("handlebars");
+var fs = require("fs");
 var localization = require("keysavcore/Localization");
 var remote = require("remote");
+var IpcClient = require("electron-ipc-tunnel/client");
 handlebars.registerHelper(require("handlebars-helper-moment")());
 (function () {
     var clipboard = remote.require("clipboard");
@@ -121,9 +123,22 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
     var PkmList = (function (_super) {
         __extends(PkmList, _super);
         function PkmList() {
-            _super.apply(this, arguments);
+            var _this = this;
+            _super.call(this);
             this.pokemon = [];
             this.formatCache = {};
+            this.ipcClient = new IpcClient();
+            this.ipcClient.on("file-dialog-save-result", function (filename) {
+                fs.writeFile(filename, _this.$.container.innerText, { encoding: "utf-8" }, function (err) {
+                    if (err === null) {
+                        _this.dialogResult = "File saved successfully!";
+                    }
+                    else {
+                        _this.dialogResult = "Couldn't save file. Please try again.";
+                    }
+                    _this.$.dialog.toggle();
+                });
+            });
         }
         PkmList.prototype.formatPokemon = function (pkm) {
             var uuid = pkm.box * 30 + pkm.slot;
@@ -141,6 +156,9 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
         };
         PkmList.prototype.copyClipboard = function () {
             clipboard.write({ text: this.$.container.innerText, html: this.$.container.innerHTML });
+        };
+        PkmList.prototype.save = function () {
+            this.ipcClient.send("file-dialog-save");
         };
         PkmList.prototype.formatStringChanged = function (newValue, oldValue) {
             var _this = this;
@@ -178,6 +196,10 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             property({ type: Number }), 
             __metadata('design:type', Number)
         ], PkmList.prototype, "upperBox");
+        __decorate([
+            property({ type: String }), 
+            __metadata('design:type', String)
+        ], PkmList.prototype, "dialogResult");
         Object.defineProperty(PkmList.prototype, "formatStringChanged",
             __decorate([
                 observe("formatString"), 

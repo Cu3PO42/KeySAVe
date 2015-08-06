@@ -6,6 +6,7 @@ import handlebars = require("handlebars");
 import fs = require("fs");
 import localization = require("keysavcore/Localization");
 import remote = require("remote");
+import IpcClient = require("electron-ipc-tunnel/client");
 
 handlebars.registerHelper(require("handlebars-helper-moment")());
 
@@ -127,8 +128,30 @@ class PkmList extends polymer.Base {
     @property({type: Number})
     upperBox: number;
 
-    template: Handlebars.HandlebarsTemplateDelegate;
+    @property({type: String})
+    dialogResult: string;
+
+    private template: Handlebars.HandlebarsTemplateDelegate;
     private formatCache: {[pid: number]: string} = {};
+    private ipcClient: IpcClient;
+
+    constructor() {
+        super();
+
+        this.ipcClient = new IpcClient();
+
+        this.ipcClient.on("file-dialog-save-result", (filename) => {
+            fs.writeFile(filename, this.$.container.innerText, {encoding: "utf-8"}, (err) => {
+                if (err === null) {
+                    this.dialogResult = "File saved successfully!";
+                }
+                else {
+                    this.dialogResult = "Couldn't save file. Please try again.";
+                }
+                this.$.dialog.toggle();
+            });
+        });
+    }
 
     formatPokemon(pkm) {
         var uuid = pkm.box*30+pkm.slot;
@@ -149,6 +172,10 @@ class PkmList extends polymer.Base {
 
     copyClipboard() {
         clipboard.write({text: this.$.container.innerText, html: this.$.container.innerHTML});
+    }
+
+    save() {
+        this.ipcClient.send("file-dialog-save");
     }
 
     @observe("formatString")

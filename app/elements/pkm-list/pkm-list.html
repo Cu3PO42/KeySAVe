@@ -23,9 +23,13 @@
     </style>
     <link rel="import" type="css" href="../../styles/paper-material.css">
     <template>
+        <paper-dialog id="dialog">
+            <div>{{dialogResult}}</div>
+            <div class="align-right"><paper-button dialog-confirm>Ok</paper-button></div>
+        </paper-dialog>
         <div class="align-right" hidden$="{{isEmpty(pokemon)}}">
             <paper-icon-button icon="icons:file-download"></paper-icon-button>
-            <paper-icon-button icon="icons:save"></paper-icon-button>
+            <paper-icon-button icon="icons:save" on-tap="save"></paper-icon-button>
             <paper-icon-button icon="icons:content-copy" on-tap="copyClipboard"></paper-icon-button>
         </div>
         <paper-material elevation="1" hidden$="{{isEmpty(pokemon)}}">
