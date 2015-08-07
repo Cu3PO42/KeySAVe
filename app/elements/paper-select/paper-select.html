@@ -99,6 +99,10 @@ distributed under MIT license.
         li:not(:last-of-type) {
             border-bottom: 1px solid #eee;
         }
+
+        paper-button {
+            width: 100%;
+        }
     </style>
     <template>
         <paper-button raised on-tap="open" id="button"><div class="button-content"><span>{{getElement(items, selected)}}</span><iron-icon icon="{{icon}}"></iron-icon></div></paper-button>
@@ -184,6 +188,7 @@ distributed under MIT license.
             },
 
             open: function() {
+                this.setWidth(this);
                 this.$.dropdown.open();
             },
 
@@ -210,10 +215,11 @@ distributed under MIT license.
                 maxLength = Math.min(15, maxLength);
 
                 this.$.dropdown.style.maxWidth = this.$.button.style.maxWidth = maxLength + "em";
+                this.$.dropdown.style.width = this.$.button.offsetWidth+"px";
             },
 
             attached: function() {
-                this.setWidth();
+                window.addEventListener("resize", this.setWidth.bind(this));
             },
 
             itemsChanged: function(newValue, oldValue) {
