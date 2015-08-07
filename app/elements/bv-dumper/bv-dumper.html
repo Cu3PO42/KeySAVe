@@ -17,6 +17,12 @@
     </style>
     <link rel="import" type="css" href="../../styles/paper-material.css">
     <template>
+        <paper-dialog id="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation">
+            <div>{{dialogMessage}}</div>
+            <div class="buttons">
+                <paper-button dialog-confirm>Ok</paper-button>
+            </div>
+        </paper-dialog>
         <paper-material elevation="1">
             <file-input id="input" path="{{path}}" options="[[fileOptions]]"></file-input>
             <div class="horizontal">
@@ -25,24 +31,12 @@
                         <paper-radio-button name="enemyTeam" disabled="{{not(enemyDumpable)}}">Enemy Team</paper-radio-button>
                 </paper-radio-group>
                 <div>
-                    <paper-icon-button icon="icons:backup"></paper-icon-button>
+                    <paper-icon-button icon="icons:backup" on-tap="backup"></paper-icon-button>
                     <paper-tooltip>Backup Save</paper-tooltip>
                 </div>
             </div>
         </paper-material>
         <pkm-list id="results" format-string="{{format.format}}" format-header="{{format.header}}" format-name="{{format.name}}" file-name="{{path}}"></pkm-list>
-        <paper-dialog id="dialogInvalid" entry-animation="scale-up-animation" exit-animation="fade-out-animation">
-            <div>Sorry, but this is not a valid battle video!</div>
-            <div class="buttons">
-                <paper-button dialog-confirm>Ok</paper-button>
-            </div>
-        </paper-dialog>
-        <paper-dialog id="dialogNokey" entry-animation="scale-up-animation" exit-animation="fade-out-animation">
-            <div>You have to break for this video first!</div>
-            <div class="buttons">
-                <paper-button dialog-confirm>Ok</paper-button>
-            </div>
-        </paper-dialog>
     </template>
     <script src="bv-dumper.js"></script>
 </dom-module>

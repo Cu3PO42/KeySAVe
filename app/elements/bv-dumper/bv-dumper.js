@@ -18,7 +18,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /// <reference path="../../../typings/node/node.d.ts"/>
 var IpcClient = require("electron-ipc-tunnel/client");
 var fs = require("fs");
+var path = require("path-extra");
 (function () {
+    function mkdirOptional(path) {
+        if (!fs.existsSync(path))
+            fs.mkdirSync(path);
+    }
+    var backupDirectory = path.join(path.homedir(), "Documents", "KeySAVe", "backup");
+    mkdirOptional(path.join(path.homedir(), "Documents", "KeySAVe"));
+    mkdirOptional(backupDirectory);
     var BvDumper = (function (_super) {
         __extends(BvDumper, _super);
         function BvDumper() {
@@ -42,7 +50,8 @@ var fs = require("fs");
             });
             this.ipcClient.on("dump-bv-nokey", function () {
                 _this.path = "";
-                _this.$.dialogNokey.toggle();
+                _this.dialogMessage = "You have to break for this video first!";
+                _this.$.dialog.toggle();
             });
         }
         BvDumper.prototype.pathChanged = function (newValue, oldValue) {
@@ -51,7 +60,8 @@ var fs = require("fs");
                 fs.stat(newValue, function (err, stats) {
                     if (err !== null || stats.size !== 28256) {
                         _this.path = oldValue;
-                        _this.$.dialogInvalid.toggle();
+                        _this.dialogMessage = "Sorry, but this is not a valid battle video!";
+                        _this.$.dialog.toggle();
                     }
                     else {
                         _this.ipcClient.send("dump-bv", _this.path);
@@ -63,6 +73,22 @@ var fs = require("fs");
         };
         BvDumper.prototype.not = function (val) {
             return !val;
+        };
+        BvDumper.prototype.backup = function () {
+            var _this = this;
+            if (this.path)
+                fs.createReadStream(this.path).pipe(fs.createWriteStream(path.join(backupDirectory, path.basename(this.path))).on("error", function () {
+                    _this.dialogMessage = "Couldn't backup battle video.";
+                    _this.$.dialog.toggle();
+                }))
+                    .on("error", function () {
+                    _this.dialogMessage = "Couldn't backup battle video.";
+                    _this.$.dialog.toggle();
+                })
+                    .on("finish", function () {
+                    _this.dialogMessage = "Battle video backupped!";
+                    _this.$.dialog.toggle();
+                });
         };
         __decorate([
             property({ type: String }), 
@@ -84,6 +110,10 @@ var fs = require("fs");
             property({ type: Object }), 
             __metadata('design:type', Object)
         ], BvDumper.prototype, "fileOptions");
+        __decorate([
+            property({ type: String }), 
+            __metadata('design:type', String)
+        ], BvDumper.prototype, "dialogMessage");
         Object.defineProperty(BvDumper.prototype, "pathChanged",
             __decorate([
                 observe("path"), 
