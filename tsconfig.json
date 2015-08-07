@@ -29,6 +29,7 @@
         "./app/elements/electron-updater/electron-updater.ts",
         "./app/elements/file-input/file-input.ts",
         "./app/elements/key-breaker/key-breaker.ts",
+        "./app/elements/keysav-about/keysav-about.ts",
         "./app/elements/keysav-options/keysav-options.ts",
         "./app/elements/pkm-list/pkm-list.ts",
         "./app/elements/save-dumper/save-dumper.ts",
