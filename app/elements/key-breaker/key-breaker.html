@@ -34,6 +34,12 @@
                 <paper-button dialog-confirm>Ok</paper-button>
             </div>
         </paper-dialog>
+        <paper-dialog id="dialogBreakingFolder" entry-animation="scale-up-animation" exit-animation="fade-out-animation">
+            <div>
+                The folder is being scanned.
+            </div>
+            <paper-spinner active></paper-spinner>
+        </paper-dialog>
         <paper-material elevation="1">
             <div class="horizontal">
                 <h2>Break</h2>
@@ -41,6 +47,10 @@
             </div>
             <file-input button-text="File 1" path="{{file1}}" options="[[fileOptions]]"></file-input>
             <file-input button-text="File 2" path="{{file2}}" options="[[fileOptions]]"></file-input>
+        </paper-material>
+        <paper-material elevation="1">
+            <h2>Improve keys</h2>
+            <file-input button-text="Open Folder" path="{{folder}}" options="[[folderOptions]]"></file-input>
         </paper-material>
     </template>
     <script src="./key-breaker.js"></script>

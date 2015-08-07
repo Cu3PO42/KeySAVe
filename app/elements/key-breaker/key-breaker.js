@@ -24,6 +24,7 @@ var fs = require("fs");
             var _this = this;
             _super.call(this);
             this.fileOptions = { filters: [{ name: "SAV (1MB)", extensions: ["bin", "sav"] }, { name: "Main File", extensions: [""] }, { name: "Battle Video", extensions: [""] }] };
+            this.folderOptions = { properties: ["openDirectory"] };
             this.ipcClient = new IpcClient();
             this.ipcClient.on("break-key-result", function (arg) {
                 _this.breakMessage = arg.result.match(/^.*$/gm);
@@ -37,6 +38,9 @@ var fs = require("fs");
                 else {
                     _this.ipcClient.send("break-key-cancel");
                 }
+            });
+            this.ipcClient.on("break-folder-result", function () {
+                _this.$.dialogBreakingFolder.toggle();
             });
         }
         KeyBreaker.prototype.break = function () {
@@ -87,6 +91,12 @@ var fs = require("fs");
         KeyBreaker.prototype.file2Changed = function (newValue, oldValue) {
             this.updateFileBase("file2", oldValue);
         };
+        KeyBreaker.prototype.folderChanged = function (newValue, oldValue) {
+            if (this.ipcClient !== undefined) {
+                this.ipcClient.send("break-folder", newValue);
+                this.$.dialogBreakingFolder.toggle();
+            }
+        };
         __decorate([
             property({ type: String }), 
             __metadata('design:type', String)
@@ -103,6 +113,10 @@ var fs = require("fs");
             property({ type: Object }), 
             __metadata('design:type', Object)
         ], KeyBreaker.prototype, "fileOptions");
+        __decorate([
+            property({ type: Object }), 
+            __metadata('design:type', Object)
+        ], KeyBreaker.prototype, "folderOptions");
         Object.defineProperty(KeyBreaker.prototype, "file1Changed",
             __decorate([
                 observe("file1"), 
@@ -117,6 +131,13 @@ var fs = require("fs");
                 __metadata('design:paramtypes', [Object, Object]), 
                 __metadata('design:returntype', Object)
             ], KeyBreaker.prototype, "file2Changed", Object.getOwnPropertyDescriptor(KeyBreaker.prototype, "file2Changed")));
+        Object.defineProperty(KeyBreaker.prototype, "folderChanged",
+            __decorate([
+                observe("folder"), 
+                __metadata('design:type', Function), 
+                __metadata('design:paramtypes', [Object, Object]), 
+                __metadata('design:returntype', Object)
+            ], KeyBreaker.prototype, "folderChanged", Object.getOwnPropertyDescriptor(KeyBreaker.prototype, "folderChanged")));
         KeyBreaker = __decorate([
             component("key-breaker"), 
             __metadata('design:paramtypes', [])

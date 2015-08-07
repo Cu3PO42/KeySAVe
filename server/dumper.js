@@ -11,6 +11,8 @@ var async = require("async");
 var _ = require("lodash");
 var util = require("util");
 var path = require("path-extra");
+var Promise = require("bluebird");
+Promise.promisifyAll(fs);
 function bufToArr(buf) {
     var tmp = new Uint8Array(buf.length);
     for (var i = 0; i < buf.length; i++) {
@@ -121,5 +123,40 @@ module.exports = function () {
     ipcServer.on("break-key-cancel", function () {
         breakInProgress = 0;
         bvBreakRes = savBreakRes = undefined;
+    });
+    ipcServer.on("break-folder", function (reply, folder) {
+        fs.readdirAsync(folder)
+            .map(function (fileName) {
+            var file = path.join(folder, fileName);
+            return fs.statAsync(file)
+                .then(function (stat) {
+                if (stat.isDirectory())
+                    return;
+                switch (stat.size) {
+                    case 0x100000:
+                    case 0x10009C:
+                    case 0x10019A:
+                        break;
+                    default:
+                        return;
+                }
+                return fs.readFileAsync(file)
+                    .then(function (buf) {
+                    var arr = bufToArr(buf);
+                    if (arr.length > 0x100000)
+                        arr = arr.subarray(arr.length % 0x100000);
+                    return Promise.promisify(KeySAV.Core.SaveBreaker.Load)(arr, store.getSaveKey.bind(store));
+                })
+                    .then(function (reader) {
+                    reader.scanSlots();
+                });
+            });
+        })
+            .then(function () {
+            reply("break-folder-result");
+        })
+            .catch(function () {
+            reply("break-folder-result");
+        });
     });
 };

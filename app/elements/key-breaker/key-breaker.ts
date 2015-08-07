@@ -18,6 +18,9 @@ class KeyBreaker extends polymer.Base {
     @property({type: Object})
     fileOptions: GitHubElectron.Dialog.OpenDialogOptions;
 
+    @property({type: Object})
+    folderOptions: GitHubElectron.Dialog.OpenDialogOptions;
+
     ipcClient: IpcClient;
     breakResult;
 
@@ -28,6 +31,7 @@ class KeyBreaker extends polymer.Base {
         super();
 
         this.fileOptions = {filters: [{name: "SAV (1MB)", extensions: ["bin", "sav"]}, {name: "Main File", extensions: [""]}, {name: "Battle Video", extensions: [""]}]}
+        this.folderOptions = {properties: ["openDirectory"]};
 
         this.ipcClient = new IpcClient();
 
@@ -43,6 +47,10 @@ class KeyBreaker extends polymer.Base {
             } else {
                 this.ipcClient.send("break-key-cancel");
             }
+        });
+
+        this.ipcClient.on("break-folder-result", () => {
+            this.$.dialogBreakingFolder.toggle();
         });
     }
 
@@ -97,6 +105,14 @@ class KeyBreaker extends polymer.Base {
     @observe("file2")
     file2Changed(newValue, oldValue) {
         this.updateFileBase("file2", oldValue);
+    }
+
+    @observe("folder")
+    folderChanged(newValue, oldValue) {
+        if (this.ipcClient !== undefined) {
+            this.ipcClient.send("break-folder", newValue);
+            this.$.dialogBreakingFolder.toggle();
+        }
     }
 }
 polymer.createElement(KeyBreaker);
