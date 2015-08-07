@@ -33,9 +33,10 @@
             <!-- Main Toolbar -->
             <paper-toolbar id="mainToolbar">
                 <paper-tabs attr-for-selected="data-route" selected="{{route}}">
-                    <paper-tab data-route="bv">BV Breaking</paper-tab>
-                    <paper-tab data-route="sav">Save Breaking</paper-tab>
+                    <paper-tab data-route="bv">BV Dumping</paper-tab>
+                    <paper-tab data-route="sav">Save Dumping</paper-tab>
                     <paper-tab data-route="options">Options</paper-tab>
+                    <paper-tab data-route="breaking">Breaking</paper-tab>
                 </paper-tabs>
             </paper-toolbar>
 
@@ -54,6 +55,10 @@
 
                     <section data-route="options">
                         <keysav-options selected-format="{{selectedFormat}}"></keysav-options>
+                    </section>
+
+                    <section data-route="breaking">
+                        <key-breaker></key-breaker>
                     </section>
                 </iron-pages>
             </div>
