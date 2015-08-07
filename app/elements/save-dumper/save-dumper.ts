@@ -32,6 +32,9 @@ class SaveDumper extends polymer.Base {
     @property({type: Object})
     fileOptions: GitHubElectron.Dialog.OpenDialogOptions;
 
+    @property({type: String})
+    dialogMessage: string;
+
     ipcClient: IpcClient;
 
     constructor() {
@@ -47,7 +50,8 @@ class SaveDumper extends polymer.Base {
 
         this.ipcClient.on("dump-save-nokey", () => {
             this.path = "";
-            this.$.dialogNokey.toggle();
+            this.dialogMessage = "You have to break for this save first!";
+            this.$.dialog.toggle();
         });
     }
 
@@ -57,8 +61,10 @@ class SaveDumper extends polymer.Base {
             fs.stat(newPath, (err, stats) => {
                 if (err) {
                     this.path = oldPath;
-                    this.$.dialogInvalid.toggle();
-                } else switch (stats.size) {
+                    this.dialogMessage = "Sorry, but this is not a valid save file!";
+                    this.$.dialog.toggle();
+                }
+                else switch (stats.size) {
                     case 0x100000:
                     case 0x10009C:
                     case 0x10019A:
@@ -68,14 +74,27 @@ class SaveDumper extends polymer.Base {
                         break;
                     default:
                         this.path = oldPath;
-                        this.$.dialogInvalid.toggle();
+                        this.dialogMessage = "Sorry, but this is not a valid save file!";
+                        this.$.dialog.toggle();
                         break;
                 }
             });
     }
 
     backup() {
-        fs.createReadStream(this.path).pipe(fs.createWriteStream(path.join(backupDirectory, path.basename(this.path))))
+        if (this.path)
+            fs.createReadStream(this.path).pipe(<NodeJS.WritableStream>fs.createWriteStream(path.join(backupDirectory, path.basename(this.path))).on("error", () => {
+                this.dialogMessage = "Couldn't backup save."
+                this.$.dialog.toggle();
+            }))
+            .on("error", () => {
+                this.dialogMessage = "Couldn't backup save."
+                this.$.dialog.toggle();
+            })
+            .on("finish", () => {
+                this.dialogMessage = "Save backupped!"
+                this.$.dialog.toggle();
+            });
     }
 }
 polymer.createElement(SaveDumper);

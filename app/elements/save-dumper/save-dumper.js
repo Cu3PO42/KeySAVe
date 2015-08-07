@@ -42,7 +42,8 @@ var path = require("path-extra");
             });
             this.ipcClient.on("dump-save-nokey", function () {
                 _this.path = "";
-                _this.$.dialogNokey.toggle();
+                _this.dialogMessage = "You have to break for this save first!";
+                _this.$.dialog.toggle();
             });
         }
         SaveDumper.prototype.pathChange = function (newPath, oldPath) {
@@ -51,7 +52,8 @@ var path = require("path-extra");
                 fs.stat(newPath, function (err, stats) {
                     if (err) {
                         _this.path = oldPath;
-                        _this.$.dialogInvalid.toggle();
+                        _this.dialogMessage = "Sorry, but this is not a valid save file!";
+                        _this.$.dialog.toggle();
                     }
                     else
                         switch (stats.size) {
@@ -64,13 +66,27 @@ var path = require("path-extra");
                                 break;
                             default:
                                 _this.path = oldPath;
-                                _this.$.dialogInvalid.toggle();
+                                _this.dialogMessage = "Sorry, but this is not a valid save file!";
+                                _this.$.dialog.toggle();
                                 break;
                         }
                 });
         };
         SaveDumper.prototype.backup = function () {
-            fs.createReadStream(this.path).pipe(fs.createWriteStream(path.join(backupDirectory, path.basename(this.path))));
+            var _this = this;
+            if (this.path)
+                fs.createReadStream(this.path).pipe(fs.createWriteStream(path.join(backupDirectory, path.basename(this.path))).on("error", function () {
+                    _this.dialogMessage = "Couldn't backup save.";
+                    _this.$.dialog.toggle();
+                }))
+                    .on("error", function () {
+                    _this.dialogMessage = "Couldn't backup save.";
+                    _this.$.dialog.toggle();
+                })
+                    .on("finish", function () {
+                    _this.dialogMessage = "Save backupped!";
+                    _this.$.dialog.toggle();
+                });
         };
         __decorate([
             property({ type: Number }), 
@@ -92,6 +108,10 @@ var path = require("path-extra");
             property({ type: Object }), 
             __metadata('design:type', Object)
         ], SaveDumper.prototype, "fileOptions");
+        __decorate([
+            property({ type: String }), 
+            __metadata('design:type', String)
+        ], SaveDumper.prototype, "dialogMessage");
         Object.defineProperty(SaveDumper.prototype, "pathChange",
             __decorate([
                 observe("path"), 
