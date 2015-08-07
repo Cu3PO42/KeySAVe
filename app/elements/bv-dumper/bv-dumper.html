@@ -8,6 +8,11 @@
         .horizontal {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+        }
+
+        paper-tooltip {
+            white-space: nowrap;
         }
     </style>
     <link rel="import" type="css" href="../../styles/paper-material.css">
@@ -15,10 +20,14 @@
         <paper-material elevation="1">
             <file-input id="input" path="{{path}}" options="[[fileOptions]]"></file-input>
             <div class="horizontal">
-                <paper-radio-group selected="{{team}}">
+                <paper-radio-group selected="{{team}}" class="horizontal">
                         <paper-radio-button name="myTeam">My Team</paper-radio-button>
                         <paper-radio-button name="enemyTeam" disabled="{{not(enemyDumpable)}}">Enemy Team</paper-radio-button>
                 </paper-radio-group>
+                <div>
+                    <paper-icon-button icon="icons:backup"></paper-icon-button>
+                    <paper-tooltip>Backup Save</paper-tooltip>
+                <div>
             </div>
         </paper-material>
         <pkm-list id="results" format-string="{{format.format}}" format-header="{{format.header}}" format-name="{{format.name}}" file-name="{{path}}"></pkm-list>
