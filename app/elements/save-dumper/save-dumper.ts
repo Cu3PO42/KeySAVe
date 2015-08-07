@@ -3,8 +3,18 @@
 /// <reference path="../../../typings/node/node.d.ts"/>
 import IpcClient = require("electron-ipc-tunnel/client");
 import fs = require("fs");
+import path = require("path-extra");
 
 (() => {
+function mkdirOptional(path) {
+    if (!fs.existsSync(path))
+        fs.mkdirSync(path);
+}
+
+var backupDirectory = path.join(path.homedir(), "Documents", "KeySAVe", "backup");
+mkdirOptional(path.join(path.homedir(), "Documents", "KeySAVe"));
+mkdirOptional(backupDirectory);
+
 @component("save-dumper")
 class SaveDumper extends polymer.Base {
     @property({type: Number})
@@ -62,6 +72,10 @@ class SaveDumper extends polymer.Base {
                         break;
                 }
             });
+    }
+
+    backup() {
+        fs.createReadStream(this.path).pipe(fs.createWriteStream(path.join(backupDirectory, path.basename(this.path))))
     }
 }
 polymer.createElement(SaveDumper);

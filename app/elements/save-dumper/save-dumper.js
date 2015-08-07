@@ -19,7 +19,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /// <reference path="../../../typings/node/node.d.ts"/>
 var IpcClient = require("electron-ipc-tunnel/client");
 var fs = require("fs");
+var path = require("path-extra");
 (function () {
+    function mkdirOptional(path) {
+        if (!fs.existsSync(path))
+            fs.mkdirSync(path);
+    }
+    var backupDirectory = path.join(path.homedir(), "Documents", "KeySAVe", "backup");
+    mkdirOptional(path.join(path.homedir(), "Documents", "KeySAVe"));
+    mkdirOptional(backupDirectory);
     var SaveDumper = (function (_super) {
         __extends(SaveDumper, _super);
         function SaveDumper() {
@@ -60,6 +68,9 @@ var fs = require("fs");
                                 break;
                         }
                 });
+        };
+        SaveDumper.prototype.backup = function () {
+            fs.createReadStream(this.path).pipe(fs.createWriteStream(path.join(backupDirectory, path.basename(this.path))));
         };
         __decorate([
             property({ type: Number }), 
