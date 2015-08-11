@@ -70,6 +70,7 @@ class SaveDumper extends polymer.Base {
                     case 0x10019A:
                     case 0x76000:
                     case 0x65600:
+                    case 232*30*32:
                         this.ipcClient.send("dump-save", this.path);
                         break;
                     default:

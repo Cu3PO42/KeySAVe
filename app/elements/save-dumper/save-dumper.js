@@ -62,6 +62,7 @@ var path = require("path-extra");
                             case 0x10019A:
                             case 0x76000:
                             case 0x65600:
+                            case 232 * 30 * 32:
                                 _this.ipcClient.send("dump-save", _this.path);
                                 break;
                             default:
