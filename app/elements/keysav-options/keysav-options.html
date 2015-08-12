@@ -16,8 +16,14 @@
             flex-grow: 1;
         }
 
-        paper-select {
+        paper-dropdown-menu {
             flex-grow: 1;
+        }
+
+        :host {
+            --paper-menu-selected-item: {
+                color: var(--accent-color);
+            }
         }
 
         paper-dialog > *:not(:first-child) {
