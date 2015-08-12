@@ -7,7 +7,7 @@ var path = require("path");
 module.exports = function () {
     ipcServer.on("update-query", function (reply) {
         updater(require("../package.json"), function (err, res) {
-            if (res.updateAvailable) {
+            if (err !== null && res !== undefined && res.updateAvailable) {
                 ipcServer.on("update-do", function () {
                     res.update(path.normalize(path.join(__dirname, "..")), function (e) {
                         if (e) {

@@ -9,7 +9,7 @@ import path = require("path");
 export = () => {
     ipcServer.on("update-query", (reply) => {
         updater(require("../package.json"), (err, res) => {
-            if (res.updateAvailable) {
+            if (err !== null && res !== undefined && res.updateAvailable) {
                 ipcServer.on("update-do", () => {
                     res.update(path.normalize(path.join(__dirname, "..")), (e) => {
                         if (e) {
