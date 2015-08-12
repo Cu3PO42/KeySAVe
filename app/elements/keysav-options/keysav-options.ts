@@ -106,8 +106,10 @@ class KeysavOptions extends polymer.Base {
     }
 
     selectedFormatNameChanged(e) {
-        if (this.selectedFormat)
+        if (this.selectedFormat) {
             this.notifyPath("formattingOptions."+this.selectedFormatIndex+".name", this.selectedFormat.name, false);
+            this.$.dropdown._computeSelectedItemLabel(this.$.dropdown.selectedItem);
+        }
     }
 
     addFormatOption() {

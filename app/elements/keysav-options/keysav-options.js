@@ -96,8 +96,10 @@ function mkdirOptional(path) {
             }
         };
         KeysavOptions.prototype.selectedFormatNameChanged = function (e) {
-            if (this.selectedFormat)
+            if (this.selectedFormat) {
                 this.notifyPath("formattingOptions." + this.selectedFormatIndex + ".name", this.selectedFormat.name, false);
+                this.$.dropdown._computeSelectedItemLabel(this.$.dropdown.selectedItem);
+            }
         };
         KeysavOptions.prototype.addFormatOption = function () {
             this.push("formattingOptions", { name: "Custom Formatting Option", format: "", header: "", isDefault: false });
