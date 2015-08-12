@@ -97,9 +97,6 @@ function mkdirOptional(path) {
             if (this.selectedFormat)
                 this.notifyPath("formattingOptions." + this.selectedFormatIndex + ".name", this.selectedFormat.name, false);
         };
-        KeysavOptions.prototype.getFormatNames = function (change) {
-            return change.base.map(function (e) { return e.name; });
-        };
         KeysavOptions.prototype.addFormatOption = function () {
             this.push("formattingOptions", { name: "Custom Formatting Option", format: "", header: "", isDefault: false });
             this.selectedFormatIndex = this.formattingOptions.length - 1;
@@ -232,10 +229,6 @@ function mkdirOptional(path) {
             property({ type: Object, notify: true }), 
             __metadata('design:type', Object)
         ], KeysavOptions.prototype, "selectedFormat");
-        __decorate([
-            property({ type: Array, computed: "getFormatNames(formattingOptions.*)" }), 
-            __metadata('design:type', Array)
-        ], KeysavOptions.prototype, "formatNames");
         Object.defineProperty(KeysavOptions.prototype, "selectedFormatIndexChanged",
             __decorate([
                 observe("selectedFormatIndex"), 

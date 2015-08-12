@@ -42,8 +42,8 @@
             <div class="horizontal">
                 <paper-dropdown-menu label="Formatting Option" id="dropdown">
                     <paper-menu class="dropdown-content" selected="{{selectedFormatIndex}}" id="formatSelectorMenu">
-                        <template is="dom-repeat" items="[[formatNames]]">
-                            <paper-item>[[item]]</paper-item>
+                        <template is="dom-repeat" items="[[formattingOptions]]">
+                            <paper-item>[[item.name]]</paper-item>
                         </template>
                     </paper-menu>
                 </paper-dropdown-menu>

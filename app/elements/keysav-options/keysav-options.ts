@@ -81,9 +81,6 @@ class KeysavOptions extends polymer.Base {
     @property({type: Object, notify: true})
     selectedFormat: any;
 
-    @property({type: Array, computed: "getFormatNames(formattingOptions.*)"})
-    formatNames: string[];
-
     constructor() {
         super();
 
@@ -106,10 +103,6 @@ class KeysavOptions extends polymer.Base {
     selectedFormatNameChanged(e) {
         if (this.selectedFormat)
             this.notifyPath("formattingOptions."+this.selectedFormatIndex+".name", this.selectedFormat.name, false);
-    }
-
-    getFormatNames(change) {
-        return change.base.map((e) => e.name);
     }
 
     addFormatOption() {
