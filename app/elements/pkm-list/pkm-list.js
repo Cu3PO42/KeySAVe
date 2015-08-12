@@ -22,6 +22,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var handlebars = require("handlebars");
 var fs = require("fs");
 var localization = require("keysavcore/Localization");
+var calculateLevel = require("keysavcore/level");
 var remote = require("remote");
 var IpcClient = require("electron-ipc-tunnel/client");
 var path = require("path-extra");
@@ -68,6 +69,9 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
                 },
                 box: function () {
                     return this.box + 1;
+                },
+                level: function () {
+                    return calculateLevel(this.species, this.exp);
                 },
                 speciesName: function () {
                     return localization[self.language].species[this.species];
