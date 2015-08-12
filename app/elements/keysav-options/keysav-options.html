@@ -34,7 +34,13 @@
         <paper-material elevation="1">
             <h2>Formatting</h2>
             <div class="horizontal">
-                <paper-select items="[[formatNames]]" selected="{{selectedFormatIndex}}" resize="true"></paper-select>
+                <paper-dropdown-menu label="Formatting Option" id="dropdown">
+                    <paper-menu class="dropdown-content" selected="{{selectedFormatIndex}}" id="formatSelectorMenu">
+                        <template is="dom-repeat" items="[[formatNames]]">
+                            <paper-item>[[item]]</paper-item>
+                        </template>
+                    </paper-menu>
+                </paper-dropdown-menu>
                 <paper-input id="format-name" label="Format Name" value="{{selectedFormat.name}}" on-value-changed="selectedFormatNameChanged" disabled="{{selectedFormat.isDefault}}"></paper-input>
                 <div>
                     <paper-icon-button icon="icons:create" on-tap="cloneFormatOption"></paper-icon-button>

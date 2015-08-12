@@ -19,7 +19,8 @@
     "neon-elements": "PolymerElements/neon-elements#1.0.0",
     "polymer-ts": "~0.1.7",
     "paper-tooltip": "PolymerElements/paper-tooltip#~1.0.1",
-    "paper-spinner": "PolymerElements/paper-spinner#~1.0.2"
+    "paper-spinner": "PolymerElements/paper-spinner#~1.0.2",
+    "paper-dropdown-menu": "https://github.com/Cu3PO42/paper-dropdown-menu-1.0.git#4c60663f1d29ec1820a2a913652d7fd8707f1aab"
   },
   "devDependencies": {
     "web-component-tester": "*",
