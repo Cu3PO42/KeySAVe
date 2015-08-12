@@ -37,7 +37,7 @@
             <div id="container">
                 <div hidden$="{{isEmpty(formatHeader)}}" inner-h-t-m-l="{{formatHeader}}"></div>
                 <template id="list" is="dom-repeat" items="{{pokemon}}" filter="filterPokemon">
-                    <div inner-h-t-m-l="{{formatPokemon(item, template)}}"></div>
+                    <div inner-h-t-m-l="{{formatPokemon(item, template, language)}}"></div>
                 </template>
             </div>
         </paper-material>

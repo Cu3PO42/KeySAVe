@@ -38,101 +38,6 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
     mkdirOptional(path.join(path.homedir(), "Documents", "KeySAVe"));
     mkdirOptional(dbDirectory);
     var clipboard = remote.require("clipboard");
-    var handlebarsHelpers = {
-        row: function () {
-            return Math.floor(this.slot / 6) + 1;
-        },
-        column: function () {
-            return this.slot % 6 + 1;
-        },
-        box: function () {
-            return this.box + 1;
-        },
-        speciesName: function () {
-            return localization.en.species[this.species];
-        },
-        hasAlternateForm: function () {
-            return !!localization.en.forms[this.species];
-        },
-        formName: function () {
-            return localization.en.forms[this.species] ? localization.en.forms[this.species][this.form] : "";
-        },
-        natureName: function () {
-            return localization.en.natures[this.nature];
-        },
-        abilityName: function () {
-            return localization.en.abilities[this.ability];
-        },
-        typeName: function (typeId) {
-            return localization.en.types[typeId];
-        },
-        moveName: function (moveId) {
-            return moveId ? localization.en.moves[moveId] : "";
-        },
-        itemName: function (itemId) {
-            return itemId ? localization.en.items[itemId] : "";
-        },
-        ballImage: function (ball) {
-            return "[](/" + localization.en.items[this.ball].replace(" ", "").replace("é", "e").toLowerCase() + ")";
-        },
-        esv: function () {
-            return ("0000" + this.esv).slice(-4);
-        },
-        tsv: function () {
-            return ("0000" + this.tsv).slice(-4);
-        },
-        language: function () {
-            return localization.en.languageTags[this.otLang];
-        },
-        genderString: function (gender) {
-            switch (gender) {
-                case 0:
-                    return "♂";
-                case 1:
-                    return "♀";
-                case 2:
-                    return "-";
-            }
-        },
-        gameVersionString: function () {
-            return localization.en.games[this.gameVersion];
-        },
-        stepsToHatch: function () {
-            return this.isEgg * (this.otFriendship - 1) * 256;
-        },
-        hasHa: function () {
-            return this.abilityNum === 4;
-        },
-        checkmark: function (condition) {
-            return condition ? "✓" : "✗";
-        },
-        pentagon: function () {
-            return this.gameVersion >= 24 && this.gameVersion <= 27 ? "⬟" : "";
-        },
-        shinyMark: function () {
-            return this.isShiny ? "★" : "";
-        },
-        markings: function () {
-            return ((this.markings & 0x01 ? "●" : "◯")
-                + (this.markings & 0x02 ? "▲" : "△")
-                + (this.markings & 0x04 ? "■" : "□")
-                + (this.markings & 0x08 ? "♥" : "♡")
-                + (this.markings & 0x10 ? "★" : "☆")
-                + (this.markings & 0x20 ? "◆" : "◇"));
-        },
-        regionName: function () {
-            return localization.en.regions[this.gameVersion];
-        },
-        countryName: function () {
-            return localization.en.countries[this.countryID];
-        },
-        toJson: function (e) {
-            return new handlebars.SafeString(JSON.stringify(e));
-        }
-    };
-    handlebars.registerHelper(handlebarsHelpers);
-    var knownHelpers = Object.keys(handlebarsHelpers);
-    knownHelpers.push("moment");
     var PkmList = (function (_super) {
         __extends(PkmList, _super);
         function PkmList() {
@@ -153,6 +58,101 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
                         _this.$.dialog.toggle();
                     });
             });
+            var self = this;
+            this.handlebarsHelpers = {
+                row: function () {
+                    return Math.floor(this.slot / 6) + 1;
+                },
+                column: function () {
+                    return this.slot % 6 + 1;
+                },
+                box: function () {
+                    return this.box + 1;
+                },
+                speciesName: function () {
+                    return localization[self.language].species[this.species];
+                },
+                hasAlternateForm: function () {
+                    return !!localization[self.language].forms[this.species];
+                },
+                formName: function () {
+                    return localization[self.language].forms[this.species] ? localization[self.language].forms[this.species][this.form] : "";
+                },
+                natureName: function () {
+                    return localization[self.language].natures[this.nature];
+                },
+                abilityName: function () {
+                    return localization[self.language].abilities[this.ability];
+                },
+                typeName: function (typeId) {
+                    return localization[self.language].types[typeId];
+                },
+                moveName: function (moveId) {
+                    return moveId ? localization[self.language].moves[moveId] : "";
+                },
+                itemName: function (itemId) {
+                    return itemId ? localization[self.language].items[itemId] : "";
+                },
+                ballImage: function (ball) {
+                    return "[](/" + localization[self.language].items[this.ball].replace(" ", "").replace("é", "e").toLowerCase() + ")";
+                },
+                esv: function () {
+                    return ("0000" + this.esv).slice(-4);
+                },
+                tsv: function () {
+                    return ("0000" + this.tsv).slice(-4);
+                },
+                language: function () {
+                    return localization[self.language].languageTags[this.otLang];
+                },
+                genderString: function (gender) {
+                    switch (gender) {
+                        case 0:
+                            return "♂";
+                        case 1:
+                            return "♀";
+                        case 2:
+                            return "-";
+                    }
+                },
+                gameVersionString: function () {
+                    return localization[self.language].games[this.gameVersion];
+                },
+                stepsToHatch: function () {
+                    return this.isEgg * (this.otFriendship - 1) * 256;
+                },
+                hasHa: function () {
+                    return this.abilityNum === 4;
+                },
+                checkmark: function (condition) {
+                    return condition ? "✓" : "✗";
+                },
+                pentagon: function () {
+                    return this.gameVersion >= 24 && this.gameVersion <= 27 ? "⬟" : "";
+                },
+                shinyMark: function () {
+                    return this.isShiny ? "★" : "";
+                },
+                markings: function () {
+                    return ((this.markings & 0x01 ? "●" : "◯")
+                        + (this.markings & 0x02 ? "▲" : "△")
+                        + (this.markings & 0x04 ? "■" : "□")
+                        + (this.markings & 0x08 ? "♥" : "♡")
+                        + (this.markings & 0x10 ? "★" : "☆")
+                        + (this.markings & 0x20 ? "◆" : "◇"));
+                },
+                regionName: function () {
+                    return localization[self.language].regions[this.gameVersion];
+                },
+                countryName: function () {
+                    return localization[self.language].countries[this.countryID];
+                },
+                toJson: function (e) {
+                    return new handlebars.SafeString(JSON.stringify(e));
+                }
+            };
+            this.knownHelpers = Object.keys(this.handlebarsHelpers);
+            this.knownHelpers.push("moment");
         }
         PkmList.prototype.formatPokemon = function (pkm) {
             var uuid = pkm.box * 30 + pkm.slot;
@@ -160,7 +160,7 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             if (cached)
                 return cached;
             else
-                return this.formatCache[uuid] = this.template(pkm);
+                return this.formatCache[uuid] = this.template(pkm, { helpers: this.handlebarsHelpers });
         };
         PkmList.prototype.isEmpty = function (pkm) {
             return pkm.length === 0;
@@ -226,7 +226,7 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             this.debounce("compileTemplate", function () {
                 _this.formatCache = {};
                 try {
-                    _this.template = handlebars.compile(newValue, { knownHelpers: knownHelpers });
+                    _this.template = handlebars.compile(newValue, { knownHelpers: _this.knownHelpers });
                 }
                 catch (e) { }
             }, 500);
@@ -234,7 +234,7 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
         PkmList.prototype.filterRestrictionsChanged = function (lowerBox, upperBox) {
             this.$.list.render();
         };
-        PkmList.prototype.pokemonChanged = function (newValue, oldValue) {
+        PkmList.prototype.pokemonChanged = function (pokemon, language) {
             this.formatCache = {};
         };
         __decorate([
@@ -269,6 +269,10 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             property({ type: String }), 
             __metadata('design:type', String)
         ], PkmList.prototype, "dialogResult");
+        __decorate([
+            property({ type: String }), 
+            __metadata('design:type', String)
+        ], PkmList.prototype, "language");
         Object.defineProperty(PkmList.prototype, "formatStringChanged",
             __decorate([
                 observe("formatString"), 
@@ -285,7 +289,7 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             ], PkmList.prototype, "filterRestrictionsChanged", Object.getOwnPropertyDescriptor(PkmList.prototype, "filterRestrictionsChanged")));
         Object.defineProperty(PkmList.prototype, "pokemonChanged",
             __decorate([
-                observe("pokemon"), 
+                observe("pokemon, language"), 
                 __metadata('design:type', Function), 
                 __metadata('design:paramtypes', [Object, Object]), 
                 __metadata('design:returntype', Object)

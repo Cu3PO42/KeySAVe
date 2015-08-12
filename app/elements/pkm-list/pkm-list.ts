@@ -29,104 +29,6 @@ mkdirOptional(dbDirectory);
 
 var clipboard = remote.require("clipboard");
 
-var handlebarsHelpers: {[helper: string]: Function} = {
-    row: function() {
-        return Math.floor(this.slot/6) + 1;
-    },
-    column: function() {
-        return this.slot%6 + 1;
-    },
-    box: function() {
-        return this.box+1;
-    },
-    speciesName: function() {
-        return localization.en.species[this.species];
-    },
-    hasAlternateForm: function() {
-        return !!localization.en.forms[this.species];
-    },
-    formName: function() {
-        return localization.en.forms[this.species] ? localization.en.forms[this.species][this.form] : "";
-    },
-    natureName: function() {
-        return localization.en.natures[this.nature];
-    },
-    abilityName: function() {
-        return localization.en.abilities[this.ability];
-    },
-    typeName: function(typeId) {
-        return localization.en.types[typeId];
-    },
-    moveName: function(moveId) {
-        return moveId ? localization.en.moves[moveId] : "";
-    },
-    itemName: function(itemId) {
-        return itemId ? localization.en.items[itemId] : "";
-    },
-    ballImage: function(ball) {
-        return "[](/" + localization.en.items[this.ball].replace(" ", "").replace("é", "e").toLowerCase() + ")"
-    },
-    esv: function() {
-        return ("0000"+this.esv).slice(-4);
-    },
-    tsv: function() {
-        return ("0000"+this.tsv).slice(-4);
-    },
-    language: function() {
-        return localization.en.languageTags[this.otLang];
-    },
-    genderString: function(gender) {
-        switch (gender) {
-            case 0:
-                return "♂";
-            case 1:
-                return "♀";
-            case 2:
-                return "-";
-        }
-    },
-    gameVersionString: function() {
-        return localization.en.games[this.gameVersion];
-    },
-    stepsToHatch: function() {
-        return this.isEgg * (this.otFriendship-1) * 256;
-    },
-    hasHa: function() {
-        return this.abilityNum === 4;
-    },
-    checkmark: function(condition) {
-        return condition ? "✓" : "✗";
-    },
-    pentagon: function() {
-        return this.gameVersion >= 24 && this.gameVersion <= 27 ? "⬟" : "";
-    },
-    shinyMark: function() {
-        return this.isShiny ? "★" : "";
-    },
-    markings: function() {
-        return ((this.markings&0x01 ? "●" : "◯")
-              + (this.markings&0x02 ? "▲" : "△")
-              + (this.markings&0x04 ? "■" : "□")
-              + (this.markings&0x08 ? "♥" : "♡")
-              + (this.markings&0x10 ? "★" : "☆")
-              + (this.markings&0x20 ? "◆" : "◇"));
-    },
-    regionName: function() {
-        return localization.en.regions[this.gameVersion];
-    },
-    countryName: function() {
-        return localization.en.countries[this.countryID];
-    },
-    toJson: function(e) {
-        return new handlebars.SafeString(JSON.stringify(e));
-    }
-};
-
-handlebars.registerHelper(handlebarsHelpers);
-
-var knownHelpers = Object.keys(handlebarsHelpers);
-knownHelpers.push("moment");
-
 @component("pkm-list")
 class PkmList extends polymer.Base {
     @property({type: Array})
@@ -153,9 +55,14 @@ class PkmList extends polymer.Base {
     @property({type: String})
     dialogResult: string;
 
+    @property({type: String})
+    language: string;
+
     private template: Handlebars.HandlebarsTemplateDelegate;
     private formatCache: {[pid: number]: string} = {};
     private ipcClient: IpcClient;
+    private handlebarsHelpers: {[helper: string]: Function};
+    private knownHelpers: string[];
 
     constructor() {
         super();
@@ -174,6 +81,103 @@ class PkmList extends polymer.Base {
                     this.$.dialog.toggle();
                 });
         });
+
+        var self = this;
+        this.handlebarsHelpers = {
+            row: function() {
+                return Math.floor(this.slot/6) + 1;
+            },
+            column: function() {
+                return this.slot%6 + 1;
+            },
+            box: function() {
+                return this.box+1;
+            },
+            speciesName: function() {
+                return localization[self.language].species[this.species];
+            },
+            hasAlternateForm: function() {
+                return !!localization[self.language].forms[this.species];
+            },
+            formName: function() {
+                return localization[self.language].forms[this.species] ? localization[self.language].forms[this.species][this.form] : "";
+            },
+            natureName: function() {
+                return localization[self.language].natures[this.nature];
+            },
+            abilityName: function() {
+                return localization[self.language].abilities[this.ability];
+            },
+            typeName: function(typeId) {
+                return localization[self.language].types[typeId];
+            },
+            moveName: function(moveId) {
+                return moveId ? localization[self.language].moves[moveId] : "";
+            },
+            itemName: function(itemId) {
+                return itemId ? localization[self.language].items[itemId] : "";
+            },
+            ballImage: function(ball) {
+                return "[](/" + localization[self.language].items[this.ball].replace(" ", "").replace("é", "e").toLowerCase() + ")"
+            },
+            esv: function() {
+                return ("0000"+this.esv).slice(-4);
+            },
+            tsv: function() {
+                return ("0000"+this.tsv).slice(-4);
+            },
+            language: function() {
+                return localization[self.language].languageTags[this.otLang];
+            },
+            genderString: function(gender) {
+                switch (gender) {
+                    case 0:
+                        return "♂";
+                    case 1:
+                        return "♀";
+                    case 2:
+                        return "-";
+                }
+            },
+            gameVersionString: function() {
+                return localization[self.language].games[this.gameVersion];
+            },
+            stepsToHatch: function() {
+                return this.isEgg * (this.otFriendship-1) * 256;
+            },
+            hasHa: function() {
+                return this.abilityNum === 4;
+            },
+            checkmark: function(condition) {
+                return condition ? "✓" : "✗";
+            },
+            pentagon: function() {
+                return this.gameVersion >= 24 && this.gameVersion <= 27 ? "⬟" : "";
+            },
+            shinyMark: function() {
+                return this.isShiny ? "★" : "";
+            },
+            markings: function() {
+                return ((this.markings&0x01 ? "●" : "◯")
+                      + (this.markings&0x02 ? "▲" : "△")
+                      + (this.markings&0x04 ? "■" : "□")
+                      + (this.markings&0x08 ? "♥" : "♡")
+                      + (this.markings&0x10 ? "★" : "☆")
+                      + (this.markings&0x20 ? "◆" : "◇"));
+            },
+            regionName: function() {
+                return localization[self.language].regions[this.gameVersion];
+            },
+            countryName: function() {
+                return localization[self.language].countries[this.countryID];
+            },
+            toJson: function(e) {
+                return new handlebars.SafeString(JSON.stringify(e));
+            }
+        };
+
+        this.knownHelpers = Object.keys(this.handlebarsHelpers);
+        this.knownHelpers.push("moment");
     }
 
     formatPokemon(pkm) {
@@ -182,7 +186,7 @@ class PkmList extends polymer.Base {
         if (cached)
             return cached;
         else
-            return this.formatCache[uuid] = this.template(pkm);
+            return this.formatCache[uuid] = this.template(pkm, {helpers: this.handlebarsHelpers});
     }
 
     isEmpty(pkm) {
@@ -252,7 +256,7 @@ class PkmList extends polymer.Base {
         this.debounce("compileTemplate", () => {
             this.formatCache = {};
             try {
-                this.template = handlebars.compile(newValue, {knownHelpers: knownHelpers});
+                this.template = handlebars.compile(newValue, {knownHelpers: this.knownHelpers});
             }
             catch (e) {}
         }, 500);
@@ -263,8 +267,8 @@ class PkmList extends polymer.Base {
         this.$.list.render();
     }
 
-    @observe("pokemon")
-    pokemonChanged(newValue, oldValue) {
+    @observe("pokemon, language")
+    pokemonChanged(pokemon, language) {
         this.formatCache = {};
     }
 }
