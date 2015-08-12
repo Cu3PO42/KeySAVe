@@ -108,6 +108,8 @@ function mkdirOptional(path) {
         KeysavOptions.prototype.deleteFormatOption = function () {
             if (this.formattingOptions.length > 1) {
                 this.splice("formattingOptions", this.selectedFormatIndex, 1);
+                if (this.selectedFormatIndex > this.formattingOptions.length - 1)
+                    this.selectedFormatIndex = this.formattingOptions.length - 1;
                 this.selectedFormat = this.formattingOptions[this.selectedFormatIndex];
             }
         };
