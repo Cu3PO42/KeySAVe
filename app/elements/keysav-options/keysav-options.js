@@ -216,7 +216,7 @@ function mkdirOptional(path) {
             }
         };
         __decorate([
-            property({ type: String, reflectToAttribute: true, notify: true }), 
+            property({ type: String, notify: true }), 
             __metadata('design:type', String)
         ], KeysavOptions.prototype, "formatString");
         __decorate([

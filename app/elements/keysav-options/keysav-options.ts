@@ -68,7 +68,7 @@ config.formattingOptions = config.defaultFormattingOptions;
 
 @component("keysav-options")
 class KeysavOptions extends polymer.Base {
-    @property({type: String, reflectToAttribute: true, notify: true})
+    @property({type: String, notify: true})
     formatString: string;
 
     @property({type: Array})
