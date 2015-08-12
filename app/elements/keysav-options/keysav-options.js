@@ -69,7 +69,8 @@ function mkdirOptional(path) {
                 "format": "{{box}},{{row}},{{column}},{{species}},{{gender}},{{nature}},{{ability}},{{ivHp}},{{ivAtk}},{{ivSpAtk}},{{ivSpDef}},{{ivSpe}},{{hpType}},{{esv}},{{tsv}},{{nickname}},{{ot}},{{ball}},{{tid}},{{sid}},{{evHp}},{{evAtk}},{{evDef}},{{evSpAtk}},{{evSpDef}},{{evSpe}},{{move1}},{{move2}},{{move3}},{{move4}},{{eggMove1}},{{eggMove2}},{{eggMove3}},{{eggMove4}},{{isShiny}},{{isEgg}}"
             }
         ],
-        "selectedFormatIndex": 0
+        "selectedFormatIndex": 0,
+        "language": 2
     };
     if (fs.existsSync(configFile))
         _.extend(config, JSON.parse(fs.readFileSync(path.join(keysavDir, "config.json"), { encoding: "utf-8" })));
@@ -84,8 +85,9 @@ function mkdirOptional(path) {
             this.formattingOptions = config.formattingOptions;
             this.selectedFormatIndex = config.selectedFormatIndex;
             this.selectedFormat = this.formattingOptions[config.selectedFormatIndex];
+            this.language = config.language;
             window.addEventListener("beforeunload", function (e) {
-                fs.writeFileSync(configFile, JSON.stringify({ formattingOptions: _.filter(_this.formattingOptions, function (e) { return !e.isDefault; }), selectedFormatIndex: _this.selectedFormatIndex }, null, 4), { encoding: "utf-8" });
+                fs.writeFileSync(configFile, JSON.stringify({ formattingOptions: _.filter(_this.formattingOptions, function (e) { return !e.isDefault; }), selectedFormatIndex: _this.selectedFormatIndex, language: _this.language }, null, 4), { encoding: "utf-8" });
             }, false);
         }
         KeysavOptions.prototype.selectedFormatIndexChanged = function (newValue, oldValue) {
@@ -231,6 +233,10 @@ function mkdirOptional(path) {
             property({ type: Object, notify: true }), 
             __metadata('design:type', Object)
         ], KeysavOptions.prototype, "selectedFormat");
+        __decorate([
+            property({ type: String, notify: true }), 
+            __metadata('design:type', String)
+        ], KeysavOptions.prototype, "language");
         Object.defineProperty(KeysavOptions.prototype, "selectedFormatIndexChanged",
             __decorate([
                 observe("selectedFormatIndex"), 

@@ -57,7 +57,8 @@ var config: any = {
             "format": "{{box}},{{row}},{{column}},{{species}},{{gender}},{{nature}},{{ability}},{{ivHp}},{{ivAtk}},{{ivSpAtk}},{{ivSpDef}},{{ivSpe}},{{hpType}},{{esv}},{{tsv}},{{nickname}},{{ot}},{{ball}},{{tid}},{{sid}},{{evHp}},{{evAtk}},{{evDef}},{{evSpAtk}},{{evSpDef}},{{evSpe}},{{move1}},{{move2}},{{move3}},{{move4}},{{eggMove1}},{{eggMove2}},{{eggMove3}},{{eggMove4}},{{isShiny}},{{isEgg}}"
         }
     ],
-    "selectedFormatIndex": 0
+    "selectedFormatIndex": 0,
+    "language": 2
 }
 
 if (fs.existsSync(configFile))
@@ -81,15 +82,19 @@ class KeysavOptions extends polymer.Base {
     @property({type: Object, notify: true})
     selectedFormat: any;
 
+    @property({type: String, notify: true})
+    language: string;
+
     constructor() {
         super();
 
         this.formattingOptions = config.formattingOptions;
         this.selectedFormatIndex = config.selectedFormatIndex;
         this.selectedFormat = this.formattingOptions[config.selectedFormatIndex];
+        this.language = config.language;
 
         window.addEventListener("beforeunload", (e) => {
-            fs.writeFileSync(configFile, JSON.stringify({formattingOptions: _.filter(this.formattingOptions, (e) => !e.isDefault), selectedFormatIndex: this.selectedFormatIndex}, null, 4), {encoding: "utf-8"});
+            fs.writeFileSync(configFile, JSON.stringify({formattingOptions: _.filter(this.formattingOptions, (e) => !e.isDefault), selectedFormatIndex: this.selectedFormatIndex, language: this.language}, null, 4), {encoding: "utf-8"});
         }, false);
     }
 
