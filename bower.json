@@ -20,7 +20,7 @@
     "polymer-ts": "~0.1.7",
     "paper-tooltip": "PolymerElements/paper-tooltip#~1.0.1",
     "paper-spinner": "PolymerElements/paper-spinner#~1.0.2",
-    "paper-dropdown-menu": "https://github.com/Cu3PO42/paper-dropdown-menu-1.0.git#b3174b49a770ac7376ebea2a7172c9def9b658f6"
+    "paper-dropdown-menu": "https://github.com/Cu3PO42/paper-dropdown-menu-1.0.git#337630b8b03a9396c3bfc86c5e2d9975dc62c059"
   },
   "devDependencies": {
     "web-component-tester": "*",
