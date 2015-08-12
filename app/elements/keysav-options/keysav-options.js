@@ -70,7 +70,7 @@ function mkdirOptional(path) {
             }
         ],
         "selectedFormatIndex": 0,
-        "language": 2
+        "language": "en"
     };
     if (fs.existsSync(configFile))
         _.extend(config, JSON.parse(fs.readFileSync(path.join(keysavDir, "config.json"), { encoding: "utf-8" })));

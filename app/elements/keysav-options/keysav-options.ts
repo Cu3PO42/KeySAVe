@@ -58,7 +58,7 @@ var config: any = {
         }
     ],
     "selectedFormatIndex": 0,
-    "language": 2
+    "language": "en"
 }
 
 if (fs.existsSync(configFile))

@@ -31,15 +31,15 @@
     <template>
         <paper-material elevation="1">
             <h2>Formatting</h2>
-            <paper-dropdown-menu>
-                <paper-menu class="dropdown-content" attr-for-selected="data-index" label="Language" selected="{{language}}">
-                    <paper-item data-index="2">English</paper-item>
-                    <paper-item data-index="1">Japanese</paper-item>
-                    <paper-item data-index="5">German</paper-item>
-                    <paper-item data-index="3">French</paper-item>
-                    <paper-item data-route="4">Italian</paper-item>
-                    <paper-item data-route="7">Spanish</paper-item>
-                    <paper-item data-route="8">Korean</paper-item>
+            <paper-dropdown-menu label="Language">
+                <paper-menu class="dropdown-content" attr-for-selected="data-index" selected="{{language}}">
+                    <paper-item data-index="en">English</paper-item>
+                    <paper-item data-index="ja">Japanese</paper-item>
+                    <paper-item data-index="de">German</paper-item>
+                    <paper-item data-index="fr">French</paper-item>
+                    <paper-item data-index="it">Italian</paper-item>
+                    <paper-item data-index="es">Spanish</paper-item>
+                    <paper-item data-index="ko">Korean</paper-item>
                 </paper-menu>
             </paper-dropdown-menu>
             <div class="horizontal">
