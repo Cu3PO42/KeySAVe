@@ -47,15 +47,15 @@
                 <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
                     <section data-route="bv">
-                        <bv-dumper format="[[selectedFormat]]"></bv-dumper>
+                        <bv-dumper format="[[selectedFormat]]" language="[[language]]"></bv-dumper>
                     </section>
 
                     <section data-route="sav">
-                        <save-dumper format="[[selectedFormat]]"></save-dumper>
+                        <save-dumper format="[[selectedFormat]]" language="[[language]]"></save-dumper>
                     </section>
 
                     <section data-route="options">
-                        <keysav-options selected-format="{{selectedFormat}}"></keysav-options>
+                        <keysav-options selected-format="{{selectedFormat}}" language="{{language}}"></keysav-options>
                     </section>
 
                     <section data-route="breaking">

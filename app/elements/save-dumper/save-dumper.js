@@ -106,6 +106,10 @@ var path = require("path-extra");
             __metadata('design:type', Object)
         ], SaveDumper.prototype, "format");
         __decorate([
+            property({ type: String }), 
+            __metadata('design:type', String)
+        ], SaveDumper.prototype, "language");
+        __decorate([
             property({ type: Object }), 
             __metadata('design:type', Object)
         ], SaveDumper.prototype, "fileOptions");

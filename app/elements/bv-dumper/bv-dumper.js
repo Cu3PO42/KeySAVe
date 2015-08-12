@@ -107,6 +107,10 @@ var path = require("path-extra");
             __metadata('design:type', Object)
         ], BvDumper.prototype, "format");
         __decorate([
+            property({ type: String }), 
+            __metadata('design:type', String)
+        ], BvDumper.prototype, "language");
+        __decorate([
             property({ type: Object }), 
             __metadata('design:type', Object)
         ], BvDumper.prototype, "fileOptions");

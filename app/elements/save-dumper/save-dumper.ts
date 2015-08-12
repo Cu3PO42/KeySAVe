@@ -29,6 +29,9 @@ class SaveDumper extends polymer.Base {
     @property({type: Object})
     format: any;
 
+    @property({type: String})
+    language: string;
+    
     @property({type: Object})
     fileOptions: GitHubElectron.Dialog.OpenDialogOptions;
 
