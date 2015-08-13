@@ -164,7 +164,7 @@ export = function() {
                     reader.scanSlots();
                 });
             })
-        })
+        }, {concurrency: 1})
         .then(() => {
             reply("break-folder-result");
         })

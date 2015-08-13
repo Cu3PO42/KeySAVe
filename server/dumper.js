@@ -151,7 +151,7 @@ module.exports = function () {
                     reader.scanSlots();
                 });
             });
-        })
+        }, { concurrency: 1 })
             .then(function () {
             reply("break-folder-result");
         })
