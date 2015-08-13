@@ -22,7 +22,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var handlebars = require("handlebars");
 var fs = require("fs");
 var localization = require("keysavcore/Localization");
-var calculateLevel = require("keysavcore/level");
+var StatCalculator = require("keysavcore/Calculator");
 var remote = require("remote");
 var IpcClient = require("electron-ipc-tunnel/client");
 var path = require("path-extra");
@@ -71,7 +71,25 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
                     return this.box + 1;
                 },
                 level: function () {
-                    return calculateLevel(this.species, this.exp);
+                    return StatCalculator.level(this);
+                },
+                hp: function () {
+                    return StatCalculator.hp(this);
+                },
+                atk: function () {
+                    return StatCalculator.atk(this);
+                },
+                def: function () {
+                    return StatCalculator.def(this);
+                },
+                spAtk: function () {
+                    return StatCalculator.spAtk(this);
+                },
+                spDef: function () {
+                    return StatCalculator.spDef(this);
+                },
+                spe: function () {
+                    return StatCalculator.spe(this);
                 },
                 speciesName: function () {
                     return localization[self.language].species[this.species];

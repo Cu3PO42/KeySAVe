@@ -7,7 +7,7 @@
 import handlebars = require("handlebars");
 import fs = require("fs");
 import localization = require("keysavcore/Localization");
-import calculateLevel = require("keysavcore/level");
+import StatCalculator = require("keysavcore/Calculator");
 import remote = require("remote");
 import IpcClient = require("electron-ipc-tunnel/client");
 import path = require("path-extra");
@@ -95,7 +95,25 @@ class PkmList extends polymer.Base {
                 return this.box+1;
             },
             level: function() {
-                return calculateLevel(this.species, this.exp);
+                return StatCalculator.level(this);
+            },
+            hp: function() {
+                return StatCalculator.hp(this);
+            },
+            atk: function() {
+                return StatCalculator.atk(this);
+            },
+            def: function() {
+                return StatCalculator.def(this);
+            },
+            spAtk: function() {
+                return StatCalculator.spAtk(this);
+            },
+            spDef: function() {
+                return StatCalculator.spDef(this);
+            },
+            spe: function() {
+                return StatCalculator.spe(this);
             },
             speciesName: function() {
                 return localization[self.language].species[this.species];
