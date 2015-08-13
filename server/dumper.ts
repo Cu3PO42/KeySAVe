@@ -95,6 +95,7 @@ export = function() {
     var breakInProgress: number;
 
     ipcServer.on("break-key", function(reply, args) {
+        // TODO get rid of async here
         async.parallel([fs.readFile.bind(fs, args.file1), fs.readFile.bind(fs, args.file2)], function(err, res: Buffer[]) {
             var files = _.map(res, bufToArr);
             if (files[0].length === 28256 && files[1].length === 28256) {
