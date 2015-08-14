@@ -27,6 +27,7 @@
     "files": [
         "./app/elements/bv-dumper/bv-dumper.ts",
         "./app/elements/electron-updater/electron-updater.ts",
+        "./app/elements/external-link/external-link.ts",
         "./app/elements/file-input/file-input.ts",
         "./app/elements/key-breaker/key-breaker.ts",
         "./app/elements/keysav-about/keysav-about.ts",
