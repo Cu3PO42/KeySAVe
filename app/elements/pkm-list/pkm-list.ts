@@ -139,6 +139,12 @@ class PkmList extends polymer.Base {
             itemName: function(itemId) {
                 return itemId ? localization[self.language].items[itemId] : "";
             },
+            metLocationName: function() {
+                return localization[self.language].getLocation(this);
+            },
+            eggLocationName: function() {
+                return localization[self.language].getEggLocation(this);
+            },
             ballImage: function(ball) {
                 return "[](/" + localization[self.language].items[this.ball].replace(" ", "").replace("é", "e").toLowerCase() + ")"
             },
