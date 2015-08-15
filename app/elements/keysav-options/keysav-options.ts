@@ -134,7 +134,7 @@ class KeysavOptions extends polymer.Base {
     generateHeader() {
         try {
             this.set("selectedFormat.header", handlebars.compile(this.selectedFormat.format)({
-                ec: "Encryption Key",
+                ec: "Encryption Constant",
                 pid: "PID",
                 exp: "Experience Points",
                 evHp: "HP EV",
