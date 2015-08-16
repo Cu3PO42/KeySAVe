@@ -120,7 +120,8 @@ function mkdirOptional(path) {
         KeysavOptions.prototype.generateHeader = function () {
             try {
                 this.set("selectedFormat.header", handlebars.compile(this.selectedFormat.format)({
-                    ec: "Encryption Key",
+                    ball: "Ball",
+                    ec: "Encryption Constant",
                     pid: "PID",
                     exp: "Experience Points",
                     evHp: "HP EV",
