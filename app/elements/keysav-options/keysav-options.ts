@@ -29,8 +29,8 @@ var config: any = {
         {
             "name": "Reddit",
             "isDefault": true,
-            "header": "Box | Slot | Species (Gender) | Nature | Ability | HP.ATK.DEF.SPATK.SPDEF.SPE | HP [ESV]",
-            "format": "B{{box}} | {{row}},{{column}} | {{speciesName}} ({{genderString gender}}) | {{natureName}} | {{abilityName}} | {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} | {{typeName hpType}} [{{esv}}]"
+            "header": "Box | Slot | Species (Gender) | Nature | Ability | HP.ATK.DEF.SPATK.SPDEF.SPE | HP | [ESV]<br>|---|---|---|---|---|---|---|---|",
+            "format": "B{{box}} | {{row}},{{column}} | {{speciesName}} ({{genderString gender}}) | {{natureName}} | {{abilityName}} | {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} | {{typeName hpType}} | [{{esv}}]"
         },
         {
             "name": "TSV",
