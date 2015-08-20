@@ -20,14 +20,13 @@
     "polymer-ts": "~0.1.7",
     "paper-tooltip": "PolymerElements/paper-tooltip#~1.0.1",
     "paper-spinner": "PolymerElements/paper-spinner#~1.0.2",
-    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#~1.0.2"
+    "paper-dropdown-menu": "https://github.com/Cu3PO42/paper-dropdown-menu-1.0.git#d7bc7ab1b1eb78fa324b493b52d63ae6dc7b2f8e"
   },
   "devDependencies": {
     "web-component-tester": "*",
     "test-fixture": "PolymerElements/test-fixture#^1.0.0"
   },
   "resolutions": {
-    "iron-elements": "~1.0.3",
-    "paper-dropdown-menu": "~1.0.2"
+    "iron-elements": "~1.0.3"
   }
 }
