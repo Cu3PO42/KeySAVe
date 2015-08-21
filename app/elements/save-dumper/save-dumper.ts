@@ -31,7 +31,7 @@ class SaveDumper extends polymer.Base {
 
     @property({type: String})
     language: string;
-    
+
     @property({type: Object})
     fileOptions: GitHubElectron.Dialog.OpenDialogOptions;
 
@@ -74,6 +74,9 @@ class SaveDumper extends polymer.Base {
                     case 0x76000:
                     case 0x65600:
                     case 232*30*32:
+                    case 232*30*31:
+                    case 0x70000:
+                    case 0x80000:
                         this.ipcClient.send("dump-save", this.path);
                         break;
                     default:
