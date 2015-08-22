@@ -7,3 +7,5 @@ build/
 cache/
 release/
 .tmp/
+npm-debug.log
+
