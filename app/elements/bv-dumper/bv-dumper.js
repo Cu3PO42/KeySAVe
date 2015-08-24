@@ -34,7 +34,7 @@ var path = require("path-extra");
             _super.call(this);
             this.enemyDumpable = false;
             this.team = "myTeam";
-            this.fileOptions = { filters: [{ name: "Battle Video", extensions: [""] }] };
+            this.fileOptions = process.platform === "win32" ? {} : { filters: [{ name: "Battle Video", extensions: [""] }] };
             this.ipcClient = new IpcClient();
             this.ipcClient.on("dump-bv-dumped", function (res) {
                 _this.enemyDumpable = res.enemyDumpable;

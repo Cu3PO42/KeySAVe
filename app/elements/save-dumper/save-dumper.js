@@ -35,7 +35,7 @@ var path = require("path-extra");
             _super.call(this);
             this.lowerBox = 1;
             this.upperBox = 31;
-            this.fileOptions = { filters: [{ name: "SAV (1MB)", extensions: ["bin", "sav"] }, { name: "Main File", extensions: [""] }] };
+            this.fileOptions = process.platform === "win32" ? {} : { filters: [{ name: "SAV (1MB)", extensions: ["bin", "sav"] }, { name: "Main File", extensions: [""] }] };
             this.ipcClient = new IpcClient();
             this.ipcClient.on("dump-save-dumped", function (res) {
                 _this.$.results.pokemon = res;

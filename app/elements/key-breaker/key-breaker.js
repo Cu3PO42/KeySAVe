@@ -23,7 +23,7 @@ var fs = require("fs");
         function KeyBreaker() {
             var _this = this;
             _super.call(this);
-            this.fileOptions = { filters: [{ name: "SAV (1MB)", extensions: ["bin", "sav"] }, { name: "Main File", extensions: [""] }, { name: "Battle Video", extensions: [""] }] };
+            this.fileOptions = process.platform === "win32" ? {} : { filters: [{ name: "SAV (1MB)", extensions: ["bin", "sav"] }, { name: "Battle Video", extensions: [""] }] };
             this.folderOptions = { properties: ["openDirectory"] };
             this.ipcClient = new IpcClient();
             this.ipcClient.on("break-key-result", function (arg) {
