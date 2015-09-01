@@ -43,7 +43,7 @@ class SaveDumper extends polymer.Base {
     constructor() {
         super();
 
-        this.fileOptions = process.platform === "win32" ? {} : {filters: [{name: "SAV (1MB)", extensions: ["bin", "sav"]}, {name: "Main File", extensions: [""]}]};
+        this.fileOptions = process.platform !== "darwin" ? {} : {filters: [{name: "SAV (1MB)", extensions: ["bin", "sav"]}, {name: "Main File", extensions: [""]}]};
 
         this.ipcClient = new IpcClient();
 

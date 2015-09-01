@@ -30,7 +30,7 @@ class KeyBreaker extends polymer.Base {
     constructor() {
         super();
 
-        this.fileOptions = process.platform === "win32" ? {} : {filters: [{name: "SAV (1MB)", extensions: ["bin", "sav"]}, {name: "Battle Video", extensions: [""]}]};
+        this.fileOptions = process.platform !== "darwin" ? {} : {filters: [{name: "SAV (1MB)", extensions: ["bin", "sav"]}, {name: "Battle Video", extensions: [""]}]};
         this.folderOptions = {properties: ["openDirectory"]};
 
         this.ipcClient = new IpcClient();

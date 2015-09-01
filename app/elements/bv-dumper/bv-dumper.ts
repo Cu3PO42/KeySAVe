@@ -44,7 +44,7 @@ class BvDumper extends polymer.Base {
     constructor() {
         super()
 
-        this.fileOptions = process.platform === "win32" ? {} : {filters: [{name: "Battle Video", extensions: [""]}]};
+        this.fileOptions = process.platform !== "darwin" ? {} : {filters: [{name: "Battle Video", extensions: [""]}]};
 
         this.ipcClient = new IpcClient();
 
