@@ -30,7 +30,6 @@
     "bluebird": "^2.9.34",
     "electron-gh-releases-updater": "^0.1.1",
     "electron-ipc-tunnel": "^1.0.1",
-    "gulp-electron": "0.0.9",
     "handlebars": "^3.0.3",
     "handlebars-helper-moment": "^0.2.0",
     "keysavcore": "^0.8.1",
