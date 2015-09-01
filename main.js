@@ -1,6 +1,7 @@
 /// <reference path="./typings/github-electron/github-electron.d.ts" />
 /// <reference path="./typings/node/node.d.ts" />
 var app = require("app");
+var menu = require("menu");
 var BrowserWindow = require("browser-window");
 var FileDialogServices = require("./server/file-dialog-service");
 var Dumper = require("./server/dumper");
@@ -17,5 +18,64 @@ app.on("ready", function () {
     });
     FileDialogServices(mainWindow);
     Dumper();
-    Updater(mainWindow);
+    Updater();
+    if (process.platform === "darwin")
+        menu.setApplicationMenu(menu.buildFromTemplate([{
+                label: 'KeySAVe',
+                submenu: [
+                    {
+                        label: 'About KeySAVe',
+                        selector: 'orderFrontStandardAboutPanel:'
+                    },
+                    {
+                        type: 'separator'
+                    },
+                    {
+                        label: 'Hide KeySAVe',
+                        accelerator: 'CmdOrCtrl+H',
+                        selector: 'hide:'
+                    },
+                    {
+                        label: 'Hide Others',
+                        accelerator: 'CmdOrCtrl+Shift+H',
+                        selector: 'hideOtherApplications:'
+                    },
+                    {
+                        label: 'Show All',
+                        selector: 'unhideAllApplications:'
+                    },
+                    {
+                        type: 'separator'
+                    },
+                    {
+                        label: 'Quit',
+                        accelerator: 'CmdOrCtrl+Q',
+                        selector: 'terminate:'
+                    },
+                ]
+            }, {
+                label: 'Edit',
+                submenu: [
+                    {
+                        label: 'Cut',
+                        accelerator: 'CmdOrCtrl+X',
+                        selector: 'cut:'
+                    },
+                    {
+                        label: 'Copy',
+                        accelerator: 'CmdOrCtrl+C',
+                        selector: 'copy:'
+                    },
+                    {
+                        label: 'Paste',
+                        accelerator: 'CmdOrCtrl+V',
+                        selector: 'paste:'
+                    },
+                    {
+                        label: 'Select All',
+                        accelerator: 'CmdOrCtrl+A',
+                        selector: 'selectAll:'
+                    }
+                ]
+            }]));
 });
