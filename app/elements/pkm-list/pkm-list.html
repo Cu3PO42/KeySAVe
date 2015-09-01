@@ -28,6 +28,13 @@
             <div>{{dialogResult}}</div>
             <div class="align-right"><paper-button dialog-confirm>Ok</paper-button></div>
         </paper-dialog>
+        <paper-material elevation="1">
+            <paper-radio-group>
+                <paper-radio-button name="male">♂</paper-radio-button>
+                <paper-radio-button name="female">♀</paper-radio-button>
+                <paper-radio-button name="any">Any</paper-radio-button>
+            </paper-radio-group>
+        </paper-material>
         <div class="align-right" hidden$="{{isEmpty(pokemon)}}">
             <paper-icon-button icon="icons:file-download" on-tap="export"></paper-icon-button>
             <paper-icon-button icon="icons:save" on-tap="save"></paper-icon-button>
