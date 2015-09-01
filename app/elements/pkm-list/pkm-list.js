@@ -45,6 +45,7 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             var _this = this;
             _super.call(this);
             this.pokemon = [];
+            this.filteredGender = "any";
             this.formatCache = {};
             this.ipcClient = new IpcClient();
             this.ipcClient.on("file-dialog-save-result", function (filename) {
@@ -194,7 +195,11 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             return pkm.length === 0;
         };
         PkmList.prototype.filterPokemon = function (pkm) {
-            return (this.lowerBox === undefined || pkm.box + 1 >= this.lowerBox) && (this.upperBox === undefined || pkm.box < this.upperBox);
+            if (!((this.lowerBox === undefined || pkm.box + 1 >= this.lowerBox) && (this.upperBox === undefined || pkm.box < this.upperBox)))
+                return false;
+            if (!(this.filteredGender === "male" && pkm.gender === 0 || this.filteredGender === "female" && pkm.gender === 1 || this.filteredGender === "any"))
+                return false;
+            return true;
         };
         PkmList.prototype.copyClipboard = function () {
             clipboard.write({ text: this.$.container.innerText, html: this.$.container.innerHTML });
@@ -259,7 +264,7 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
                 catch (e) { }
             }, 500);
         };
-        PkmList.prototype.filterRestrictionsChanged = function (lowerBox, upperBox) {
+        PkmList.prototype.filterRestrictionsChanged = function () {
             this.$.list.render();
         };
         PkmList.prototype.pokemonChanged = function (pokemon, language) {
@@ -301,6 +306,10 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             property({ type: String }), 
             __metadata('design:type', String)
         ], PkmList.prototype, "language");
+        __decorate([
+            property({ type: String }), 
+            __metadata('design:type', String)
+        ], PkmList.prototype, "filteredGender");
         Object.defineProperty(PkmList.prototype, "formatStringChanged",
             __decorate([
                 observe("formatString"), 
@@ -310,9 +319,9 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             ], PkmList.prototype, "formatStringChanged", Object.getOwnPropertyDescriptor(PkmList.prototype, "formatStringChanged")));
         Object.defineProperty(PkmList.prototype, "filterRestrictionsChanged",
             __decorate([
-                observe("lowerBox, upperBox"), 
+                observe("lowerBox, upperBox, filteredGender"), 
                 __metadata('design:type', Function), 
-                __metadata('design:paramtypes', [Object, Object]), 
+                __metadata('design:paramtypes', []), 
                 __metadata('design:returntype', Object)
             ], PkmList.prototype, "filterRestrictionsChanged", Object.getOwnPropertyDescriptor(PkmList.prototype, "filterRestrictionsChanged")));
         Object.defineProperty(PkmList.prototype, "pokemonChanged",
