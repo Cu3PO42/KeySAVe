@@ -62,6 +62,9 @@ class PkmList extends polymer.Base {
     @property({type: String})
     filteredGender: string = "any";
 
+    @property({type: Boolean})
+    filteredEggs: boolean = false;
+
     private template: Handlebars.HandlebarsTemplateDelegate;
     private formatCache: {[pid: number]: string} = {};
     private ipcClient: IpcClient;
@@ -227,6 +230,8 @@ class PkmList extends polymer.Base {
     filterPokemon(pkm: KeySAVCore.Structures.PKX) {
         if (!((this.lowerBox === undefined || pkm.box+1 >= this.lowerBox) && (this.upperBox === undefined || pkm.box < this.upperBox)))
             return false;
+        if (this.filteredEggs && !pkm.isEgg)
+            return false;
         if (!(this.filteredGender === "male" && pkm.gender === 0 || this.filteredGender === "female" && pkm.gender === 1 || this.filteredGender === "any"))
             return false;
         return true;
@@ -297,7 +302,7 @@ class PkmList extends polymer.Base {
         }, 500);
     }
 
-    @observe("lowerBox, upperBox, filteredGender")
+    @observe("lowerBox, upperBox, filteredGender, filteredEggs")
     filterRestrictionsChanged() {
         this.$.list.render();
     }

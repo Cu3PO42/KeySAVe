@@ -46,6 +46,7 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             _super.call(this);
             this.pokemon = [];
             this.filteredGender = "any";
+            this.filteredEggs = false;
             this.formatCache = {};
             this.ipcClient = new IpcClient();
             this.ipcClient.on("file-dialog-save-result", function (filename) {
@@ -197,6 +198,8 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
         PkmList.prototype.filterPokemon = function (pkm) {
             if (!((this.lowerBox === undefined || pkm.box + 1 >= this.lowerBox) && (this.upperBox === undefined || pkm.box < this.upperBox)))
                 return false;
+            if (this.filteredEggs && !pkm.isEgg)
+                return false;
             if (!(this.filteredGender === "male" && pkm.gender === 0 || this.filteredGender === "female" && pkm.gender === 1 || this.filteredGender === "any"))
                 return false;
             return true;
@@ -310,6 +313,10 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             property({ type: String }), 
             __metadata('design:type', String)
         ], PkmList.prototype, "filteredGender");
+        __decorate([
+            property({ type: Boolean }), 
+            __metadata('design:type', Boolean)
+        ], PkmList.prototype, "filteredEggs");
         Object.defineProperty(PkmList.prototype, "formatStringChanged",
             __decorate([
                 observe("formatString"), 
@@ -319,7 +326,7 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             ], PkmList.prototype, "formatStringChanged", Object.getOwnPropertyDescriptor(PkmList.prototype, "formatStringChanged")));
         Object.defineProperty(PkmList.prototype, "filterRestrictionsChanged",
             __decorate([
-                observe("lowerBox, upperBox, filteredGender"), 
+                observe("lowerBox, upperBox, filteredGender, filteredEggs"), 
                 __metadata('design:type', Function), 
                 __metadata('design:paramtypes', []), 
                 __metadata('design:returntype', Object)
