@@ -35,6 +35,7 @@
                 <paper-radio-button name="female">♀</paper-radio-button>
                 <paper-radio-button name="any">Any</paper-radio-button>
             </paper-radio-group>
+            <paper-checkbox checked="{{filteredHa}}">Has Hidden Ability</paper-checkbox>
         </paper-material>
         <div class="align-right" hidden$="{{isEmpty(pokemon)}}">
             <paper-icon-button icon="icons:file-download" on-tap="export"></paper-icon-button>

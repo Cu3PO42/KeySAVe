@@ -47,6 +47,7 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             this.pokemon = [];
             this.filteredGender = "any";
             this.filteredEggs = false;
+            this.filteredHa = false;
             this.formatCache = {};
             this.ipcClient = new IpcClient();
             this.ipcClient.on("file-dialog-save-result", function (filename) {
@@ -202,6 +203,8 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
                 return false;
             if (!(this.filteredGender === "male" && pkm.gender === 0 || this.filteredGender === "female" && pkm.gender === 1 || this.filteredGender === "any"))
                 return false;
+            if (this.filteredHa && pkm.abilityNum !== 4)
+                return false;
             return true;
         };
         PkmList.prototype.copyClipboard = function () {
@@ -317,6 +320,10 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             property({ type: Boolean }), 
             __metadata('design:type', Boolean)
         ], PkmList.prototype, "filteredEggs");
+        __decorate([
+            property({ type: Boolean }), 
+            __metadata('design:type', Boolean)
+        ], PkmList.prototype, "filteredHa");
         Object.defineProperty(PkmList.prototype, "formatStringChanged",
             __decorate([
                 observe("formatString"), 
@@ -326,7 +333,7 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             ], PkmList.prototype, "formatStringChanged", Object.getOwnPropertyDescriptor(PkmList.prototype, "formatStringChanged")));
         Object.defineProperty(PkmList.prototype, "filterRestrictionsChanged",
             __decorate([
-                observe("lowerBox, upperBox, filteredGender, filteredEggs"), 
+                observe("lowerBox, upperBox, filteredGender, filteredEggs, filteredHa"), 
                 __metadata('design:type', Function), 
                 __metadata('design:paramtypes', []), 
                 __metadata('design:returntype', Object)

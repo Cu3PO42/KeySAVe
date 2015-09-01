@@ -65,6 +65,9 @@ class PkmList extends polymer.Base {
     @property({type: Boolean})
     filteredEggs: boolean = false;
 
+    @property({type: Boolean})
+    filteredHa: boolean = false;
+
     private template: Handlebars.HandlebarsTemplateDelegate;
     private formatCache: {[pid: number]: string} = {};
     private ipcClient: IpcClient;
@@ -234,6 +237,8 @@ class PkmList extends polymer.Base {
             return false;
         if (!(this.filteredGender === "male" && pkm.gender === 0 || this.filteredGender === "female" && pkm.gender === 1 || this.filteredGender === "any"))
             return false;
+        if (this.filteredHa && pkm.abilityNum !== 4)
+            return false;
         return true;
     }
 
@@ -302,7 +307,7 @@ class PkmList extends polymer.Base {
         }, 500);
     }
 
-    @observe("lowerBox, upperBox, filteredGender, filteredEggs")
+    @observe("lowerBox, upperBox, filteredGender, filteredEggs, filteredHa")
     filterRestrictionsChanged() {
         this.$.list.render();
     }
