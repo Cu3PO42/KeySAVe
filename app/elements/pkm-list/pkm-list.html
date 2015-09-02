@@ -39,6 +39,20 @@
             <br>
             <paper-checkbox checked="{{filteredHa}}">Has Hidden Ability</paper-checkbox>
             <br>
+            <paper-checkbox checked="{{filteredSpecialAttacker}}">Special Attacker</paper-checkbox>
+            <paper-checkbox checked="{{filteredTrickRoom}}">Trick Room</paper-checkbox>
+            <paper-dropdown-menu label="Number of perfect IVs">
+                <paper-menu class="dropdown-content" selected="{{filteredNoIvs}}">
+                    <paper-item>0</paper-item>
+                    <paper-item>1</paper-item>
+                    <paper-item>2</paper-item>
+                    <paper-item>3</paper-item>
+                    <paper-item>4</paper-item>
+                    <paper-item>5</paper-item>
+                    <paper-item>6</paper-item>
+                </paper-menu>
+            </paper-dropdown-menu>
+            <br>
             <paper-checkbox checked="{{filteredHp}}">HP</paper-checkbox>
             <paper-checkbox checked="{{filteredAtk}}">ATK</paper-checkbox>
             <paper-checkbox checked="{{filteredDef}}">DEF</paper-checkbox>

@@ -48,6 +48,9 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             this.filteredGender = "any";
             this.filteredEggs = false;
             this.filteredHa = false;
+            this.filteredSpecialAttacker = false;
+            this.filteredTrickRoom = false;
+            this.filteredNoIvs = 0;
             this.filteredHp = false;
             this.filteredAtk = false;
             this.filteredDef = false;
@@ -221,11 +224,24 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
                 return false;
             if (this.filteredHa && pkm.abilityNum !== 4)
                 return false;
-            for (var _i = 0, _a = ["Hp", "Atk", "Def", "SpAtk", "SpDef", "Spe"]; _i < _a.length; _i++) {
+            var needPerfects = this.filteredNoIvs;
+            for (var _i = 0, _a = ["Hp", "Def", "SpAtk", "SpDef"]; _i < _a.length; _i++) {
                 var iv = _a[_i];
-                if (this["filtered" + iv] && pkm["iv" + iv] != 31)
+                if (pkm["iv" + iv] == 31)
+                    --needPerfects;
+                else if (this["filtered" + iv])
                     return false;
             }
+            if (pkm.ivAtk == 31 && !this.filteredSpecialAttacker || pkm.ivAtk == 0 && this.filteredSpecialAttacker)
+                --needPerfects;
+            else if (this.filteredAtk)
+                return false;
+            if (pkm.ivSpe == 31 && !this.filteredTrickRoom || pkm.ivSpe == 0 && this.filteredTrickRoom)
+                --needPerfects;
+            else if (this.filteredSpe)
+                return false;
+            if (needPerfects > 0)
+                return false;
             return true;
         };
         PkmList.prototype.copyClipboard = function () {
@@ -354,6 +370,18 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
         __decorate([
             property({ type: Boolean }), 
             __metadata('design:type', Boolean)
+        ], PkmList.prototype, "filteredSpecialAttacker");
+        __decorate([
+            property({ type: Boolean }), 
+            __metadata('design:type', Boolean)
+        ], PkmList.prototype, "filteredTrickRoom");
+        __decorate([
+            property({ type: Number }), 
+            __metadata('design:type', Number)
+        ], PkmList.prototype, "filteredNoIvs");
+        __decorate([
+            property({ type: Boolean }), 
+            __metadata('design:type', Boolean)
         ], PkmList.prototype, "filteredHp");
         __decorate([
             property({ type: Boolean }), 
@@ -404,7 +432,7 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             ], PkmList.prototype, "formatStringChanged", Object.getOwnPropertyDescriptor(PkmList.prototype, "formatStringChanged")));
         Object.defineProperty(PkmList.prototype, "filterRestrictionsChanged",
             __decorate([
-                observe("lowerBox, upperBox, filteredGender, filteredEggs, filteredHa, filteredMySv, filteredSvs, filteredSvList, filteredShiny, filteredShinyOverride, filteredHp, filteredAtk, filteredDef, filteredSpAtk, filteredSpDef, filteredSpe"), 
+                observe("lowerBox, upperBox, filteredGender, filteredEggs, filteredHa, filteredMySv, filteredSvs, filteredSvList, filteredShiny, filteredShinyOverride, filteredHp, filteredAtk, filteredDef, filteredSpAtk, filteredSpDef, filteredSpe, filteredSpecialAttacker, filteredTrickRoom, filteredNoIvs"), 
                 __metadata('design:type', Function), 
                 __metadata('design:paramtypes', []), 
                 __metadata('design:returntype', Object)

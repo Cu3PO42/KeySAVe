@@ -71,6 +71,15 @@ class PkmList extends polymer.Base {
     filteredHa: boolean = false;
 
     @property({type: Boolean})
+    filteredSpecialAttacker: boolean = false;
+
+    @property({type: Boolean})
+    filteredTrickRoom: boolean = false;
+
+    @property({type: Number})
+    filteredNoIvs: number = 0;
+
+    @property({type: Boolean})
     filteredHp: boolean = false;
 
     @property({type: Boolean})
@@ -281,10 +290,23 @@ class PkmList extends polymer.Base {
             return false;
         if (this.filteredHa && pkm.abilityNum !== 4)
             return false;
-        for (let iv of ["Hp", "Atk", "Def", "SpAtk", "SpDef", "Spe"]) {
-            if (this["filtered"+iv] && pkm["iv"+iv] != 31)
+        var needPerfects = this.filteredNoIvs;
+        for (let iv of ["Hp", "Def", "SpAtk", "SpDef"]) {
+            if (pkm["iv"+iv] == 31)
+                --needPerfects;
+            else if (this["filtered"+iv])
                 return false;
         }
+        if (pkm.ivAtk == 31 && !this.filteredSpecialAttacker || pkm.ivAtk == 0 && this.filteredSpecialAttacker)
+            --needPerfects;
+        else if (this.filteredAtk)
+            return false;
+        if (pkm.ivSpe == 31 && !this.filteredTrickRoom || pkm.ivSpe == 0 && this.filteredTrickRoom)
+            --needPerfects;
+        else if (this.filteredSpe)
+            return false;
+        if (needPerfects > 0)
+            return false;
         return true;
     }
 
@@ -353,7 +375,7 @@ class PkmList extends polymer.Base {
         }, 500);
     }
 
-    @observe("lowerBox, upperBox, filteredGender, filteredEggs, filteredHa, filteredMySv, filteredSvs, filteredSvList, filteredShiny, filteredShinyOverride, filteredHp, filteredAtk, filteredDef, filteredSpAtk, filteredSpDef, filteredSpe")
+    @observe("lowerBox, upperBox, filteredGender, filteredEggs, filteredHa, filteredMySv, filteredSvs, filteredSvList, filteredShiny, filteredShinyOverride, filteredHp, filteredAtk, filteredDef, filteredSpAtk, filteredSpDef, filteredSpe, filteredSpecialAttacker, filteredTrickRoom, filteredNoIvs")
     filterRestrictionsChanged() {
         this.$.list.render();
     }
