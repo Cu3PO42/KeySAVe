@@ -30,12 +30,20 @@
         </paper-dialog>
         <paper-material elevation="1">
             <paper-checkbox checked="{{filteredEggs}}">Eggs only</paper-checkbox>
+            <br>
             <paper-radio-group selected="{{filteredGender}}">
                 <paper-radio-button name="male">♂</paper-radio-button>
                 <paper-radio-button name="female">♀</paper-radio-button>
                 <paper-radio-button name="any">Any</paper-radio-button>
             </paper-radio-group>
+            <br>
             <paper-checkbox checked="{{filteredHa}}">Has Hidden Ability</paper-checkbox>
+            <br>
+            <paper-checkbox checked="{{filteredShiny}}">Is shiny</paper-checkbox>
+            <paper-checkbox checked="{{filteredShinyOverride}}">Shiny override</paper-checkbox>
+            <paper-checkbox checked="{{filteredMySv}}">Has my SV</paper-checkbox>
+            <paper-checkbox checked="{{filteredSvs}}">Has any of these SVs</paper-checkbox>
+            <paper-input label="Shiny Values" on-value-changed="changedFilteredSvList" disabled="{{not(filteredSvs)}}"></paper-input>
         </paper-material>
         <div class="align-right" hidden$="{{isEmpty(pokemon)}}">
             <paper-icon-button icon="icons:file-download" on-tap="export"></paper-icon-button>

@@ -48,6 +48,11 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             this.filteredGender = "any";
             this.filteredEggs = false;
             this.filteredHa = false;
+            this.filteredShiny = false;
+            this.filteredShinyOverride = false;
+            this.filteredMySv = false;
+            this.filteredSvs = false;
+            this.filteredSvList = [];
             this.formatCache = {};
             this.ipcClient = new IpcClient();
             this.ipcClient.on("file-dialog-save-result", function (filename) {
@@ -199,6 +204,11 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
         PkmList.prototype.filterPokemon = function (pkm) {
             if (!((this.lowerBox === undefined || pkm.box + 1 >= this.lowerBox) && (this.upperBox === undefined || pkm.box < this.upperBox)))
                 return false;
+            var shinyCondition = (this.filteredShiny && (!pkm.isEgg && !pkm.isShiny || pkm.isEgg && !this.filteredMySv && !this.filteredSvs)) || pkm.isEgg && ((this.filteredMySv && !pkm.isShiny && (!this.filteredSvs || this.filteredSvList.indexOf(pkm.esv) === -1)) || (this.filteredSvs && this.filteredSvList.indexOf(pkm.esv) === -1 && (!this.filteredMySv || !pkm.isShiny)));
+            if (this.filteredShinyOverride && !shinyCondition)
+                return true;
+            if (!this.filteredShinyOverride && shinyCondition)
+                return false;
             if (this.filteredEggs && !pkm.isEgg)
                 return false;
             if (!(this.filteredGender === "male" && pkm.gender === 0 || this.filteredGender === "female" && pkm.gender === 1 || this.filteredGender === "any"))
@@ -276,6 +286,12 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
         PkmList.prototype.pokemonChanged = function (pokemon, language) {
             this.formatCache = {};
         };
+        PkmList.prototype.changedFilteredSvList = function (e) {
+            this.filteredSvList = (e.detail.value.match(/\d+/g) || []).map(function (e) { return parseInt(e); });
+        };
+        PkmList.prototype.not = function (value) {
+            return !value;
+        };
         __decorate([
             property({ type: Array }), 
             __metadata('design:type', Array)
@@ -324,6 +340,26 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             property({ type: Boolean }), 
             __metadata('design:type', Boolean)
         ], PkmList.prototype, "filteredHa");
+        __decorate([
+            property({ type: Boolean }), 
+            __metadata('design:type', Boolean)
+        ], PkmList.prototype, "filteredShiny");
+        __decorate([
+            property({ type: Boolean }), 
+            __metadata('design:type', Boolean)
+        ], PkmList.prototype, "filteredShinyOverride");
+        __decorate([
+            property({ type: Boolean }), 
+            __metadata('design:type', Boolean)
+        ], PkmList.prototype, "filteredMySv");
+        __decorate([
+            property({ type: Boolean }), 
+            __metadata('design:type', Boolean)
+        ], PkmList.prototype, "filteredSvs");
+        __decorate([
+            property({ type: Array }), 
+            __metadata('design:type', Array)
+        ], PkmList.prototype, "filteredSvList");
         Object.defineProperty(PkmList.prototype, "formatStringChanged",
             __decorate([
                 observe("formatString"), 
@@ -333,7 +369,7 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             ], PkmList.prototype, "formatStringChanged", Object.getOwnPropertyDescriptor(PkmList.prototype, "formatStringChanged")));
         Object.defineProperty(PkmList.prototype, "filterRestrictionsChanged",
             __decorate([
-                observe("lowerBox, upperBox, filteredGender, filteredEggs, filteredHa"), 
+                observe("lowerBox, upperBox, filteredGender, filteredEggs, filteredHa, filteredMySv, filteredSvs, filteredSvList, filteredShiny, filteredShinyOverride"), 
                 __metadata('design:type', Function), 
                 __metadata('design:paramtypes', []), 
                 __metadata('design:returntype', Object)
