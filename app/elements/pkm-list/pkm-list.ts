@@ -59,6 +59,8 @@ class PkmList extends polymer.Base {
     @property({type: String})
     language: string;
 
+    // =========================================================================
+
     @property({type: String})
     filteredGender: string = "any";
 
@@ -67,6 +69,24 @@ class PkmList extends polymer.Base {
 
     @property({type: Boolean})
     filteredHa: boolean = false;
+
+    @property({type: Boolean})
+    filteredHp: boolean = false;
+
+    @property({type: Boolean})
+    filteredAtk: boolean = false;
+
+    @property({type: Boolean})
+    filteredDef: boolean = false;
+
+    @property({type: Boolean})
+    filteredSpAtk: boolean = false;
+
+    @property({type: Boolean})
+    filteredSpDef: boolean = false;
+
+    @property({type: Boolean})
+    filteredSpe: boolean = false;
 
     @property({type: Boolean})
     filteredShiny: boolean = false;
@@ -82,6 +102,8 @@ class PkmList extends polymer.Base {
 
     @property({type: Array})
     filteredSvList: number[] = [];
+
+    // =========================================================================
 
     private template: Handlebars.HandlebarsTemplateDelegate;
     private formatCache: {[pid: number]: string} = {};
@@ -248,7 +270,6 @@ class PkmList extends polymer.Base {
     filterPokemon(pkm: KeySAVCore.Structures.PKX) {
         if (!((this.lowerBox === undefined || pkm.box+1 >= this.lowerBox) && (this.upperBox === undefined || pkm.box < this.upperBox)))
             return false;
-        // TODO "has my sv" comparing to current OT instead of game owner
         var shinyCondition = (this.filteredShiny && (!pkm.isEgg && !pkm.isShiny || pkm.isEgg && !this.filteredMySv && !this.filteredSvs)) || pkm.isEgg && ((this.filteredMySv && !pkm.isShiny && (!this.filteredSvs || this.filteredSvList.indexOf(pkm.esv) === -1)) || (this.filteredSvs && this.filteredSvList.indexOf(pkm.esv) === -1 && (!this.filteredMySv || !pkm.isShiny)));
         if (this.filteredShinyOverride && !shinyCondition)
             return true;
@@ -260,6 +281,10 @@ class PkmList extends polymer.Base {
             return false;
         if (this.filteredHa && pkm.abilityNum !== 4)
             return false;
+        for (let iv of ["Hp", "Atk", "Def", "SpAtk", "SpDef", "Spe"]) {
+            if (this["filtered"+iv] && pkm["iv"+iv] != 31)
+                return false;
+        }
         return true;
     }
 
@@ -328,7 +353,7 @@ class PkmList extends polymer.Base {
         }, 500);
     }
 
-    @observe("lowerBox, upperBox, filteredGender, filteredEggs, filteredHa, filteredMySv, filteredSvs, filteredSvList, filteredShiny, filteredShinyOverride")
+    @observe("lowerBox, upperBox, filteredGender, filteredEggs, filteredHa, filteredMySv, filteredSvs, filteredSvList, filteredShiny, filteredShinyOverride, filteredHp, filteredAtk, filteredDef, filteredSpAtk, filteredSpDef, filteredSpe")
     filterRestrictionsChanged() {
         this.$.list.render();
     }

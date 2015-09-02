@@ -48,6 +48,12 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             this.filteredGender = "any";
             this.filteredEggs = false;
             this.filteredHa = false;
+            this.filteredHp = false;
+            this.filteredAtk = false;
+            this.filteredDef = false;
+            this.filteredSpAtk = false;
+            this.filteredSpDef = false;
+            this.filteredSpe = false;
             this.filteredShiny = false;
             this.filteredShinyOverride = false;
             this.filteredMySv = false;
@@ -215,6 +221,11 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
                 return false;
             if (this.filteredHa && pkm.abilityNum !== 4)
                 return false;
+            for (var _i = 0, _a = ["Hp", "Atk", "Def", "SpAtk", "SpDef", "Spe"]; _i < _a.length; _i++) {
+                var iv = _a[_i];
+                if (this["filtered" + iv] && pkm["iv" + iv] != 31)
+                    return false;
+            }
             return true;
         };
         PkmList.prototype.copyClipboard = function () {
@@ -343,6 +354,30 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
         __decorate([
             property({ type: Boolean }), 
             __metadata('design:type', Boolean)
+        ], PkmList.prototype, "filteredHp");
+        __decorate([
+            property({ type: Boolean }), 
+            __metadata('design:type', Boolean)
+        ], PkmList.prototype, "filteredAtk");
+        __decorate([
+            property({ type: Boolean }), 
+            __metadata('design:type', Boolean)
+        ], PkmList.prototype, "filteredDef");
+        __decorate([
+            property({ type: Boolean }), 
+            __metadata('design:type', Boolean)
+        ], PkmList.prototype, "filteredSpAtk");
+        __decorate([
+            property({ type: Boolean }), 
+            __metadata('design:type', Boolean)
+        ], PkmList.prototype, "filteredSpDef");
+        __decorate([
+            property({ type: Boolean }), 
+            __metadata('design:type', Boolean)
+        ], PkmList.prototype, "filteredSpe");
+        __decorate([
+            property({ type: Boolean }), 
+            __metadata('design:type', Boolean)
         ], PkmList.prototype, "filteredShiny");
         __decorate([
             property({ type: Boolean }), 
@@ -369,7 +404,7 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             ], PkmList.prototype, "formatStringChanged", Object.getOwnPropertyDescriptor(PkmList.prototype, "formatStringChanged")));
         Object.defineProperty(PkmList.prototype, "filterRestrictionsChanged",
             __decorate([
-                observe("lowerBox, upperBox, filteredGender, filteredEggs, filteredHa, filteredMySv, filteredSvs, filteredSvList, filteredShiny, filteredShinyOverride"), 
+                observe("lowerBox, upperBox, filteredGender, filteredEggs, filteredHa, filteredMySv, filteredSvs, filteredSvList, filteredShiny, filteredShinyOverride, filteredHp, filteredAtk, filteredDef, filteredSpAtk, filteredSpDef, filteredSpe"), 
                 __metadata('design:type', Function), 
                 __metadata('design:paramtypes', []), 
                 __metadata('design:returntype', Object)
