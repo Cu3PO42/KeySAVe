@@ -319,6 +319,8 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
         PkmList.prototype.languageChanged = function (newValue, oldValue) {
             var _this = this;
             this.localization = localization[newValue];
+            this.localization.types.shift();
+            this.localization.types.pop();
             this.async(function () {
                 _this.$.filterHpTypes._computeSelectedItemLabel(_this.$.filterHpTypes.contentElement.selectedItems);
             });

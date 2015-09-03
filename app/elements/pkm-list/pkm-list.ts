@@ -396,6 +396,8 @@ class PkmList extends polymer.Base {
     @observe("language")
     languageChanged(newValue, oldValue) {
         this.localization = localization[newValue];
+        this.localization.types.shift();
+        this.localization.types.pop();
         this.async(() => {
             this.$.filterHpTypes._computeSelectedItemLabel(this.$.filterHpTypes.contentElement.selectedItems);
         });
