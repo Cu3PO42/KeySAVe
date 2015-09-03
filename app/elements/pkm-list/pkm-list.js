@@ -62,6 +62,7 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             this.filteredMySv = false;
             this.filteredSvs = false;
             this.filteredSvList = [];
+            this.filteredHpTypes = [];
             this.formatCache = {};
             this.ipcClient = new IpcClient();
             this.ipcClient.on("file-dialog-save-result", function (filename) {
@@ -242,6 +243,8 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
                 return false;
             if (needPerfects > 0)
                 return false;
+            if (this.filteredHpTypes.length > 0 && this.filteredHpTypes.indexOf(pkm.hpType) === -1)
+                return false;
             return true;
         };
         PkmList.prototype.copyClipboard = function () {
@@ -313,6 +316,13 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
         PkmList.prototype.pokemonChanged = function (pokemon, language) {
             this.formatCache = {};
         };
+        PkmList.prototype.languageChanged = function (newValue, oldValue) {
+            var _this = this;
+            this.localization = localization[newValue];
+            this.async(function () {
+                _this.$.filterHpTypes._computeSelectedItemLabel(_this.$.filterHpTypes.contentElement.selectedItems);
+            });
+        };
         PkmList.prototype.changedFilteredSvList = function (e) {
             this.filteredSvList = (e.detail.value.match(/\d+/g) || []).map(function (e) { return parseInt(e); });
         };
@@ -355,6 +365,10 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             property({ type: String }), 
             __metadata('design:type', String)
         ], PkmList.prototype, "language");
+        __decorate([
+            property({ type: Object }), 
+            __metadata('design:type', Object)
+        ], PkmList.prototype, "localization");
         __decorate([
             property({ type: String }), 
             __metadata('design:type', String)
@@ -423,6 +437,10 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             property({ type: Array }), 
             __metadata('design:type', Array)
         ], PkmList.prototype, "filteredSvList");
+        __decorate([
+            property({ type: Array }), 
+            __metadata('design:type', Array)
+        ], PkmList.prototype, "filteredHpTypes");
         Object.defineProperty(PkmList.prototype, "formatStringChanged",
             __decorate([
                 observe("formatString"), 
@@ -444,6 +462,13 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
                 __metadata('design:paramtypes', [Object, Object]), 
                 __metadata('design:returntype', Object)
             ], PkmList.prototype, "pokemonChanged", Object.getOwnPropertyDescriptor(PkmList.prototype, "pokemonChanged")));
+        Object.defineProperty(PkmList.prototype, "languageChanged",
+            __decorate([
+                observe("language"), 
+                __metadata('design:type', Function), 
+                __metadata('design:paramtypes', [Object, Object]), 
+                __metadata('design:returntype', Object)
+            ], PkmList.prototype, "languageChanged", Object.getOwnPropertyDescriptor(PkmList.prototype, "languageChanged")));
         PkmList = __decorate([
             component("pkm-list"), 
             __metadata('design:paramtypes', [])

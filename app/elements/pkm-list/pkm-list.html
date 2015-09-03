@@ -31,6 +31,19 @@
         <paper-material elevation="1">
             <paper-checkbox checked="{{filteredEggs}}">Eggs only</paper-checkbox>
             <br>
+            <paper-dropdown-menu-multi label="HP Types" id="filterHpTypes">
+                <paper-menu
+                    multi
+                    class="dropdown-content"
+                    selected-values="{{filteredHpTypes}}"
+                    on-iron-select="filterRestrictionsChanged"
+                    on-iron-deselect="filterRestrictionsChanged">
+                    <template is="dom-repeat" items="{{localization.types}}">
+                        <paper-item>{{item}}</paper-item>
+                    </template>
+                </paper-menu>
+            </paper-dropdown-menu-multi>
+            <br>
             <paper-radio-group selected="{{filteredGender}}">
                 <paper-radio-button name="male">♂</paper-radio-button>
                 <paper-radio-button name="female">♀</paper-radio-button>

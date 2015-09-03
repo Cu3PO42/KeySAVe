@@ -59,6 +59,9 @@ class PkmList extends polymer.Base {
     @property({type: String})
     language: string;
 
+    @property({type: Object})
+    localization: typeof localization.en;
+
     // =========================================================================
 
     @property({type: String})
@@ -111,6 +114,9 @@ class PkmList extends polymer.Base {
 
     @property({type: Array})
     filteredSvList: number[] = [];
+
+    @property({type: Array})
+    filteredHpTypes: string[] = [];
 
     // =========================================================================
 
@@ -307,6 +313,8 @@ class PkmList extends polymer.Base {
             return false;
         if (needPerfects > 0)
             return false;
+        if (this.filteredHpTypes.length > 0 && this.filteredHpTypes.indexOf(pkm.hpType) === -1)
+            return false;
         return true;
     }
 
@@ -383,6 +391,14 @@ class PkmList extends polymer.Base {
     @observe("pokemon, language")
     pokemonChanged(pokemon, language) {
         this.formatCache = {};
+    }
+
+    @observe("language")
+    languageChanged(newValue, oldValue) {
+        this.localization = localization[newValue];
+        this.async(() => {
+            this.$.filterHpTypes._computeSelectedItemLabel(this.$.filterHpTypes.contentElement.selectedItems);
+        });
     }
 
     changedFilteredSvList(e) {
