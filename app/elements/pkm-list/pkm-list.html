@@ -72,6 +72,19 @@
                 </paper-menu>
             </paper-dropdown-menu-multi>
             <br>
+            <paper-dropdown-menu-multi label="Natures" id="filterNatures">
+                <paper-menu
+                    multi
+                    class="dropdown-content"
+                    selected-values="{{filteredNatures}}"
+                    on-iron-select="filterRestrictionsChanged"
+                    on-iron-deselect="filterRestrictionsChanged">
+                    <template is="dom-repeat" items="{{localization.natures}}">
+                        <paper-item>{{item}}</paper-item>
+                    </template>
+                </paper-menu>
+            </paper-dropdown-menu-multi>
+            <br>
             <paper-radio-group selected="{{filteredGender}}">
                 <paper-radio-button name="male">♂</paper-radio-button>
                 <paper-radio-button name="female">♀</paper-radio-button>

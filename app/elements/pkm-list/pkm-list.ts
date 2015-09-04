@@ -124,6 +124,9 @@ class PkmList extends polymer.Base {
     @property({type: Array})
     filteredAbilities: number[] = [];
 
+    @property({type: Array})
+    filteredNatures: number[] = [];
+
     // =========================================================================
 
     private template: Handlebars.HandlebarsTemplateDelegate;
@@ -325,6 +328,8 @@ class PkmList extends polymer.Base {
             return false;
         if (this.filteredAbilities.length > 0 && this.filteredAbilities.indexOf(pkm.ability) === -1)
             return false;
+        if (this.filteredNatures.length > 0 && this.filteredNatures.indexOf(pkm.nature) === -1)
+            return false;
         return true;
     }
 
@@ -415,7 +420,7 @@ class PkmList extends polymer.Base {
         }), "name");
         this.localization = loc;
         this.async(() => {
-            for (let name of ["filterHpTypes", "filterSpecies", "filterAbilities"]) {
+            for (let name of ["filterHpTypes", "filterSpecies", "filterAbilities", "filterNatures"]) {
                 let el = this.$[name];
                 let cel = el.contentElement;
                 cel._selectMulti(cel.selectedValues);

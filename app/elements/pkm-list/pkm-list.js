@@ -65,6 +65,7 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             this.filteredHpTypes = [];
             this.filteredSpecies = [];
             this.filteredAbilities = [];
+            this.filteredNatures = [];
             this.formatCache = {};
             this.ipcClient = new IpcClient();
             this.ipcClient.on("file-dialog-save-result", function (filename) {
@@ -251,6 +252,8 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
                 return false;
             if (this.filteredAbilities.length > 0 && this.filteredAbilities.indexOf(pkm.ability) === -1)
                 return false;
+            if (this.filteredNatures.length > 0 && this.filteredNatures.indexOf(pkm.nature) === -1)
+                return false;
             return true;
         };
         PkmList.prototype.copyClipboard = function () {
@@ -334,7 +337,7 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             }), "name");
             this.localization = loc;
             this.async(function () {
-                for (var _i = 0, _a = ["filterHpTypes", "filterSpecies", "filterAbilities"]; _i < _a.length; _i++) {
+                for (var _i = 0, _a = ["filterHpTypes", "filterSpecies", "filterAbilities", "filterNatures"]; _i < _a.length; _i++) {
                     var name_1 = _a[_i];
                     var el = _this.$[name_1];
                     var cel = el.contentElement;
@@ -469,6 +472,10 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             property({ type: Array }), 
             __metadata('design:type', Array)
         ], PkmList.prototype, "filteredAbilities");
+        __decorate([
+            property({ type: Array }), 
+            __metadata('design:type', Array)
+        ], PkmList.prototype, "filteredNatures");
         Object.defineProperty(PkmList.prototype, "formatStringChanged",
             __decorate([
                 observe("formatString"), 
