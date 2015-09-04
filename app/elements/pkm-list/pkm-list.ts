@@ -313,7 +313,7 @@ class PkmList extends polymer.Base {
             return false;
         if (needPerfects > 0)
             return false;
-        if (this.filteredHpTypes.length > 0 && this.filteredHpTypes.indexOf(pkm.hpType) === -1)
+        if (this.filteredHpTypes.length > 0 && this.filteredHpTypes.indexOf(pkm.hpType - 1) === -1)
             return false;
         return true;
     }
@@ -395,7 +395,7 @@ class PkmList extends polymer.Base {
 
     @observe("language")
     languageChanged(newValue, oldValue) {
-        this.localization = localization[newValue];
+        this.localization = _.clone(localization[newValue], true);
         this.localization.types.shift();
         this.localization.types.pop();
         this.async(() => {
