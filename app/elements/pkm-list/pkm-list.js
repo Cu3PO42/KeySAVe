@@ -351,6 +351,12 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
         PkmList.prototype.changedFilteredSvList = function (e) {
             this.filteredSvList = (e.detail.value.match(/\d+/g) || []).map(function (e) { return parseInt(e); });
         };
+        PkmList.prototype.clearFilterList = function (e) {
+            var t = e.target;
+            while (t.nodeName != "PAPER-ICON-BUTTON")
+                t = t.parentNode;
+            this.$[t.getAttribute("data-list")].contentElement._selection.clear();
+        };
         PkmList.prototype.not = function (value) {
             return !value;
         };

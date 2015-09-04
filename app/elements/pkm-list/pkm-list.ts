@@ -435,6 +435,13 @@ class PkmList extends polymer.Base {
         this.filteredSvList = (e.detail.value.match(/\d+/g) || []).map((e) => parseInt(e));
     }
 
+    clearFilterList(e) {
+        var t = e.target;
+        while (t.nodeName != "PAPER-ICON-BUTTON")
+            t = t.parentNode;
+        this.$[t.getAttribute("data-list")].contentElement._selection.clear();
+    }
+
     not(value) {
         return !value;
     }

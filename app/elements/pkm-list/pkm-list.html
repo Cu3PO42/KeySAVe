@@ -43,6 +43,7 @@
                     </template>
                 </paper-menu>
             </paper-dropdown-menu-multi>
+            <paper-icon-button icon="icons:clear" on-tap="clearFilterList" data-list="filterHpTypes"></paper-icon-button>
             <br>
             <paper-dropdown-menu-multi label="Species" id="filterSpecies">
                 <paper-menu
@@ -52,11 +53,12 @@
                     attr-for-selected="dataId"
                     on-iron-select="filterRestrictionsChanged"
                     on-iron-deselect="filterRestrictionsChanged">
-                    <template id="filterSpeciesTemplate" is="dom-repeat" items="{{localization.species}}">
+                    <template is="dom-repeat" items="{{localization.species}}">
                         <paper-item data-id="{{item.id}}" data-id="{{item.id}}">{{item.name}}</paper-item>
                     </template>
                 </paper-menu>
             </paper-dropdown-menu-multi>
+            <paper-icon-button icon="icons:clear" on-tap="clearFilterList" data-list="filterSpecies"></paper-icon-button>
             <br>
             <paper-dropdown-menu-multi label="Abilities" id="filterAbilities">
                 <paper-menu
@@ -71,6 +73,7 @@
                     </template>
                 </paper-menu>
             </paper-dropdown-menu-multi>
+            <paper-icon-button icon="icons:clear" on-tap="clearFilterList" data-list="filterAbilities"></paper-icon-button>
             <br>
             <paper-dropdown-menu-multi label="Natures" id="filterNatures">
                 <paper-menu
@@ -84,6 +87,7 @@
                     </template>
                 </paper-menu>
             </paper-dropdown-menu-multi>
+            <paper-icon-button icon="icons:clear" on-tap="clearFilterList" data-list="filterNatures"></paper-icon-button>
             <br>
             <paper-radio-group selected="{{filteredGender}}">
                 <paper-radio-button name="male">♂</paper-radio-button>
