@@ -231,16 +231,18 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             var needPerfects = this.filteredNoIvs;
             for (var _i = 0, _a = ["Hp", "Def", "SpAtk", "SpDef"]; _i < _a.length; _i++) {
                 var iv = _a[_i];
-                if (pkm["iv" + iv] == 31)
+                var val = pkm["iv" + iv];
+                if (val == 31 || val == 30 && this.filteredHpTypes.length)
                     --needPerfects;
                 else if (this["filtered" + iv])
                     return false;
             }
-            if (pkm.ivAtk == 31 && !this.filteredSpecialAttacker || pkm.ivAtk == 0 && this.filteredSpecialAttacker)
+            var ivCompVal = Math.min(this.filteredHpTypes.length, 1);
+            if (31 - pkm.ivAtk <= ivCompVal && !this.filteredSpecialAttacker || pkm.ivAtk <= ivCompVal && this.filteredSpecialAttacker)
                 --needPerfects;
             else if (this.filteredAtk)
                 return false;
-            if (pkm.ivSpe == 31 && !this.filteredTrickRoom || pkm.ivSpe == 0 && this.filteredTrickRoom)
+            if (31 - pkm.ivSpe <= ivCompVal && !this.filteredTrickRoom || pkm.ivSpe <= ivCompVal && this.filteredTrickRoom)
                 --needPerfects;
             else if (this.filteredSpe)
                 return false;
