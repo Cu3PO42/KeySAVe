@@ -1,3 +1,5 @@
+<link rel="import" href="pkm-list-animations.html">
+
 <dom-module id="pkm-list">
     <link rel="import" type="css" href="../../styles/paper-dialog.css">
     <style is="custom-style">
@@ -29,11 +31,10 @@
             <div class="align-right"><paper-button dialog-confirm>Ok</paper-button></div>
         </paper-dialog>
         <paper-button toggles active="{{filtersActive}}">
-            <template is="dom-if" if="{{not(filtersActive)}}">Show</template>
-            <template is="dom-if" if="{{filtersActive}}">Hide</template>
-            Filters<iron-icon icon="{{filterToggleIcon}}"></iron-icon>
+            <template is="dom-if" if="{{not(filtersActive)}}">Show Filters<iron-icon icon="icons:unfold-more"></iron-icon></template>
+            <template is="dom-if" if="{{filtersActive}}">Hide Filters<iron-icon icon="icons:unfold-less"></iron-icon></template>
         </paper-button>
-        <paper-material elevation="1">
+        <paper-material elevation="1" hidden$="{{not(filtersActive)}}">
             <paper-checkbox checked="{{filteredEggs}}">Eggs only</paper-checkbox>
             <br>
             <paper-dropdown-menu-multi label="HP Types" id="filterHpTypes">

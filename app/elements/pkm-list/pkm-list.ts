@@ -297,6 +297,8 @@ class PkmList extends polymer.Base {
     filterPokemon(pkm: KeySAVCore.Structures.PKX) {
         if (!((this.lowerBox === undefined || pkm.box+1 >= this.lowerBox) && (this.upperBox === undefined || pkm.box < this.upperBox)))
             return false;
+        if (!this.filtersActive)
+            return true;
         var shinyCondition = (this.filteredShiny && (!pkm.isEgg && !pkm.isShiny || pkm.isEgg && !this.filteredMySv && !this.filteredSvs)) || pkm.isEgg && ((this.filteredMySv && !pkm.isShiny && (!this.filteredSvs || this.filteredSvList.indexOf(pkm.esv) === -1)) || (this.filteredSvs && this.filteredSvList.indexOf(pkm.esv) === -1 && (!this.filteredMySv || !pkm.isShiny)));
         if (this.filteredShinyOverride && !shinyCondition)
             return true;
@@ -403,7 +405,7 @@ class PkmList extends polymer.Base {
         }, 500);
     }
 
-    @observe("lowerBox, upperBox, filteredGender, filteredEggs, filteredHa, filteredMySv, filteredSvs, filteredSvList, filteredShiny, filteredShinyOverride, filteredHp, filteredAtk, filteredDef, filteredSpAtk, filteredSpDef, filteredSpe, filteredSpecialAttacker, filteredTrickRoom, filteredNoIvs")
+    @observe("lowerBox, upperBox, filteredGender, filteredEggs, filteredHa, filteredMySv, filteredSvs, filteredSvList, filteredShiny, filteredShinyOverride, filteredHp, filteredAtk, filteredDef, filteredSpAtk, filteredSpDef, filteredSpe, filteredSpecialAttacker, filteredTrickRoom, filteredNoIvs, filtersActive")
     filterRestrictionsChanged() {
         this.$.list.render();
     }
@@ -447,11 +449,6 @@ class PkmList extends polymer.Base {
 
     not(value) {
         return !value;
-    }
-
-    @computed({type: String})
-    filterToggleIcon(filtersActive) {
-        return filtersActive ? "icons:unfold-more" : "icons:unfold-less";
     }
 }
 polymer.createElement(PkmList);

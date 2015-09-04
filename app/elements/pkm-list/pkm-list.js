@@ -218,6 +218,8 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
         PkmList.prototype.filterPokemon = function (pkm) {
             if (!((this.lowerBox === undefined || pkm.box + 1 >= this.lowerBox) && (this.upperBox === undefined || pkm.box < this.upperBox)))
                 return false;
+            if (!this.filtersActive)
+                return true;
             var shinyCondition = (this.filteredShiny && (!pkm.isEgg && !pkm.isShiny || pkm.isEgg && !this.filteredMySv && !this.filteredSvs)) || pkm.isEgg && ((this.filteredMySv && !pkm.isShiny && (!this.filteredSvs || this.filteredSvList.indexOf(pkm.esv) === -1)) || (this.filteredSvs && this.filteredSvList.indexOf(pkm.esv) === -1 && (!this.filteredMySv || !pkm.isShiny)));
             if (this.filteredShinyOverride && !shinyCondition)
                 return true;
@@ -361,9 +363,6 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
         PkmList.prototype.not = function (value) {
             return !value;
         };
-        PkmList.prototype.filterToggleIcon = function (filtersActive) {
-            return filtersActive ? "icons:unfold-more" : "icons:unfold-less";
-        };
         __decorate([
             property({ type: Array }), 
             __metadata('design:type', Array)
@@ -501,7 +500,7 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             ], PkmList.prototype, "formatStringChanged", Object.getOwnPropertyDescriptor(PkmList.prototype, "formatStringChanged")));
         Object.defineProperty(PkmList.prototype, "filterRestrictionsChanged",
             __decorate([
-                observe("lowerBox, upperBox, filteredGender, filteredEggs, filteredHa, filteredMySv, filteredSvs, filteredSvList, filteredShiny, filteredShinyOverride, filteredHp, filteredAtk, filteredDef, filteredSpAtk, filteredSpDef, filteredSpe, filteredSpecialAttacker, filteredTrickRoom, filteredNoIvs"), 
+                observe("lowerBox, upperBox, filteredGender, filteredEggs, filteredHa, filteredMySv, filteredSvs, filteredSvList, filteredShiny, filteredShinyOverride, filteredHp, filteredAtk, filteredDef, filteredSpAtk, filteredSpDef, filteredSpe, filteredSpecialAttacker, filteredTrickRoom, filteredNoIvs, filtersActive"), 
                 __metadata('design:type', Function), 
                 __metadata('design:paramtypes', []), 
                 __metadata('design:returntype', Object)
@@ -520,13 +519,6 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
                 __metadata('design:paramtypes', [Object, Object]), 
                 __metadata('design:returntype', Object)
             ], PkmList.prototype, "languageChanged", Object.getOwnPropertyDescriptor(PkmList.prototype, "languageChanged")));
-        Object.defineProperty(PkmList.prototype, "filterToggleIcon",
-            __decorate([
-                computed({ type: String }), 
-                __metadata('design:type', Function), 
-                __metadata('design:paramtypes', [Object]), 
-                __metadata('design:returntype', Object)
-            ], PkmList.prototype, "filterToggleIcon", Object.getOwnPropertyDescriptor(PkmList.prototype, "filterToggleIcon")));
         PkmList = __decorate([
             component("pkm-list"), 
             __metadata('design:paramtypes', [])
