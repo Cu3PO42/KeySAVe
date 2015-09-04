@@ -118,6 +118,9 @@ class PkmList extends polymer.Base {
     @property({type: Array})
     filteredHpTypes: string[] = [];
 
+    @property({type: Array})
+    filteredSpecies: string[] = [];
+
     // =========================================================================
 
     private template: Handlebars.HandlebarsTemplateDelegate;
@@ -315,6 +318,8 @@ class PkmList extends polymer.Base {
             return false;
         if (this.filteredHpTypes.length > 0 && this.filteredHpTypes.indexOf(pkm.hpType - 1) === -1)
             return false;
+        if (this.filteredSpecies.length > 0 && this.filteredSpecies.indexOf(pkm.species) === -1)
+            return false;
         return true;
     }
 
@@ -395,11 +400,19 @@ class PkmList extends polymer.Base {
 
     @observe("language")
     languageChanged(newValue, oldValue) {
-        this.localization = _.clone(localization[newValue], true);
-        this.localization.types.shift();
-        this.localization.types.pop();
+        var loc = _.clone(localization[newValue]);
+        loc.types = loc.types.slice(1, -1);
+        loc.species = _.sortBy(loc.species.slice(1).map(function(e, i) {
+            return {name: e, id: i+1};
+        }), "name");
+        this.localization = loc;
         this.async(() => {
-            this.$.filterHpTypes._computeSelectedItemLabel(this.$.filterHpTypes.contentElement.selectedItems);
+            for (let name of ["filterHpTypes", "filterSpecies"]) {
+                let el = this.$[name];
+                let cel = el.contentElement;
+                cel._selectMulti(cel.selectedValues);
+                el._computeSelectedItemLabel(cel.selectedItems);
+            }
         });
     }
 

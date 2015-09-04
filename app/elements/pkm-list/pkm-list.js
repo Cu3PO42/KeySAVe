@@ -63,6 +63,7 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             this.filteredSvs = false;
             this.filteredSvList = [];
             this.filteredHpTypes = [];
+            this.filteredSpecies = [];
             this.formatCache = {};
             this.ipcClient = new IpcClient();
             this.ipcClient.on("file-dialog-save-result", function (filename) {
@@ -245,6 +246,8 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
                 return false;
             if (this.filteredHpTypes.length > 0 && this.filteredHpTypes.indexOf(pkm.hpType - 1) === -1)
                 return false;
+            if (this.filteredSpecies.length > 0 && this.filteredSpecies.indexOf(pkm.species) === -1)
+                return false;
             return true;
         };
         PkmList.prototype.copyClipboard = function () {
@@ -318,11 +321,20 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
         };
         PkmList.prototype.languageChanged = function (newValue, oldValue) {
             var _this = this;
-            this.localization = _.clone(localization[newValue], true);
-            this.localization.types.shift();
-            this.localization.types.pop();
+            var loc = _.clone(localization[newValue]);
+            loc.types = loc.types.slice(1, -1);
+            loc.species = _.sortBy(loc.species.slice(1).map(function (e, i) {
+                return { name: e, id: i + 1 };
+            }), "name");
+            this.localization = loc;
             this.async(function () {
-                _this.$.filterHpTypes._computeSelectedItemLabel(_this.$.filterHpTypes.contentElement.selectedItems);
+                for (var _i = 0, _a = ["filterHpTypes", "filterSpecies"]; _i < _a.length; _i++) {
+                    var name_1 = _a[_i];
+                    var el = _this.$[name_1];
+                    var cel = el.contentElement;
+                    cel._selectMulti(cel.selectedValues);
+                    el._computeSelectedItemLabel(cel.selectedItems);
+                }
             });
         };
         PkmList.prototype.changedFilteredSvList = function (e) {
@@ -443,6 +455,10 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             property({ type: Array }), 
             __metadata('design:type', Array)
         ], PkmList.prototype, "filteredHpTypes");
+        __decorate([
+            property({ type: Array }), 
+            __metadata('design:type', Array)
+        ], PkmList.prototype, "filteredSpecies");
         Object.defineProperty(PkmList.prototype, "formatStringChanged",
             __decorate([
                 observe("formatString"), 
