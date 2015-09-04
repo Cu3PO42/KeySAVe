@@ -28,6 +28,11 @@
             <div>{{dialogResult}}</div>
             <div class="align-right"><paper-button dialog-confirm>Ok</paper-button></div>
         </paper-dialog>
+        <paper-button toggles active="{{filtersActive}}">
+            <template is="dom-if" if="{{not(filtersActive)}}">Show</template>
+            <template is="dom-if" if="{{filtersActive}}">Hide</template>
+            Filters<iron-icon icon="{{filterToggleIcon}}"></iron-icon>
+        </paper-button>
         <paper-material elevation="1">
             <paper-checkbox checked="{{filteredEggs}}">Eggs only</paper-checkbox>
             <br>

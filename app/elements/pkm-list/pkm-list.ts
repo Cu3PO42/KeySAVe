@@ -64,6 +64,9 @@ class PkmList extends polymer.Base {
 
     // =========================================================================
 
+    @property({type: Boolean})
+    filtersActive: boolean = false;
+
     @property({type: String})
     filteredGender: string = "any";
 
@@ -444,6 +447,11 @@ class PkmList extends polymer.Base {
 
     not(value) {
         return !value;
+    }
+
+    @computed({type: String})
+    filterToggleIcon(filtersActive) {
+        return filtersActive ? "icons:unfold-more" : "icons:unfold-less";
     }
 }
 polymer.createElement(PkmList);

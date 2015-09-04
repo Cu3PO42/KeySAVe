@@ -45,6 +45,7 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             var _this = this;
             _super.call(this);
             this.pokemon = [];
+            this.filtersActive = false;
             this.filteredGender = "any";
             this.filteredEggs = false;
             this.filteredHa = false;
@@ -360,6 +361,9 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
         PkmList.prototype.not = function (value) {
             return !value;
         };
+        PkmList.prototype.filterToggleIcon = function (filtersActive) {
+            return filtersActive ? "icons:unfold-more" : "icons:unfold-less";
+        };
         __decorate([
             property({ type: Array }), 
             __metadata('design:type', Array)
@@ -400,6 +404,10 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             property({ type: Object }), 
             __metadata('design:type', Object)
         ], PkmList.prototype, "localization");
+        __decorate([
+            property({ type: Boolean }), 
+            __metadata('design:type', Boolean)
+        ], PkmList.prototype, "filtersActive");
         __decorate([
             property({ type: String }), 
             __metadata('design:type', String)
@@ -512,6 +520,13 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
                 __metadata('design:paramtypes', [Object, Object]), 
                 __metadata('design:returntype', Object)
             ], PkmList.prototype, "languageChanged", Object.getOwnPropertyDescriptor(PkmList.prototype, "languageChanged")));
+        Object.defineProperty(PkmList.prototype, "filterToggleIcon",
+            __decorate([
+                computed({ type: String }), 
+                __metadata('design:type', Function), 
+                __metadata('design:paramtypes', [Object]), 
+                __metadata('design:returntype', Object)
+            ], PkmList.prototype, "filterToggleIcon", Object.getOwnPropertyDescriptor(PkmList.prototype, "filterToggleIcon")));
         PkmList = __decorate([
             component("pkm-list"), 
             __metadata('design:paramtypes', [])
