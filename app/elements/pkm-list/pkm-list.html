@@ -58,6 +58,20 @@
                 </paper-menu>
             </paper-dropdown-menu-multi>
             <br>
+            <paper-dropdown-menu-multi label="Abilities" id="filterAbilities">
+                <paper-menu
+                    multi
+                    class="dropdown-content"
+                    selected-values="{{filteredAbilities}}"
+                    attr-for-selected="dataId"
+                    on-iron-select="filterRestrictionsChanged"
+                    on-iron-deselect="filterRestrictionsChanged">
+                    <template is="dom-repeat" items="{{localization.abilities}}">
+                        <paper-item data-id="{{item.id}}">{{item.name}}</paper-item>
+                    </template>
+                </paper-menu>
+            </paper-dropdown-menu-multi>
+            <br>
             <paper-radio-group selected="{{filteredGender}}">
                 <paper-radio-button name="male">♂</paper-radio-button>
                 <paper-radio-button name="female">♀</paper-radio-button>

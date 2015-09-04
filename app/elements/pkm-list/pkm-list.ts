@@ -116,10 +116,13 @@ class PkmList extends polymer.Base {
     filteredSvList: number[] = [];
 
     @property({type: Array})
-    filteredHpTypes: string[] = [];
+    filteredHpTypes: number[] = [];
 
     @property({type: Array})
-    filteredSpecies: string[] = [];
+    filteredSpecies: number[] = [];
+
+    @property({type: Array})
+    filteredAbilities: number[] = [];
 
     // =========================================================================
 
@@ -320,6 +323,8 @@ class PkmList extends polymer.Base {
             return false;
         if (this.filteredSpecies.length > 0 && this.filteredSpecies.indexOf(pkm.species) === -1)
             return false;
+        if (this.filteredAbilities.length > 0 && this.filteredAbilities.indexOf(pkm.ability) === -1)
+            return false;
         return true;
     }
 
@@ -405,9 +410,12 @@ class PkmList extends polymer.Base {
         loc.species = _.sortBy(loc.species.slice(1).map(function(e, i) {
             return {name: e, id: i+1};
         }), "name");
+        loc.abilities= _.sortBy(loc.abilities.slice(1).map(function(e, i) {
+            return {name: e, id: i+1};
+        }), "name");
         this.localization = loc;
         this.async(() => {
-            for (let name of ["filterHpTypes", "filterSpecies"]) {
+            for (let name of ["filterHpTypes", "filterSpecies", "filterAbilities"]) {
                 let el = this.$[name];
                 let cel = el.contentElement;
                 cel._selectMulti(cel.selectedValues);

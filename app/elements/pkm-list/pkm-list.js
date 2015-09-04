@@ -64,6 +64,7 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             this.filteredSvList = [];
             this.filteredHpTypes = [];
             this.filteredSpecies = [];
+            this.filteredAbilities = [];
             this.formatCache = {};
             this.ipcClient = new IpcClient();
             this.ipcClient.on("file-dialog-save-result", function (filename) {
@@ -248,6 +249,8 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
                 return false;
             if (this.filteredSpecies.length > 0 && this.filteredSpecies.indexOf(pkm.species) === -1)
                 return false;
+            if (this.filteredAbilities.length > 0 && this.filteredAbilities.indexOf(pkm.ability) === -1)
+                return false;
             return true;
         };
         PkmList.prototype.copyClipboard = function () {
@@ -326,9 +329,12 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             loc.species = _.sortBy(loc.species.slice(1).map(function (e, i) {
                 return { name: e, id: i + 1 };
             }), "name");
+            loc.abilities = _.sortBy(loc.abilities.slice(1).map(function (e, i) {
+                return { name: e, id: i + 1 };
+            }), "name");
             this.localization = loc;
             this.async(function () {
-                for (var _i = 0, _a = ["filterHpTypes", "filterSpecies"]; _i < _a.length; _i++) {
+                for (var _i = 0, _a = ["filterHpTypes", "filterSpecies", "filterAbilities"]; _i < _a.length; _i++) {
                     var name_1 = _a[_i];
                     var el = _this.$[name_1];
                     var cel = el.contentElement;
@@ -459,6 +465,10 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             property({ type: Array }), 
             __metadata('design:type', Array)
         ], PkmList.prototype, "filteredSpecies");
+        __decorate([
+            property({ type: Array }), 
+            __metadata('design:type', Array)
+        ], PkmList.prototype, "filteredAbilities");
         Object.defineProperty(PkmList.prototype, "formatStringChanged",
             __decorate([
                 observe("formatString"), 
