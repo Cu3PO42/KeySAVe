@@ -62,6 +62,28 @@ class PkmList extends polymer.Base {
     @property({type: Object})
     localization: typeof localization.en;
 
+    @property({type: Object, value: function() {
+        return [{
+            name: "pkm-list-grow-height-animation",
+            timing: {
+                delay: 100,
+                duration: 400
+            }
+        }];
+    }})
+    entryAnimationConfig: any;
+
+    @property({type: Object, value: function() {
+        return [{
+            name: "pkm-list-shrink-height-animation",
+            timing: {
+                delay: 100,
+                duration: 400
+            }
+        }];
+    }})
+    exitAnimationConfig: any;
+
     // =========================================================================
 
     @property({type: Boolean})

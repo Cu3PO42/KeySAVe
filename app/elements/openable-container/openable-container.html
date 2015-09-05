@@ -1,0 +1,63 @@
+<dom-module is="openable-container">
+    <template>
+        <content id="content" select=".content"></content>
+    </template>
+    <script>
+        Polymer({
+            is: 'openable-container',
+
+            behaviors: [
+                Polymer.NeonAnimationRunnerBehavior
+            ],
+
+            properties: {
+                'opened': {
+                    type: Boolean,
+                    observer: '_openedChanged'
+                }
+            },
+
+            listeners: {
+                'neon-animation-finish': '_onNeonAnimationFinish'
+            },
+
+            _openedChanged: function(opened) {
+                console.log(this.getAnimationConfig("entry"))
+                if (opened) {
+                    this.removeAttribute("hidden");
+                    this.playAnimation("entry");
+                } else {
+                    this.playAnimation("exit");
+                }
+            },
+
+            _onNeonAnimationFinish: function() {
+                if (!this.opened) {
+                    this.setAttribute("hidden", true);
+                }
+            },
+
+            attached: function() {
+                var node = Polymer.dom(this.$.content).getDistributedNodes()[0];
+                this.animationConfig = {
+                    "entry": [{
+                        name: "pkm-list-grow-height-animation",
+                        node: node,
+                        timing: {
+                            delay: 100,
+                            duration: 400
+                        }
+                    }],
+                    "exit": [{
+                        name: "pkm-list-shrink-height-animation",
+                        node: node,
+                        timing: {
+                            delay: 100,
+                            duration: 400
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+</dom-module>

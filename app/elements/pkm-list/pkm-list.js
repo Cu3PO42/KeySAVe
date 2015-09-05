@@ -404,6 +404,30 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             __metadata('design:type', Object)
         ], PkmList.prototype, "localization");
         __decorate([
+            property({ type: Object, value: function () {
+                    return [{
+                            name: "pkm-list-grow-height-animation",
+                            timing: {
+                                delay: 100,
+                                duration: 400
+                            }
+                        }];
+                } }), 
+            __metadata('design:type', Object)
+        ], PkmList.prototype, "entryAnimationConfig");
+        __decorate([
+            property({ type: Object, value: function () {
+                    return [{
+                            name: "pkm-list-shrink-height-animation",
+                            timing: {
+                                delay: 100,
+                                duration: 400
+                            }
+                        }];
+                } }), 
+            __metadata('design:type', Object)
+        ], PkmList.prototype, "exitAnimationConfig");
+        __decorate([
             property({ type: Boolean }), 
             __metadata('design:type', Boolean)
         ], PkmList.prototype, "filtersActive");
