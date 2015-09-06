@@ -1,4 +1,9 @@
 <dom-module is="openable-container">
+    <style>
+        :host ::content [animating] {
+            overflow: hidden;
+        }
+    </style>
     <template>
         <content id="content" select=".content"></content>
     </template>
@@ -14,6 +19,16 @@
                 'opened': {
                     type: Boolean,
                     observer: '_openedChanged'
+                },
+
+                'openAnimation': {
+                    type: Object,
+                    observer: '_entryChanged'
+                },
+
+                'closeAnimation': {
+                    type: Object,
+                    observer: '_exitChanged'
                 }
             },
 
@@ -21,8 +36,12 @@
                 'neon-animation-finish': '_onNeonAnimationFinish'
             },
 
+            get contentElement() {
+                return Polymer.dom(this.$.content).getDistributedNodes()[0];
+            },
+
             _openedChanged: function(opened) {
-                console.log(this.getAnimationConfig("entry"))
+                this.contentElement.setAttribute("animating", true);
                 if (opened) {
                     this.removeAttribute("hidden");
                     this.playAnimation("entry");
@@ -35,28 +54,29 @@
                 if (!this.opened) {
                     this.setAttribute("hidden", true);
                 }
+                this.contentElement.removeAttribute("animating");
             },
 
-            attached: function() {
-                var node = Polymer.dom(this.$.content).getDistributedNodes()[0];
-                this.animationConfig = {
-                    "entry": [{
-                        name: "pkm-list-grow-height-animation",
-                        node: node,
-                        timing: {
-                            delay: 100,
-                            duration: 400
-                        }
-                    }],
-                    "exit": [{
-                        name: "pkm-list-shrink-height-animation",
-                        node: node,
-                        timing: {
-                            delay: 100,
-                            duration: 400
-                        }
-                    }]
+            _entryChanged: function(entry) {
+                if (typeof entry === 'string' || entry instanceof String) {
+                    entry = [{type: entry}];
                 }
+                for (var i = 0, contentElement = this.contentElement; i < entry.length; ++i) {
+                    entry[i].node = contentElement;
+                }
+                this.animationConfig = this.animationConfig || {};
+                this.animationConfig.entry = entry;
+            },
+
+            _exitChanged: function(exit) {
+                if (typeof exit === 'string' || exit instanceof String) {
+                    exit = [{type: exit}];
+                }
+                for (var i = 0, contentElement = this.contentElement; i < exit.length; ++i) {
+                    exit[i].node = contentElement;
+                }
+                this.animationConfig = this.animationConfig || {};
+                this.animationConfig.exit = exit;
             }
         });
     </script>

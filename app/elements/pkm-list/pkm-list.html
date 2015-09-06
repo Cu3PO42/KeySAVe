@@ -26,10 +26,6 @@
         paper-material {
             margin-top: 0 !important;
         }
-
-        openable-container .content {
-            overflow: hidden;
-        }
     </style>
     <link rel="import" type="css" href="../../styles/paper-material.css">
     <template>
@@ -42,8 +38,8 @@
             <template is="dom-if" if="{{filtersActive}}">Hide Filters<iron-icon icon="icons:unfold-less"></iron-icon></template>
         </paper-button>
         <openable-container opened="{{filtersActive}}"
-            entry-animation="scale-up-animation"
-            exit-animation="scale-down-animation">
+            open-animation="[[entryAnimationConfig]]"
+            close-animation="[[exitAnimationConfig]]">
             <paper-material elevation="1" class="content">
                 <paper-checkbox checked="{{filteredEggs}}">Eggs only</paper-checkbox>
                 <br>
