@@ -375,7 +375,8 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             var t = e.target;
             while (t.nodeName != "PAPER-ICON-BUTTON")
                 t = t.parentNode;
-            this.$[t.getAttribute("data-list")].contentElement._selection.clear();
+            this.$[t.getAttribute("data-list")].contentElement.selectedValues = [];
+            this.$.list.render();
         };
         PkmList.prototype.not = function (value) {
             return !value;
