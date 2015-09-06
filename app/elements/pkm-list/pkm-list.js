@@ -52,6 +52,7 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             this.filteredSpecialAttacker = false;
             this.filteredTrickRoom = false;
             this.filteredNoIvs = 0;
+            this.filteredAllIvs = false;
             this.filteredHp = false;
             this.filteredAtk = false;
             this.filteredDef = false;
@@ -68,6 +69,7 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             this.filteredAbilities = [];
             this.filteredNatures = [];
             this.formatCache = {};
+            this.internalIvChange = false;
             this.ipcClient = new IpcClient();
             this.ipcClient.on("file-dialog-save-result", function (filename) {
                 if (filename)
@@ -327,6 +329,21 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
         PkmList.prototype.filterRestrictionsChanged = function () {
             this.$.list.render();
         };
+        PkmList.prototype.filterIvChanged = function (hp, atk, def, spAtk, spDef, spe) {
+            this.filteredAllIvs = hp && atk && def && spAtk && spDef && spe;
+            this.internalIvChange = true;
+            this.$.list.render();
+        };
+        PkmList.prototype.filterAllIvsChanged = function (newValue, oldValue) {
+            if (newValue) {
+                this.filteredHp = this.filteredAtk = this.filteredDef = this.filteredSpAtk = this.filteredSpDef = this.filteredSpe = true;
+                this.filteredSpe = true;
+            }
+            else if (oldValue && !this.internalIvChange)
+                this.filteredHp = this.filteredAtk = this.filteredDef = this.filteredSpAtk = this.filteredSpDef = this.filteredSpe = false;
+            this.internalIvChange = false;
+            this.$.list.render();
+        };
         PkmList.prototype.pokemonChanged = function (pokemon, language) {
             this.formatCache = {};
         };
@@ -458,6 +475,10 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
         __decorate([
             property({ type: Boolean }), 
             __metadata('design:type', Boolean)
+        ], PkmList.prototype, "filteredAllIvs");
+        __decorate([
+            property({ type: Boolean }), 
+            __metadata('design:type', Boolean)
         ], PkmList.prototype, "filteredHp");
         __decorate([
             property({ type: Boolean }), 
@@ -524,11 +545,25 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
             ], PkmList.prototype, "formatStringChanged", Object.getOwnPropertyDescriptor(PkmList.prototype, "formatStringChanged")));
         Object.defineProperty(PkmList.prototype, "filterRestrictionsChanged",
             __decorate([
-                observe("lowerBox, upperBox, filteredGender, filteredEggs, filteredHa, filteredMySv, filteredSvs, filteredSvList, filteredShiny, filteredShinyOverride, filteredHp, filteredAtk, filteredDef, filteredSpAtk, filteredSpDef, filteredSpe, filteredSpecialAttacker, filteredTrickRoom, filteredNoIvs, filtersActive"), 
+                observe("lowerBox, upperBox, filteredGender, filteredEggs, filteredHa, filteredMySv, filteredSvs, filteredSvList, filteredShiny, filteredShinyOverride, filteredSpecialAttacker, filteredTrickRoom, filteredNoIvs, filtersActive"), 
                 __metadata('design:type', Function), 
                 __metadata('design:paramtypes', []), 
                 __metadata('design:returntype', Object)
             ], PkmList.prototype, "filterRestrictionsChanged", Object.getOwnPropertyDescriptor(PkmList.prototype, "filterRestrictionsChanged")));
+        Object.defineProperty(PkmList.prototype, "filterIvChanged",
+            __decorate([
+                observe("filteredHp, filteredAtk, filteredDef, filteredSpAtk, filteredSpDef, filteredSpe"), 
+                __metadata('design:type', Function), 
+                __metadata('design:paramtypes', [Object, Object, Object, Object, Object, Object]), 
+                __metadata('design:returntype', Object)
+            ], PkmList.prototype, "filterIvChanged", Object.getOwnPropertyDescriptor(PkmList.prototype, "filterIvChanged")));
+        Object.defineProperty(PkmList.prototype, "filterAllIvsChanged",
+            __decorate([
+                observe("filteredAllIvs"), 
+                __metadata('design:type', Function), 
+                __metadata('design:paramtypes', [Object, Object]), 
+                __metadata('design:returntype', Object)
+            ], PkmList.prototype, "filterAllIvsChanged", Object.getOwnPropertyDescriptor(PkmList.prototype, "filterAllIvsChanged")));
         Object.defineProperty(PkmList.prototype, "pokemonChanged",
             __decorate([
                 observe("pokemon, language"), 

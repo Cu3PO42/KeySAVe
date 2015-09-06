@@ -108,6 +108,9 @@ class PkmList extends polymer.Base {
     filteredNoIvs: number = 0;
 
     @property({type: Boolean})
+    filteredAllIvs: boolean = false;
+
+    @property({type: Boolean})
     filteredHp: boolean = false;
 
     @property({type: Boolean})
@@ -159,6 +162,7 @@ class PkmList extends polymer.Base {
     private ipcClient: IpcClient;
     private handlebarsHelpers: {[helper: string]: Function};
     private knownHelpers: string[];
+    private internalIvChange: boolean = false;
 
     constructor() {
         super();
@@ -427,8 +431,29 @@ class PkmList extends polymer.Base {
         }, 500);
     }
 
-    @observe("lowerBox, upperBox, filteredGender, filteredEggs, filteredHa, filteredMySv, filteredSvs, filteredSvList, filteredShiny, filteredShinyOverride, filteredHp, filteredAtk, filteredDef, filteredSpAtk, filteredSpDef, filteredSpe, filteredSpecialAttacker, filteredTrickRoom, filteredNoIvs, filtersActive")
+    @observe("lowerBox, upperBox, filteredGender, filteredEggs, filteredHa, filteredMySv, filteredSvs, filteredSvList, filteredShiny, filteredShinyOverride, filteredSpecialAttacker, filteredTrickRoom, filteredNoIvs, filtersActive")
     filterRestrictionsChanged() {
+        this.$.list.render();
+    }
+
+    @observe("filteredHp, filteredAtk, filteredDef, filteredSpAtk, filteredSpDef, filteredSpe")
+    filterIvChanged(hp, atk, def, spAtk, spDef, spe) {
+        this.filteredAllIvs = hp && atk && def && spAtk && spDef && spe;
+        this.internalIvChange = true;
+        this.$.list.render();
+    }
+
+    @observe("filteredAllIvs")
+    filterAllIvsChanged(newValue, oldValue) {
+        if (newValue) {
+            this.filteredHp = this.filteredAtk = this.filteredDef = this.filteredSpAtk = this.filteredSpDef = this.filteredSpe = true;
+            // Yes, we actually need to set this twice.
+            // Don't ask why.
+            this.filteredSpe = true;
+        }
+        else if (oldValue && !this.internalIvChange)
+            this.filteredHp = this.filteredAtk = this.filteredDef = this.filteredSpAtk = this.filteredSpDef = this.filteredSpe = false;
+        this.internalIvChange = false;
         this.$.list.render();
     }
 
