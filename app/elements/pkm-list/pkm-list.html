@@ -23,8 +23,32 @@
             justify-content: flex-end;
         }
 
-        paper-material {
+        :host > paper-material {
             margin-top: 0 !important;
+        }
+
+        .row {
+            display: flex;
+        }
+
+        .row > *, .block {
+            display: block;
+        }
+
+        .inline-block {
+            display: inline-block;
+        }
+
+        .checkbox-col, .pad-left {
+            margin-left: 1em;
+        }
+
+        .checkbox-col > paper-checkbox {
+            display: block;
+        }
+
+        .checkbox-col > paper-checkbox:first-child {
+            margin-bottom: 1em;
         }
     </style>
     <link rel="import" type="css" href="../../styles/paper-material.css">
@@ -34,15 +58,35 @@
             <div class="align-right"><paper-button dialog-confirm>Ok</paper-button></div>
         </paper-dialog>
         <paper-button toggles active="{{filtersActive}}">
-            <template is="dom-if" if="{{not(filtersActive)}}">Show Filters<iron-icon icon="icons:unfold-more"></iron-icon></template>
-            <template is="dom-if" if="{{filtersActive}}">Hide Filters<iron-icon icon="icons:unfold-less"></iron-icon></template>
+            <template is="dom-if" if="{{not(filtersActive)}}">Enable Filters<iron-icon icon="icons:unfold-more"></iron-icon></template>
+            <template is="dom-if" if="{{filtersActive}}">Disable Filters<iron-icon icon="icons:unfold-less"></iron-icon></template>
         </paper-button>
         <openable-container opened="{{filtersActive}}"
             open-animation="[[entryAnimationConfig]]"
             close-animation="[[exitAnimationConfig]]">
             <paper-material elevation="1" class="content">
                 <paper-checkbox checked="{{filteredEggs}}">Eggs only</paper-checkbox>
-                <br>
+                <div>
+                    <paper-dropdown-menu-multi label="Species" id="filterSpecies">
+                        <paper-menu
+                            multi
+                            class="dropdown-content"
+                            selected-values="{{filteredSpecies}}"
+                            attr-for-selected="dataId"
+                            on-iron-select="filterRestrictionsChanged"
+                            on-iron-deselect="filterRestrictionsChanged">
+                            <template is="dom-repeat" items="{{localization.species}}">
+                                <paper-item data-id="{{item.id}}" data-id="{{item.id}}">{{item.name}}</paper-item>
+                            </template>
+                        </paper-menu>
+                    </paper-dropdown-menu-multi>
+                    <paper-icon-button icon="icons:clear" on-tap="clearFilterList" data-list="filterSpecies"></paper-icon-button>
+                    <paper-radio-group selected="{{filteredGender}}">
+                        <paper-radio-button name="male">♂</paper-radio-button>
+                        <paper-radio-button name="female">♀</paper-radio-button>
+                        <paper-radio-button name="any">Any</paper-radio-button>
+                    </paper-radio-group>
+                </div>
                 <paper-dropdown-menu-multi label="HP Types" id="filterHpTypes">
                     <paper-menu
                         multi
@@ -56,35 +100,6 @@
                     </paper-menu>
                 </paper-dropdown-menu-multi>
                 <paper-icon-button icon="icons:clear" on-tap="clearFilterList" data-list="filterHpTypes"></paper-icon-button>
-                <paper-dropdown-menu-multi label="Species" id="filterSpecies">
-                    <paper-menu
-                        multi
-                        class="dropdown-content"
-                        selected-values="{{filteredSpecies}}"
-                        attr-for-selected="dataId"
-                        on-iron-select="filterRestrictionsChanged"
-                        on-iron-deselect="filterRestrictionsChanged">
-                        <template is="dom-repeat" items="{{localization.species}}">
-                            <paper-item data-id="{{item.id}}" data-id="{{item.id}}">{{item.name}}</paper-item>
-                        </template>
-                    </paper-menu>
-                </paper-dropdown-menu-multi>
-                <paper-icon-button icon="icons:clear" on-tap="clearFilterList" data-list="filterSpecies"></paper-icon-button>
-                <br>
-                <paper-dropdown-menu-multi label="Abilities" id="filterAbilities">
-                    <paper-menu
-                        multi
-                        class="dropdown-content"
-                        selected-values="{{filteredAbilities}}"
-                        attr-for-selected="dataId"
-                        on-iron-select="filterRestrictionsChanged"
-                        on-iron-deselect="filterRestrictionsChanged">
-                        <template is="dom-repeat" items="{{localization.abilities}}">
-                            <paper-item data-id="{{item.id}}">{{item.name}}</paper-item>
-                        </template>
-                    </paper-menu>
-                </paper-dropdown-menu-multi>
-                <paper-icon-button icon="icons:clear" on-tap="clearFilterList" data-list="filterAbilities"></paper-icon-button>
                 <paper-dropdown-menu-multi label="Natures" id="filterNatures">
                     <paper-menu
                         multi
@@ -99,41 +114,68 @@
                 </paper-dropdown-menu-multi>
                 <paper-icon-button icon="icons:clear" on-tap="clearFilterList" data-list="filterNatures"></paper-icon-button>
                 <br>
-                <paper-radio-group selected="{{filteredGender}}">
-                    <paper-radio-button name="male">♂</paper-radio-button>
-                    <paper-radio-button name="female">♀</paper-radio-button>
-                    <paper-radio-button name="any">Any</paper-radio-button>
-                </paper-radio-group>
+                <div>
+                    <paper-dropdown-menu-multi label="Abilities" id="filterAbilities">
+                        <paper-menu
+                            multi
+                            class="dropdown-content"
+                            selected-values="{{filteredAbilities}}"
+                            attr-for-selected="dataId"
+                            on-iron-select="filterRestrictionsChanged"
+                            on-iron-deselect="filterRestrictionsChanged">
+                            <template is="dom-repeat" items="{{localization.abilities}}">
+                                <paper-item data-id="{{item.id}}">{{item.name}}</paper-item>
+                            </template>
+                        </paper-menu>
+                    </paper-dropdown-menu-multi>
+                    <paper-icon-button icon="icons:clear" on-tap="clearFilterList" data-list="filterAbilities"></paper-icon-button>
+                    <paper-checkbox checked="{{filteredHa}}">Has Hidden Ability</paper-checkbox>
+                </div>
+                <div class="row">
+                    <div>
+                        <paper-dropdown-menu label="Number of perfect IVs" class="block">
+                            <paper-menu class="dropdown-content" selected="{{filteredNoIvs}}">
+                                <paper-item>0</paper-item>
+                                <paper-item>1</paper-item>
+                                <paper-item>2</paper-item>
+                                <paper-item>3</paper-item>
+                                <paper-item>4</paper-item>
+                                <paper-item>5</paper-item>
+                                <paper-item>6</paper-item>
+                            </paper-menu>
+                        </paper-dropdown-menu>
+                        <div>These perfect IVs: <paper-checkbox checked="{{filteredAllIvs}}">All</paper-checkbox></div>
+                    </div>
+                    <div class="checkbox-col">
+                        <paper-checkbox checked="{{filteredSpecialAttacker}}">Special Attacker</paper-checkbox>
+                        <paper-checkbox checked="{{filteredHp}}">HP</paper-checkbox>
+                        <paper-checkbox checked="{{filteredAtk}}">ATK</paper-checkbox>
+                        <paper-checkbox checked="{{filteredDef}}">DEF</paper-checkbox>
+                    </div>
+                    <div class="checkbox-col">
+                        <paper-checkbox checked="{{filteredTrickRoom}}">Trick Room</paper-checkbox>
+                        <paper-checkbox checked="{{filteredSpAtk}}">SP ATK</paper-checkbox>
+                        <paper-checkbox checked="{{filteredSpDef}}">SP DEF</paper-checkbox>
+                        <paper-checkbox checked="{{filteredSpe}}">SPE</paper-checkbox>
+                    </div>
+                </div>
                 <br>
-                <paper-checkbox checked="{{filteredHa}}">Has Hidden Ability</paper-checkbox>
-                <br>
-                <paper-checkbox checked="{{filteredSpecialAttacker}}">Special Attacker</paper-checkbox>
-                <paper-checkbox checked="{{filteredTrickRoom}}">Trick Room</paper-checkbox>
-                <paper-dropdown-menu label="Number of perfect IVs">
-                    <paper-menu class="dropdown-content" selected="{{filteredNoIvs}}">
-                        <paper-item>0</paper-item>
-                        <paper-item>1</paper-item>
-                        <paper-item>2</paper-item>
-                        <paper-item>3</paper-item>
-                        <paper-item>4</paper-item>
-                        <paper-item>5</paper-item>
-                        <paper-item>6</paper-item>
-                    </paper-menu>
-                </paper-dropdown-menu>
-                <br>
-                <paper-checkbox checked="{{filteredAllIvs}}">All</paper-checkbox>
-                <paper-checkbox checked="{{filteredHp}}">HP</paper-checkbox>
-                <paper-checkbox checked="{{filteredAtk}}">ATK</paper-checkbox>
-                <paper-checkbox checked="{{filteredDef}}">DEF</paper-checkbox>
-                <paper-checkbox checked="{{filteredSpAtk}}">SP ATK</paper-checkbox>
-                <paper-checkbox checked="{{filteredSpDef}}">SP DEF</paper-checkbox>
-                <paper-checkbox checked="{{filteredSpe}}">SPE</paper-checkbox>
-                <br>
-                <paper-checkbox checked="{{filteredShiny}}">Is shiny</paper-checkbox>
-                <paper-checkbox checked="{{filteredShinyOverride}}">Shiny override</paper-checkbox>
-                <paper-checkbox checked="{{filteredMySv}}">Has my SV</paper-checkbox>
-                <paper-checkbox checked="{{filteredSvs}}">Has any of these SVs</paper-checkbox>
-                <paper-input label="Shiny Values" on-value-changed="changedFilteredSvList" disabled="{{not(filteredSvs)}}"></paper-input>
+                <div>
+                    <div>
+                        <paper-checkbox checked="{{filteredShiny}}">Is shiny</paper-checkbox>
+                        <paper-checkbox class="pad-left" checked="{{filteredShinyOverride}}">Shiny override</paper-checkbox>
+                    </div>
+                    <div class="row">
+                        <div>Eggs must have...</div>
+                        <div class="pad-left">
+                            <paper-checkbox checked="{{filteredMySv}}">my SV</paper-checkbox>
+                            <div style="white-space: nowrap;">
+                                <paper-checkbox checked="{{filteredSvs}}">any of these SVs</paper-checkbox>
+                                <paper-input class="inline-block pad-left" label="Shiny Values" on-value-changed="changedFilteredSvList" disabled="{{not(filteredSvs)}}"></paper-input>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </paper-material>
         </openable-container>
         <div class="align-right" hidden$="{{isEmpty(pokemon)}}">
