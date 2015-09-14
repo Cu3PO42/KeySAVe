@@ -44,9 +44,11 @@
             <!-- Main Content -->
             <div class="content">
                 <electron-updater></electron-updater>
-                <neon-animated-pages
-                    entry-animation="slide-from-right-animation"
-                    exit-animation="slide-left-animation"
+                <neon-animated-pages-switchable
+                    entry-animation="slide-from-left-animation"
+                    exit-animation="slide-right-animation"
+                    entry-right-animation="slide-from-right-animation"
+                    exit-right-animation="slide-left-animation"
                     attr-for-selected="data-route"
                     selected="{{route}}">
 
