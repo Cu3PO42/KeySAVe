@@ -44,28 +44,42 @@
             <!-- Main Content -->
             <div class="content">
                 <electron-updater></electron-updater>
-                <iron-pages attr-for-selected="data-route" selected="{{route}}">
+                <neon-animated-pages
+                    entry-animation="slide-from-right-animation"
+                    exit-animation="slide-left-animation"
+                    attr-for-selected="data-route"
+                    selected="{{route}}">
 
-                    <section data-route="bv">
-                        <bv-dumper format="[[selectedFormat]]" language="[[language]]"></bv-dumper>
-                    </section>
+                    <neon-animatable data-route="bv">
+                        <section>
+                            <bv-dumper format="[[selectedFormat]]" language="[[language]]"></bv-dumper>
+                        </section>
+                    </neon-animatable>
 
-                    <section data-route="sav">
-                        <save-dumper format="[[selectedFormat]]" language="[[language]]"></save-dumper>
-                    </section>
+                    <neon-animatable data-route="sav">
+                        <section>
+                            <save-dumper format="[[selectedFormat]]" language="[[language]]"></save-dumper>
+                        </section>
+                    </neon-animatable>
 
-                    <section data-route="options">
-                        <keysav-options selected-format="{{selectedFormat}}" language="{{language}}"></keysav-options>
-                    </section>
+                    <neon-animatable data-route="options">
+                        <section>
+                            <keysav-options selected-format="{{selectedFormat}}" language="{{language}}"></keysav-options>
+                        </section>
+                    </neon-animatable>
 
-                    <section data-route="breaking">
-                        <key-breaker></key-breaker>
-                    </section>
+                    <neon-animatable data-route="breaking">
+                        <section>
+                            <key-breaker></key-breaker>
+                        </section>
+                    </neon-animatable>
 
-                    <section data-route="about">
-                        <keysav-about></keysav-about>
-                    </section>
-                </iron-pages>
+                    <neon-animatable data-route="about">
+                        <section>
+                            <keysav-about></keysav-about>
+                        </section>
+                    </neon-animatable>
+                </neon-animated-pages>
             </div>
         </paper-scroll-header-panel>
     </template>
