@@ -60,7 +60,7 @@ export = function() {
                         res.push(tmp);
                     }
                 }
-                reply("dump-save-dumped", res);
+                reply("dump-save-dumped", {pokemon: res, isNewKey: reader.get_IsNewKey()});
             });
         });
     });
@@ -105,14 +105,16 @@ export = function() {
             } else {
                 breakInProgress = 2;
                 files = _.map(files, (f) => f.subarray(f.length % 0x100000));
-                savBreakRes = KeySAV.Core.SaveBreaker.Break(files[0], files[1]);
-                if (savBreakRes.success) {
-                    var resPkx = new KeySAV.Core.Structures.PKX.ctor$1(savBreakRes.resPkx, 0, 0, false);
-                    var savePath = path.join(dataDirectory, util.format("SAV Key - %s - (%s.%s) - TSV %s.bin", resPkx.ot, padNumber(resPkx.tid), padNumber(resPkx.sid), ("0000"+resPkx.tsv).slice(-4)));
-                } else {
-                    savePath = "";
-                }
-                reply("break-key-result", {success: savBreakRes.success, path: savePath, result: savBreakRes.result})
+                KeySAV.Core.SaveBreaker.Break(files[0], files[1], store.getSaveKey.bind(store), function(savBreakRes) {
+                    var savePath;
+                    if (savBreakRes.success && savBreakRes.resPkx !== null) {
+                        var resPkx = new KeySAV.Core.Structures.PKX.ctor$1(savBreakRes.resPkx, 0, 0, false);
+                        savePath = savBreakRes.resPkx !== null ? path.join(dataDirectory, util.format("SAV Key - %s - (%s.%s) - TSV %s.bin", resPkx.ot, padNumber(resPkx.tid), padNumber(resPkx.sid), ("0000"+resPkx.tsv).slice(-4))) : "";
+                    } else {
+                        savePath = "";
+                    }
+                    reply("break-key-result", {success: savBreakRes.success, path: savePath, result: savBreakRes.result})
+                });
             }
         });
     });

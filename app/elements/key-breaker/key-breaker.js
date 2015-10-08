@@ -1,4 +1,3 @@
-/// <reference path="../../../bower_components/polymer-ts/polymer-ts.ts"/>
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -51,7 +50,8 @@ var fs = require("fs");
         };
         KeyBreaker.prototype.saveBreak = function () {
             if (this.breakResult.success) {
-                this.ipcClient.send("file-dialog-save", { options: { defaultPath: this.breakResult.path, filters: [{ name: "Key file", extensions: ["bin"] }] } });
+                if (this.breakResult.path !== "")
+                    this.ipcClient.send("file-dialog-save", { options: { defaultPath: this.breakResult.path, filters: [{ name: "Key file", extensions: ["bin"] }] } });
             }
             else {
                 this.ipcClient.send("break-key-cancel");
@@ -122,21 +122,21 @@ var fs = require("fs");
                 observe("file1"), 
                 __metadata('design:type', Function), 
                 __metadata('design:paramtypes', [Object, Object]), 
-                __metadata('design:returntype', Object)
+                __metadata('design:returntype', void 0)
             ], KeyBreaker.prototype, "file1Changed", Object.getOwnPropertyDescriptor(KeyBreaker.prototype, "file1Changed")));
         Object.defineProperty(KeyBreaker.prototype, "file2Changed",
             __decorate([
                 observe("file2"), 
                 __metadata('design:type', Function), 
                 __metadata('design:paramtypes', [Object, Object]), 
-                __metadata('design:returntype', Object)
+                __metadata('design:returntype', void 0)
             ], KeyBreaker.prototype, "file2Changed", Object.getOwnPropertyDescriptor(KeyBreaker.prototype, "file2Changed")));
         Object.defineProperty(KeyBreaker.prototype, "folderChanged",
             __decorate([
                 observe("folder"), 
                 __metadata('design:type', Function), 
                 __metadata('design:paramtypes', [Object, Object]), 
-                __metadata('design:returntype', Object)
+                __metadata('design:returntype', void 0)
             ], KeyBreaker.prototype, "folderChanged", Object.getOwnPropertyDescriptor(KeyBreaker.prototype, "folderChanged")));
         KeyBreaker = __decorate([
             component("key-breaker"), 
