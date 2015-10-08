@@ -14,9 +14,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-/// <reference path="../../../bower_components/polymer-ts/polymer-ts.ts"/>
-/// <reference path="../../../typings/github-electron/github-electron.d.ts"/>
-/// <reference path="../../../typings/node/node.d.ts"/>
 var IpcClient = require("electron-ipc-tunnel/client");
 var fs = require("fs");
 var path = require("path-extra");
@@ -35,10 +32,12 @@ var path = require("path-extra");
             _super.call(this);
             this.lowerBox = 1;
             this.upperBox = 31;
+            this.isNewKey = true;
             this.fileOptions = process.platform !== "darwin" ? {} : { filters: [{ name: "SAV (1MB)", extensions: ["bin", "sav"] }, { name: "Main File", extensions: [""] }] };
             this.ipcClient = new IpcClient();
             this.ipcClient.on("dump-save-dumped", function (res) {
-                _this.$.results.pokemon = res;
+                _this.isNewKey = res.isNewKey;
+                _this.$.results.pokemon = res.pokemon;
             });
             this.ipcClient.on("dump-save-nokey", function () {
                 _this.path = "";
@@ -120,12 +119,16 @@ var path = require("path-extra");
             property({ type: String }), 
             __metadata('design:type', String)
         ], SaveDumper.prototype, "dialogMessage");
+        __decorate([
+            property({ type: Boolean }), 
+            __metadata('design:type', Boolean)
+        ], SaveDumper.prototype, "isNewKey");
         Object.defineProperty(SaveDumper.prototype, "pathChange",
             __decorate([
                 observe("path"), 
                 __metadata('design:type', Function), 
                 __metadata('design:paramtypes', [Object, Object]), 
-                __metadata('design:returntype', Object)
+                __metadata('design:returntype', void 0)
             ], SaveDumper.prototype, "pathChange", Object.getOwnPropertyDescriptor(SaveDumper.prototype, "pathChange")));
         SaveDumper = __decorate([
             component("save-dumper"), 

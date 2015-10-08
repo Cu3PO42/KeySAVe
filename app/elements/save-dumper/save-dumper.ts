@@ -38,6 +38,9 @@ class SaveDumper extends polymer.Base {
     @property({type: String})
     dialogMessage: string;
 
+    @property({type: Boolean})
+    isNewKey: boolean = true;
+
     ipcClient: IpcClient;
 
     constructor() {
@@ -48,7 +51,8 @@ class SaveDumper extends polymer.Base {
         this.ipcClient = new IpcClient();
 
         this.ipcClient.on("dump-save-dumped", (res) => {
-            this.$.results.pokemon = res;
+            this.isNewKey = res.isNewKey;
+            this.$.results.pokemon = res.pokemon;
         });
 
         this.ipcClient.on("dump-save-nokey", () => {
