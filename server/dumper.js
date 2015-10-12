@@ -89,7 +89,8 @@ module.exports = function () {
             else {
                 breakInProgress = 2;
                 files = _.map(files, function (f) { return f.subarray(f.length % 0x100000); });
-                KeySAV.Core.SaveBreaker.Break(files[0], files[1], store.getSaveKey.bind(store), function (savBreakRes) {
+                KeySAV.Core.SaveBreaker.Break(files[0], files[1], store.getSaveKey.bind(store), function (savBreakRes_) {
+                    savBreakRes = savBreakRes_;
                     var savePath;
                     if (savBreakRes.success && savBreakRes.resPkx !== null) {
                         var resPkx = new KeySAV.Core.Structures.PKX.ctor$1(savBreakRes.resPkx, 0, 0, false);
