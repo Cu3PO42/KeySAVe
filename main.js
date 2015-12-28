@@ -1,5 +1,3 @@
-/// <reference path="./typings/github-electron/github-electron.d.ts" />
-/// <reference path="./typings/node/node.d.ts" />
 var app = require("app");
 var menu = require("menu");
 var BrowserWindow = require("browser-window");
@@ -56,6 +54,18 @@ app.on("ready", function () {
             }, {
                 label: 'Edit',
                 submenu: [
+                    {
+                        label: 'Undo',
+                        accelerator: 'CmdOrCtrl+Z',
+                        selector: 'undo:'
+                    },
+                    {
+                        label: 'Redo',
+                        accelerator: 'CmdOrCtrl+Shift+Z'
+                    },
+                    {
+                        type: 'separator'
+                    },
                     {
                         label: 'Cut',
                         accelerator: 'CmdOrCtrl+X',

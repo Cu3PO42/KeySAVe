@@ -65,6 +65,18 @@ app.on("ready", () => {
                 label: 'Edit',
                 submenu: [
                     {
+                        label: 'Undo',
+                        accelerator: 'CmdOrCtrl+Z',
+                        selector: 'undo:'
+                    },
+                    {
+                        label: 'Redo',
+                        accelerator: 'CmdOrCtrl+Shift+Z'
+                    },
+                    {
+                        type: 'separator'
+                    },
+                    {
                         label: 'Cut',
                         accelerator: 'CmdOrCtrl+X',
                         selector: 'cut:'
