@@ -1,19 +1,13 @@
-/// <reference path="../../../bower_components/polymer-ts/polymer-ts.ts"/>
-/// <reference path="../../../typings/github-electron/github-electron.d.ts" />
-/// <reference path="../../../typings/node/node.d.ts" />
-/// <reference path="../../../typings/path-extra/path-extra.d.ts" />
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
@@ -60,7 +54,7 @@ function mkdirOptional(path) {
                 "name": "CSV",
                 "isDefault": true,
                 "header": "Box,Row,Column,Species,Gender,Nature,Ability,HP,ATK,DEF,SPATK,SPDEF,SPE,Hidden Power,ESV,TSV,Nickname,OT,Ball,TID,SID,HP EV,ATK EV,DEF EV,SPA EV,SPD EV,SPE EV,Move 1,Move 2,Move 3,Move 4,Relearn 1,Relearn 2,Relearn 3,Relearn 4,Shiny,Egg",
-                "format": "{{box}},{{row}},{{column}},{{speciesName}},{{genderString gender}},{{natureName}},{{abilityName}},{{ivHp}},{{ivAtk}},{{ivSpAtk}},{{ivSpDef}},{{ivSpe}},{{typeName hpType}},{{esv}},{{tsv}},{{nickname}},{{ot}},{{itemName ball}},{{tid}},{{sid}},{{evHp}},{{evAtk}},{{evDef}},{{evSpAtk}},{{evSpDef}},{{evSpe}},{{moveName move1}},{{moveName move2}},{{moveName move3}},{{moveName move4}},{{moveName eggMove1}},{{moveName eggMove2}},{{moveName eggMove3}},{{moveName eggMove4}},{{isShiny}},{{isEgg}}"
+                "format": "{{box}},{{row}},{{column}},{{speciesName}},{{genderString gender}},{{natureName}},{{abilityName}},{{ivHp}},{{ivAtk}},{{ivDef}},{{ivSpAtk}},{{ivSpDef}},{{ivSpe}},{{typeName hpType}},{{esv}},{{tsv}},{{nickname}},{{ot}},{{itemName ball}},{{tid}},{{sid}},{{evHp}},{{evAtk}},{{evDef}},{{evSpAtk}},{{evSpDef}},{{evSpe}},{{moveName move1}},{{moveName move2}},{{moveName move3}},{{moveName move4}},{{moveName eggMove1}},{{moveName eggMove2}},{{moveName eggMove3}},{{moveName eggMove4}},{{isShiny}},{{isEgg}}"
             },
             {
                 "name": "CSV (Raw data)",
@@ -232,30 +226,29 @@ function mkdirOptional(path) {
         __decorate([
             property({ type: String, notify: true }), 
             __metadata('design:type', String)
-        ], KeysavOptions.prototype, "formatString");
+        ], KeysavOptions.prototype, "formatString", void 0);
         __decorate([
             property({ type: Array }), 
             __metadata('design:type', Object)
-        ], KeysavOptions.prototype, "formattingOptions");
+        ], KeysavOptions.prototype, "formattingOptions", void 0);
         __decorate([
             property({ type: Number }), 
             __metadata('design:type', Number)
-        ], KeysavOptions.prototype, "selectedFormatIndex");
+        ], KeysavOptions.prototype, "selectedFormatIndex", void 0);
         __decorate([
             property({ type: Object, notify: true }), 
             __metadata('design:type', Object)
-        ], KeysavOptions.prototype, "selectedFormat");
+        ], KeysavOptions.prototype, "selectedFormat", void 0);
         __decorate([
             property({ type: String, notify: true }), 
             __metadata('design:type', String)
-        ], KeysavOptions.prototype, "language");
-        Object.defineProperty(KeysavOptions.prototype, "selectedFormatIndexChanged",
-            __decorate([
-                observe("selectedFormatIndex"), 
-                __metadata('design:type', Function), 
-                __metadata('design:paramtypes', [Object, Object]), 
-                __metadata('design:returntype', Object)
-            ], KeysavOptions.prototype, "selectedFormatIndexChanged", Object.getOwnPropertyDescriptor(KeysavOptions.prototype, "selectedFormatIndexChanged")));
+        ], KeysavOptions.prototype, "language", void 0);
+        __decorate([
+            observe("selectedFormatIndex"), 
+            __metadata('design:type', Function), 
+            __metadata('design:paramtypes', [Object, Object]), 
+            __metadata('design:returntype', void 0)
+        ], KeysavOptions.prototype, "selectedFormatIndexChanged", null);
         KeysavOptions = __decorate([
             component("keysav-options"), 
             __metadata('design:paramtypes', [])
