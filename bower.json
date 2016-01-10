@@ -28,6 +28,7 @@
     "test-fixture": "PolymerElements/test-fixture#^1.0.0"
   },
   "resolutions": {
-    "iron-elements": "~1.0.3"
+    "iron-elements": "~1.0.3",
+    "polymer": "^1.0.0"
   }
 }
