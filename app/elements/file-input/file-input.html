@@ -1,3 +1,6 @@
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
 <dom-module id="file-input">
     <style>
     :host {
@@ -11,8 +14,6 @@
     }
 
     </style>
-    <link rel="import" href="../../bower_components/paper-input/paper-input.html">
-    <link rel="import" href="../../bower_components/paper-button/paper-button.html">
     <template>
         <paper-button raised on-click="openDialog">{{buttonText}}</paper-button>
         <paper-input label="File name" disabled value="{{path}}"></paper-input>
