@@ -4,18 +4,16 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-/// <reference path="../../../bower_components/polymer-ts/polymer-ts.ts"/>
 var IpcClient = require("electron-ipc-tunnel/client");
+var _ = require("lodash");
 (function () {
     var ElectronUpdater = (function (_super) {
         __extends(ElectronUpdater, _super);
@@ -26,8 +24,10 @@ var IpcClient = require("electron-ipc-tunnel/client");
         ElectronUpdater.prototype.attached = function () {
             var _this = this;
             this.ipcClient = new IpcClient();
-            this.ipcClient.on("update-available", function () {
+            this.ipcClient.on("update-available", function (changelog) {
+                _this.changelog = _.map(changelog, function (e) { return "# " + e.name + "\n\n" + e.body; });
                 _this.$.dialog.toggle();
+                setTimeout(function () { return _this.$.dialog.refit(); }, 1000);
             });
             this.ipcClient.send("update-query");
         };
@@ -43,7 +43,11 @@ var IpcClient = require("electron-ipc-tunnel/client");
         __decorate([
             property({ type: Boolean }), 
             __metadata('design:type', Boolean)
-        ], ElectronUpdater.prototype, "updateInProgress");
+        ], ElectronUpdater.prototype, "updateInProgress", void 0);
+        __decorate([
+            property({ type: Array }), 
+            __metadata('design:type', Array)
+        ], ElectronUpdater.prototype, "changelog", void 0);
         ElectronUpdater = __decorate([
             component("electron-updater"), 
             __metadata('design:paramtypes', [])

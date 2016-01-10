@@ -1,4 +1,3 @@
-/// <reference path="../typings/github-electron/github-electron.d.ts" />
 var updater = require("electron-gh-releases-updater");
 var app = require("app");
 var ipcServer = require("electron-ipc-tunnel/server");
@@ -17,7 +16,7 @@ module.exports = function () {
                         app.quit();
                     });
                 });
-                reply("update-available");
+                reply("update-available", res.changelog);
             }
         });
     });

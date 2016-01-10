@@ -21,8 +21,8 @@ export = () => {
                         app.quit();
                     });
                 });
-                reply("update-available");
+                reply("update-available", res.changelog);
             }
-        })
+        });
     });
 };

@@ -3,6 +3,7 @@
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
 <link rel="import" href="../../bower_components/neon-animation/animations/scale-up-animation.html">
 <link rel="import" href="../../bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="../../bower_components/marked-element/marked-element.html">
 
 <dom-module is="electron-updater">
     <link rel="import" type="css" href="../../styles/paper-dialog.css">
@@ -10,6 +11,18 @@
         .update-btn {
             font-weight: bold;
             color: var(--accent-color);
+        }
+
+        paper-dialog {
+            text-align: left;
+        }
+
+        marked-element {
+            display: block;
+        }
+
+        marked-element:not(:last-of-type) {
+            border-bottom: 1px solid var(--light-primary-color);
         }
 
         paper-spinner {
@@ -22,6 +35,11 @@
                 <div>
                     A new update is available. Do you want to install it now?
                 </div>
+                <template is="dom-repeat" items="{{changelog}}">
+                    <marked-element markdown="{{item}}">
+                        <div class="markdown-html"></div>
+                    </marked-element>
+                </template>
                 <div class="buttons">
                     <paper-button dialog-dismiss>Discard</paper-button>
                     <paper-button on-click="update" class="update-btn">Ok</paper-button>
