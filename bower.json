@@ -21,7 +21,8 @@
     "paper-tooltip": "PolymerElements/paper-tooltip#~1.0.1",
     "paper-spinner": "PolymerElements/paper-spinner#~1.0.2",
     "paper-dropdown-menu": "https://github.com/Cu3PO42/paper-dropdown-menu-1.0.git#d7bc7ab1b1eb78fa324b493b52d63ae6dc7b2f8e",
-    "paper-dropdown-menu-multi": "https://github.com/Cu3PO42/paper-dropdown-menu-multi.git#78f18b568859ab7d3bc85893c17731a8c9a563e3"
+    "paper-dropdown-menu-multi": "https://github.com/Cu3PO42/paper-dropdown-menu-multi.git#78f18b568859ab7d3bc85893c17731a8c9a563e3",
+    "marked-element": "PolymerElements/marked-element#~1.1.1"
   },
   "devDependencies": {
     "web-component-tester": "*",
