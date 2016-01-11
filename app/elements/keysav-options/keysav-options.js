@@ -185,6 +185,7 @@ function mkdirOptional(path) {
                         typeName: function (e) { return e; },
                         moveName: function (e) { return e; },
                         itemName: function (e) { return e; },
+                        ballName: function () { return "Ball"; },
                         genderString: function (e) { return e; },
                         checkmark: function (e) { return e; },
                         toJson: function (e) { return "JSON"; },
@@ -216,6 +217,7 @@ function mkdirOptional(path) {
                         markings: function () { return "Markings"; },
                         regionName: function () { return "Region"; },
                         countryName: function () { return "Country"; },
+                        ribbons: function () { return ["Ribbons"]; },
                         hasHa: function () { return true; },
                     } }));
             }
