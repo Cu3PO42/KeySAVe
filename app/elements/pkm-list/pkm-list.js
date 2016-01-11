@@ -132,6 +132,9 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
                 itemName: function (itemId) {
                     return itemId ? localization[self.language].items[itemId] : "";
                 },
+                ballName: function () {
+                    return localization[self.language].getBallName(this.ball);
+                },
                 metLocationName: function () {
                     return localization[self.language].getLocation(this);
                 },
