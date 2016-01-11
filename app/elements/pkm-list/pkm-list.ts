@@ -298,6 +298,9 @@ class PkmList extends polymer.Base {
             countryName: function() {
                 return localization[self.language].countries[this.countryID];
             },
+            ribbons: function() {
+                return localization[self.language].getRibbons(this);
+            },
             toJson: function(e) {
                 return new handlebars.SafeString(JSON.stringify(e));
             }

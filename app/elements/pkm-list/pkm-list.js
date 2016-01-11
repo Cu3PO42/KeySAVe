@@ -1,20 +1,13 @@
-/// <reference path="../../../bower_components/polymer-ts/polymer-ts.ts"/>
-/// <reference path="../../../typings/handlebars/handlebars.d.ts"/>
-/// <reference path="../../../typings/github-electron/github-electron.d.ts" />
-/// <reference path="../../../typings/path-extra/path-extra.d.ts" />
-/// <reference path="../../../typings/bluebird/bluebird.d.ts" />
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
@@ -198,6 +191,9 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
                 },
                 countryName: function () {
                     return localization[self.language].countries[this.countryID];
+                },
+                ribbons: function () {
+                    return localization[self.language].getRibbons(this);
                 },
                 toJson: function (e) {
                     return new handlebars.SafeString(JSON.stringify(e));
@@ -384,43 +380,43 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
         __decorate([
             property({ type: Array }), 
             __metadata('design:type', Array)
-        ], PkmList.prototype, "pokemon");
+        ], PkmList.prototype, "pokemon", void 0);
         __decorate([
             property({ type: String }), 
             __metadata('design:type', String)
-        ], PkmList.prototype, "formatString");
+        ], PkmList.prototype, "formatString", void 0);
         __decorate([
             property({ type: String }), 
             __metadata('design:type', String)
-        ], PkmList.prototype, "formatHeader");
+        ], PkmList.prototype, "formatHeader", void 0);
         __decorate([
             property({ type: String }), 
             __metadata('design:type', String)
-        ], PkmList.prototype, "formatName");
+        ], PkmList.prototype, "formatName", void 0);
         __decorate([
             property({ type: Number }), 
             __metadata('design:type', Number)
-        ], PkmList.prototype, "lowerBox");
+        ], PkmList.prototype, "lowerBox", void 0);
         __decorate([
             property({ type: Number }), 
             __metadata('design:type', Number)
-        ], PkmList.prototype, "upperBox");
+        ], PkmList.prototype, "upperBox", void 0);
         __decorate([
             property({ type: String }), 
             __metadata('design:type', String)
-        ], PkmList.prototype, "fileName");
+        ], PkmList.prototype, "fileName", void 0);
         __decorate([
             property({ type: String }), 
             __metadata('design:type', String)
-        ], PkmList.prototype, "dialogResult");
+        ], PkmList.prototype, "dialogResult", void 0);
         __decorate([
             property({ type: String }), 
             __metadata('design:type', String)
-        ], PkmList.prototype, "language");
+        ], PkmList.prototype, "language", void 0);
         __decorate([
             property({ type: Object }), 
             __metadata('design:type', Object)
-        ], PkmList.prototype, "localization");
+        ], PkmList.prototype, "localization", void 0);
         __decorate([
             property({ type: Object, value: function () {
                     return [{
@@ -432,7 +428,7 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
                         }];
                 } }), 
             __metadata('design:type', Object)
-        ], PkmList.prototype, "entryAnimationConfig");
+        ], PkmList.prototype, "entryAnimationConfig", void 0);
         __decorate([
             property({ type: Object, value: function () {
                     return [{
@@ -444,141 +440,135 @@ handlebars.registerHelper(require("handlebars-helper-moment")());
                         }];
                 } }), 
             __metadata('design:type', Object)
-        ], PkmList.prototype, "exitAnimationConfig");
+        ], PkmList.prototype, "exitAnimationConfig", void 0);
         __decorate([
             property({ type: Boolean }), 
             __metadata('design:type', Boolean)
-        ], PkmList.prototype, "filtersActive");
+        ], PkmList.prototype, "filtersActive", void 0);
         __decorate([
             property({ type: String }), 
             __metadata('design:type', String)
-        ], PkmList.prototype, "filteredGender");
+        ], PkmList.prototype, "filteredGender", void 0);
         __decorate([
             property({ type: Boolean }), 
             __metadata('design:type', Boolean)
-        ], PkmList.prototype, "filteredEggs");
+        ], PkmList.prototype, "filteredEggs", void 0);
         __decorate([
             property({ type: Boolean }), 
             __metadata('design:type', Boolean)
-        ], PkmList.prototype, "filteredHa");
+        ], PkmList.prototype, "filteredHa", void 0);
         __decorate([
             property({ type: Boolean }), 
             __metadata('design:type', Boolean)
-        ], PkmList.prototype, "filteredSpecialAttacker");
+        ], PkmList.prototype, "filteredSpecialAttacker", void 0);
         __decorate([
             property({ type: Boolean }), 
             __metadata('design:type', Boolean)
-        ], PkmList.prototype, "filteredTrickRoom");
+        ], PkmList.prototype, "filteredTrickRoom", void 0);
         __decorate([
             property({ type: Number }), 
             __metadata('design:type', Number)
-        ], PkmList.prototype, "filteredNoIvs");
+        ], PkmList.prototype, "filteredNoIvs", void 0);
         __decorate([
             property({ type: Boolean }), 
             __metadata('design:type', Boolean)
-        ], PkmList.prototype, "filteredAllIvs");
+        ], PkmList.prototype, "filteredAllIvs", void 0);
         __decorate([
             property({ type: Boolean }), 
             __metadata('design:type', Boolean)
-        ], PkmList.prototype, "filteredHp");
+        ], PkmList.prototype, "filteredHp", void 0);
         __decorate([
             property({ type: Boolean }), 
             __metadata('design:type', Boolean)
-        ], PkmList.prototype, "filteredAtk");
+        ], PkmList.prototype, "filteredAtk", void 0);
         __decorate([
             property({ type: Boolean }), 
             __metadata('design:type', Boolean)
-        ], PkmList.prototype, "filteredDef");
+        ], PkmList.prototype, "filteredDef", void 0);
         __decorate([
             property({ type: Boolean }), 
             __metadata('design:type', Boolean)
-        ], PkmList.prototype, "filteredSpAtk");
+        ], PkmList.prototype, "filteredSpAtk", void 0);
         __decorate([
             property({ type: Boolean }), 
             __metadata('design:type', Boolean)
-        ], PkmList.prototype, "filteredSpDef");
+        ], PkmList.prototype, "filteredSpDef", void 0);
         __decorate([
             property({ type: Boolean }), 
             __metadata('design:type', Boolean)
-        ], PkmList.prototype, "filteredSpe");
+        ], PkmList.prototype, "filteredSpe", void 0);
         __decorate([
             property({ type: Boolean }), 
             __metadata('design:type', Boolean)
-        ], PkmList.prototype, "filteredShiny");
+        ], PkmList.prototype, "filteredShiny", void 0);
         __decorate([
             property({ type: Boolean }), 
             __metadata('design:type', Boolean)
-        ], PkmList.prototype, "filteredShinyOverride");
+        ], PkmList.prototype, "filteredShinyOverride", void 0);
         __decorate([
             property({ type: Boolean }), 
             __metadata('design:type', Boolean)
-        ], PkmList.prototype, "filteredMySv");
+        ], PkmList.prototype, "filteredMySv", void 0);
         __decorate([
             property({ type: Boolean }), 
             __metadata('design:type', Boolean)
-        ], PkmList.prototype, "filteredSvs");
+        ], PkmList.prototype, "filteredSvs", void 0);
         __decorate([
             property({ type: Array }), 
             __metadata('design:type', Array)
-        ], PkmList.prototype, "filteredSvList");
+        ], PkmList.prototype, "filteredSvList", void 0);
         __decorate([
             property({ type: Array }), 
             __metadata('design:type', Array)
-        ], PkmList.prototype, "filteredHpTypes");
+        ], PkmList.prototype, "filteredHpTypes", void 0);
         __decorate([
             property({ type: Array }), 
             __metadata('design:type', Array)
-        ], PkmList.prototype, "filteredSpecies");
+        ], PkmList.prototype, "filteredSpecies", void 0);
         __decorate([
             property({ type: Array }), 
             __metadata('design:type', Array)
-        ], PkmList.prototype, "filteredAbilities");
+        ], PkmList.prototype, "filteredAbilities", void 0);
         __decorate([
             property({ type: Array }), 
             __metadata('design:type', Array)
-        ], PkmList.prototype, "filteredNatures");
-        Object.defineProperty(PkmList.prototype, "formatStringChanged",
-            __decorate([
-                observe("formatString"), 
-                __metadata('design:type', Function), 
-                __metadata('design:paramtypes', [Object, Object]), 
-                __metadata('design:returntype', Object)
-            ], PkmList.prototype, "formatStringChanged", Object.getOwnPropertyDescriptor(PkmList.prototype, "formatStringChanged")));
-        Object.defineProperty(PkmList.prototype, "filterRestrictionsChanged",
-            __decorate([
-                observe("lowerBox, upperBox, filteredGender, filteredEggs, filteredHa, filteredMySv, filteredSvs, filteredSvList, filteredShiny, filteredShinyOverride, filteredSpecialAttacker, filteredTrickRoom, filteredNoIvs, filtersActive"), 
-                __metadata('design:type', Function), 
-                __metadata('design:paramtypes', []), 
-                __metadata('design:returntype', Object)
-            ], PkmList.prototype, "filterRestrictionsChanged", Object.getOwnPropertyDescriptor(PkmList.prototype, "filterRestrictionsChanged")));
-        Object.defineProperty(PkmList.prototype, "filterIvChanged",
-            __decorate([
-                observe("filteredHp, filteredAtk, filteredDef, filteredSpAtk, filteredSpDef, filteredSpe"), 
-                __metadata('design:type', Function), 
-                __metadata('design:paramtypes', [Object, Object, Object, Object, Object, Object]), 
-                __metadata('design:returntype', Object)
-            ], PkmList.prototype, "filterIvChanged", Object.getOwnPropertyDescriptor(PkmList.prototype, "filterIvChanged")));
-        Object.defineProperty(PkmList.prototype, "filterAllIvsChanged",
-            __decorate([
-                observe("filteredAllIvs"), 
-                __metadata('design:type', Function), 
-                __metadata('design:paramtypes', [Object, Object]), 
-                __metadata('design:returntype', Object)
-            ], PkmList.prototype, "filterAllIvsChanged", Object.getOwnPropertyDescriptor(PkmList.prototype, "filterAllIvsChanged")));
-        Object.defineProperty(PkmList.prototype, "pokemonChanged",
-            __decorate([
-                observe("pokemon, language"), 
-                __metadata('design:type', Function), 
-                __metadata('design:paramtypes', [Object, Object]), 
-                __metadata('design:returntype', Object)
-            ], PkmList.prototype, "pokemonChanged", Object.getOwnPropertyDescriptor(PkmList.prototype, "pokemonChanged")));
-        Object.defineProperty(PkmList.prototype, "languageChanged",
-            __decorate([
-                observe("language"), 
-                __metadata('design:type', Function), 
-                __metadata('design:paramtypes', [Object, Object]), 
-                __metadata('design:returntype', Object)
-            ], PkmList.prototype, "languageChanged", Object.getOwnPropertyDescriptor(PkmList.prototype, "languageChanged")));
+        ], PkmList.prototype, "filteredNatures", void 0);
+        __decorate([
+            observe("formatString"), 
+            __metadata('design:type', Function), 
+            __metadata('design:paramtypes', [Object, Object]), 
+            __metadata('design:returntype', void 0)
+        ], PkmList.prototype, "formatStringChanged", null);
+        __decorate([
+            observe("lowerBox, upperBox, filteredGender, filteredEggs, filteredHa, filteredMySv, filteredSvs, filteredSvList, filteredShiny, filteredShinyOverride, filteredSpecialAttacker, filteredTrickRoom, filteredNoIvs, filtersActive"), 
+            __metadata('design:type', Function), 
+            __metadata('design:paramtypes', []), 
+            __metadata('design:returntype', void 0)
+        ], PkmList.prototype, "filterRestrictionsChanged", null);
+        __decorate([
+            observe("filteredHp, filteredAtk, filteredDef, filteredSpAtk, filteredSpDef, filteredSpe"), 
+            __metadata('design:type', Function), 
+            __metadata('design:paramtypes', [Object, Object, Object, Object, Object, Object]), 
+            __metadata('design:returntype', void 0)
+        ], PkmList.prototype, "filterIvChanged", null);
+        __decorate([
+            observe("filteredAllIvs"), 
+            __metadata('design:type', Function), 
+            __metadata('design:paramtypes', [Object, Object]), 
+            __metadata('design:returntype', void 0)
+        ], PkmList.prototype, "filterAllIvsChanged", null);
+        __decorate([
+            observe("pokemon, language"), 
+            __metadata('design:type', Function), 
+            __metadata('design:paramtypes', [Object, Object]), 
+            __metadata('design:returntype', void 0)
+        ], PkmList.prototype, "pokemonChanged", null);
+        __decorate([
+            observe("language"), 
+            __metadata('design:type', Function), 
+            __metadata('design:paramtypes', [Object, Object]), 
+            __metadata('design:returntype', void 0)
+        ], PkmList.prototype, "languageChanged", null);
         PkmList = __decorate([
             component("pkm-list"), 
             __metadata('design:paramtypes', [])
