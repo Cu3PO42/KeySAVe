@@ -11,4 +11,5 @@ paper-dialog {
     background-color: var(--text-primary-color);
     color: var(--primary-text-color);
     text-align: center;
+    overflow: auto;
 }
