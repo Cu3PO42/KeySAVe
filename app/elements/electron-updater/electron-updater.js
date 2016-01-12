@@ -20,6 +20,7 @@ var _ = require("lodash");
         function ElectronUpdater() {
             _super.apply(this, arguments);
             this.updateInProgress = false;
+            this.updateProgress = 0;
         }
         ElectronUpdater.prototype.attached = function () {
             var _this = this;
@@ -28,6 +29,9 @@ var _ = require("lodash");
                 _this.changelog = _.map(changelog, function (e) { return "# " + e.name + "\n\n" + e.body; });
                 _this.$.dialog.toggle();
                 setTimeout(function () { return _this.$.dialog.refit(); }, 1000);
+            });
+            this.ipcClient.on("update-progress", function (progress) {
+                _this.updateProgress = progress.percentage * 100;
             });
             this.ipcClient.send("update-query");
         };
@@ -44,6 +48,10 @@ var _ = require("lodash");
             property({ type: Boolean }), 
             __metadata('design:type', Boolean)
         ], ElectronUpdater.prototype, "updateInProgress", void 0);
+        __decorate([
+            property({ type: Number }), 
+            __metadata('design:type', Number)
+        ], ElectronUpdater.prototype, "updateProgress", void 0);
         __decorate([
             property({ type: Array }), 
             __metadata('design:type', Array)

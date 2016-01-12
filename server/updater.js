@@ -18,6 +18,8 @@ module.exports = function () {
                 });
                 reply("update-available", res.changelog);
             }
+        }, function (progress) {
+            reply("update-progress", progress);
         });
     });
 };

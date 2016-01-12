@@ -23,6 +23,8 @@ export = () => {
                 });
                 reply("update-available", res.changelog);
             }
+        }, (progress) => {
+            reply("update-progress", progress);
         });
     });
 };

@@ -1,6 +1,6 @@
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
 <link rel="import" href="../../bower_components/neon-animation/animations/scale-up-animation.html">
 <link rel="import" href="../../bower_components/neon-animation/animations/fade-out-animation.html">
 <link rel="import" href="../../bower_components/marked-element/marked-element.html">
@@ -25,8 +25,10 @@
             border-bottom: 1px solid var(--light-primary-color);
         }
 
-        paper-spinner {
-            margin-top: 2em;
+        paper-progress {
+            --paper-progress-active-color: var(--default-primary-color);
+            width: 100%;
+            margin-top: 10px;
         }
     </style>
     <template>
@@ -52,7 +54,7 @@
                 <div>
                     KeySAV<sup>e</sup> will restart after it is installed.
                 </div>
-                <paper-spinner active="{{updateInProgress}}"></paper-spinner>
+                <paper-progress value="{{updateProgress}}"></paper-progress>
             </div>
         </paper-dialog>
     </template>

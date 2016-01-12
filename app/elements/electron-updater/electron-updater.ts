@@ -8,6 +8,9 @@ class ElectronUpdater extends polymer.Base {
     @property({type: Boolean})
     updateInProgress: boolean = false;
 
+    @property({type: Number})
+    updateProgress: number = 0;
+
     @property({type: Array})
     changelog: string[];
 
@@ -21,6 +24,10 @@ class ElectronUpdater extends polymer.Base {
             this.$.dialog.toggle();
             // ugly hack. try to detect actual rendering
             setTimeout(() => this.$.dialog.refit(), 1000);
+        });
+
+        this.ipcClient.on("update-progress", (progress) => {
+            this.updateProgress = progress.percentage * 100;
         });
 
         this.ipcClient.send("update-query");
