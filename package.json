@@ -17,7 +17,6 @@
   "devDependencies": {
     "bower": "^1.4.1",
     "del": "^1.1.1",
-    "electron-gh-releases-updater": "^0.2.2",
     "electron-prebuilt": "^0.30.1",
     "gulp": "^3.8.5",
     "gulp-electron": "cu3po42/gulp-electron",
@@ -29,7 +28,7 @@
   "dependencies": {
     "async": "^1.4.0",
     "bluebird": "^2.9.34",
-    "electron-gh-releases-updater": "^0.2.0",
+    "electron-gh-releases-updater": "^0.2.3",
     "electron-ipc-tunnel": "^1.0.1",
     "handlebars": "^3.0.3",
     "handlebars-helper-moment": "^0.2.0",
