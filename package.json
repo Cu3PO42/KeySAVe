@@ -26,7 +26,5 @@
     "merge-stream": "^0.1.7",
     "run-sequence": "^1.0.2"
   },
-  "dependencies": {
-    "electron-gh-releases-updater": "^0.3.1"
-  }
+  "dependencies": {}
 }
