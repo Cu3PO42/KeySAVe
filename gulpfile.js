@@ -1,12 +1,3 @@
-/*
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
-*/
-
 'use strict';
 
 // Include Gulp & Tools We'll Use
@@ -26,11 +17,8 @@ gulp.task('default', ['build'], function () {
 });
 
 gulp.task('copyBuild', function() {
-    var build = gulp.src(['app/**/*', '!app/**/*.ts', 'names/**/*', 'node_modules/{' + Object.keys(require('./package.json').dependencies).join(',') + '}/**/*', 'server/**/*.js', 'package.json'], {base: '.'});
-    var mainJs = gulp.src('main.js')
-    var bowerComponents = gulp.src('bower_components/**/*').pipe(gulp.dest('build/app/bower_components'));
-    //.pipe($.replace("app/index.html", "dist/index.html"))
-    return merge(merge(build, mainJs).pipe(gulp.dest('build')), bowerComponents);
+    var build = gulp.src([ 'main.js', 'app/**/*', '!app/**/*.ts', 'node_modules/**/*', 'server/**/*.js', 'package.json'], {base: './src/'});
+    return build.pipe(gulp.dest('build'));
 });
 
 

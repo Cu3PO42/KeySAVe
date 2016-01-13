@@ -27,8 +27,7 @@ var _ = require("lodash");
             this.ipcClient = new IpcClient();
             this.ipcClient.on("update-available", function (changelog) {
                 _this.changelog = _.map(changelog, function (e) { return "# " + e.name + "\n\n" + e.body; });
-                _this.$.dialog.toggle();
-                setTimeout(function () { return _this.$.dialog.refit(); }, 1000);
+                setTimeout(function () { return _this.$.dialog.toggle(); }, 1000);
             });
             this.ipcClient.on("update-progress", function (progress) {
                 _this.updateProgress = progress.percentage * 100;

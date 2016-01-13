@@ -21,9 +21,8 @@ class ElectronUpdater extends polymer.Base {
 
         this.ipcClient.on("update-available", (changelog: {tag: string, name: string, body: string}[]) => {
             this.changelog = _.map(changelog, (e) => "# " + e.name + "\n\n" + e.body);
-            this.$.dialog.toggle();
             // ugly hack. try to detect actual rendering
-            setTimeout(() => this.$.dialog.refit(), 1000);
+            setTimeout(() => this.$.dialog.toggle(), 1000);
         });
 
         this.ipcClient.on("update-progress", (progress) => {

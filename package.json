@@ -1,15 +1,15 @@
 {
-  "name": "keysave",
-  "version": "0.16.4",
+  "name": "keysave-build",
+  "version": "0.0.0",
   "description": "A cross platform KeySAV based on GitHub Electron for all your Generation VI Pokémon decryption needs.",
   "repository": {
     "type": "git",
     "url": "https://github.com/Cu3PO42/KeySAVe.git"
   },
-  "main": "main.js",
+  "main": "",
   "scripts": {
-    "start": "electron .",
-    "bower": "bower install",
+    "start": "electron ./src",
+    "bower": "cd src && bower install && cd ..",
     "build": "gulp build"
   },
   "author": "Cu3PO42",
@@ -26,14 +26,5 @@
     "run-sequence": "^1.0.2"
   },
   "dependencies": {
-    "async": "^1.4.0",
-    "bluebird": "^2.9.34",
-    "electron-gh-releases-updater": "^0.2.3",
-    "electron-ipc-tunnel": "^1.0.1",
-    "handlebars": "^3.0.3",
-    "handlebars-helper-moment": "^0.2.0",
-    "keysavcore": "^0.11.2",
-    "lodash": "^3.10.0",
-    "path-extra": "^1.0.3"
   }
 }
