@@ -1,5 +1,7 @@
+"use strict";
 var updater = require("electron-gh-releases-updater");
-var app = require("app");
+var electron = require("electron");
+var app = electron.app;
 var ipcServer = require("electron-ipc-tunnel/server");
 var child_process = require("child_process");
 var fs = require("fs");

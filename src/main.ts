@@ -1,10 +1,10 @@
 /// <reference path="./typings/github-electron/github-electron.d.ts" />
 /// <reference path="./typings/node/node.d.ts" />
 
-import app = require("app");
-import menu = require("menu");
-import BrowserWindow = require("browser-window");
-import CrashReporter = require("crash-reporter");
+import electron = require("electron");
+const app = electron.app;
+const menu = electron.Menu;
+const BrowserWindow = electron.BrowserWindow;
 import FileDialogServices = require("./server/file-dialog-service");
 import Dumper = require("./server/dumper");
 import Updater = require("./server/updater");
@@ -17,7 +17,7 @@ app.on("window-all-closed", () => {
 
 app.on("ready", () => {
     mainWindow = new BrowserWindow({ width: 600, height: 800 });
-    mainWindow.loadUrl("file://" + __dirname + "/app/index.html");
+    mainWindow.loadURL("file://" + __dirname + "/app/index.html");
 
     mainWindow.on("closed", () => {
         mainWindow = null;

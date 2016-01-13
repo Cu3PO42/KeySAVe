@@ -1,7 +1,8 @@
 /// <reference path="../typings/github-electron/github-electron.d.ts" />
 
 import updater = require("electron-gh-releases-updater");
-import app = require("app");
+import electron = require("electron");
+const app = electron.app;
 import ipcServer = require("electron-ipc-tunnel/server");
 import child_process = require("child_process");
 import fs = require("fs");

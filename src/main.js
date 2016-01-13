@@ -1,6 +1,7 @@
-var app = require("app");
-var menu = require("menu");
-var BrowserWindow = require("browser-window");
+var electron = require("electron");
+var app = electron.app;
+var menu = electron.Menu;
+var BrowserWindow = electron.BrowserWindow;
 var FileDialogServices = require("./server/file-dialog-service");
 var Dumper = require("./server/dumper");
 var Updater = require("./server/updater");
@@ -10,7 +11,7 @@ app.on("window-all-closed", function () {
 });
 app.on("ready", function () {
     mainWindow = new BrowserWindow({ width: 600, height: 800 });
-    mainWindow.loadUrl("file://" + __dirname + "/app/index.html");
+    mainWindow.loadURL("file://" + __dirname + "/app/index.html");
     mainWindow.on("closed", function () {
         mainWindow = null;
     });
