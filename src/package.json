@@ -6,7 +6,7 @@
     "type": "git",
     "url": "https://github.com/Cu3PO42/KeySAVe.git"
   },
-  "main": "",
+  "main": "main.js",
   "scripts": {
   },
   "author": "Cu3PO42",
