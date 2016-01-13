@@ -54,7 +54,7 @@ gulp.task('buildElectron', function() {
 
 gulp.task('buildUpdate', function() {
     return gulp.src("build/**/*")
-    .pipe($.zip("KeySAVe-" + require("./package.json").version + "-update-any.zip"))
+    .pipe($.zip("KeySAVe-" + require("./build/package.json").version + "-update-any.zip"))
     .pipe(gulp.dest("release"));
 });
 
