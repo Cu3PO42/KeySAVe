@@ -10,6 +10,7 @@
   "scripts": {
     "start": "electron ./src",
     "bower": "cd src && bower install && cd ..",
+    "installappdeps": "cd src && npm install && cd ..",
     "build": "gulp build"
   },
   "author": "Cu3PO42",
