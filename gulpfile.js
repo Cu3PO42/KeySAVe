@@ -31,7 +31,7 @@ gulp.task('buildElectron', function() {
         packageJson: packageJson,
         release: "./release",
         cache: "./cache",
-        version: "v0.30.1",
+        version: "v0.36.3",
         platforms: ["darwin-x64", "win32-ia32", "linux-ia32", "linux-x64"],
         platformResources: {
             darwin: {

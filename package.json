@@ -18,7 +18,7 @@
   "devDependencies": {
     "bower": "^1.4.1",
     "del": "^1.1.1",
-    "electron-prebuilt": "^0.30.1",
+    "electron-prebuilt": "^0.36.3",
     "gulp": "^3.8.5",
     "gulp-electron": "cu3po42/gulp-electron",
     "gulp-load-plugins": "^0.10.0",
