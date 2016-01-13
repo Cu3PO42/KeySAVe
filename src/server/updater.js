@@ -2,6 +2,8 @@ var updater = require("electron-gh-releases-updater");
 var app = require("app");
 var ipcServer = require("electron-ipc-tunnel/server");
 var child_process = require("child_process");
+var fs = require("fs");
+var path = require("path");
 var prevCwd = process.cwd();
 module.exports = function () {
     ipcServer.on("update-query", function (reply) {
@@ -12,6 +14,7 @@ module.exports = function () {
                         if (e) {
                             return;
                         }
+                        fs.writeFileSync(path.join(__dirname, "../UPDATED"), require("../package.json").version, { encoding: "utf-8" });
                         child_process.exec(process.execPath, { cwd: prevCwd });
                         app.quit();
                     });

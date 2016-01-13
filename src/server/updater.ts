@@ -4,6 +4,7 @@ import updater = require("electron-gh-releases-updater");
 import app = require("app");
 import ipcServer = require("electron-ipc-tunnel/server");
 import child_process = require("child_process");
+import fs = require("fs");
 import path = require("path");
 var prevCwd = process.cwd();
 
@@ -18,6 +19,7 @@ export = () => {
                             //console.log(e);
                             return;
                         }
+                        fs.writeFileSync(path.join(__dirname, "../UPDATED"), require("../package.json").version, {encoding: "utf-8"});
                         child_process.exec(process.execPath, {cwd: prevCwd});
                         app.quit();
                     });
