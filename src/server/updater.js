@@ -2,17 +2,17 @@ var updater = require("electron-gh-releases-updater");
 var app = require("app");
 var ipcServer = require("electron-ipc-tunnel/server");
 var child_process = require("child_process");
-var path = require("path");
+var prevCwd = process.cwd();
 module.exports = function () {
     ipcServer.on("update-query", function (reply) {
         updater(require("../package.json"), function (err, res) {
             if (err === null && res.updateAvailable) {
                 ipcServer.on("update-do", function () {
-                    res.update(path.normalize(path.join(__dirname, "..")), function (e) {
+                    res.update(function (e) {
                         if (e) {
                             return;
                         }
-                        child_process.exec(process.execPath);
+                        child_process.exec(process.execPath, { cwd: prevCwd });
                         app.quit();
                     });
                 });
