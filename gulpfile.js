@@ -17,7 +17,7 @@ gulp.task('default', ['build'], function () {
 });
 
 gulp.task('copyBuild', function() {
-    var build = gulp.src([ 'main.js', 'app/**/*', '!app/**/*.ts', 'node_modules/**/*', 'server/**/*.js', 'package.json'], {base: './src/'});
+    var build = gulp.src([ 'main.js', 'app/**/*', '!app/**/*.ts', 'node_modules/**/*', 'server/**/*.js', 'package.json'], {base: './src', cwd: './src'});
     return build.pipe(gulp.dest('build'));
 });
 
