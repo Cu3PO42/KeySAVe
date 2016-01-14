@@ -14,7 +14,7 @@
   "dependencies": {
     "async": "^1.4.0",
     "bluebird": "^2.9.34",
-    "electron-gh-releases-updater": "^0.3.1",
+    "electron-gh-releases-updater": "^0.3.2",
     "electron-ipc-tunnel": "^1.0.2",
     "handlebars": "^3.0.3",
     "handlebars-helper-moment": "^0.2.0",
