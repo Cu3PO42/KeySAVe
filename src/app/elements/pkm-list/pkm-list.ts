@@ -1,4 +1,4 @@
-/// <reference path="../../../bower_components/polymer-ts/polymer-ts.ts"/>
+/// <reference path="../../bower_components/polymer-ts/polymer-ts.ts"/>
 /// <reference path="../../../typings/handlebars/handlebars.d.ts"/>
 /// <reference path="../../../typings/github-electron/github-electron.d.ts" />
 /// <reference path="../../../typings/path-extra/path-extra.d.ts" />

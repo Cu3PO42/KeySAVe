@@ -1,4 +1,4 @@
-/// <reference path="../../../bower_components/polymer-ts/polymer-ts.ts"/>
+/// <reference path="../../bower_components/polymer-ts/polymer-ts.ts"/>
 /// <reference path="../../../typings/github-electron/github-electron.d.ts"/>
 /// <reference path="../../../typings/node/node.d.ts"/>
 import IpcClient = require("electron-ipc-tunnel/client");

@@ -1,4 +1,4 @@
-/// <reference path="../../../bower_components/polymer-ts/polymer-ts.ts"/>
+/// <reference path="../../bower_components/polymer-ts/polymer-ts.ts"/>
 /// <reference path="../../../typings/lodash/lodash.d.ts"/>
 import IpcClient = require("electron-ipc-tunnel/client");
 import _ = require("lodash");
