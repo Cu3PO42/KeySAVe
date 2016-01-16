@@ -7,5 +7,6 @@ build/
 cache/
 release/
 .tmp/
+src/**/*.js
 npm-debug.log
 
