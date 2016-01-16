@@ -1,5 +1,6 @@
 import ipcServer = require("electron-ipc-tunnel/server");
-import dialog = require("dialog");
+import electron = require("electron");
+const dialog = electron.dialog;
 
 export = function(window: GitHubElectron.BrowserWindow) {
     var counter = 1;

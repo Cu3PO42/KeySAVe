@@ -1,6 +1,7 @@
 /// <reference path="../../bower_components/polymer-ts/polymer-ts.ts"/>
 /// <reference path="../../../typings/github-electron/github-electron.d.ts" />
-import remote = require("remote");
+import electron = require("electron");
+const remote = electron.remote;
 
 (() => {
 var openExternal = remote.require("shell").openExternal;
