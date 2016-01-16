@@ -14,11 +14,11 @@
   "dependencies": {
     "async": "^1.4.0",
     "bluebird": "^2.9.34",
-    "electron-gh-releases-updater": "^0.5.0",
-    "electron-ipc-tunnel": "^2.0.0",
+    "electron-gh-releases-updater": "^0.5.2",
+    "electron-ipc-tunnel": "^2.0.2",
     "handlebars": "^3.0.3",
     "handlebars-helper-moment": "^0.2.0",
-    "keysavcore": "^0.11.2",
+    "keysavcore": "^0.12.1",
     "lodash": "^3.10.0",
     "path-extra": "^1.0.3"
   }
