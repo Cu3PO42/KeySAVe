@@ -15,7 +15,7 @@
     "async": "^1.4.0",
     "bluebird": "^2.9.34",
     "electron-gh-releases-updater": "^0.5.0",
-    "electron-ipc-tunnel": "^1.0.2",
+    "electron-ipc-tunnel": "^2.0.0",
     "handlebars": "^3.0.3",
     "handlebars-helper-moment": "^0.2.0",
     "keysavcore": "^0.11.2",
