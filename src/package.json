@@ -18,7 +18,7 @@
     "electron-ipc-tunnel": "^2.0.2",
     "handlebars": "^3.0.3",
     "handlebars-helper-moment": "^0.2.0",
-    "keysavcore": "^0.12.1",
+    "keysavcore": "^0.12.2",
     "lodash": "^3.10.0",
     "path-extra": "^1.0.3"
   }
