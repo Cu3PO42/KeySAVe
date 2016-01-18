@@ -3,9 +3,10 @@
 /// <reference path="../typings/async/async.d.ts" />
 /// <reference path="../typings/lodash/lodash.d.ts" />
 /// <reference path="../typings/path-extra/path-extra.d.ts" />
+/// <reference path="../typings/fs-extra/fs-extra.d.ts" />
 
 import ipcServer = require("electron-ipc-tunnel/server");
-import fs = require("fs");
+import fs = require("fs-extra");
 import KeySAV = require("keysavcore");
 import electron = require("electron");
 const app = electron.app;

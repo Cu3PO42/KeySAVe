@@ -9,6 +9,8 @@ import FileDialogServices = require("./server/file-dialog-service");
 import Dumper = require("./server/dumper");
 import Updater = require("./server/updater");
 
+require("./init/promisify-fs");
+
 var mainWindow: GitHubElectron.BrowserWindow;
 
 app.on("window-all-closed", () => {

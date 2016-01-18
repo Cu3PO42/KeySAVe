@@ -2,11 +2,13 @@
 /// <reference path="../../../typings/handlebars/handlebars.d.ts"/>
 /// <reference path="../../../typings/github-electron/github-electron.d.ts" />
 /// <reference path="../../../typings/path-extra/path-extra.d.ts" />
+/// <reference path="../../../typings/fs-extra/fs-extra.d.ts" />
 /// <reference path="../../../typings/bluebird/bluebird.d.ts" />
 
 import handlebars = require("handlebars");
-import fs = require("fs");
-import localization = require("keysavcore/Localization");
+import fs = require("fs-extra");
+import KeySAV = require("keysavcore");
+import localization = require("keysavcore/Localization")
 import StatCalculator = require("keysavcore/Calculator");
 import electron = require("electron");
 const remote = electron.remote;
@@ -158,7 +160,7 @@ class PkmList extends polymer.Base {
 
     // =========================================================================
 
-    private template: Handlebars.HandlebarsTemplateDelegate;
+    private template: HandlebarsTemplateDelegate;
     private formatCache: {[pid: number]: string} = {};
     private ipcClient: IpcClient;
     private handlebarsHelpers: {[helper: string]: Function};
@@ -327,7 +329,7 @@ class PkmList extends polymer.Base {
         return pkm.length === 0;
     }
 
-    filterPokemon(pkm: KeySAVCore.Structures.PKX) {
+    filterPokemon(pkm: KeySAV.Core.Structures.PKX) {
         if (!((this.lowerBox === undefined || pkm.box+1 >= this.lowerBox) && (this.upperBox === undefined || pkm.box < this.upperBox)))
             return false;
         if (!this.filtersActive)
@@ -400,7 +402,7 @@ class PkmList extends polymer.Base {
         var ghosts = 0;
         fs.readdirAsync(dbDirectory)
         .then((files) => {
-            return Promise.resolve(pkm).map((pkm: KeySAVCore.Structures.PKX) => {
+            return Promise.resolve(pkm).map((pkm: KeySAV.Core.Structures.PKX) => {
                 if (pkm.isGhost) {
                     ++ghosts;
                     return;
