@@ -8,16 +8,14 @@
 import handlebars = require("handlebars");
 import fs = require("fs-extra");
 import KeySAV = require("keysavcore");
-import localization = require("keysavcore/Localization")
-import StatCalculator = require("keysavcore/Calculator");
+import localization = require("keysavcore/localization")
+import StatCalculator = require("keysavcore/calculator");
 import electron = require("electron");
 const remote = electron.remote;
 import IpcClient = require("electron-ipc-tunnel/client");
 import path = require("path-extra");
 import Promise = require("bluebird");
 import _ = require("lodash");
-
-Promise.promisifyAll(fs);
 
 handlebars.registerHelper(require("handlebars-helper-moment")());
 
@@ -329,7 +327,7 @@ class PkmList extends polymer.Base {
         return pkm.length === 0;
     }
 
-    filterPokemon(pkm: KeySAV.Core.Structures.PKX) {
+    filterPokemon(pkm: KeySAV.Pkx) {
         if (!((this.lowerBox === undefined || pkm.box+1 >= this.lowerBox) && (this.upperBox === undefined || pkm.box < this.upperBox)))
             return false;
         if (!this.filtersActive)
@@ -402,7 +400,7 @@ class PkmList extends polymer.Base {
         var ghosts = 0;
         fs.readdirAsync(dbDirectory)
         .then((files) => {
-            return Promise.resolve(pkm).map((pkm: KeySAV.Core.Structures.PKX) => {
+            return Promise.resolve(pkm).map((pkm: KeySAV.Pkx) => {
                 if (pkm.isGhost) {
                     ++ghosts;
                     return;
