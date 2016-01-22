@@ -1,21 +1,25 @@
-import ipcServer = require("electron-ipc-tunnel/server");
 import electron = require("electron");
 const dialog = electron.dialog;
+import registerIpc from "electron-ipc-tunnel/server";
 
 export = function(window: GitHubElectron.BrowserWindow) {
     var counter = 1;
 
-    ipcServer.on("file-dialog-open", function(reply, arg_) {
+    registerIpc("file-dialog-open", function(arg_) {
         var arg = arg_ || {};
-        dialog.showOpenDialog(window, arg.options, function(filenames) {
-            reply("file-dialog-open-result", filenames);
+        return new Promise(function(resolve, reject) { 
+            dialog.showOpenDialog(window, arg.options, function(filenames) {
+                resolve(filenames);
+            });
         });
     });
 
-    ipcServer.on("file-dialog-save", function(reply, arg_) {
+    registerIpc("file-dialog-save", function(reply, arg_) {
         var arg = arg_ || {};
-        dialog.showSaveDialog(window, arg.options, function(filename) {
-            reply("file-dialog-save-result", filename);
+        return new Promise(function(resolve, reject) { 
+            dialog.showSaveDialog(window, arg.options, function(filenames) {
+                resolve(filenames);
+            });
         });
     });
 }

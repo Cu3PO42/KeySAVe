@@ -15,7 +15,7 @@
     "async": "^1.4.0",
     "bluebird": "^2.9.34",
     "electron-gh-releases-updater": "^0.5.2",
-    "electron-ipc-tunnel": "^2.0.2",
+    "electron-ipc-tunnel": "github:cu3po42/electron-ipc-tunnel#use-promises",
     "fs-extra": "^0.26.4",
     "handlebars": "^3.0.3",
     "handlebars-helper-moment": "^0.2.0",

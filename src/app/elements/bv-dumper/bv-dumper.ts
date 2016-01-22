@@ -1,7 +1,8 @@
 /// <reference path="../../bower_components/polymer-ts/polymer-ts.ts"/>
 /// <reference path="../../../typings/node/node.d.ts"/>
-import IpcClient = require("electron-ipc-tunnel/client");
-import fs = require("fs");
+/// <reference path="../../../typings/fs-extra/fs-extra.d.ts"/>
+import IpcClient from "electron-ipc-tunnel/client";
+import fs = require("fs-extra");
 import path = require("path-extra");
 
 (() => {
@@ -47,38 +48,35 @@ class BvDumper extends polymer.Base {
         this.fileOptions = process.platform !== "darwin" ? {} : {filters: [{name: "Battle Video", extensions: [""]}]};
 
         this.ipcClient = new IpcClient();
-
-        this.ipcClient.on("dump-bv-dumped", (res) => {
-            this.enemyDumpable = res.enemyDumpable;
-            this.myTeam = res.myTeam;
-            if (res.enemyDumpable) {
-                this.enemyTeam = res.enemyTeam;
-            } else {
-                this.enemyTeam = [];
-                this.team = "myTeam";
-            }
-            this.$.results.pokemon = this[this.team];
-        });
-
-        this.ipcClient.on("dump-bv-nokey", () => {
-            this.path = "";
-            this.dialogMessage = "You have to break for this video first!";
-            this.$.dialog.toggle();
-        });
     }
 
     @observe("path")
-    pathChanged(newValue, oldValue) {
-        if (newValue !== "" && newValue !== undefined)
-            fs.stat(newValue, (err, stats) => {
-                if (err !== null || stats.size !== 28256) {
-                    this.path = oldValue;
-                    this.dialogMessage = "Sorry, but this is not a valid battle video!";
-                    this.$.dialog.toggle();
+    async pathChanged(newValue, oldValue) {
+        if (newValue === "" || newValue === undefined)
+            return;
+        var stats = await fs.statAsync(newValue);
+        if (stats.size !== 28256) {
+            this.path = oldValue;
+            this.dialogMessage = "Sorry, but this is not a valid battle video!";
+            this.$.dialog.toggle();
+        } else {
+            try {
+                var res = await this.ipcClient.send("dump-bv", this.path);
+                this.enemyDumpable = res.enemyDumpable;
+                this.myTeam = res.myTeam;
+                if (res.enemyDumpable) {
+                    this.enemyTeam = res.enemyTeam;
                 } else {
-                    this.ipcClient.send("dump-bv", this.path);
+                    this.enemyTeam = [];
+                    this.team = "myTeam";
                 }
-            });
+                this.$.results.pokemon = this[this.team];
+            } catch (e) {
+                this.path = "";
+                this.dialogMessage = "You have to break for this video first!";
+                this.$.dialog.toggle();
+            }
+        }
     }
 
     @observe("team")
@@ -90,20 +88,17 @@ class BvDumper extends polymer.Base {
         return !val;
     }
 
-    backup() {
-        if (this.path)
-            fs.createReadStream(this.path).pipe(<NodeJS.WritableStream>fs.createWriteStream(path.join(backupDirectory, path.basename(this.path))).on("error", () => {
-                this.dialogMessage = "Couldn't backup battle video."
-                this.$.dialog.toggle();
-            }))
-            .on("error", () => {
-                this.dialogMessage = "Couldn't backup battle video."
-                this.$.dialog.toggle();
-            })
-            .on("finish", () => {
-                this.dialogMessage = "Battle video backupped!"
-                this.$.dialog.toggle();
-            });
+    async backup() {
+        if (!this.path)
+            return;
+        try {
+            await fs.copyAsync(this.path, path.join(backupDirectory, path.basename(this.path)));
+            this.dialogMessage = "Battle video backupped!"
+            this.$.dialog.toggle();
+        } catch (e) {
+            this.dialogMessage = "Couldn't backup battle video."
+            this.$.dialog.toggle();
+        }
     }
 }
 BvDumper.register();

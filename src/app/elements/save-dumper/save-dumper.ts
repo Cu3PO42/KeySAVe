@@ -1,8 +1,10 @@
 /// <reference path="../../bower_components/polymer-ts/polymer-ts.ts"/>
 /// <reference path="../../../typings/github-electron/github-electron.d.ts"/>
 /// <reference path="../../../typings/node/node.d.ts"/>
-import IpcClient = require("electron-ipc-tunnel/client");
-import fs = require("fs");
+/// <reference path="../../../typings/fs-extra/fs-extra.d.ts"/>
+
+import IpcClient from "electron-ipc-tunnel/client";
+import fs = require("fs-extra");
 import path = require("path-extra");
 
 (() => {
@@ -49,63 +51,52 @@ class SaveDumper extends polymer.Base {
         this.fileOptions = process.platform !== "darwin" ? {} : {filters: [{name: "SAV (1MB)", extensions: ["bin", "sav"]}, {name: "Main File", extensions: [""]}]};
 
         this.ipcClient = new IpcClient();
-
-        this.ipcClient.on("dump-save-dumped", (res) => {
-            this.isNewKey = res.isNewKey;
-            this.$.results.pokemon = res.pokemon;
-        });
-
-        this.ipcClient.on("dump-save-nokey", () => {
-            this.path = "";
-            this.dialogMessage = "You have to break for this save first!";
-            this.$.dialog.toggle();
-        });
     }
 
     @observe("path")
-    pathChange(newPath, oldPath) {
-        if (newPath !== "" && newPath !== undefined)
-            fs.stat(newPath, (err, stats) => {
-                if (err) {
-                    this.path = oldPath;
-                    this.dialogMessage = "Sorry, but this is not a valid save file!";
+    async pathChange(newPath, oldPath) {
+        if (newPath === "" || newPath === undefined)
+            return;
+        var stats = await fs.statAsync(newPath);
+        switch (stats.size) {
+            case 0x100000:
+            case 0x10009C:
+            case 0x10019A:
+            case 0x76000:
+            case 0x65600:
+            case 232*30*32:
+            case 232*30*31:
+            case 0x70000:
+            case 0x80000:
+                try {
+                    var res = await this.ipcClient.send("dump-save", this.path);
+                    this.isNewKey = res.isNewKey;
+                    this.$.results.pokemon = res.pokemon;
+                } catch (e) {
+                    this.path = "";
+                    this.dialogMessage = "You have to break for this save first!";
                     this.$.dialog.toggle();
                 }
-                else switch (stats.size) {
-                    case 0x100000:
-                    case 0x10009C:
-                    case 0x10019A:
-                    case 0x76000:
-                    case 0x65600:
-                    case 232*30*32:
-                    case 232*30*31:
-                    case 0x70000:
-                    case 0x80000:
-                        this.ipcClient.send("dump-save", this.path);
-                        break;
-                    default:
-                        this.path = oldPath;
-                        this.dialogMessage = "Sorry, but this is not a valid save file!";
-                        this.$.dialog.toggle();
-                        break;
-                }
-            });
+                break;
+            default:
+                this.path = oldPath;
+                this.dialogMessage = "Sorry, but this is not a valid save file!";
+                this.$.dialog.toggle();
+                break;
+        }
     }
 
-    backup() {
-        if (this.path)
-            fs.createReadStream(this.path).pipe(<NodeJS.WritableStream>fs.createWriteStream(path.join(backupDirectory, path.basename(this.path))).on("error", () => {
-                this.dialogMessage = "Couldn't backup save."
-                this.$.dialog.toggle();
-            }))
-            .on("error", () => {
-                this.dialogMessage = "Couldn't backup save."
-                this.$.dialog.toggle();
-            })
-            .on("finish", () => {
-                this.dialogMessage = "Save backupped!"
-                this.$.dialog.toggle();
-            });
+    async backup() {
+        if (!this.path)
+            return;
+        try {
+            await fs.copyAsync(this.path, path.join(backupDirectory, path.basename(this.path)));
+            this.dialogMessage = "Save backupped!"
+            this.$.dialog.toggle();
+        } catch (e) {
+            this.dialogMessage = "Couldn't backup save."
+            this.$.dialog.toggle();
+        }
     }
 }
 SaveDumper.register();

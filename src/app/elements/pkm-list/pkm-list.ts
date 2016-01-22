@@ -10,9 +10,8 @@ import fs = require("fs-extra");
 import KeySAV = require("keysavcore");
 import localization = require("keysavcore/localization")
 import StatCalculator = require("keysavcore/calculator");
-import electron = require("electron");
-const remote = electron.remote;
-import IpcClient = require("electron-ipc-tunnel/client");
+import {remote} from "electron";
+import IpcClient from "electron-ipc-tunnel/client";
 import path = require("path-extra");
 import Promise = require("bluebird");
 import _ = require("lodash");
@@ -169,19 +168,6 @@ class PkmList extends polymer.Base {
         super();
 
         this.ipcClient = new IpcClient();
-
-        this.ipcClient.on("file-dialog-save-result", (filename) => {
-            if (filename)
-                fs.writeFile(filename, this.$.container.innerText, {encoding: "utf-8"}, (err) => {
-                    if (err === null) {
-                        this.dialogResult = "File saved successfully!";
-                    }
-                    else {
-                        this.dialogResult = "Couldn't save file. Please try again.";
-                    }
-                    this.$.dialog.toggle();
-                });
-        });
 
         var self = this;
         this.handlebarsHelpers = {
@@ -377,7 +363,7 @@ class PkmList extends polymer.Base {
         clipboard.write({text: this.$.container.innerText, html: this.$.container.innerHTML});
     }
 
-    save() {
+    async save() {
         var ext: string;
         var filters: any[];
         if (this.formatName.toLowerCase().indexOf("csv") !== -1) {
@@ -392,20 +378,29 @@ class PkmList extends polymer.Base {
             ext = ".txt"
             filters = [{name: "Text", extensions: ["txt"]}];
         }
-        this.ipcClient.send("file-dialog-save", {options: {defaultPath: path.basename(this.fileName, path.extname(this.fileName))+ext, filters: filters}});
+        var filename = await this.ipcClient.send("file-dialog-save", {options: {defaultPath: path.basename(this.fileName, path.extname(this.fileName))+ext, filters: filters}});
+        if (!filename)
+            return;
+        try {
+            await fs.writeFileAsync(filename, this.$.container.innerText, {encoding: "utf-8"});
+            this.dialogResult = "File saved successfully!";
+        } catch (e) {
+            this.dialogResult = "Couldn't save file. Please try again.";
+        }
+        this.$.dialog.toggle();
     }
 
-    export() {
+    async export() {
         var pkm = _.filter(this.pokemon, this.filterPokemon.bind(this))
         var ghosts = 0;
-        fs.readdirAsync(dbDirectory)
-        .then((files) => {
-            return Promise.resolve(pkm).map((pkm: KeySAV.Pkx) => {
+        var files = await fs.readdirAsync(dbDirectory);
+        try {
+            await Promise.resolve(pkm).map((pkm: KeySAV.Pkx) => {
                 if (pkm.isGhost) {
                     ++ghosts;
                     return;
                 }
-                var fileName = ("000" + pkm.species).slice(-3) + " - " + pkm.nickname + " - " + pkm.pid.toString(16) + " - " + pkm.ec.toString(16);
+                var fileName = `${("000" + pkm.species).slice(-3)} - ${pkm.nickname} - ${pkm.pid.toString(16)} - ${pkm.ec.toString(16)}`;
                 var counter = 0;
                 if (_.includes(files, fileName + ".pk6")) {
                     ++counter;
@@ -415,16 +410,12 @@ class PkmList extends polymer.Base {
                 files.push(fileName);
                 return fs.writeFileAsync(path.join(dbDirectory, fileName), new Buffer(pkm.data));
             });
-        })
-        .then(() => {
             this.dialogResult = "Saved " + (pkm.length-ghosts) + " Pokémon.";
-            this.$.dialog.toggle();
-        })
-        .catch((e) => {
-            console.log(e);
+        } catch (e) {
             this.dialogResult = "An error occured.";
             this.$.dialog.toggle();
-        });
+        }
+        this.$.dialog.toggle();
     }
 
     @observe("formatString")

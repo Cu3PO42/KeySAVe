@@ -1,5 +1,7 @@
 /// <reference path="../../bower_components/polymer-ts/polymer-ts.ts"/>
 
+"use strict";
+
 (() => {
 @component("keysav-about")
 class KeysavAbout extends polymer.Base {

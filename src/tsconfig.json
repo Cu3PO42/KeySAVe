@@ -12,8 +12,7 @@
         "removeComments": true,
         "noLib": false,
         "preserveConstEnums": true,
-        "suppressImplicitAnyIndexErrors": true,
-        "compileOnSave": false
+        "suppressImplicitAnyIndexErrors": true
     },
     "filesGlob": [
         "./**/*.ts",
@@ -35,6 +34,7 @@
         "./app/elements/keysav-options/keysav-options.ts",
         "./app/elements/pkm-list/pkm-list.ts",
         "./app/elements/save-dumper/save-dumper.ts",
+        "./init/promisify-fs.ts",
         "./main.ts",
         "./server/dumper.ts",
         "./server/file-dialog-service.ts",
@@ -42,5 +42,6 @@
     ],
     "atom": {
         "rewriteTsconfig": true
-    }
+    },
+    "compileOnSave": true
 }

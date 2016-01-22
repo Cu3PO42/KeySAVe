@@ -1,7 +1,7 @@
 /// <reference path="../../bower_components/polymer-ts/polymer-ts.ts"/>
 /// <reference path="../../../typings/github-electron/github-electron.d.ts"/>
 
-import IpcClient = require("electron-ipc-tunnel/client");
+import IpcClient from "electron-ipc-tunnel/client";
 (() => {
 @component("file-input")
 class FileInput extends polymer.Base {
@@ -20,17 +20,17 @@ class FileInput extends polymer.Base {
         super();
         this.ipcClient = new IpcClient();
 
-        this.ipcClient.on("file-dialog-open-result", (reply) => {
-            if (reply !== undefined)
-                this.path = reply[0];
-        });
-
         if (this.buttonText === undefined)
             this.buttonText = "Choose file";
     }
 
     openDialog() {
-        setTimeout(() => this.ipcClient.send("file-dialog-open", {options: this.options}), 350);
+        setTimeout(async () => {
+            var reply = await this.ipcClient.send("file-dialog-open", {options: this.options});
+            if (reply !== undefined) {
+                this.path = reply[0];
+            }
+        }, 350);
     }
 }
 FileInput.register();
