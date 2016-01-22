@@ -15,5 +15,5 @@ class ExternalLink extends polymer.Base {
         openExternal(this.href);
     }
 }
-polymer.createElement(ExternalLink);
+ExternalLink.register();
 })()

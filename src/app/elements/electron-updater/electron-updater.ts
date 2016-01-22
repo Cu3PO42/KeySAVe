@@ -42,5 +42,5 @@ class ElectronUpdater extends polymer.Base {
         return !e;
     }
 }
-polymer.createElement(ElectronUpdater);
+ElectronUpdater.register();
 })();

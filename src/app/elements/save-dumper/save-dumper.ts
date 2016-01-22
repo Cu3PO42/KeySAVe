@@ -108,5 +108,5 @@ class SaveDumper extends polymer.Base {
             });
     }
 }
-polymer.createElement(SaveDumper);
+SaveDumper.register();
 })()

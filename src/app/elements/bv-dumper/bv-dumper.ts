@@ -106,5 +106,5 @@ class BvDumper extends polymer.Base {
             });
     }
 }
-polymer.createElement(BvDumper);
+BvDumper.register();
 })()

@@ -116,5 +116,5 @@ class KeyBreaker extends polymer.Base {
         }
     }
 }
-polymer.createElement(KeyBreaker);
+KeyBreaker.register();
 })();

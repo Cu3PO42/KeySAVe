@@ -244,5 +244,5 @@ class KeysavOptions extends polymer.Base {
         catch (e) {console.log(e);}
     }
 }
-polymer.createElement(KeysavOptions);
+KeysavOptions.register();
 })()

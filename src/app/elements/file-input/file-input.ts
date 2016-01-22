@@ -33,5 +33,5 @@ class FileInput extends polymer.Base {
         setTimeout(() => this.ipcClient.send("file-dialog-open", {options: this.options}), 350);
     }
 }
-polymer.createElement(FileInput);
+FileInput.register();
 })()

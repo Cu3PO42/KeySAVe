@@ -11,5 +11,5 @@ class KeysavAbout extends polymer.Base {
         this.version = require("../package.json").version;
     }
 }
-polymer.createElement(KeysavAbout);
+KeysavAbout.register();
 })()

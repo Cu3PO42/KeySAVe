@@ -508,5 +508,5 @@ class PkmList extends polymer.Base {
         return !value;
     }
 }
-polymer.createElement(PkmList);
+PkmList.register();
 })()
