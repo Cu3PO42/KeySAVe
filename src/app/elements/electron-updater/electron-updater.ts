@@ -28,6 +28,7 @@ class ElectronUpdater extends PolymerElement {
             this.updateProgress = progress.percentage * 100;
         });*/
 
+        try {
         var res: {
             available: boolean,
             changelog: {name: string, body: string, tag: string}[]
@@ -36,6 +37,7 @@ class ElectronUpdater extends PolymerElement {
             this.changelog = _.map(res.changelog, (e) => "# " + e.name + "\n\n" + e.body);
             setTimeout(() => this.$.dialog.toggle(), 1000);
         }
+    } catch(e) {}
     }
 
     update() {

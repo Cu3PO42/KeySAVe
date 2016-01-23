@@ -2,13 +2,13 @@
 /// <reference path="../../../typings/fs-extra/fs-extra.d.ts"/>
 import IpcClient from "electron-ipc-tunnel/client";
 import { PolymerElement, component, property, observe } from "polymer-decorators";
-import fs = require("fs-extra");
+import fse = require("fs-extra");
 import path = require("path-extra");
 
 (() => {
 function mkdirOptional(path) {
-    if (!fs.existsSync(path))
-        fs.mkdirSync(path);
+    if (!fse.existsSync(path))
+        fse.mkdirSync(path);
 }
 
 var backupDirectory = path.join(path.homedir(), "Documents", "KeySAVe", "backup");
@@ -55,7 +55,7 @@ class BvDumper extends PolymerElement {
     async pathChanged(newValue, oldValue) {
         if (newValue === "" || newValue === undefined)
             return;
-        var stats = await fs.statAsync(newValue);
+        var stats = await fse.statAsync(newValue);
         if (stats.size !== 28256) {
             this.path = oldValue;
             this.dialogMessage = "Sorry, but this is not a valid battle video!";
@@ -93,7 +93,7 @@ class BvDumper extends PolymerElement {
         if (!this.path)
             return;
         try {
-            await fs.copyAsync(this.path, path.join(backupDirectory, path.basename(this.path)));
+            await fse.copyAsync(this.path, path.join(backupDirectory, path.basename(this.path)));
             this.dialogMessage = "Battle video backupped!"
             this.$.dialog.toggle();
         } catch (e) {

@@ -34,7 +34,7 @@ var clipboard = remote.require("clipboard");
 @component("pkm-list")
 class PkmList extends PolymerElement {
     @property({type: Array})
-    pokemon: any[] = [];
+    pokemon: any[];
 
     @property({type: String})
     formatString: string;
@@ -88,87 +88,110 @@ class PkmList extends PolymerElement {
     // =========================================================================
 
     @property({type: Boolean})
-    filtersActive: boolean = false;
+    filtersActive: boolean;
 
     @property({type: String})
-    filteredGender: string = "any";
+    filteredGender: string;
 
     @property({type: Boolean})
-    filteredEggs: boolean = false;
+    filteredEggs: boolean;
 
     @property({type: Boolean})
-    filteredHa: boolean = false;
+    filteredHa: boolean;
 
     @property({type: Boolean})
-    filteredSpecialAttacker: boolean = false;
+    filteredSpecialAttacker: boolean;
 
     @property({type: Boolean})
-    filteredTrickRoom: boolean = false;
+    filteredTrickRoom: boolean;
 
     @property({type: Number})
-    filteredNoIvs: number = 0;
+    filteredNoIvs: number;
 
     @property({type: Boolean})
-    filteredAllIvs: boolean = false;
+    filteredAllIvs: boolean;
 
     @property({type: Boolean})
-    filteredHp: boolean = false;
+    filteredHp: boolean;
 
     @property({type: Boolean})
-    filteredAtk: boolean = false;
+    filteredAtk: boolean;
 
     @property({type: Boolean})
-    filteredDef: boolean = false;
+    filteredDef: boolean;
 
     @property({type: Boolean})
-    filteredSpAtk: boolean = false;
+    filteredSpAtk: boolean;
 
     @property({type: Boolean})
-    filteredSpDef: boolean = false;
+    filteredSpDef: boolean;
 
     @property({type: Boolean})
-    filteredSpe: boolean = false;
+    filteredSpe: boolean;
 
     @property({type: Boolean})
-    filteredShiny: boolean = false;
+    filteredShiny: boolean;
 
     @property({type: Boolean})
-    filteredShinyOverride: boolean = false;
+    filteredShinyOverride: boolean;
 
     @property({type: Boolean})
-    filteredMySv: boolean = false;
+    filteredMySv: boolean;
 
     @property({type: Boolean})
-    filteredSvs: boolean = false;
+    filteredSvs: boolean;
 
     @property({type: Array})
-    filteredSvList: number[] = [];
+    filteredSvList: number[];
 
     @property({type: Array})
-    filteredHpTypes: number[] = [];
+    filteredHpTypes: number[];
 
     @property({type: Array})
-    filteredSpecies: number[] = [];
+    filteredSpecies: number[];
 
     @property({type: Array})
-    filteredAbilities: number[] = [];
+    filteredAbilities: number[];
 
     @property({type: Array})
-    filteredNatures: number[] = [];
+    filteredNatures: number[];
 
     // =========================================================================
 
     private template: HandlebarsTemplateDelegate;
-    private formatCache: {[pid: number]: string} = {};
+    private formatCache: {[pid: number]: string};
     private ipcClient: IpcClient;
     private handlebarsHelpers: {[helper: string]: Function};
     private knownHelpers: string[];
-    private internalIvChange: boolean = false;
+    private internalIvChange: boolean;
 
-    constructor() {
-        super();
-
+    attached() {
         this.ipcClient = new IpcClient();
+        this.formatCache = {};
+        this.internalIvChange = false;
+
+        this.pokemon = [];
+        this.filtersActive = false;
+        this.filteredGender = "any";
+        this.filteredEggs = false;
+        this.filteredHa = false;
+        this.filteredSpecialAttacker = false;
+        this.filteredTrickRoom = false;
+        this.filteredNoIvs = 0;
+        this.filteredAllIvs = false;
+        this.filteredHp = false;
+        this.filteredAtk = false;
+        this.filteredDef = false;
+        this.filteredSpAtk = false;
+        this.filteredSpDef = false;
+        this.filteredSpe = false;
+        this.filteredShinyOverride = false;
+        this.filteredMySv = false;
+        this.filteredSvList = [];
+        this.filteredHpTypes = [];
+        this.filteredSpecies = [];
+        this.filteredAbilities = [];
+        this.filteredNatures = [];
 
         var self = this;
         this.handlebarsHelpers = {

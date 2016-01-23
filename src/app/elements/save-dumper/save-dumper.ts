@@ -4,13 +4,13 @@
 
 import IpcClient from "electron-ipc-tunnel/client";
 import { PolymerElement, component, property, observe, computed } from "polymer-decorators";
-import fs = require("fs-extra");
+import fse = require("fs-extra");
 import path = require("path-extra");
 
 (() => {
 function mkdirOptional(path) {
-    if (!fs.existsSync(path))
-        fs.mkdirSync(path);
+    if (!fse.existsSync(path))
+        fse.mkdirSync(path);
 }
 
 var backupDirectory = path.join(path.homedir(), "Documents", "KeySAVe", "backup");
@@ -59,7 +59,7 @@ class SaveDumper extends PolymerElement {
     async pathChange(newPath, oldPath) {
         if (newPath === "" || newPath === undefined)
             return;
-        var stats = await fs.statAsync(newPath);
+        var stats = await fse.statAsync(newPath);
         switch (stats.size) {
             case 0x100000:
             case 0x10009C:
@@ -92,7 +92,7 @@ class SaveDumper extends PolymerElement {
         if (!this.path)
             return;
         try {
-            await fs.copyAsync(this.path, path.join(backupDirectory, path.basename(this.path)));
+            await fse.copyAsync(this.path, path.join(backupDirectory, path.basename(this.path)));
             this.dialogMessage = "Save backupped!"
             this.$.dialog.toggle();
         } catch (e) {

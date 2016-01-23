@@ -24,7 +24,9 @@ class FileInput extends PolymerElement {
 
     openDialog() {
         setTimeout(async () => {
-            var reply = await this.ipcClient.send("file-dialog-open", {options: this.options});
+            try {
+                var reply = await this.ipcClient.send("file-dialog-open", {options: this.options});
+            } catch (e) { console.log (e);}
             if (reply !== undefined) {
                 this.path = reply[0];
             }
