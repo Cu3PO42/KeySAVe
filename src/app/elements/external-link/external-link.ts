@@ -1,13 +1,12 @@
 /// <reference path="../../bower_components/polymer-ts/polymer-ts.ts"/>
-/// <reference path="../../../typings/github-electron/github-electron.d.ts" />
 import electron = require("electron");
+import { PolymerElement, component, listen } from "polymer-decorators";
 const remote = electron.remote;
 
 (() => {
 var openExternal = remote.require("shell").openExternal;
-@component("external-link")
-@extend("a")
-class ExternalLink extends polymer.Base {
+@component("external-link", "a")
+class ExternalLink extends PolymerElement {
     href: string;
     @listen("tap")
     onTap(e) {
@@ -15,5 +14,5 @@ class ExternalLink extends polymer.Base {
         openExternal(this.href);
     }
 }
-ExternalLink.register();
+Polymer(ExternalLink);
 })()

@@ -12,6 +12,7 @@ import localization = require("keysavcore/localization")
 import StatCalculator = require("keysavcore/calculator");
 import {remote} from "electron";
 import IpcClient from "electron-ipc-tunnel/client";
+import { PolymerElement, component, property, observe } from "polymer-decorators";
 import path = require("path-extra");
 import Promise = require("bluebird");
 import _ = require("lodash");
@@ -31,7 +32,7 @@ mkdirOptional(dbDirectory);
 var clipboard = remote.require("clipboard");
 
 @component("pkm-list")
-class PkmList extends polymer.Base {
+class PkmList extends PolymerElement {
     @property({type: Array})
     pokemon: any[] = [];
 
@@ -497,5 +498,5 @@ class PkmList extends polymer.Base {
         return !value;
     }
 }
-PkmList.register();
+Polymer(PkmList);
 })()

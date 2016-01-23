@@ -1,10 +1,9 @@
-/// <reference path="../../bower_components/polymer-ts/polymer-ts.ts"/>
-/// <reference path="../../../typings/github-electron/github-electron.d.ts"/>
-
 import IpcClient from "electron-ipc-tunnel/client";
+import { PolymerElement, component, property, observe } from "polymer-decorators";
+
 (() => {
 @component("file-input")
-class FileInput extends polymer.Base {
+class FileInput extends PolymerElement {
     @property({type: String, reflectToAttribute: true, notify: true})
     path: string;
 
@@ -16,8 +15,8 @@ class FileInput extends polymer.Base {
 
     ipcClient: IpcClient;
 
-    constructor() {
-        super();
+    attached() {
+        //super();
         this.ipcClient = new IpcClient();
 
         if (this.buttonText === undefined)
@@ -33,5 +32,5 @@ class FileInput extends polymer.Base {
         }, 350);
     }
 }
-FileInput.register();
+Polymer(FileInput);
 })()

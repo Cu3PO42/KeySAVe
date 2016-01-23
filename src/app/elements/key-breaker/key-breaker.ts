@@ -1,11 +1,10 @@
-/// <reference path="../../bower_components/polymer-ts/polymer-ts.ts"/>
-
 import IpcClient from "electron-ipc-tunnel/client";
+import { PolymerElement, component, property, observe } from "polymer-decorators";
 import fs = require("fs");
 
 (() => {
 @component("key-breaker")
-class KeyBreaker extends polymer.Base {
+class KeyBreaker extends PolymerElement {
     @property({type: String})
     file1: string;
 
@@ -92,5 +91,5 @@ class KeyBreaker extends polymer.Base {
         }
     }
 }
-KeyBreaker.register();
+Polymer(KeyBreaker);
 })();

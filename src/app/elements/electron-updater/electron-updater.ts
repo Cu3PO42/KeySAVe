@@ -1,13 +1,13 @@
-/// <reference path="../../bower_components/polymer-ts/polymer-ts.ts"/>
 /// <reference path="../../../typings/lodash/lodash.d.ts"/>
 
 "use strict";
 
 import IpcClient from "electron-ipc-tunnel/client";
+import { PolymerElement, component, property, observe } from "polymer-decorators";
 import _ = require("lodash");
 (() => {
 @component("electron-updater")
-class ElectronUpdater extends polymer.Base {
+class ElectronUpdater extends PolymerElement {
     @property({type: Boolean})
     updateInProgress: boolean = false;
 
@@ -46,5 +46,5 @@ class ElectronUpdater extends polymer.Base {
         return !e;
     }
 }
-ElectronUpdater.register();
+Polymer(ElectronUpdater);
 })();

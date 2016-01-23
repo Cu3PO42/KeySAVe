@@ -1,9 +1,9 @@
-/// <reference path="../../bower_components/polymer-ts/polymer-ts.ts"/>
 /// <reference path="../../../typings/github-electron/github-electron.d.ts"/>
 /// <reference path="../../../typings/node/node.d.ts"/>
 /// <reference path="../../../typings/fs-extra/fs-extra.d.ts"/>
 
 import IpcClient from "electron-ipc-tunnel/client";
+import { PolymerElement, component, property, observe, computed } from "polymer-decorators";
 import fs = require("fs-extra");
 import path = require("path-extra");
 
@@ -18,7 +18,7 @@ mkdirOptional(path.join(path.homedir(), "Documents", "KeySAVe"));
 mkdirOptional(backupDirectory);
 
 @component("save-dumper")
-class SaveDumper extends polymer.Base {
+class SaveDumper extends PolymerElement {
     @property({type: Number})
     lowerBox: number = 1;
 
@@ -98,6 +98,9 @@ class SaveDumper extends polymer.Base {
             this.$.dialog.toggle();
         }
     }
+
+    @computed()
+    testing() { return 1; }
 }
-SaveDumper.register();
+Polymer(SaveDumper);
 })()

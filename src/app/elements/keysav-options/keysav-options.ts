@@ -1,4 +1,3 @@
-/// <reference path="../../bower_components/polymer-ts/polymer-ts.ts"/>
 /// <reference path="../../../typings/github-electron/github-electron.d.ts" />
 /// <reference path="../../../typings/node/node.d.ts" />
 /// <reference path="../../../typings/path-extra/path-extra.d.ts" />
@@ -7,6 +6,7 @@ import fs = require("fs");
 import path = require("path-extra");
 import _ = require("lodash");
 import handlebars = require("handlebars");
+import { PolymerElement, component, property, observe } from "polymer-decorators";
 
 function mkdirOptional(path) {
     if (!fs.existsSync(path))
@@ -68,7 +68,7 @@ Array.prototype.push.apply(config.defaultFormattingOptions, config.formattingOpt
 config.formattingOptions = config.defaultFormattingOptions;
 
 @component("keysav-options")
-class KeysavOptions extends polymer.Base {
+class KeysavOptions extends PolymerElement {
     @property({type: String, notify: true})
     formatString: string;
 
@@ -244,5 +244,5 @@ class KeysavOptions extends polymer.Base {
         catch (e) {console.log(e);}
     }
 }
-KeysavOptions.register();
+Polymer(KeysavOptions);
 })()
