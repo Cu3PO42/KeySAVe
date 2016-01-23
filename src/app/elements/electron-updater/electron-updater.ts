@@ -9,10 +9,10 @@ import _ = require("lodash");
 @component("electron-updater")
 class ElectronUpdater extends PolymerElement {
     @property({type: Boolean})
-    updateInProgress: boolean = false;
+    updateInProgress: boolean;
 
     @property({type: Number})
-    updateProgress: number = 0;
+    updateProgress: number;
 
     @property({type: Array})
     changelog: string[];
@@ -20,6 +20,8 @@ class ElectronUpdater extends PolymerElement {
     ipcClient: IpcClient;
 
     async attached() {
+        this.updateInProgress = false;
+        this.updateProgress = 0;
         this.ipcClient = new IpcClient();
 
         /*this.ipcClient.on("update-progress", (progress) => {

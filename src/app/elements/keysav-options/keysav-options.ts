@@ -87,6 +87,7 @@ class KeysavOptions extends PolymerElement {
 
     constructor() {
         super();
+        console.log("KeySAV options constructor");
 
         this.formattingOptions = config.formattingOptions;
         this.selectedFormatIndex = config.selectedFormatIndex;

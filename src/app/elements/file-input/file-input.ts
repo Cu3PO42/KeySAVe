@@ -16,7 +16,6 @@ class FileInput extends PolymerElement {
     ipcClient: IpcClient;
 
     attached() {
-        //super();
         this.ipcClient = new IpcClient();
 
         if (this.buttonText === undefined)

@@ -25,9 +25,7 @@ class KeyBreaker extends PolymerElement {
     file1Type: string;
     file2Type: string;
 
-    constructor() {
-        super();
-
+    attached() {
         this.fileOptions = process.platform !== "darwin" ? {} : {filters: [{name: "SAV (1MB)", extensions: ["bin", "sav"]}, {name: "Battle Video", extensions: [""]}]};
         this.folderOptions = {properties: ["openDirectory"]};
 

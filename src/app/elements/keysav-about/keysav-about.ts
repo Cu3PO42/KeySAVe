@@ -8,8 +8,7 @@ class KeysavAbout extends PolymerElement {
     @property({type: String})
     version: string;
 
-    constructor() {
-        super();
+    attached() {
         this.version = require("../package.json").version;
     }
 }

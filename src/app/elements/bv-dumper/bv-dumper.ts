@@ -21,10 +21,10 @@ class BvDumper extends PolymerElement {
     path: string;
 
     @property({type: Boolean})
-    enemyDumpable = false;
+    enemyDumpable: boolean;
 
     @property({type: String})
-    team = "myTeam";
+    team: string;
 
     @property({type: Object})
     format: any;
@@ -42,8 +42,9 @@ class BvDumper extends PolymerElement {
     myTeam: any[];
     enemyTeam: any[];
 
-    constructor() {
-        super()
+    attached() {
+        this.enemyDumpable = false;
+        this.team = "myTeam";
 
         this.fileOptions = process.platform !== "darwin" ? {} : {filters: [{name: "Battle Video", extensions: [""]}]};
 

@@ -20,10 +20,10 @@ mkdirOptional(backupDirectory);
 @component("save-dumper")
 class SaveDumper extends PolymerElement {
     @property({type: Number})
-    lowerBox: number = 1;
+    lowerBox: number;
 
     @property({type: Number})
-    upperBox: number = 31;
+    upperBox: number;
 
     @property({type: String})
     path: string;
@@ -41,12 +41,14 @@ class SaveDumper extends PolymerElement {
     dialogMessage: string;
 
     @property({type: Boolean})
-    isNewKey: boolean = true;
+    isNewKey: boolean;
 
     ipcClient: IpcClient;
 
-    constructor() {
-        super();
+    attached() {
+        this.lowerBox = 1;
+        this.upperBox = 31;
+        this.isNewKey = true;
 
         this.fileOptions = process.platform !== "darwin" ? {} : {filters: [{name: "SAV (1MB)", extensions: ["bin", "sav"]}, {name: "Main File", extensions: [""]}]};
 
