@@ -42,7 +42,7 @@ export = function() {
     KeySAV.setKeyStore(store);
     app.on("window-all-closed", () => store.close());
 
-    registerIpc("dump-save", async function(args) {
+    registerIpc("dump-save", async function(reply, args) {
         var buf = await fs.readFileAsync(args);
         var arr = bufToArr(buf);
         var reader = await KeySAV.loadSav(arr);
@@ -58,7 +58,7 @@ export = function() {
         return { pokemon: res, isNewKey: reader.isNewKey };
     });
 
-    registerIpc("dump-bv", async function(args) {
+    registerIpc("dump-bv", async function(reply, args) {
         var buf = await fs.readFileAsync(args);
         var arr = bufToArr(buf);
         var reader = await KeySAV.loadBv(arr);
@@ -77,7 +77,7 @@ export = function() {
         return {enemyDumpable: reader.dumpsEnemy, myTeam: myTeam, enemyTeam: enemyTeam};
     });
 
-    registerIpc("break-key", async function(args) {
+    registerIpc("break-key", async function(reply, args) {
         var files = await Promise.map([fs.readFileAsync(args.file1), fs.readFileAsync(args.file2)], bufToArr);
         if (files[0].length === 28256 && files[1].length === 28256) {
             return await KeySAV.breakBv(files[0], files[1]);
@@ -87,7 +87,7 @@ export = function() {
         }
     });
 
-    registerIpc("break-folder", async function(folder) {
+    registerIpc("break-folder", async function(reply, folder) {
         await fs.readdirAsync(folder)
         .map(async (fileName) => {
             var file = path.join(folder, fileName);

@@ -24,9 +24,9 @@ class ElectronUpdater extends PolymerElement {
         this.updateProgress = 0;
         this.ipcClient = new IpcClient();
 
-        /*this.ipcClient.on("update-progress", (progress) => {
+        this.ipcClient.on("update-progress", (progress) => {
             this.updateProgress = progress.percentage * 100;
-        });*/
+        });
 
         try {
         var res: {

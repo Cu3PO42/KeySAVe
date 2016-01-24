@@ -7,7 +7,7 @@ import * as Promise from "bluebird";
 export = function(window: GitHubElectron.BrowserWindow) {
     var counter = 1;
 
-    registerIpc("file-dialog-open", function(arg_) {
+    registerIpc("file-dialog-open", function(reply, arg_) {
         var arg = arg_ || {};
         return new Promise(function(resolve, reject) {
             dialog.showOpenDialog(window, arg.options, resolve);
