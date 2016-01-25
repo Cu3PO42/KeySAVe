@@ -1,7 +1,3 @@
-/// <reference path="../../../typings/github-electron/github-electron.d.ts"/>
-/// <reference path="../../../typings/node/node.d.ts"/>
-/// <reference path="../../../typings/fs-extra/fs-extra.d.ts"/>
-
 import IpcClient from "electron-ipc-tunnel/client";
 import { PolymerElement, component, property, observe, computed } from "polymer-decorators";
 import * as fse from "fs-extra";

@@ -1,5 +1,3 @@
-/// <reference path="../../../typings/node/node.d.ts"/>
-/// <reference path="../../../typings/fs-extra/fs-extra.d.ts"/>
 import IpcClient from "electron-ipc-tunnel/client";
 import { PolymerElement, component, property, observe } from "polymer-decorators";
 import * as fse from "fs-extra";

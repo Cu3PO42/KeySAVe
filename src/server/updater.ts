@@ -1,5 +1,3 @@
-/// <reference path="../typings/github-electron/github-electron.d.ts" />
-
 import updater from "electron-gh-releases-updater";
 import { app } from "electron";
 import * as child_process from "child_process";

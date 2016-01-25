@@ -1,5 +1,3 @@
-"use strict";
-
 import { PolymerElement, component, property, observe } from "polymer-decorators";
 
 (() => {

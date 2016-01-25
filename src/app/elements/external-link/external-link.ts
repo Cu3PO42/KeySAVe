@@ -1,4 +1,3 @@
-/// <reference path="../../bower_components/polymer-ts/polymer-ts.ts"/>
 import { remote } from "electron";
 import { PolymerElement, component, listen } from "polymer-decorators";
 

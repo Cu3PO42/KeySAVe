@@ -1,10 +1,3 @@
-/// <reference path="../typings/node/node.d.ts"/>
-/// <reference path="../typings/github-electron/github-electron.d.ts" />
-/// <reference path="../typings/async/async.d.ts" />
-/// <reference path="../typings/lodash/lodash.d.ts" />
-/// <reference path="../typings/path-extra/path-extra.d.ts" />
-/// <reference path="../typings/fs-extra/fs-extra.d.ts" />
-
 import * as fs from "fs-extra";
 import * as KeySAV from "keysavcore";
 import { app } from "electron";

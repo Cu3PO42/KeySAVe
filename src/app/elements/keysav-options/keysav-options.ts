@@ -1,7 +1,3 @@
-/// <reference path="../../../typings/github-electron/github-electron.d.ts" />
-/// <reference path="../../../typings/node/node.d.ts" />
-/// <reference path="../../../typings/path-extra/path-extra.d.ts" />
-
 import * as fs from "fs";
 import * as path from "path-extra";
 import * as _ from "lodash";

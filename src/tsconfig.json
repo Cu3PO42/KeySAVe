@@ -21,8 +21,7 @@
         "!./**/bower_components/**/*",
         "!./build/**/*",
         "!./cache/**/*",
-        "!./release/**/*",
-        "!./typings/**/*"
+        "!./release/**/*"
     ],
     "files": [
         "./app/elements/bv-dumper/bv-dumper.ts",
@@ -38,7 +37,15 @@
         "./main.ts",
         "./server/dumper.ts",
         "./server/file-dialog-service.ts",
-        "./server/updater.ts"
+        "./server/updater.ts",
+        "./typings/async/async.d.ts",
+        "./typings/bluebird/bluebird.d.ts",
+        "./typings/fs-extra/fs-extra.d.ts",
+        "./typings/github-electron/github-electron.d.ts",
+        "./typings/handlebars/handlebars.d.ts",
+        "./typings/lodash/lodash.d.ts",
+        "./typings/node/node.d.ts",
+        "./typings/path-extra/path-extra.d.ts"
     ],
     "atom": {
         "rewriteTsconfig": true

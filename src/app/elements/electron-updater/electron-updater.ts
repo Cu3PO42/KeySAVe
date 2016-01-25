@@ -1,7 +1,3 @@
-/// <reference path="../../../typings/lodash/lodash.d.ts"/>
-
-"use strict";
-
 import IpcClient from "electron-ipc-tunnel/client";
 import { PolymerElement, component, property, observe } from "polymer-decorators";
 import * as _ from "lodash";

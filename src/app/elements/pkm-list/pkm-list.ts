@@ -1,10 +1,3 @@
-/// <reference path="../../bower_components/polymer-ts/polymer-ts.ts"/>
-/// <reference path="../../../typings/handlebars/handlebars.d.ts"/>
-/// <reference path="../../../typings/github-electron/github-electron.d.ts" />
-/// <reference path="../../../typings/path-extra/path-extra.d.ts" />
-/// <reference path="../../../typings/fs-extra/fs-extra.d.ts" />
-/// <reference path="../../../typings/bluebird/bluebird.d.ts" />
-
 import * as handlebars from "handlebars";
 import * as fs from "fs-extra";
 import { Pkx, Localization, Calculator as StatCalculator } from "keysavcore";
