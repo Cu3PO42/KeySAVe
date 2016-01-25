@@ -1,6 +1,6 @@
 import IpcClient from "electron-ipc-tunnel/client";
 import { PolymerElement, component, property, observe } from "polymer-decorators";
-import * as fs from "fs";
+import * as fs from "fs-extra";
 
 (() => {
 @component("key-breaker")
@@ -46,28 +46,29 @@ class KeyBreaker extends PolymerElement {
         this.$.dialogBreakDone.close();
     }
 
-    updateFileBase(name: string, oldValue: string) {
-        if (this[name] !== undefined && this[name] !== "")
-            fs.stat(this[name], (err, res) => {
-                if (err) {
-                    this[name] = oldValue;
-                    this.$.dialogFileInvalid.toggle();
-                } else
-                    switch (res.size) {
-                        case 0x100000:
-                        case 0x10009C:
-                        case 0x10019A:
-                            this[name+"Type"] = "sav";
-                            break;
-                        case 28256:
-                            this[name+"Type"] = "bv";
-                            break;
-                        default:
-                            this[name] = oldValue;
-                            this.$.dialogFileInvalid.toggle();
-                            break;
-                    }
-            })
+    async updateFileBase(name: string, oldValue: string) {
+        if (this[name] !== undefined && this[name] !== "") {
+            try {
+                var res = await fs.statAsync(this[name]);
+                switch (res.size) {
+                    case 0x100000:
+                    case 0x10009C:
+                    case 0x10019A:
+                        this[name+"Type"] = "sav";
+                        break;
+                    case 28256:
+                        this[name+"Type"] = "bv";
+                        break;
+                    default:
+                        this[name] = oldValue;
+                        this.$.dialogFileInvalid.toggle();
+                        break;
+                }
+            } catch (e) {
+                this[name] = oldValue;
+                this.$.dialogFileInvalid.toggle();
+            }
+        }
     }
 
     @observe("file1")

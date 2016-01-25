@@ -11,14 +11,8 @@ import * as _ from "lodash";
 handlebars.registerHelper(require("handlebars-helper-moment")());
 
 (() => {
-function mkdirOptional(path) {
-    if (!fs.existsSync(path))
-        fs.mkdirSync(path);
-}
-
 var dbDirectory = path.join(path.homedir(), "Documents", "KeySAVe", "db");
-mkdirOptional(path.join(path.homedir(), "Documents", "KeySAVe"));
-mkdirOptional(dbDirectory);
+fs.mkdirpSync(dbDirectory);
 
 var clipboard = remote.require("clipboard");
 

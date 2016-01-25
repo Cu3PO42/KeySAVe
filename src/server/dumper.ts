@@ -19,15 +19,9 @@ function padNumber(n) {
     return ("00000" + n).slice(-5);
 }
 
-function mkdirOptional(path) {
-    if (!fs.existsSync(path))
-        fs.mkdirSync(path);
-}
-
 export default function() {
     var dataDirectory = path.join(path.homedir(), "Documents", "KeySAVe", "data");
-    mkdirOptional(path.join(path.homedir(), "Documents", "KeySAVe"));
-    mkdirOptional(dataDirectory);
+    fs.mkdirpSync(dataDirectory);
     var store = new KeySAV.KeyStoreFileSystem(dataDirectory);
     KeySAV.setKeyStore(store);
     app.on("window-all-closed", () => store.close());

@@ -1,18 +1,13 @@
-import * as fs from "fs";
+import * as fs from "fs-extra";
 import * as path from "path-extra";
 import * as _ from "lodash";
 import * as handlebars from "handlebars";
 import { PolymerElement, component, property, observe } from "polymer-decorators";
 
-function mkdirOptional(path) {
-    if (!fs.existsSync(path))
-        fs.mkdirSync(path);
-}
-
 (() => {
 var keysavDir = path.join(path.homedir(), "Documents", "KeySAVe");
 var configFile = path.join(keysavDir, "config.json");
-mkdirOptional(keysavDir);
+fs.mkdirpSync(keysavDir);
 
 var config: any = {
     "defaultFormattingOptions": [
