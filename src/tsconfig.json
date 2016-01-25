@@ -38,7 +38,6 @@
         "./server/dumper.ts",
         "./server/file-dialog-service.ts",
         "./server/updater.ts",
-        "./typings/async/async.d.ts",
         "./typings/bluebird/bluebird.d.ts",
         "./typings/fs-extra/fs-extra.d.ts",
         "./typings/github-electron/github-electron.d.ts",
