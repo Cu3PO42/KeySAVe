@@ -1,10 +1,9 @@
 /// <reference path="../typings/bluebird/bluebird.d.ts"/>
-import electron = require("electron");
-const dialog = electron.dialog;
+import { dialog } from "electron";
 import registerIpc from "electron-ipc-tunnel/server";
 import * as Promise from "bluebird";
 
-export = function(window: GitHubElectron.BrowserWindow) {
+export default function(window: GitHubElectron.BrowserWindow) {
     var counter = 1;
 
     registerIpc("file-dialog-open", function(reply, arg_) {

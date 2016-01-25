@@ -5,17 +5,15 @@
 /// <reference path="../../../typings/fs-extra/fs-extra.d.ts" />
 /// <reference path="../../../typings/bluebird/bluebird.d.ts" />
 
-import handlebars = require("handlebars");
-import fs = require("fs-extra");
-import KeySAV = require("keysavcore");
-import localization = require("keysavcore/localization")
-import StatCalculator = require("keysavcore/calculator");
-import {remote} from "electron";
+import * as handlebars from "handlebars";
+import * as fs from "fs-extra";
+import { Pkx, Localization, Calculator as StatCalculator } from "keysavcore";
+import { remote } from "electron";
 import IpcClient from "electron-ipc-tunnel/client";
 import { PolymerElement, component, property, observe } from "polymer-decorators";
-import path = require("path-extra");
-import Promise = require("bluebird");
-import _ = require("lodash");
+import * as path from "path-extra";
+import * as Promise from "bluebird";
+import * as _ from "lodash";
 
 handlebars.registerHelper(require("handlebars-helper-moment")());
 
@@ -61,7 +59,7 @@ class PkmList extends PolymerElement {
     language: string;
 
     @property({type: Object})
-    localization: typeof localization.en;
+    Localization: typeof Localization.en;
 
     @property({type: Object, value: function() {
         return [{
@@ -226,40 +224,40 @@ class PkmList extends PolymerElement {
                 return StatCalculator.spe(this);
             },
             speciesName: function() {
-                return localization[self.language].species[this.species];
+                return Localization[self.language].species[this.species];
             },
             hasAlternateForm: function() {
-                return !!localization[self.language].forms[this.species];
+                return !!Localization[self.language].forms[this.species];
             },
             formName: function() {
-                return localization[self.language].forms[this.species] ? localization[self.language].forms[this.species][this.form] : "";
+                return Localization[self.language].forms[this.species] ? Localization[self.language].forms[this.species][this.form] : "";
             },
             natureName: function() {
-                return localization[self.language].natures[this.nature];
+                return Localization[self.language].natures[this.nature];
             },
             abilityName: function() {
-                return localization[self.language].abilities[this.ability];
+                return Localization[self.language].abilities[this.ability];
             },
             typeName: function(typeId) {
-                return localization[self.language].types[typeId];
+                return Localization[self.language].types[typeId];
             },
             moveName: function(moveId) {
-                return moveId ? localization[self.language].moves[moveId] : "";
+                return moveId ? Localization[self.language].moves[moveId] : "";
             },
             itemName: function(itemId) {
-                return itemId ? localization[self.language].items[itemId] : "";
+                return itemId ? Localization[self.language].items[itemId] : "";
             },
             ballName: function() {
-                return localization[self.language].getBallName(this.ball);
+                return Localization[self.language].getBallName(this.ball);
             },
             metLocationName: function() {
-                return localization[self.language].getLocation(this);
+                return Localization[self.language].getLocation(this);
             },
             eggLocationName: function() {
-                return localization[self.language].getEggLocation(this);
+                return Localization[self.language].getEggLocation(this);
             },
             ballImage: function(ball) {
-                return "[](/" + localization[self.language].items[this.ball].replace(" ", "").replace("é", "e").toLowerCase() + ")"
+                return "[](/" + Localization[self.language].items[this.ball].replace(" ", "").replace("é", "e").toLowerCase() + ")"
             },
             esv: function() {
                 return ("0000"+this.esv).slice(-4);
@@ -268,7 +266,7 @@ class PkmList extends PolymerElement {
                 return ("0000"+this.tsv).slice(-4);
             },
             language: function() {
-                return localization[self.language].languageTags[this.otLang];
+                return Localization[self.language].languageTags[this.otLang];
             },
             genderString: function(gender) {
                 switch (gender) {
@@ -281,7 +279,7 @@ class PkmList extends PolymerElement {
                 }
             },
             gameVersionString: function() {
-                return localization[self.language].games[this.gameVersion];
+                return Localization[self.language].games[this.gameVersion];
             },
             stepsToHatch: function() {
                 return this.isEgg * (this.otFriendship-1) * 256;
@@ -307,13 +305,13 @@ class PkmList extends PolymerElement {
                       + (this.markings&0x20 ? "◆" : "◇"));
             },
             regionName: function() {
-                return localization[self.language].regions[this.gameVersion];
+                return Localization[self.language].regions[this.gameVersion];
             },
             countryName: function() {
-                return localization[self.language].countries[this.countryID];
+                return Localization[self.language].countries[this.countryID];
             },
             ribbons: function() {
-                return localization[self.language].getRibbons(this);
+                return Localization[self.language].getRibbons(this);
             },
             toJson: function(e) {
                 return new handlebars.SafeString(JSON.stringify(e));
@@ -337,7 +335,7 @@ class PkmList extends PolymerElement {
         return pkm.length === 0;
     }
 
-    filterPokemon(pkm: KeySAV.Pkx) {
+    filterPokemon(pkm: Pkx) {
         if (!((this.lowerBox === undefined || pkm.box+1 >= this.lowerBox) && (this.upperBox === undefined || pkm.box < this.upperBox)))
             return false;
         if (!this.filtersActive)
@@ -419,7 +417,7 @@ class PkmList extends PolymerElement {
         var ghosts = 0;
         var files = await fs.readdirAsync(dbDirectory);
         try {
-            await Promise.resolve(pkm).map((pkm: KeySAV.Pkx) => {
+            await Promise.resolve(pkm).map((pkm: Pkx) => {
                 if (pkm.isGhost) {
                     ++ghosts;
                     return;
@@ -486,7 +484,7 @@ class PkmList extends PolymerElement {
 
     @observe("language")
     languageChanged(newValue, oldValue) {
-        var loc = _.clone(localization[newValue]);
+        var loc = _.clone(Localization[newValue]);
         loc.types = loc.types.slice(1, -1);
         loc.species = _.sortBy(loc.species.slice(1).map(function(e, i) {
             return {name: e, id: i+1};
@@ -494,7 +492,7 @@ class PkmList extends PolymerElement {
         loc.abilities= _.sortBy(loc.abilities.slice(1).map(function(e, i) {
             return {name: e, id: i+1};
         }), "name");
-        this.localization = loc;
+        this.Localization = loc;
         this.async(() => {
             for (let name of ["filterHpTypes", "filterSpecies", "filterAbilities", "filterNatures"]) {
                 let el = this.$[name];

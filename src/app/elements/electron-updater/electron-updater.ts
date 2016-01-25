@@ -4,7 +4,7 @@
 
 import IpcClient from "electron-ipc-tunnel/client";
 import { PolymerElement, component, property, observe } from "polymer-decorators";
-import _ = require("lodash");
+import * as _ from "lodash";
 (() => {
 @component("electron-updater")
 class ElectronUpdater extends PolymerElement {

@@ -5,16 +5,13 @@
 /// <reference path="../typings/path-extra/path-extra.d.ts" />
 /// <reference path="../typings/fs-extra/fs-extra.d.ts" />
 
-import fs = require("fs-extra");
-import KeySAV = require("keysavcore");
-import electron = require("electron");
-const app = electron.app;
-import async = require("async");
-import _ = require("lodash");
-import util = require("util");
-import path = require("path-extra");
-import Promise = require("bluebird");
-
+import * as fs from "fs-extra";
+import * as KeySAV from "keysavcore";
+import { app } from "electron";
+import * as _ from "lodash";
+import * as util from "util";
+import * as path from "path-extra";
+import * as Promise from "bluebird";
 import registerIpc from "electron-ipc-tunnel/server";
 
 function bufToArr(buf: Buffer) {
@@ -34,7 +31,7 @@ function mkdirOptional(path) {
         fs.mkdirSync(path);
 }
 
-export = function() {
+export default function() {
     var dataDirectory = path.join(path.homedir(), "Documents", "KeySAVe", "data");
     mkdirOptional(path.join(path.homedir(), "Documents", "KeySAVe"));
     mkdirOptional(dataDirectory);

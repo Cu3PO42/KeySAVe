@@ -4,8 +4,8 @@
 
 import IpcClient from "electron-ipc-tunnel/client";
 import { PolymerElement, component, property, observe, computed } from "polymer-decorators";
-import fse = require("fs-extra");
-import path = require("path-extra");
+import * as fse from "fs-extra";
+import * as path from "path-extra";
 
 (() => {
 function mkdirOptional(path) {

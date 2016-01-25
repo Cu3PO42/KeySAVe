@@ -1,6 +1,6 @@
 import IpcClient from "electron-ipc-tunnel/client";
 import { PolymerElement, component, property, observe } from "polymer-decorators";
-import fs = require("fs");
+import * as fs from "fs";
 
 (() => {
 @component("key-breaker")

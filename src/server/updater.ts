@@ -1,18 +1,16 @@
 /// <reference path="../typings/github-electron/github-electron.d.ts" />
 
 import updater from "electron-gh-releases-updater";
-import electron = require("electron");
-const app = electron.app;
-import child_process = require("child_process");
-import fs = require("fs");
-import path = require("path");
+import { app } from "electron";
+import * as child_process from "child_process";
+
 var prevCwd = process.cwd();
 
 var update;
 
 import registerIpc from "electron-ipc-tunnel/server";
 
-export = () => {
+export default function() {
     registerIpc("update-query", async () => {
         update = await updater(require("../package.json"));
         if (update.updateAvailable) {

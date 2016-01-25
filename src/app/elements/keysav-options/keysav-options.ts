@@ -2,10 +2,10 @@
 /// <reference path="../../../typings/node/node.d.ts" />
 /// <reference path="../../../typings/path-extra/path-extra.d.ts" />
 
-import fs = require("fs");
-import path = require("path-extra");
-import _ = require("lodash");
-import handlebars = require("handlebars");
+import * as fs from "fs";
+import * as path from "path-extra";
+import * as _ from "lodash";
+import * as handlebars from "handlebars";
 import { PolymerElement, component, property, observe } from "polymer-decorators";
 
 function mkdirOptional(path) {

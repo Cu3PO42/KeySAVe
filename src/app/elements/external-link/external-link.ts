@@ -1,7 +1,6 @@
 /// <reference path="../../bower_components/polymer-ts/polymer-ts.ts"/>
-import electron = require("electron");
+import { remote } from "electron";
 import { PolymerElement, component, listen } from "polymer-decorators";
-const remote = electron.remote;
 
 (() => {
 var openExternal = remote.require("shell").openExternal;
