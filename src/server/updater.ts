@@ -16,9 +16,9 @@ export = () => {
     registerIpc("update-query", async () => {
         update = await updater(require("../package.json"));
         if (update.updateAvailable) {
-            return { available: false };
-        } else {
             return { available: true, changelog: update.changelog };
+        } else {
+            return { available: false };
         }
     });
 
