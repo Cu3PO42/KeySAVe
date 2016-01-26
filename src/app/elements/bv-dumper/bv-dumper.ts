@@ -3,37 +3,30 @@ import { PolymerElement, component, property, observe } from "polymer-decorators
 import * as fse from "fs-extra";
 import * as path from "path-extra";
 
-(() => {
-function mkdirOptional(path) {
-    if (!fse.existsSync(path))
-        fse.mkdirSync(path);
-}
-
 var backupDirectory = path.join(path.homedir(), "Documents", "KeySAVe", "backup");
-mkdirOptional(path.join(path.homedir(), "Documents", "KeySAVe"));
-mkdirOptional(backupDirectory);
+fse.mkdirpSync(backupDirectory);
 
 @component("bv-dumper")
 class BvDumper extends PolymerElement {
-    @property({type: String})
+    @property
     path: string;
 
-    @property({type: Boolean})
+    @property
     enemyDumpable: boolean;
 
-    @property({type: String})
+    @property
     team: string;
 
-    @property({type: Object})
+    @property
     format: any;
 
-    @property({type: String})
+    @property
     language: string;
 
-    @property({type: Object})
+    @property
     fileOptions: GitHubElectron.Dialog.OpenDialogOptions;
 
-    @property({type: String})
+    @property
     dialogMessage: string;
 
     ipcClient: IpcClient;
@@ -100,5 +93,3 @@ class BvDumper extends PolymerElement {
         }
     }
 }
-Polymer(BvDumper);
-})()

@@ -4,13 +4,13 @@ import { PolymerElement, component, property, observe } from "polymer-decorators
 (() => {
 @component("file-input")
 class FileInput extends PolymerElement {
-    @property({type: String, reflectToAttribute: true, notify: true})
+    @property({reflectToAttribute: true, notify: true})
     path: string;
 
-    @property({type: String, reflectToAttribute: true})
+    @property
     buttonText: string;
 
-    @property({type: Object})
+    @property
     options: any;
 
     ipcClient: IpcClient;
@@ -33,5 +33,4 @@ class FileInput extends PolymerElement {
         }, 350);
     }
 }
-Polymer(FileInput);
 })()

@@ -5,19 +5,19 @@ import * as fs from "fs-extra";
 (() => {
 @component("key-breaker")
 class KeyBreaker extends PolymerElement {
-    @property({type: String})
+    @property
     file1: string;
 
-    @property({type: String})
+    @property
     file2: string;
 
-    @property({type: Array})
+    @property
     breakMessage: string[];
 
-    @property({type: Object})
+    @property
     fileOptions: GitHubElectron.Dialog.OpenDialogOptions;
 
-    @property({type: Object})
+    @property
     folderOptions: GitHubElectron.Dialog.OpenDialogOptions;
 
     ipcClient: IpcClient;
@@ -90,5 +90,4 @@ class KeyBreaker extends PolymerElement {
         }
     }
 }
-Polymer(KeyBreaker);
 })();

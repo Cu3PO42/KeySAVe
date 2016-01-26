@@ -4,13 +4,13 @@ import * as _ from "lodash";
 (() => {
 @component("electron-updater")
 class ElectronUpdater extends PolymerElement {
-    @property({type: Boolean})
+    @property
     updateInProgress: boolean;
 
-    @property({type: Number})
+    @property
     updateProgress: number;
 
-    @property({type: Array})
+    @property
     changelog: string[];
 
     ipcClient: IpcClient;
@@ -46,5 +46,4 @@ class ElectronUpdater extends PolymerElement {
         return !e;
     }
 }
-Polymer(ElectronUpdater);
 })();

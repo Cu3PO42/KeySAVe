@@ -60,14 +60,13 @@ config.formattingOptions = config.defaultFormattingOptions;
 
 @component("keysav-options")
 class KeysavOptions extends PolymerElement {
-    @property({type: String, notify: true})
+    @property({notify: true})
     formatString: string;
 
-    @property({type: Array})
-    formattingOptions = [
-    ];
+    @property
+    formattingOptions: {name: string, isDefault: boolean, header: string, format: string}[];
 
-    @property({type: Number})
+    @property
     selectedFormatIndex: number;
 
     @property({type: Object, notify: true})
@@ -233,5 +232,4 @@ class KeysavOptions extends PolymerElement {
         catch (e) {console.log(e);}
     }
 }
-Polymer(KeysavOptions);
 })()

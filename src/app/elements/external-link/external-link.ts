@@ -1,9 +1,10 @@
 import { remote } from "electron";
-import { PolymerElement, component, listen } from "polymer-decorators";
+import { PolymerElement, component, extend, listen } from "polymer-decorators";
 
 (() => {
-var openExternal = remote.require("shell").openExternal;
-@component("external-link", "a")
+var openExternal = remote.require("electron").shell.openExternal;
+@component("external-link")
+@extend("a")
 class ExternalLink extends PolymerElement {
     href: string;
     @listen("tap")
@@ -12,5 +13,4 @@ class ExternalLink extends PolymerElement {
         openExternal(this.href);
     }
 }
-Polymer(ExternalLink);
 })()

@@ -15,28 +15,28 @@ mkdirOptional(backupDirectory);
 
 @component("save-dumper")
 class SaveDumper extends PolymerElement {
-    @property({type: Number})
+    @property
     lowerBox: number;
 
-    @property({type: Number})
+    @property
     upperBox: number;
 
-    @property({type: String})
+    @property
     path: string;
 
-    @property({type: Object})
+    @property
     format: any;
 
-    @property({type: String})
+    @property
     language: string;
 
-    @property({type: Object})
+    @property
     fileOptions: GitHubElectron.Dialog.OpenDialogOptions;
 
-    @property({type: String})
+    @property
     dialogMessage: string;
 
-    @property({type: Boolean})
+    @property
     isNewKey: boolean;
 
     ipcClient: IpcClient;
@@ -97,8 +97,7 @@ class SaveDumper extends PolymerElement {
         }
     }
 
-    @computed()
+    @computed
     testing() { return 1; }
 }
-Polymer(SaveDumper);
 })()

@@ -18,34 +18,34 @@ var clipboard = remote.require("clipboard");
 
 @component("pkm-list")
 class PkmList extends PolymerElement {
-    @property({type: Array})
-    pokemon: any[];
+    @property
+    pokemon: Pkx[];
 
-    @property({type: String})
+    @property
     formatString: string;
 
-    @property({type: String})
+    @property
     formatHeader: string;
 
-    @property({type: String})
+    @property
     formatName: string;
 
-    @property({type: Number})
+    @property
     lowerBox: number;
 
-    @property({type: Number})
+    @property
     upperBox: number;
 
-    @property({type: String})
+    @property
     fileName: string;
 
-    @property({type: String})
+    @property
     dialogResult: string;
 
-    @property({type: String})
+    @property
     language: string;
 
-    @property({type: Object})
+    @property
     Localization: typeof Localization.en;
 
     @property({type: Object, value: function() {
@@ -72,73 +72,73 @@ class PkmList extends PolymerElement {
 
     // =========================================================================
 
-    @property({type: Boolean})
+    @property
     filtersActive: boolean;
 
-    @property({type: String})
+    @property
     filteredGender: string;
 
-    @property({type: Boolean})
+    @property
     filteredEggs: boolean;
 
-    @property({type: Boolean})
+    @property
     filteredHa: boolean;
 
-    @property({type: Boolean})
+    @property
     filteredSpecialAttacker: boolean;
 
-    @property({type: Boolean})
+    @property
     filteredTrickRoom: boolean;
 
-    @property({type: Number})
+    @property
     filteredNoIvs: number;
 
-    @property({type: Boolean})
+    @property
     filteredAllIvs: boolean;
 
-    @property({type: Boolean})
+    @property
     filteredHp: boolean;
 
-    @property({type: Boolean})
+    @property
     filteredAtk: boolean;
 
-    @property({type: Boolean})
+    @property
     filteredDef: boolean;
 
-    @property({type: Boolean})
+    @property
     filteredSpAtk: boolean;
 
-    @property({type: Boolean})
+    @property
     filteredSpDef: boolean;
 
-    @property({type: Boolean})
+    @property
     filteredSpe: boolean;
 
-    @property({type: Boolean})
+    @property
     filteredShiny: boolean;
 
-    @property({type: Boolean})
+    @property
     filteredShinyOverride: boolean;
 
-    @property({type: Boolean})
+    @property
     filteredMySv: boolean;
 
-    @property({type: Boolean})
+    @property
     filteredSvs: boolean;
 
-    @property({type: Array})
+    @property
     filteredSvList: number[];
 
-    @property({type: Array})
+    @property
     filteredHpTypes: number[];
 
-    @property({type: Array})
+    @property
     filteredSpecies: number[];
 
-    @property({type: Array})
+    @property
     filteredAbilities: number[];
 
-    @property({type: Array})
+    @property
     filteredNatures: number[];
 
     // =========================================================================
@@ -506,5 +506,4 @@ class PkmList extends PolymerElement {
         return !value;
     }
 }
-Polymer(PkmList);
 })()
