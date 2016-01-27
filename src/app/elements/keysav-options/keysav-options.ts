@@ -1,22 +1,12 @@
-/// <reference path="../../../bower_components/polymer-ts/polymer-ts.ts"/>
-/// <reference path="../../../typings/github-electron/github-electron.d.ts" />
-/// <reference path="../../../typings/node/node.d.ts" />
-/// <reference path="../../../typings/path-extra/path-extra.d.ts" />
+import * as fs from "fs-extra";
+import * as path from "path-extra";
+import * as _ from "lodash";
+import * as handlebars from "handlebars";
+import { PolymerElement, component, property, observe } from "polymer-decorators";
 
-import fs = require("fs");
-import path = require("path-extra");
-import _ = require("lodash");
-import handlebars = require("handlebars");
-
-function mkdirOptional(path) {
-    if (!fs.existsSync(path))
-        fs.mkdirSync(path);
-}
-
-(() => {
 var keysavDir = path.join(path.homedir(), "Documents", "KeySAVe");
 var configFile = path.join(keysavDir, "config.json");
-mkdirOptional(keysavDir);
+fs.mkdirpSync(keysavDir);
 
 var config: any = {
     "defaultFormattingOptions": [
@@ -68,15 +58,14 @@ Array.prototype.push.apply(config.defaultFormattingOptions, config.formattingOpt
 config.formattingOptions = config.defaultFormattingOptions;
 
 @component("keysav-options")
-class KeysavOptions extends polymer.Base {
-    @property({type: String, notify: true})
+class KeysavOptions extends PolymerElement {
+    @property({notify: true})
     formatString: string;
 
-    @property({type: Array})
-    formattingOptions = [
-    ];
+    @property
+    formattingOptions: {name: string, isDefault: boolean, header: string, format: string}[];
 
-    @property({type: Number})
+    @property
     selectedFormatIndex: number;
 
     @property({type: Object, notify: true})
@@ -85,9 +74,7 @@ class KeysavOptions extends polymer.Base {
     @property({type: String, notify: true})
     language: string;
 
-    constructor() {
-        super();
-
+    attached() {
         this.formattingOptions = config.formattingOptions;
         this.selectedFormatIndex = config.selectedFormatIndex;
         this.selectedFormat = this.formattingOptions[config.selectedFormatIndex];
@@ -244,5 +231,3 @@ class KeysavOptions extends polymer.Base {
         catch (e) {console.log(e);}
     }
 }
-polymer.createElement(KeysavOptions);
-})()

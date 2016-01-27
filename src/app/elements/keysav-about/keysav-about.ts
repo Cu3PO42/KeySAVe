@@ -1,15 +1,11 @@
-/// <reference path="../../../bower_components/polymer-ts/polymer-ts.ts"/>
+import { PolymerElement, component, property, observe } from "polymer-decorators";
 
-(() => {
 @component("keysav-about")
-class KeysavAbout extends polymer.Base {
-    @property({type: String})
+class KeysavAbout extends PolymerElement {
+    @property
     version: string;
 
-    constructor() {
-        super();
+    attached() {
         this.version = require("../package.json").version;
     }
 }
-polymer.createElement(KeysavAbout);
-})()

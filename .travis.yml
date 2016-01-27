@@ -2,8 +2,6 @@ language: node_js
 node_js:
 - "5"
 script:
-- npm run bower
-- npm run installappdeps
 - npm run build
 addons:
   apt:
@@ -26,7 +24,8 @@ deploy:
 cache:
     directories:
         - node_modules
-        - bower_components
+        - src/node_modules
+        - src/app/bower_components
         - cache
 
 notifications:

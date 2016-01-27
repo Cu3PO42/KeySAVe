@@ -1,66 +1,70 @@
-/// <reference path="../../../bower_components/polymer-ts/polymer-ts.ts"/>
-/// <reference path="../../../typings/handlebars/handlebars.d.ts"/>
-/// <reference path="../../../typings/github-electron/github-electron.d.ts" />
-/// <reference path="../../../typings/path-extra/path-extra.d.ts" />
-/// <reference path="../../../typings/bluebird/bluebird.d.ts" />
-
-import handlebars = require("handlebars");
-import fs = require("fs");
-import localization = require("keysavcore/Localization");
-import StatCalculator = require("keysavcore/Calculator");
-import remote = require("remote");
-import IpcClient = require("electron-ipc-tunnel/client");
-import path = require("path-extra");
-import Promise = require("bluebird");
-import _ = require("lodash");
-
-Promise.promisifyAll(fs);
+import * as handlebars from "handlebars";
+import * as fs from "fs-extra";
+import { Pkx, Localization, Calculator as StatCalculator } from "keysavcore";
+import { remote } from "electron";
+import IpcClient from "electron-ipc-tunnel/client";
+import { PolymerElement, component, property, observe } from "polymer-decorators";
+import * as path from "path-extra";
+import * as Promise from "bluebird";
+import * as _ from "lodash";
 
 handlebars.registerHelper(require("handlebars-helper-moment")());
 
-(() => {
-function mkdirOptional(path) {
-    if (!fs.existsSync(path))
-        fs.mkdirSync(path);
+interface MyLocalization {
+    abilities: string[];
+    countries: string[];
+    forms: string[][];
+    games: string[];
+    items: string[];
+    languageTags: string[];
+    moves: string[];
+    natures: string[];
+    regions: string[];
+    species: string[];
+    types: string[];
+    getLocation(pkm: Pkx): string;
+    getLocation(gameVersion: number, location: number): string;
+    getEggLocation(pkm: Pkx): string;
+    getRibbons(pkm: Pkx): string[];
+    getBallName(ball: number): string;
 }
 
 var dbDirectory = path.join(path.homedir(), "Documents", "KeySAVe", "db");
-mkdirOptional(path.join(path.homedir(), "Documents", "KeySAVe"));
-mkdirOptional(dbDirectory);
+fs.mkdirpSync(dbDirectory);
 
 var clipboard = remote.require("clipboard");
 
 @component("pkm-list")
-class PkmList extends polymer.Base {
-    @property({type: Array})
-    pokemon: any[] = [];
+class PkmList extends PolymerElement {
+    @property
+    pokemon: Pkx[];
 
-    @property({type: String})
+    @property
     formatString: string;
 
-    @property({type: String})
+    @property
     formatHeader: string;
 
-    @property({type: String})
+    @property
     formatName: string;
 
-    @property({type: Number})
+    @property
     lowerBox: number;
 
-    @property({type: Number})
+    @property
     upperBox: number;
 
-    @property({type: String})
+    @property
     fileName: string;
 
-    @property({type: String})
+    @property
     dialogResult: string;
 
-    @property({type: String})
+    @property
     language: string;
 
-    @property({type: Object})
-    localization: typeof localization.en;
+    @property
+    Localization: MyLocalization;
 
     @property({type: Object, value: function() {
         return [{
@@ -86,101 +90,111 @@ class PkmList extends polymer.Base {
 
     // =========================================================================
 
-    @property({type: Boolean})
-    filtersActive: boolean = false;
+    @property
+    filtersActive: boolean;
 
-    @property({type: String})
-    filteredGender: string = "any";
+    @property
+    filteredGender: string;
 
-    @property({type: Boolean})
-    filteredEggs: boolean = false;
+    @property
+    filteredEggs: boolean;
 
-    @property({type: Boolean})
-    filteredHa: boolean = false;
+    @property
+    filteredHa: boolean;
 
-    @property({type: Boolean})
-    filteredSpecialAttacker: boolean = false;
+    @property
+    filteredSpecialAttacker: boolean;
 
-    @property({type: Boolean})
-    filteredTrickRoom: boolean = false;
+    @property
+    filteredTrickRoom: boolean;
 
-    @property({type: Number})
-    filteredNoIvs: number = 0;
+    @property
+    filteredNoIvs: number;
 
-    @property({type: Boolean})
-    filteredAllIvs: boolean = false;
+    @property
+    filteredAllIvs: boolean;
 
-    @property({type: Boolean})
-    filteredHp: boolean = false;
+    @property
+    filteredHp: boolean;
 
-    @property({type: Boolean})
-    filteredAtk: boolean = false;
+    @property
+    filteredAtk: boolean;
 
-    @property({type: Boolean})
-    filteredDef: boolean = false;
+    @property
+    filteredDef: boolean;
 
-    @property({type: Boolean})
-    filteredSpAtk: boolean = false;
+    @property
+    filteredSpAtk: boolean;
 
-    @property({type: Boolean})
-    filteredSpDef: boolean = false;
+    @property
+    filteredSpDef: boolean;
 
-    @property({type: Boolean})
-    filteredSpe: boolean = false;
+    @property
+    filteredSpe: boolean;
 
-    @property({type: Boolean})
-    filteredShiny: boolean = false;
+    @property
+    filteredShiny: boolean;
 
-    @property({type: Boolean})
-    filteredShinyOverride: boolean = false;
+    @property
+    filteredShinyOverride: boolean;
 
-    @property({type: Boolean})
-    filteredMySv: boolean = false;
+    @property
+    filteredMySv: boolean;
 
-    @property({type: Boolean})
-    filteredSvs: boolean = false;
+    @property
+    filteredSvs: boolean;
 
-    @property({type: Array})
-    filteredSvList: number[] = [];
+    @property
+    filteredSvList: number[];
 
-    @property({type: Array})
-    filteredHpTypes: number[] = [];
+    @property
+    filteredHpTypes: number[];
 
-    @property({type: Array})
-    filteredSpecies: number[] = [];
+    @property
+    filteredSpecies: number[];
 
-    @property({type: Array})
-    filteredAbilities: number[] = [];
+    @property
+    filteredAbilities: number[];
 
-    @property({type: Array})
-    filteredNatures: number[] = [];
+    @property
+    filteredNatures: number[];
 
     // =========================================================================
 
-    private template: Handlebars.HandlebarsTemplateDelegate;
-    private formatCache: {[pid: number]: string} = {};
+    private template: HandlebarsTemplateDelegate;
+    private formatCache: {[pid: number]: string};
     private ipcClient: IpcClient;
     private handlebarsHelpers: {[helper: string]: Function};
     private knownHelpers: string[];
-    private internalIvChange: boolean = false;
+    private internalIvChange: boolean;
 
-    constructor() {
-        super();
-
+    attached() {
         this.ipcClient = new IpcClient();
+        this.formatCache = {};
+        this.internalIvChange = false;
 
-        this.ipcClient.on("file-dialog-save-result", (filename) => {
-            if (filename)
-                fs.writeFile(filename, this.$.container.innerText, {encoding: "utf-8"}, (err) => {
-                    if (err === null) {
-                        this.dialogResult = "File saved successfully!";
-                    }
-                    else {
-                        this.dialogResult = "Couldn't save file. Please try again.";
-                    }
-                    this.$.dialog.toggle();
-                });
-        });
+        this.pokemon = [];
+        this.filtersActive = false;
+        this.filteredGender = "any";
+        this.filteredEggs = false;
+        this.filteredHa = false;
+        this.filteredSpecialAttacker = false;
+        this.filteredTrickRoom = false;
+        this.filteredNoIvs = 0;
+        this.filteredAllIvs = false;
+        this.filteredHp = false;
+        this.filteredAtk = false;
+        this.filteredDef = false;
+        this.filteredSpAtk = false;
+        this.filteredSpDef = false;
+        this.filteredSpe = false;
+        this.filteredShinyOverride = false;
+        this.filteredMySv = false;
+        this.filteredSvList = [];
+        this.filteredHpTypes = [];
+        this.filteredSpecies = [];
+        this.filteredAbilities = [];
+        this.filteredNatures = [];
 
         var self = this;
         this.handlebarsHelpers = {
@@ -215,40 +229,40 @@ class PkmList extends polymer.Base {
                 return StatCalculator.spe(this);
             },
             speciesName: function() {
-                return localization[self.language].species[this.species];
+                return Localization[self.language].species[this.species];
             },
             hasAlternateForm: function() {
-                return !!localization[self.language].forms[this.species];
+                return !!Localization[self.language].forms[this.species];
             },
             formName: function() {
-                return localization[self.language].forms[this.species] ? localization[self.language].forms[this.species][this.form] : "";
+                return Localization[self.language].forms[this.species] ? Localization[self.language].forms[this.species][this.form] : "";
             },
             natureName: function() {
-                return localization[self.language].natures[this.nature];
+                return Localization[self.language].natures[this.nature];
             },
             abilityName: function() {
-                return localization[self.language].abilities[this.ability];
+                return Localization[self.language].abilities[this.ability];
             },
             typeName: function(typeId) {
-                return localization[self.language].types[typeId];
+                return Localization[self.language].types[typeId];
             },
             moveName: function(moveId) {
-                return moveId ? localization[self.language].moves[moveId] : "";
+                return moveId ? Localization[self.language].moves[moveId] : "";
             },
             itemName: function(itemId) {
-                return itemId ? localization[self.language].items[itemId] : "";
+                return itemId ? Localization[self.language].items[itemId] : "";
             },
             ballName: function() {
-                return localization[self.language].getBallName(this.ball);
+                return Localization[self.language].getBallName(this.ball);
             },
             metLocationName: function() {
-                return localization[self.language].getLocation(this);
+                return Localization[self.language].getLocation(this);
             },
             eggLocationName: function() {
-                return localization[self.language].getEggLocation(this);
+                return Localization[self.language].getEggLocation(this);
             },
             ballImage: function(ball) {
-                return "[](/" + localization[self.language].items[this.ball].replace(" ", "").replace("é", "e").toLowerCase() + ")"
+                return "[](/" + Localization[self.language].items[this.ball].replace(" ", "").replace("é", "e").toLowerCase() + ")"
             },
             esv: function() {
                 return ("0000"+this.esv).slice(-4);
@@ -257,7 +271,7 @@ class PkmList extends polymer.Base {
                 return ("0000"+this.tsv).slice(-4);
             },
             language: function() {
-                return localization[self.language].languageTags[this.otLang];
+                return Localization[self.language].languageTags[this.otLang];
             },
             genderString: function(gender) {
                 switch (gender) {
@@ -270,7 +284,7 @@ class PkmList extends polymer.Base {
                 }
             },
             gameVersionString: function() {
-                return localization[self.language].games[this.gameVersion];
+                return Localization[self.language].games[this.gameVersion];
             },
             stepsToHatch: function() {
                 return this.isEgg * (this.otFriendship-1) * 256;
@@ -296,13 +310,13 @@ class PkmList extends polymer.Base {
                       + (this.markings&0x20 ? "◆" : "◇"));
             },
             regionName: function() {
-                return localization[self.language].regions[this.gameVersion];
+                return Localization[self.language].regions[this.gameVersion];
             },
             countryName: function() {
-                return localization[self.language].countries[this.countryID];
+                return Localization[self.language].countries[this.countryID];
             },
             ribbons: function() {
-                return localization[self.language].getRibbons(this);
+                return Localization[self.language].getRibbons(this);
             },
             toJson: function(e) {
                 return new handlebars.SafeString(JSON.stringify(e));
@@ -326,7 +340,7 @@ class PkmList extends polymer.Base {
         return pkm.length === 0;
     }
 
-    filterPokemon(pkm: KeySAVCore.Structures.PKX) {
+    filterPokemon(pkm: Pkx) {
         if (!((this.lowerBox === undefined || pkm.box+1 >= this.lowerBox) && (this.upperBox === undefined || pkm.box < this.upperBox)))
             return false;
         if (!this.filtersActive)
@@ -376,7 +390,7 @@ class PkmList extends polymer.Base {
         clipboard.write({text: this.$.container.innerText, html: this.$.container.innerHTML});
     }
 
-    save() {
+    async save() {
         var ext: string;
         var filters: any[];
         if (this.formatName.toLowerCase().indexOf("csv") !== -1) {
@@ -391,20 +405,29 @@ class PkmList extends polymer.Base {
             ext = ".txt"
             filters = [{name: "Text", extensions: ["txt"]}];
         }
-        this.ipcClient.send("file-dialog-save", {options: {defaultPath: path.basename(this.fileName, path.extname(this.fileName))+ext, filters: filters}});
+        var filename = await this.ipcClient.send("file-dialog-save", {options: {defaultPath: path.basename(this.fileName, path.extname(this.fileName))+ext, filters: filters}});
+        if (!filename)
+            return;
+        try {
+            await fs.writeFileAsync(filename, this.$.container.innerText, {encoding: "utf-8"});
+            this.dialogResult = "File saved successfully!";
+        } catch (e) {
+            this.dialogResult = "Couldn't save file. Please try again.";
+        }
+        this.$.dialog.toggle();
     }
 
-    export() {
+    async export() {
         var pkm = _.filter(this.pokemon, this.filterPokemon.bind(this))
         var ghosts = 0;
-        fs.readdirAsync(dbDirectory)
-        .then((files) => {
-            return Promise.resolve(pkm).map((pkm: KeySAVCore.Structures.PKX) => {
+        var files = await fs.readdirAsync(dbDirectory);
+        try {
+            await Promise.resolve(pkm).map((pkm: Pkx) => {
                 if (pkm.isGhost) {
                     ++ghosts;
                     return;
                 }
-                var fileName = ("000" + pkm.species).slice(-3) + " - " + pkm.nickname + " - " + pkm.pid.toString(16) + " - " + pkm.ec.toString(16);
+                var fileName = `${("000" + pkm.species).slice(-3)} - ${pkm.nickname} - ${pkm.pid.toString(16)} - ${pkm.ec.toString(16)}`;
                 var counter = 0;
                 if (_.includes(files, fileName + ".pk6")) {
                     ++counter;
@@ -414,16 +437,12 @@ class PkmList extends polymer.Base {
                 files.push(fileName);
                 return fs.writeFileAsync(path.join(dbDirectory, fileName), new Buffer(pkm.data));
             });
-        })
-        .then(() => {
             this.dialogResult = "Saved " + (pkm.length-ghosts) + " Pokémon.";
-            this.$.dialog.toggle();
-        })
-        .catch((e) => {
-            console.log(e);
+        } catch (e) {
             this.dialogResult = "An error occured.";
             this.$.dialog.toggle();
-        });
+        }
+        this.$.dialog.toggle();
     }
 
     @observe("formatString")
@@ -470,7 +489,7 @@ class PkmList extends polymer.Base {
 
     @observe("language")
     languageChanged(newValue, oldValue) {
-        var loc = _.clone(localization[newValue]);
+        var loc = <any>_.clone(Localization[newValue]);
         loc.types = loc.types.slice(1, -1);
         loc.species = _.sortBy(loc.species.slice(1).map(function(e, i) {
             return {name: e, id: i+1};
@@ -478,7 +497,7 @@ class PkmList extends polymer.Base {
         loc.abilities= _.sortBy(loc.abilities.slice(1).map(function(e, i) {
             return {name: e, id: i+1};
         }), "name");
-        this.localization = loc;
+        this.Localization = loc;
         this.async(() => {
             for (let name of ["filterHpTypes", "filterSpecies", "filterAbilities", "filterNatures"]) {
                 let el = this.$[name];
@@ -505,5 +524,3 @@ class PkmList extends polymer.Base {
         return !value;
     }
 }
-polymer.createElement(PkmList);
-})()

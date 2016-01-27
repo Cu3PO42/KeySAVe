@@ -1,7 +1,7 @@
 {
-    "version": "1.5.0-beta",
+    "version": "1.7.5",
     "compilerOptions": {
-        "target": "es5",
+        "target": "es6",
         "module": "commonjs",
         "isolatedModules": false,
         "jsx": "react",
@@ -21,8 +21,7 @@
         "!./**/bower_components/**/*",
         "!./build/**/*",
         "!./cache/**/*",
-        "!./release/**/*",
-        "!./typings/**/*"
+        "!./release/**/*"
     ],
     "files": [
         "./app/elements/bv-dumper/bv-dumper.ts",
@@ -34,12 +33,21 @@
         "./app/elements/keysav-options/keysav-options.ts",
         "./app/elements/pkm-list/pkm-list.ts",
         "./app/elements/save-dumper/save-dumper.ts",
+        "./init/promisify-fs.ts",
         "./main.ts",
         "./server/dumper.ts",
         "./server/file-dialog-service.ts",
-        "./server/updater.ts"
+        "./server/updater.ts",
+        "./typings/bluebird/bluebird.d.ts",
+        "./typings/fs-extra/fs-extra.d.ts",
+        "./typings/github-electron/github-electron.d.ts",
+        "./typings/handlebars/handlebars.d.ts",
+        "./typings/lodash/lodash.d.ts",
+        "./typings/node/node.d.ts",
+        "./typings/path-extra/path-extra.d.ts"
     ],
     "atom": {
         "rewriteTsconfig": true
-    }
+    },
+    "compileOnSave": true
 }

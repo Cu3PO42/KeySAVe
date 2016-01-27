@@ -1,112 +1,92 @@
-/// <reference path="../../../bower_components/polymer-ts/polymer-ts.ts"/>
-/// <reference path="../../../typings/github-electron/github-electron.d.ts"/>
-/// <reference path="../../../typings/node/node.d.ts"/>
-import IpcClient = require("electron-ipc-tunnel/client");
-import fs = require("fs");
-import path = require("path-extra");
-
-(() => {
-function mkdirOptional(path) {
-    if (!fs.existsSync(path))
-        fs.mkdirSync(path);
-}
+import IpcClient from "electron-ipc-tunnel/client";
+import { PolymerElement, component, property, observe, computed } from "polymer-decorators";
+import * as fse from "fs-extra";
+import * as path from "path-extra";
 
 var backupDirectory = path.join(path.homedir(), "Documents", "KeySAVe", "backup");
-mkdirOptional(path.join(path.homedir(), "Documents", "KeySAVe"));
-mkdirOptional(backupDirectory);
+fse.mkdirpSync(backupDirectory);
 
 @component("save-dumper")
-class SaveDumper extends polymer.Base {
-    @property({type: Number})
-    lowerBox: number = 1;
+class SaveDumper extends PolymerElement {
+    @property
+    lowerBox: number;
 
-    @property({type: Number})
-    upperBox: number = 31;
+    @property
+    upperBox: number;
 
-    @property({type: String})
+    @property
     path: string;
 
-    @property({type: Object})
+    @property
     format: any;
 
-    @property({type: String})
+    @property
     language: string;
 
-    @property({type: Object})
+    @property
     fileOptions: GitHubElectron.Dialog.OpenDialogOptions;
 
-    @property({type: String})
+    @property
     dialogMessage: string;
 
-    @property({type: Boolean})
-    isNewKey: boolean = true;
+    @property
+    isNewKey: boolean;
 
     ipcClient: IpcClient;
 
-    constructor() {
-        super();
+    attached() {
+        this.lowerBox = 1;
+        this.upperBox = 31;
+        this.isNewKey = true;
 
         this.fileOptions = process.platform !== "darwin" ? {} : {filters: [{name: "SAV (1MB)", extensions: ["bin", "sav"]}, {name: "Main File", extensions: [""]}]};
 
         this.ipcClient = new IpcClient();
-
-        this.ipcClient.on("dump-save-dumped", (res) => {
-            this.isNewKey = res.isNewKey;
-            this.$.results.pokemon = res.pokemon;
-        });
-
-        this.ipcClient.on("dump-save-nokey", () => {
-            this.path = "";
-            this.dialogMessage = "You have to break for this save first!";
-            this.$.dialog.toggle();
-        });
     }
 
     @observe("path")
-    pathChange(newPath, oldPath) {
-        if (newPath !== "" && newPath !== undefined)
-            fs.stat(newPath, (err, stats) => {
-                if (err) {
-                    this.path = oldPath;
-                    this.dialogMessage = "Sorry, but this is not a valid save file!";
+    async pathChange(newPath, oldPath) {
+        if (newPath === "" || newPath === undefined)
+            return;
+        var stats = await fse.statAsync(newPath);
+        switch (stats.size) {
+            case 0x100000:
+            case 0x10009C:
+            case 0x10019A:
+            case 0x76000:
+            case 0x65600:
+            case 232*30*32:
+            case 232*30*31:
+            case 0x70000:
+            case 0x80000:
+                try {
+                    var res = await this.ipcClient.send("dump-save", this.path);
+                    this.isNewKey = res.isNewKey;
+                    this.$.results.pokemon = res.pokemon;
+                } catch (e) {
+                    this.path = "";
+                    this.dialogMessage = "You have to break for this save first!";
                     this.$.dialog.toggle();
                 }
-                else switch (stats.size) {
-                    case 0x100000:
-                    case 0x10009C:
-                    case 0x10019A:
-                    case 0x76000:
-                    case 0x65600:
-                    case 232*30*32:
-                    case 232*30*31:
-                    case 0x70000:
-                    case 0x80000:
-                        this.ipcClient.send("dump-save", this.path);
-                        break;
-                    default:
-                        this.path = oldPath;
-                        this.dialogMessage = "Sorry, but this is not a valid save file!";
-                        this.$.dialog.toggle();
-                        break;
-                }
-            });
+                break;
+            default:
+                this.path = oldPath;
+                this.dialogMessage = "Sorry, but this is not a valid save file!";
+                this.$.dialog.toggle();
+                break;
+        }
     }
 
-    backup() {
-        if (this.path)
-            fs.createReadStream(this.path).pipe(<NodeJS.WritableStream>fs.createWriteStream(path.join(backupDirectory, path.basename(this.path))).on("error", () => {
-                this.dialogMessage = "Couldn't backup save."
-                this.$.dialog.toggle();
-            }))
-            .on("error", () => {
-                this.dialogMessage = "Couldn't backup save."
-                this.$.dialog.toggle();
-            })
-            .on("finish", () => {
-                this.dialogMessage = "Save backupped!"
-                this.$.dialog.toggle();
-            });
+    async backup() {
+        if (!this.path)
+            return;
+        try {
+            await fse.copyAsync(this.path, path.join(backupDirectory, path.basename(this.path)));
+            this.dialogMessage = "Save backupped!"
+            this.$.dialog.toggle();
+        } catch (e) {
+            this.dialogMessage = "Couldn't backup save."
+            this.$.dialog.toggle();
+        }
     }
 }
-polymer.createElement(SaveDumper);
-})()

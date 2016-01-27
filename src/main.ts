@@ -1,13 +1,8 @@
-/// <reference path="./typings/github-electron/github-electron.d.ts" />
-/// <reference path="./typings/node/node.d.ts" />
-
-import electron = require("electron");
-const app = electron.app;
-const menu = electron.Menu;
-const BrowserWindow = electron.BrowserWindow;
-import FileDialogServices = require("./server/file-dialog-service");
-import Dumper = require("./server/dumper");
-import Updater = require("./server/updater");
+import { app, Menu, BrowserWindow } from "electron";
+import FileDialogServices from "./server/file-dialog-service";
+import Dumper from "./server/dumper";
+import Updater from "./server/updater";
+import "./init/promisify-fs";
 
 var mainWindow: GitHubElectron.BrowserWindow;
 
@@ -28,7 +23,7 @@ app.on("ready", () => {
     Updater();
 
     if (process.platform === "darwin")
-        menu.setApplicationMenu(menu.buildFromTemplate([{
+        Menu.setApplicationMenu(Menu.buildFromTemplate([{
             label: 'KeySAVe',
             submenu: [
                 {

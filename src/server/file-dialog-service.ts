@@ -1,20 +1,21 @@
-import ipcServer = require("electron-ipc-tunnel/server");
-import dialog = require("dialog");
+import { dialog } from "electron";
+import registerIpc from "electron-ipc-tunnel/server";
+import * as Promise from "bluebird";
 
-export = function(window: GitHubElectron.BrowserWindow) {
+export default function(window: GitHubElectron.BrowserWindow) {
     var counter = 1;
 
-    ipcServer.on("file-dialog-open", function(reply, arg_) {
+    registerIpc("file-dialog-open", function(reply, arg_) {
         var arg = arg_ || {};
-        dialog.showOpenDialog(window, arg.options, function(filenames) {
-            reply("file-dialog-open-result", filenames);
+        return new Promise(function(resolve, reject) {
+            dialog.showOpenDialog(window, arg.options, resolve);
         });
     });
 
-    ipcServer.on("file-dialog-save", function(reply, arg_) {
+    registerIpc("file-dialog-save", function(reply, arg_) {
         var arg = arg_ || {};
-        dialog.showSaveDialog(window, arg.options, function(filename) {
-            reply("file-dialog-save-result", filename);
+        return new Promise(function(resolve, reject) {
+            dialog.showSaveDialog(window, arg.options, resolve);
         });
     });
 }

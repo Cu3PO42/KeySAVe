@@ -1,37 +1,34 @@
-/// <reference path="../../../bower_components/polymer-ts/polymer-ts.ts"/>
-/// <reference path="../../../typings/github-electron/github-electron.d.ts"/>
+import IpcClient from "electron-ipc-tunnel/client";
+import { PolymerElement, component, property, observe } from "polymer-decorators";
 
-import IpcClient = require("electron-ipc-tunnel/client");
-(() => {
 @component("file-input")
-class FileInput extends polymer.Base {
-    @property({type: String, reflectToAttribute: true, notify: true})
+class FileInput extends PolymerElement {
+    @property({reflectToAttribute: true, notify: true})
     path: string;
 
-    @property({type: String, reflectToAttribute: true})
+    @property
     buttonText: string;
 
-    @property({type: Object})
+    @property
     options: any;
 
     ipcClient: IpcClient;
 
-    constructor() {
-        super();
+    attached() {
         this.ipcClient = new IpcClient();
-
-        this.ipcClient.on("file-dialog-open-result", (reply) => {
-            if (reply !== undefined)
-                this.path = reply[0];
-        });
 
         if (this.buttonText === undefined)
             this.buttonText = "Choose file";
     }
 
     openDialog() {
-        setTimeout(() => this.ipcClient.send("file-dialog-open", {options: this.options}), 350);
+        setTimeout(async () => {
+            try {
+                var reply = await this.ipcClient.send("file-dialog-open", {options: this.options});
+            } catch (e) { console.log (e);}
+            if (reply !== undefined) {
+                this.path = reply[0];
+            }
+        }, 350);
     }
 }
-polymer.createElement(FileInput);
-})()

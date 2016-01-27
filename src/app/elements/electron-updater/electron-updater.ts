@@ -1,46 +1,48 @@
-/// <reference path="../../../bower_components/polymer-ts/polymer-ts.ts"/>
-/// <reference path="../../../typings/lodash/lodash.d.ts"/>
-import IpcClient = require("electron-ipc-tunnel/client");
-import _ = require("lodash");
-(() => {
+import IpcClient from "electron-ipc-tunnel/client";
+import { PolymerElement, component, property, observe } from "polymer-decorators";
+import * as _ from "lodash";
+
 @component("electron-updater")
-class ElectronUpdater extends polymer.Base {
-    @property({type: Boolean})
-    updateInProgress: boolean = false;
+class ElectronUpdater extends PolymerElement {
+    @property
+    updateInProgress: boolean;
 
-    @property({type: Number})
-    updateProgress: number = 0;
+    @property
+    updateProgress: number;
 
-    @property({type: Array})
+    @property
     changelog: string[];
 
     ipcClient: IpcClient;
 
-    attached() {
+    async attached() {
+        this.updateInProgress = false;
+        this.updateProgress = 0;
         this.ipcClient = new IpcClient();
-
-        this.ipcClient.on("update-available", (changelog: {tag: string, name: string, body: string}[]) => {
-            this.changelog = _.map(changelog, (e) => "# " + e.name + "\n\n" + e.body);
-            // ugly hack. try to detect actual rendering
-            setTimeout(() => this.$.dialog.toggle(), 1000);
-        });
 
         this.ipcClient.on("update-progress", (progress) => {
             this.updateProgress = progress.percentage * 100;
         });
 
-        this.ipcClient.send("update-query");
+        try {
+        var res: {
+            available: boolean,
+            changelog: {name: string, body: string, tag: string}[]
+        } = await this.ipcClient.send("update-query");
+        if (res.available) {
+            this.changelog = _.map(res.changelog, (e) => "# " + e.name + "\n\n" + e.body);
+            setTimeout(() => this.$.dialog.toggle(), 1000);
+        }
+    } catch(e) {}
     }
 
     update() {
-        this.ipcClient.send("update-do");
         this.updateInProgress = true;
         this.async(() => this.$.dialog.refit());
+        this.ipcClient.send("update-do");
     }
 
     not(e) {
         return !e;
     }
 }
-polymer.createElement(ElectronUpdater);
-})();
