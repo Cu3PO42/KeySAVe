@@ -3,6 +3,7 @@ import { PolymerElement, component, property, observe, computed } from "polymer-
 import * as fse from "fs-extra";
 import * as path from "path-extra";
 
+namespace SaveDumper {
 var backupDirectory = path.join(path.homedir(), "Documents", "KeySAVe", "backup");
 fse.mkdirpSync(backupDirectory);
 
@@ -89,4 +90,5 @@ class SaveDumper extends PolymerElement {
             this.$.dialog.toggle();
         }
     }
+}
 }

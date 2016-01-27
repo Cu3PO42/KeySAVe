@@ -3,6 +3,7 @@ import { PolymerElement, component, property, observe } from "polymer-decorators
 import * as fse from "fs-extra";
 import * as path from "path-extra";
 
+namespace BvDumper {
 var backupDirectory = path.join(path.homedir(), "Documents", "KeySAVe", "backup");
 fse.mkdirpSync(backupDirectory);
 
@@ -92,4 +93,5 @@ class BvDumper extends PolymerElement {
             this.$.dialog.toggle();
         }
     }
+}
 }

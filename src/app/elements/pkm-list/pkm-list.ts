@@ -8,6 +8,7 @@ import * as path from "path-extra";
 import * as Promise from "bluebird";
 import * as _ from "lodash";
 
+namespace PkmList {
 handlebars.registerHelper(require("handlebars-helper-moment")());
 
 interface MyLocalization {
@@ -523,4 +524,5 @@ class PkmList extends PolymerElement {
     not(value) {
         return !value;
     }
+}
 }
