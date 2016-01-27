@@ -6,11 +6,10 @@ var openExternal = remote.require("electron").shell.openExternal;
 @component("external-link")
 @extend("a")
 class ExternalLink extends PolymerElement {
-    href: string;
     @listen("tap")
     onTap(e) {
         e.preventDefault();
-        openExternal(this.href);
+        openExternal(this.getAttribute("href"));
     }
 }
 })()
