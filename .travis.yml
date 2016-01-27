@@ -12,7 +12,7 @@ deploy:
     file_glob: true
     file:
     - release/v0.36.3/KeySAVe-*.zip
-    - release/KeySAVe-*-update-any.zip
+    - release/KeySAVe-*-update-*.zip
     on:
         repo: Cu3PO42/KeySAVe
         tags: true
