@@ -18,13 +18,14 @@
   "author": "Cu3PO42",
   "license": "MIT",
   "devDependencies": {
+    "archiver": "^0.21.0",
     "bower": "^1.4.1",
     "del": "^1.1.1",
+    "electron-packager": "^5.2.1",
     "electron-prebuilt": "^0.36.3",
     "gulp": "^3.8.5",
-    "gulp-electron": "cu3po42/gulp-electron",
     "gulp-load-plugins": "^0.10.0",
-    "gulp-zip": "^3.0.2",
+    "gulp-zip": "^3.1.0",
     "merge-stream": "^0.1.7",
     "run-sequence": "^1.0.2",
     "typescript": "^1.9.0-dev.20160127"
