@@ -1,5 +1,6 @@
 import { PolymerElement, component, property, observe } from "polymer-decorators";
 
+namespace KeySAVAbout {
 @component("keysav-about")
 class KeysavAbout extends PolymerElement {
     @property
@@ -8,4 +9,5 @@ class KeysavAbout extends PolymerElement {
     attached() {
         this.version = require("../package.json").version;
     }
+}
 }

@@ -1,6 +1,7 @@
 import IpcClient from "electron-ipc-tunnel/client";
 import { PolymerElement, component, property, observe } from "polymer-decorators";
 
+namespace FileInput {
 @component("file-input")
 class FileInput extends PolymerElement {
     @property({reflectToAttribute: true, notify: true})
@@ -31,4 +32,5 @@ class FileInput extends PolymerElement {
             }
         }, 350);
     }
+}
 }
