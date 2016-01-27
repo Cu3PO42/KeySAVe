@@ -1,6 +1,3 @@
-/// <reference path="./typings/github-electron/github-electron.d.ts" />
-/// <reference path="./typings/node/node.d.ts" />
-
 import { app, Menu, BrowserWindow } from "electron";
 import FileDialogServices from "./server/file-dialog-service";
 import Dumper from "./server/dumper";
@@ -25,7 +22,7 @@ app.on("ready", () => {
     Dumper();
     Updater();
 
-    if (false && process.platform === "darwin")
+    if (process.platform === "darwin")
         Menu.setApplicationMenu(Menu.buildFromTemplate([{
             label: 'KeySAVe',
             submenu: [
