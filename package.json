@@ -12,7 +12,8 @@
     "bower": "cd src && bower install && cd ..",
     "installappdeps": "cd src && npm install && cd ..",
     "compile": "cd src && tsc && cd ..",
-    "build": "gulp build"
+    "build": "gulp build",
+    "postinstall": "npm run bower && npm run installappdeps && npm run compile"
   },
   "author": "Cu3PO42",
   "license": "MIT",
