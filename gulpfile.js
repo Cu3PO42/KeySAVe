@@ -32,7 +32,7 @@ gulp.task('buildElectron', function() {
         release: "./release",
         cache: "./cache",
         version: "v0.36.3",
-        platforms: ["darwin-x64", "win32-ia32", "linux-ia32", "linux-x64"],
+        platforms: [process.platform+"-"+process.arch],
         platformResources: {
             darwin: {
                 CFBundleDisplayName: "KeySAVe",
@@ -54,7 +54,7 @@ gulp.task('buildElectron', function() {
 
 gulp.task('buildUpdate', function() {
     return gulp.src("build/**/*")
-    .pipe($.zip("KeySAVe-" + require("./build/package.json").version + "-update-any.zip"))
+    .pipe($.zip("KeySAVe-" + require("./build/package.json").version + "-update-" + process.platform + "-" + process.arch + ".zip"))
     .pipe(gulp.dest("release"));
 });
 
