@@ -10,6 +10,25 @@ import * as _ from "lodash";
 
 handlebars.registerHelper(require("handlebars-helper-moment")());
 
+interface MyLocalization {
+    abilities: string[];
+    countries: string[];
+    forms: string[][];
+    games: string[];
+    items: string[];
+    languageTags: string[];
+    moves: string[];
+    natures: string[];
+    regions: string[];
+    species: string[];
+    types: string[];
+    getLocation(pkm: Pkx): string;
+    getLocation(gameVersion: number, location: number): string;
+    getEggLocation(pkm: Pkx): string;
+    getRibbons(pkm: Pkx): string[];
+    getBallName(ball: number): string;
+}
+
 (() => {
 var dbDirectory = path.join(path.homedir(), "Documents", "KeySAVe", "db");
 fs.mkdirpSync(dbDirectory);
@@ -46,7 +65,7 @@ class PkmList extends PolymerElement {
     language: string;
 
     @property
-    Localization: typeof Localization.en;
+    Localization: MyLocalization;
 
     @property({type: Object, value: function() {
         return [{
@@ -471,7 +490,7 @@ class PkmList extends PolymerElement {
 
     @observe("language")
     languageChanged(newValue, oldValue) {
-        var loc = _.clone(Localization[newValue]);
+        var loc = <any>_.clone(Localization[newValue]);
         loc.types = loc.types.slice(1, -1);
         loc.species = _.sortBy(loc.species.slice(1).map(function(e, i) {
             return {name: e, id: i+1};
