@@ -26,7 +26,8 @@
     "gulp-load-plugins": "^0.10.0",
     "gulp-zip": "^3.0.2",
     "merge-stream": "^0.1.7",
-    "run-sequence": "^1.0.2"
+    "run-sequence": "^1.0.2",
+    "typescript": "^1.9.0-dev.20160127"
   },
   "dependencies": {}
 }
