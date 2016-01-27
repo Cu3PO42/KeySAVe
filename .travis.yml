@@ -1,8 +1,17 @@
-language: node_js
-node_js:
-- "5"
+os:
+    - linux
+    - osx
+env:
+    - NODE_VERSION="5.4"
+before_install:
+    - git clone https://github.com/creationix/nvm.git /tmp/.nvm;
+    - source /tmp/.nvm/nvm.sh;
+    - nvm install $NODE_VERSION;
+    - nvm use --delete-prefix $NODE_VERSION;
+install:
+    - npm install
 script:
-- npm run build
+    - npm run build
 sudo: false
 deploy:
     provider: releases
