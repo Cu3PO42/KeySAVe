@@ -59,12 +59,12 @@ gulp.task('buildElectron', function(cb) {
 
 gulp.task('packageElectron', ['buildElectron'], process.platform === "darwin" ? function(cb) {
     spawn("ditto", ["-ck", "--sequesterRsrc", "--keepParent",
-                    "--zlibCompressionLevel", "9",
-                    "../KeySAVe-" + require("./build/package.json").version + "-darwin-x64.zip", "KeySAVe.app"
-                   ], { cwd: "./release/KeySAVe-darwin-x64", stdio: "ignore" }, cb);
+                    "--zlibCompressionLevel", "9", "KeySAVe.app",
+                    "../KeySAVe-" + require("./build/package.json").version + "-darwin-x64.zip"
+                ], { cwd: "./release/KeySAVe-darwin-x64", stdio: "ignore" }).on("close", cb);
 } : function() {
        return gulp.src(["**/*", "!LICENSE", "!LICENSES.chromium.html", "!version"], { cwd: "release/KeySAVe-" + process.platform + "-" + process.arch +"/" })
-                  .pipe($.zip("KeySAVe-" + require("./build/package.json").version + process.platform + "-" + process.arch + ".zip"))
+                  .pipe($.zip("KeySAVe-" + require("./build/package.json").version + "-" + process.platform + "-" + process.arch + ".zip"))
                   .pipe(gulp.dest("release"));
 });
 
