@@ -18,7 +18,6 @@
   "author": "Cu3PO42",
   "license": "MIT",
   "devDependencies": {
-    "archiver": "^0.21.0",
     "bower": "^1.4.1",
     "del": "^1.1.1",
     "electron-packager": "^5.2.1",

@@ -63,7 +63,7 @@ gulp.task('packageElectron', ['buildElectron'], process.platform === "darwin" ? 
                     "../KeySAVe-" + require("./build/package.json").version + "-darwin-x64.zip", "KeySAVe.app"
                    ], { cwd: "./release/KeySAVe-darwin-x64", stdio: "ignore" }, cb);
 } : function() {
-       return gulp.src("@(**/*|LICENSE|LICENSES.chromium.html|version)", { cwd: "release/KeySAVe-" + process.platform + "-" + process.arch +"/" })
+       return gulp.src(["**/*", "!LICENSE", "!LICENSES.chromium.html", "!version"], { cwd: "release/KeySAVe-" + process.platform + "-" + process.arch +"/" })
                   .pipe($.zip("KeySAVe-" + require("./build/package.json").version + process.platform + "-" + process.arch + ".zip"))
                   .pipe(gulp.dest("release"));
 });
