@@ -1,6 +1,5 @@
 import { PolymerElement, component, property, observe } from "polymer-decorators";
 
-(() => {
 @component("keysav-about")
 class KeysavAbout extends PolymerElement {
     @property
@@ -10,4 +9,3 @@ class KeysavAbout extends PolymerElement {
         this.version = require("../package.json").version;
     }
 }
-})()

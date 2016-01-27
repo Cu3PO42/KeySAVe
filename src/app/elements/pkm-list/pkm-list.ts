@@ -29,7 +29,6 @@ interface MyLocalization {
     getBallName(ball: number): string;
 }
 
-(() => {
 var dbDirectory = path.join(path.homedir(), "Documents", "KeySAVe", "db");
 fs.mkdirpSync(dbDirectory);
 
@@ -525,4 +524,3 @@ class PkmList extends PolymerElement {
         return !value;
     }
 }
-})()

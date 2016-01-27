@@ -4,7 +4,6 @@ import * as _ from "lodash";
 import * as handlebars from "handlebars";
 import { PolymerElement, component, property, observe } from "polymer-decorators";
 
-(() => {
 var keysavDir = path.join(path.homedir(), "Documents", "KeySAVe");
 var configFile = path.join(keysavDir, "config.json");
 fs.mkdirpSync(keysavDir);
@@ -232,4 +231,3 @@ class KeysavOptions extends PolymerElement {
         catch (e) {console.log(e);}
     }
 }
-})()

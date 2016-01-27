@@ -3,15 +3,8 @@ import { PolymerElement, component, property, observe, computed } from "polymer-
 import * as fse from "fs-extra";
 import * as path from "path-extra";
 
-(() => {
-function mkdirOptional(path) {
-    if (!fse.existsSync(path))
-        fse.mkdirSync(path);
-}
-
 var backupDirectory = path.join(path.homedir(), "Documents", "KeySAVe", "backup");
-mkdirOptional(path.join(path.homedir(), "Documents", "KeySAVe"));
-mkdirOptional(backupDirectory);
+fse.mkdirpSync(backupDirectory);
 
 @component("save-dumper")
 class SaveDumper extends PolymerElement {
@@ -96,8 +89,4 @@ class SaveDumper extends PolymerElement {
             this.$.dialog.toggle();
         }
     }
-
-    @computed
-    testing() { return 1; }
 }
-})()
