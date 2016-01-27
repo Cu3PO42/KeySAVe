@@ -1,6 +1,7 @@
 import { remote } from "electron";
 import { PolymerElement, component, extend, listen } from "polymer-decorators";
 
+namespace ExternalLink {
 var openExternal = remote.require("electron").shell.openExternal;
 @component("external-link")
 @extend("a")
@@ -10,4 +11,5 @@ class ExternalLink extends PolymerElement {
         e.preventDefault();
         openExternal(this.getAttribute("href"));
     }
+}
 }

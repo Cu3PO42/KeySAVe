@@ -2,6 +2,7 @@ import IpcClient from "electron-ipc-tunnel/client";
 import { PolymerElement, component, property, observe } from "polymer-decorators";
 import * as _ from "lodash";
 
+namespace ElectronUpdater {
 @component("electron-updater")
 class ElectronUpdater extends PolymerElement {
     @property
@@ -45,4 +46,5 @@ class ElectronUpdater extends PolymerElement {
     not(e) {
         return !e;
     }
+}
 }

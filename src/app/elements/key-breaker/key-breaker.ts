@@ -2,6 +2,7 @@ import IpcClient from "electron-ipc-tunnel/client";
 import { PolymerElement, component, property, observe } from "polymer-decorators";
 import * as fs from "fs-extra";
 
+namespace KeyBreaker {
 @component("key-breaker")
 class KeyBreaker extends PolymerElement {
     @property
@@ -88,4 +89,5 @@ class KeyBreaker extends PolymerElement {
             this.$.dialogBreakingFolder.toggle();
         }
     }
+}
 }
