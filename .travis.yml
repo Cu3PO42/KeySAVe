@@ -3,10 +3,6 @@ node_js:
 - "5"
 script:
 - npm run build
-addons:
-  apt:
-    packages:
-    - wine
 sudo: false
 deploy:
     provider: releases
