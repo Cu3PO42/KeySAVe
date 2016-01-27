@@ -1,5 +1,5 @@
 environment:
-  nodejs_version: 5
+    nodejs_version: 5
 
 # Install scripts. (runs after repo cloning)
 install:
@@ -20,3 +20,12 @@ cache:
     - src/node_modules
     - src/app/bower_components
     - cache
+
+deploy:
+    provider: GitHub
+    description: 'Changelog coming soon.'
+    auth_token:
+        secure: obFCGtrLseWBgAaTJ69vPz9ONHVm1NgxaKPL4njO/xyZ8SJ0RpmHcZ/NaaS2Axgv
+    artifact: /release\/KeySAVe-.*\.zip/
+    on:
+        appveyor_repo_tag: true
