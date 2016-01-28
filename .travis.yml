@@ -3,6 +3,7 @@ os:
     - osx
 env:
     - NODE_VERSION="5.4"
+    - CXX=clang-3.6
 before_install:
     - git clone https://github.com/creationix/nvm.git /tmp/.nvm;
     - source /tmp/.nvm/nvm.sh;
@@ -34,3 +35,13 @@ cache:
 
 notifications:
     email: false
+
+compiler: clang-3.6
+addons:
+    apt:
+        sources:
+            - llvm-toolchain-precise-3.6
+            - ubuntu-toolchain-r-test
+        packages:
+            - clang-3.6
+            - g++-4.8
