@@ -14,7 +14,7 @@
     "compile": "cd src && tsc && cd ..",
     "buildnative": "cd src && electron-rebuild && cd ..",
     "build": "gulp build",
-    "postinstall": "npm run bower && npm run installappdeps && npm run compile"
+    "postinstall": "npm run bower && npm run installappdeps && npm run buildnative && npm run compile"
   },
   "author": "Cu3PO42",
   "license": "MIT",

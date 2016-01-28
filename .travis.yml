@@ -3,7 +3,7 @@ os:
     - osx
 env:
     - NODE_VERSION="5.4"
-    - CXX=clang-3.6
+      CXX=clang-3.6
 before_install:
     - git clone https://github.com/creationix/nvm.git /tmp/.nvm;
     - source /tmp/.nvm/nvm.sh;
