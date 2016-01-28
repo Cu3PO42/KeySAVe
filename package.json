@@ -12,6 +12,7 @@
     "bower": "cd src && bower install && cd ..",
     "installappdeps": "cd src && npm install && cd ..",
     "compile": "cd src && tsc && cd ..",
+    "buildnative": "cd src && electron-rebuild && cd ..",
     "build": "gulp build",
     "postinstall": "npm run bower && npm run installappdeps && npm run compile"
   },
@@ -22,6 +23,7 @@
     "del": "^1.1.1",
     "electron-packager": "^5.2.1",
     "electron-prebuilt": "^0.36.3",
+    "electron-rebuild": "^1.1.2",
     "gulp": "^3.8.5",
     "gulp-load-plugins": "^0.10.0",
     "gulp-zip": "^3.1.0",
