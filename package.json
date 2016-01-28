@@ -29,7 +29,7 @@
     "gulp-zip": "^3.1.0",
     "merge-stream": "^0.1.7",
     "run-sequence": "^1.0.2",
-    "typescript": "^1.9.0-dev.20160127"
+    "typescript": "1.8.0-dev.20160125"
   },
   "dependencies": {}
 }
