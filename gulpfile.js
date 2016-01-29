@@ -64,10 +64,10 @@ gulp.task('packageElectron', ['buildElectron'], process.platform === "darwin" ? 
                     "--zlibCompressionLevel", "9", "KeySAVe.app",
                     "../KeySAVe-" + require("./build/package.json").version + "-darwin-x64.zip"
                 ], { cwd: "./release/KeySAVe-darwin-x64", stdio: "ignore" }).on("close", cb);
-} : process.platform === "linux" ? function() {
+} : process.platform === "linux" ? function(cb) {
     spawn("zip", ["-9yr", "../KeySAVe-" + require("./build/package.json").version + "-linux-" + process.arch + ".zip", "."],
                  { cwd: "./release/KeySAVe-linux-" + require("./build/package.json").version, stdio: "ignore" }).on("close", cb);
-} : function() {
+} : function(cb) {
     spawn("powershell.exe", ["[Reflection.Assembly]::LoadWithPartialName(\"System.IO.Compression.FileSystem\"); " +
                              "[System.IO.Compression.ZipFile]::CreateFromDirectory(" +
                                   "\"release\\KeySAVe-win32-" + process.arch + "\", " + 
@@ -81,10 +81,10 @@ gulp.task('packageUpdate', process.platform === "darwin" ? function(cb) {
                     "--zlibCompressionLevel", "9", ".",
                     "../release/KeySAVe-" + require("./build/package.json").version + "-update-darwin-x64.zip"
                 ], { cwd: "./build", stdio: "ignore" }).on("close", cb);
-} : process.platform === "linux" ? function() {
+} : process.platform === "linux" ? function(cb) {
     spawn("zip", ["-9yr", "../release/KeySAVe-" + require("./build/package.json").version + "-update-linux-" + process.arch + ".zip", "."],
                  { cwd: "./build", stdio: "ignore" }).on("close", cb);
-} : function() {
+} : function(cb) {
     spawn("powershell.exe", ["[Reflection.Assembly]::LoadWithPartialName(\"System.IO.Compression.FileSystem\"); " +
                              "[System.IO.Compression.ZipFile]::CreateFromDirectory(" +
                                   "\"build\", " + 
