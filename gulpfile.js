@@ -10,6 +10,7 @@ var merge = require('merge-stream');
 var path = require('path');
 var fs = require('fs');
 var spawn = require('child_process').spawn;
+var exec = require('child_process').exec;
 
 // Clean Output Directory
 gulp.task('clean', function(cb) {
@@ -65,8 +66,8 @@ gulp.task('packageElectron', ['buildElectron'], process.platform === "darwin" ? 
                     "../KeySAVe-" + require("./build/package.json").version + "-darwin-x64.zip"
                 ], { cwd: "./release/KeySAVe-darwin-x64", stdio: "ignore" }).on("close", cb);
 } : process.platform === "linux" ? function(cb) {
-    spawn("zip", ["-9yr", "../KeySAVe-" + require("./build/package.json").version + "-linux-" + process.arch + ".zip", "."],
-                 { cwd: "./release/KeySAVe-linux-" + require("./build/package.json").version, stdio: "ignore" }).on("close", cb);
+    exec("zip -9yrq ../KeySAVe-" + require("./build/package.json").version + "-linux-" + process.arch + ".zip .",
+         { cwd: "./release/KeySAVe-linux-" + process.arch }, cb);
 } : function(cb) {
     spawn("powershell.exe", ["[Reflection.Assembly]::LoadWithPartialName(\"System.IO.Compression.FileSystem\"); " +
                              "[System.IO.Compression.ZipFile]::CreateFromDirectory(" +
@@ -82,8 +83,8 @@ gulp.task('packageUpdate', process.platform === "darwin" ? function(cb) {
                     "../release/KeySAVe-" + require("./build/package.json").version + "-update-darwin-x64.zip"
                 ], { cwd: "./build", stdio: "ignore" }).on("close", cb);
 } : process.platform === "linux" ? function(cb) {
-    spawn("zip", ["-9yr", "../release/KeySAVe-" + require("./build/package.json").version + "-update-linux-" + process.arch + ".zip", "."],
-                 { cwd: "./build", stdio: "ignore" }).on("close", cb);
+    exec("zip -9yrq ../release/KeySAVe-" + require("./build/package.json").version + "-update-linux-" + process.arch + ".zip .",
+         { cwd: "./build" }, cb);
 } : function(cb) {
     spawn("powershell.exe", ["[Reflection.Assembly]::LoadWithPartialName(\"System.IO.Compression.FileSystem\"); " +
                              "[System.IO.Compression.ZipFile]::CreateFromDirectory(" +
