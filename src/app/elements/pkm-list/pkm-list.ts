@@ -342,7 +342,7 @@ class PkmList extends PolymerElement {
     }
 
     filterPokemon(pkm: Pkx) {
-        if (!((this.lowerBox === undefined || pkm.box+1 >= this.lowerBox) && (this.upperBox === undefined || pkm.box < this.upperBox)))
+        if (!(pkm.box === -1 || (this.lowerBox === undefined || pkm.box+1 >= this.lowerBox) && (this.upperBox === undefined || pkm.box < this.upperBox)))
             return false;
         if (!this.filtersActive)
             return true;

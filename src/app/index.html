@@ -32,8 +32,7 @@
             <!-- Main Toolbar -->
             <paper-toolbar id="mainToolbar">
                 <paper-tabs attr-for-selected="data-route" selected="{{route}}">
-                    <paper-tab data-route="bv">BV Dumping</paper-tab>
-                    <paper-tab data-route="sav">Save Dumping</paper-tab>
+                    <paper-tab data-route="dumper">Dumping</paper-tab>
                     <paper-tab data-route="options">Options</paper-tab>
                     <paper-tab data-route="breaking">Breaking</paper-tab>
                     <paper-tab data-route="about">About</paper-tab>
@@ -51,15 +50,9 @@
                     attr-for-selected="data-route"
                     selected="{{route}}">
 
-                    <neon-animatable data-route="bv">
+                    <neon-animatable data-route="dumper">
                         <section>
-                            <bv-dumper format="[[selectedFormat]]" language="[[language]]"></bv-dumper>
-                        </section>
-                    </neon-animatable>
-
-                    <neon-animatable data-route="sav">
-                        <section>
-                            <save-dumper format="[[selectedFormat]]" language="[[language]]"></save-dumper>
+                            <data-dumper format="[[selectedFormat]]" language="[[language]]"></data-dumper>
                         </section>
                     </neon-animatable>
 

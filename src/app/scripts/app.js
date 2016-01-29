@@ -24,7 +24,7 @@ require("../init/promisify-fs");
   // See https://github.com/Polymer/polymer/issues/1381
   window.addEventListener('WebComponentsReady', function() {
     // imports are loaded and elements have been registered
-    app.route = "sav";
+    app.route = "dumper";
   });
 
 })(document);
