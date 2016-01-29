@@ -13,6 +13,7 @@
   "devDependencies": {},
   "dependencies": {
     "bluebird": "^2.9.34",
+    "chokidar": "^1.4.2",
     "electron-gh-releases-updater": "^0.6.1",
     "electron-ipc-tunnel": "^3.0.0",
     "fs-extra": "^0.26.4",
