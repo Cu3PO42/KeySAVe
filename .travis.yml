@@ -49,3 +49,4 @@ matrix:
                       - ubuntu-toolchain-r-test
                   packages:
                       - clang-3.8
+                      - zip
