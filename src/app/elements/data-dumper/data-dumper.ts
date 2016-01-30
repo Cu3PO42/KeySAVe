@@ -2,6 +2,8 @@ import IpcClient from "electron-ipc-tunnel/client";
 import { PolymerElement, component, property, observe, computed } from "polymer-decorators";
 import * as fse from "fs-extra";
 import * as path from "path-extra";
+import { watch as watchFile } from "chokidar";
+import { FSWatcher } from "fs";
 
 namespace DataDumper {
 var backupDirectory = path.join(path.homedir(), "Documents", "KeySAVe", "backup");
@@ -13,7 +15,7 @@ class DataDumper extends PolymerElement {
     lowerBox: number;
 
     @property
-    upperBox: number;   
+    upperBox: number;
 
     @property
     enemyDumpable: boolean;
@@ -49,10 +51,11 @@ class DataDumper extends PolymerElement {
     hideBvControls: boolean;
 
     myTeam: any[];
-
     enemyTeam: any[];
 
     ipcClient: IpcClient;
+    watcher: FSWatcher;
+    ignoreFileAdd: boolean;
 
     attached() {
         this.lowerBox = 1;
@@ -69,13 +72,43 @@ class DataDumper extends PolymerElement {
         this.fileOptions = process.platform !== "darwin" ? {} : {filters: [{name: "SAV (1MB)", extensions: ["bin", "sav"]}, {name: "Main File", extensions: [""]}, {name: "Battle Video", extensions: [""]}]};
 
         this.ipcClient = new IpcClient();
+
+        this.watcher = watchFile([]);
+        this.ignoreFileAdd = false;
+
+        this.watcher.on("change", (path, stats) => {
+            try {
+                this.loadFile(path, stats);
+            } catch(e) { }
+        });
+        this.watcher.on("add", (path, stats) => {
+            if (this.ignoreFileAdd) {
+                this.ignoreFileAdd = false;
+                return;
+            }
+            try {
+                this.loadFile(path, stats);
+            } catch(e) { }
+        });
     }
 
     @observe("path")
-    async pathChange(newPath, oldPath) {
+    pathChange(newPath, oldPath) {
         if (newPath === "" || newPath === undefined)
             return;
-        var stats = await fse.statAsync(newPath);
+        try {
+            this.loadFile(newPath);
+        } catch (e) {
+            this.path = oldPath;
+        }
+        this.ignoreFileAdd = true;
+        this.watcher.unwatch(oldPath);
+        this.watcher.add(newPath);
+    }
+
+    async loadFile(path: string, stats?: fse.Stats) {
+        if (stats === undefined)
+            stats = await fse.statAsync(path);
         switch (stats.size) {
             case 0x100000:
             case 0x10009C:
@@ -121,10 +154,9 @@ class DataDumper extends PolymerElement {
                 }
                 break;
             default:
-                this.path = oldPath;
-                this.dialogMessage = "Sorry, but this is not a valid save or battle video!";
+                this.dialogMessage = "Sorry, but this file is not a valid save or battle video!";
                 this.$.dialog.toggle();
-                break;
+                throw new Error("Not a valid file.");
         }
     }
 

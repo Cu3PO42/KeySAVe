@@ -38,6 +38,7 @@
         "./server/file-dialog-service.ts",
         "./server/updater.ts",
         "./typings/bluebird/bluebird.d.ts",
+        "./typings/chokidar/chokidar.d.ts",
         "./typings/fs-extra/fs-extra.d.ts",
         "./typings/github-electron/github-electron.d.ts",
         "./typings/handlebars/handlebars.d.ts",
