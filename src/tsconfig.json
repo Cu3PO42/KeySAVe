@@ -36,6 +36,7 @@
         "./main.ts",
         "./server/dumper.ts",
         "./server/file-dialog-service.ts",
+        "./server/search-keysav.ts",
         "./server/updater.ts",
         "./typings/bluebird/bluebird.d.ts",
         "./typings/chokidar/chokidar.d.ts",
