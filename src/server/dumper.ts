@@ -7,7 +7,7 @@ export default function() {
     var worker = fork(__dirname + "/../workers/dumper.js")
 
     app.on("window-all-closed", () => {
-        worker.send("close");
+        worker.send({ cmd: "close" });
     });
 
     var id: number = 0;
@@ -41,7 +41,7 @@ export default function() {
     });
 
     worker.on("message", function(res) {
-        if (res.e === undefined) {
+        if (res.err === undefined) {
             promises[res.id].resolve(res.res);
         } else {
             promises[res.id].reject(res.err);

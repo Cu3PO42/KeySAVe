@@ -1,6 +1,8 @@
 import * as KeySAV from "keysavcore";
 import * as path from "path-extra";
 import * as fs from "fs-extra";
+import * as Promise from "bluebird";
+import * as _ from "lodash";
 import "../init/promisify-fs";
 
 function bufToArr(buf: Buffer) {
@@ -21,9 +23,9 @@ async function close() {
 }
 
 async function dumpBv(args) {
-    var buf = await fs.readFileAsync(args.path);
-    var arr = bufToArr(buf);
     try {
+        var buf = await fs.readFileAsync(args.path);
+        var arr = bufToArr(buf);
         var reader = await KeySAV.loadBv(arr);
         var myTeam = [], enemyTeam = [];
         var tmp;
@@ -67,12 +69,14 @@ async function breakKey(args) {
     try {
         var files = await Promise.map([fs.readFileAsync(args.file1), fs.readFileAsync(args.file2)], bufToArr);
         if (files[0].length === 28256 && files[1].length === 28256) {
-            var res = await KeySAV.breakBv(files[0], files[1]);
-            process.send({ res: res, id: args.id });
+            var bvres = await KeySAV.breakBv(files[0], files[1]);
+            process.send({ res: bvres, id: args.id });
+            return;
         } else {
             files = _.map(files, (f) => f.subarray(f.length % 0x100000));
-            var res = await KeySAV.breakSav(files[0], files[1]);
-            process.send({ res: res, id: args.id });
+            var savres = await KeySAV.breakSav(files[0], files[1]);
+            process.send({ res: savres, id: args.id });
+            return;
         }
     } catch (e) {
         process.send({err: e, id: args.id});
@@ -108,7 +112,7 @@ async function breakFolder(args) {
 
 process.on("message", function(m) {
     switch(m.cmd) {
-        case "dumb-bv":
+        case "dump-bv":
             dumpBv(m);
             break;
         case "dump-save":
