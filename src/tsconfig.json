@@ -44,7 +44,8 @@
         "./typings/handlebars/handlebars.d.ts",
         "./typings/lodash/lodash.d.ts",
         "./typings/node/node.d.ts",
-        "./typings/path-extra/path-extra.d.ts"
+        "./typings/path-extra/path-extra.d.ts",
+        "./workers/dumper.ts"
     ],
     "atom": {
         "rewriteTsconfig": true
