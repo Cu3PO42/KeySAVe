@@ -2,12 +2,11 @@ import * as fs from "fs-extra";
 import * as path from "path-extra";
 import * as _ from "lodash";
 import * as handlebars from "handlebars";
+import { remote } from "electron";
 import { PolymerElement, component, property, observe } from "polymer-decorators";
 
 namespace KeySAVOptions {
-var keysavDir = path.join(path.homedir(), "Documents", "KeySAVe");
-var configFile = path.join(keysavDir, "config.json");
-fs.mkdirpSync(keysavDir);
+var configFile = path.join(remote.require("electron").app.getPath("userData"), "config.json");
 
 var config: any = {
     "defaultFormattingOptions": [
@@ -53,7 +52,7 @@ var config: any = {
 }
 
 if (fs.existsSync(configFile))
-    _.extend(config, JSON.parse(fs.readFileSync(path.join(keysavDir, "config.json"), {encoding: "utf-8"})))
+    _.extend(config, JSON.parse(fs.readFileSync(path.join(configFile), {encoding: "utf-8"})))
 
 Array.prototype.push.apply(config.defaultFormattingOptions, config.formattingOptions);
 config.formattingOptions = config.defaultFormattingOptions;

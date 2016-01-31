@@ -16,7 +16,14 @@ var keyPath = app.getPath("userData")+"/keys";
 if (!fs.existsSync(keyPath)) {
     (async function() {
         await fs.mkdirpAsync(app.getPath("userData"));
-        await fs.moveAsync(app.getPath("home") + "/Documents/KeySAVe/data", keyPath, { clobber: false });
+        try {
+            await fs.moveAsync(app.getPath("home") + "/Documents/KeySAVe/config.json", app.getPath("userData") + "/config.json", { clobber: false });
+        } catch (e) {}
+        try {
+            await fs.moveAsync(app.getPath("home") + "/Documents/KeySAVe/data", keyPath, { clobber: false });
+        } catch (e) {
+            await fs.mkdirpAsync(keyPath);
+        }
         var searcher = fork(__dirname + "/workers/search-keysav.js");
         searcher.send({ path: app.getPath("home"), depth: 5 });
         searcher.on("message", async function(path) {
