@@ -13,7 +13,7 @@ app.on("window-all-closed", () => {
 });
 
 var keyPath = app.getPath("userData")+"/keys";
-if (true || !fs.existsSync(keyPath)) {
+if (!fs.existsSync(keyPath)) {
     (async function() {
         await fs.mkdirpAsync(app.getPath("userData"));
         await fs.moveAsync(app.getPath("home") + "/Documents/KeySAVe/data", keyPath, { clobber: false });

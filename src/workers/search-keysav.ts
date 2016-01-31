@@ -15,7 +15,6 @@ async function search(path: string, depth: number, callback: (path: string) => v
 }
 
 process.on("message", async function(m) {
-    console.log(`searching for keys at ${m.path}`);
     await search(m.path, m.depth, function(path) {
         process.send(path);
     });

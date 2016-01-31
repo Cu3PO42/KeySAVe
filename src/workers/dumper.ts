@@ -13,8 +13,7 @@ function bufToArr(buf: Buffer) {
     return tmp;
 }
 
-var dataDirectory = path.join(path.homedir(), "Documents", "KeySAVe", "data");
-fs.mkdirpSync(dataDirectory);
+var dataDirectory = process.argv[2];
 var store = new KeySAV.KeyStoreFileSystem(dataDirectory);
 KeySAV.setKeyStore(store);
 

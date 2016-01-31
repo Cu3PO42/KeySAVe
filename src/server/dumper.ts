@@ -4,7 +4,7 @@ import registerIpc from "electron-ipc-tunnel/server";
 import { fork } from "child_process";
 
 export default function() {
-    var worker = fork(__dirname + "/../workers/dumper.js")
+    var worker = fork(__dirname + "/../workers/dumper.js", [app.getPath("userData") + "/keys"]);
 
     app.on("window-all-closed", () => {
         worker.send({ cmd: "close" });
