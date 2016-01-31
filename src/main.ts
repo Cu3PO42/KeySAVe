@@ -2,6 +2,8 @@ import { app, Menu, BrowserWindow } from "electron";
 import FileDialogServices from "./server/file-dialog-service";
 import Dumper from "./server/dumper";
 import Updater from "./server/updater";
+import * as fs from "fs-extra";
+import { fork } from "child_process";
 import "./init/promisify-fs";
 
 var mainWindow: GitHubElectron.BrowserWindow;
@@ -9,6 +11,26 @@ var mainWindow: GitHubElectron.BrowserWindow;
 app.on("window-all-closed", () => {
     app.quit();
 });
+
+var keyPath = app.getPath("userData")+"/keys/";
+if (!fs.existsSync(keyPath)) {
+    fs.mkdirpSync(keyPath);
+    var searcher = fork(__dirname + "/workers/search-keysav.js");
+    searcher.send({ path: app.getPath("home"), depth: 5 });
+    searcher.on("message", async function(path) {
+        try {
+            await fs.readdirAsync(path + "/data").map(async (file) => {
+                try {
+                    var stats = await fs.statAsync(path + "/data/" + file);
+                    if (stats.isFile() && !(await fs.existsAsync(keyPath + file))
+                    && (stats.size === 0xB4AD4 || stats.size === 0x1000)) {
+                        await fs.copyAsync(path + "/data/" + file, keyPath + file);
+                    }
+                } catch (e) {}
+            });
+        } catch (e) {}
+    });
+}
 
 app.on("ready", () => {
     mainWindow = new BrowserWindow({ width: 600, height: 800 });

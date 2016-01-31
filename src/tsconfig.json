@@ -36,7 +36,6 @@
         "./main.ts",
         "./server/dumper.ts",
         "./server/file-dialog-service.ts",
-        "./server/search-keysav.ts",
         "./server/updater.ts",
         "./typings/bluebird/bluebird.d.ts",
         "./typings/chokidar/chokidar.d.ts",
@@ -46,7 +45,8 @@
         "./typings/lodash/lodash.d.ts",
         "./typings/node/node.d.ts",
         "./typings/path-extra/path-extra.d.ts",
-        "./workers/dumper.ts"
+        "./workers/dumper.ts",
+        "./workers/search-keysav.ts"
     ],
     "atom": {
         "rewriteTsconfig": true
