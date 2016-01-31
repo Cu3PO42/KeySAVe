@@ -54,6 +54,11 @@ declare module "fs-extra" {
 	export function createFileAsync(file: string): Promise<void>;
 	export function createFileSync(file: string): void;
 
+	export function move(src: string, dest: string, options: { clobber?: boolean, limit?: number }, callback: (err: Error) => void): void;
+	export function moveAsync(src: string, dest: string, options: { clobber?: boolean, limit?: number }): Promise<void>;
+	export function move(src: string, dest: string, callback: (err: Error) => void): void;
+	export function moveAsync(src: string, dest: string): Promise<void>;
+
 	export function mkdirs(dir: string, callback?: (err: Error) => void): void;
 	export function mkdirsAsync(dir: string): Promise<void>;
 	export function mkdirp(dir: string, callback?: (err: Error) => void): void;
