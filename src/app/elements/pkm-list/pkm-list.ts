@@ -7,6 +7,7 @@ import { PolymerElement, component, property, observe } from "polymer-decorators
 import * as path from "path-extra";
 import * as Promise from "bluebird";
 import * as _ from "lodash";
+import * as sanitize from "sanitize-filename";
 
 namespace PkmList {
 handlebars.registerHelper(require("handlebars-helper-moment")());
@@ -29,9 +30,6 @@ interface MyLocalization {
     getRibbons(pkm: Pkx): string[];
     getBallName(ball: number): string;
 }
-
-var dbDirectory = path.join(path.homedir(), "Documents", "KeySAVe", "db");
-fs.mkdirpSync(dbDirectory);
 
 var clipboard = remote.require("clipboard");
 
@@ -421,14 +419,17 @@ class PkmList extends PolymerElement {
     async export() {
         var pkm = _.filter(this.pokemon, this.filterPokemon.bind(this))
         var ghosts = 0;
-        var files = await fs.readdirAsync(dbDirectory);
         try {
+            var dbDirectory = (await this.ipcClient.send("file-dialog-open",
+                { options: { title: "Select a folder to save .pk6 files to",
+                             properties: ["openDirectory", "createDirectory"] }}))[0];
+            var files = await fs.readdirAsync(dbDirectory);
             await Promise.resolve(pkm).map((pkm: Pkx) => {
                 if (pkm.isGhost) {
                     ++ghosts;
                     return;
                 }
-                var fileName = `${("000" + pkm.species).slice(-3)} - ${pkm.nickname} - ${pkm.pid.toString(16)} - ${pkm.ec.toString(16)}`;
+                var fileName = sanitize(`${("000" + pkm.species).slice(-3)} - ${pkm.nickname} - ${pkm.pid.toString(16)} - ${pkm.ec.toString(16)}`);
                 var counter = 0;
                 if (_.includes(files, fileName + ".pk6")) {
                     ++counter;

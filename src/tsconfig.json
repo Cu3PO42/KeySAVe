@@ -45,6 +45,7 @@
         "./typings/lodash/lodash.d.ts",
         "./typings/node/node.d.ts",
         "./typings/path-extra/path-extra.d.ts",
+        "./typings/sanitize-filename/sanitize-filename.d.ts",
         "./workers/dumper.ts",
         "./workers/search-keysav.ts"
     ],

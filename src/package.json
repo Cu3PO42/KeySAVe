@@ -22,6 +22,7 @@
     "keysavcore": "^0.13.1",
     "lodash": "^3.10.0",
     "path-extra": "^1.0.3",
-    "polymer-decorators": "^0.1.0"
+    "polymer-decorators": "^0.1.0",
+    "sanitize-filename": "^1.5.3"
   }
 }
