@@ -169,7 +169,10 @@ class DataDumper extends PolymerElement {
         if (!this.path)
             return;
         try {
-            await fse.copyAsync(this.path, path.join(backupDirectory, path.basename(this.path)));
+            var dest = await this.ipcClient.send("file-dialog-save",
+                { options: { filters: [{ name: this.fileType === "sav" ? "Save" : "Battle Video",
+                                        extensions: [path.extname(this.path).slice(1)]}]}});
+            await fse.copyAsync(this.path, dest);
             this.dialogMessage = `${this.fileType === "sav" ? "Save" : "Battle Video"} backupped!`
             this.$.dialog.toggle();
         } catch (e) {
