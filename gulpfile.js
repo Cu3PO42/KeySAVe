@@ -73,7 +73,7 @@ gulp.task('packageElectron', ['buildElectron'], process.platform === "darwin" ? 
                              "[System.IO.Compression.ZipFile]::CreateFromDirectory(" +
                                   "\"release\\KeySAVe-win32-" + process.arch + "\", " + 
                                   "\"release\\KeySAVe-" + require("./build/package.json").version + "-win32-" + process.arch + ".zip\", " +
-                                  "[System.IO.CompressionLevel]::Optimal, $FALSE"],
+                                  "[System.IO.Compression.CompressionLevel]::Optimal, $FALSE)"],
                             { stdio: "ignore" }).on("close", cb);
 });
 
@@ -90,7 +90,7 @@ gulp.task('packageUpdate', process.platform === "darwin" ? function(cb) {
                              "[System.IO.Compression.ZipFile]::CreateFromDirectory(" +
                                   "\"build\", " + 
                                   "\"release\\KeySAVe-" + require("./build/package.json").version + "-update-win32-" + process.arch + ".zip\", " +
-                                  "[System.IO.CompressionLevel]::Optimal, $FALSE"],
+                                  "[System.IO.Compression.CompressionLevel]::Optimal, $FALSE)"],
                             { stdio: "ignore" }).on("close", cb);
 });
 
