@@ -24,6 +24,9 @@ cache:
     - src/app/bower_components
     - cache
 
+artifacts:
+    - path: release\*.zip
+
 deploy:
     provider: GitHub
     description: 'Changelog coming soon.'
