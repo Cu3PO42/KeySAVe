@@ -36,7 +36,7 @@ class KeyBreaker extends PolymerElement {
         if (this.file1Type === this.file2Type && this.file1Type !== undefined) {
             var res = await this.ipcClient.send("break-key", {file1: this.file1, file2: this.file2});
             this.breakMessage = res.result.match(/^.*$/gm);
-            this.$.dialogBreakDone.toggle();
+            setTimeout(() => this.$.dialogBreakDone.toggle(), 100)
         } else {
             this.$.dialogBreakNotSameFiles.toggle();
         }
