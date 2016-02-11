@@ -78,7 +78,7 @@ gulp.task('packageElectron', ['buildElectron'], process.platform === "darwin" ? 
 });
 
 gulp.task('packageUpdate', process.platform === "darwin" ? function(cb) {
-    spawn("ditto", ["-ck", "--sequesterRsrc", "--keepParent",
+    spawn("ditto", ["-ck", "--sequesterRsrc",
                     "--zlibCompressionLevel", "9", ".",
                     "../release/KeySAVe-" + require("./build/package.json").version + "-update-darwin-x64.zip"
                 ], { cwd: "./build", stdio: "ignore" }).on("close", cb);
