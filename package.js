@@ -7,6 +7,7 @@ const cfg = require('./webpack.config.production.js');
 const packager = require('electron-packager');
 const del = require('del');
 const exec = require('child_process').exec;
+const spawn = require('child_process').spawn;
 const argv = require('minimist')(process.argv.slice(2));
 const pkg = require('./package.json');
 const devDeps = Object.keys(pkg.devDependencies);
@@ -22,8 +23,8 @@ const DEFAULT_OPTS = {
   asar: shouldUseAsar,
   "app-bundle-id": "com.cu3po42.keysave",
   "app-category-type": "public.app-category.productivity",
-  "app-version": packageJson.version,
-  "build-version": packageJson.version,
+  "app-version": pkg.version,
+  "build-version": pkg.version,
   "helper-bundle-id": "com.cu3po42.keysave",
   icon: "./resources/keysave-logo",
   overwrite: true,
@@ -40,20 +41,13 @@ const DEFAULT_OPTS = {
     '/test($|/)',
     '/tools($|/)',
     '/resources($|/)',
-    '/release($|/)'
+    '/release($|/)',
+    '/cache($|/)',
+    '/webpack\.config\..+\.js$'
   ].concat(devDeps.map(name => `/node_modules/${name}($|/)`))
 };
 
-const icon = argv.icon || argv.i || 'app/app';
-
-if (icon) {
-  DEFAULT_OPTS.icon = icon;
-}
-
-const version = argv.version || argv.v;
-
-if (version) {
-  DEFAULT_OPTS.version = version;
+if (DEFAULT_OPTS.version) {
   startPack();
 } else {
   // use the same version as the currently-installed electron-prebuilt
@@ -68,6 +62,40 @@ if (version) {
   });
 }
 
+const zipElectron = process.platform === "darwin" ? function(cb) {
+    console.log("packaging for mac");
+    spawn("ditto", ["-ck", "--sequesterRsrc", "--keepParent",
+                    "--zlibCompressionLevel", "9", "KeySAVe.app",
+                    "../KeySAVe-" + pkg.version + "-darwin-x64.zip"
+                ], { cwd: "./release/KeySAVe-darwin-x64", stdio: "inherit" }).on("close", cb);
+} : process.platform === "linux" ? function(cb) {
+    exec("zip -9yrq ../KeySAVe-" + pkg.version + "-linux-" + process.arch + ".zip .",
+         { cwd: "./release/KeySAVe-linux-" + process.arch }, cb);
+} : function(cb) {
+    spawn("powershell.exe", ["[Reflection.Assembly]::LoadWithPartialName(\"System.IO.Compression.FileSystem\"); " +
+                             "[System.IO.Compression.ZipFile]::CreateFromDirectory(" +
+                                  "\"release\\KeySAVe-win32-" + process.arch + "\", " +
+                                  "\"release\\KeySAVe-" + pkg.version + "-win32-" + process.arch + ".zip\", " +
+                                  "[System.IO.Compression.CompressionLevel]::Optimal, $FALSE)"],
+                            { stdio: "ignore" }).on("close", cb);
+};
+
+const zipUpdate = process.platform === "darwin" ? function(cb) {
+    spawn("ditto", ["-ck", "--sequesterRsrc",
+                    "--zlibCompressionLevel", "9", ".",
+                    "../../../../../KeySAVe-" + pkg.version + "-update-darwin-x64.zip"
+                ], { cwd: "./release/KeySAVe-darwin-x64/KeySAVe.app/Contents/Resources/app", stdio: "inherit" }).on("close", cb);
+} : process.platform === "linux" ? function(cb) {
+    exec("zip -9yrq ../release/KeySAVe-" + pkg.version + "-update-linux-" + process.arch + ".zip .",
+         { cwd: "./release/KeySAVe-linux-" + process.arch + "/resources/app/" }, cb);
+} : function(cb) {
+    spawn("powershell.exe", ["[Reflection.Assembly]::LoadWithPartialName(\"System.IO.Compression.FileSystem\"); " +
+                             "[System.IO.Compression.ZipFile]::CreateFromDirectory(" +
+                                  "\"release\\KeySAVe-win32-" + process.arch + "\\resources\\app\", " +
+                                  "\"release\\KeySAVe-" + pkg.version + "-update-win32-" + process.arch + ".zip\", " +
+                                  "[System.IO.Compression.CompressionLevel]::Optimal, $FALSE)"],
+                            { stdio: "ignore" }).on("close", cb);
+};
 
 function startPack() {
   console.log('start pack...');
@@ -75,20 +103,8 @@ function startPack() {
     if (err) return console.error(err);
     del('release')
     .then(paths => {
-      if (shouldBuildAll) {
-        // build for all platforms
-        const archs = ['ia32', 'x64'];
-        const platforms = ['linux', 'win32', 'darwin'];
-
-        platforms.forEach(plat => {
-          archs.forEach(arch => {
-            pack(plat, arch, log(plat, arch));
-          });
-        });
-      } else {
-        // build for current platform only
-        pack(os.platform(), os.arch(), log(os.platform(), os.arch()));
-      }
+      // build for current platform only
+      pack(os.platform(), os.arch(), log(os.platform(), os.arch()));
     })
     .catch(err => {
       console.error(err);
@@ -104,10 +120,26 @@ function pack(plat, arch, cb) {
     platform: plat,
     arch,
     prune: true,
-    out: `release/${plat}-${arch}`
+    out: `release/`
   });
 
-  packager(opts, cb);
+  packager(opts, function(err) {
+      if (err) {
+          cb(err);
+          return;
+      }
+      del(["version", "LICENSE", "LICENSES.chromium.html"], { cwd: "release/KeySAVe-" + process.platform + "-" + process.arch }).then(function() {
+          console.log("Packaging your Electron app now.");
+          zipElectron(function(err) {
+              if (err) {
+                  cb(err);
+                  return;
+              }
+              console.log("Packaging update file.");
+              zipUpdate(cb);
+          });
+    }).catch(cb);
+  });
 }
 
 
