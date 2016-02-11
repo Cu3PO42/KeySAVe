@@ -63,11 +63,10 @@ if (DEFAULT_OPTS.version) {
 }
 
 const zipElectron = process.platform === "darwin" ? function(cb) {
-    console.log("packaging for mac");
     spawn("ditto", ["-ck", "--sequesterRsrc", "--keepParent",
                     "--zlibCompressionLevel", "9", "KeySAVe.app",
                     "../KeySAVe-" + pkg.version + "-darwin-x64.zip"
-                ], { cwd: "./release/KeySAVe-darwin-x64", stdio: "inherit" }).on("close", cb);
+                ], { cwd: "./release/KeySAVe-darwin-x64", stdio: "ignore" }).on("close", cb);
 } : process.platform === "linux" ? function(cb) {
     exec("zip -9yrq ../KeySAVe-" + pkg.version + "-linux-" + process.arch + ".zip .",
          { cwd: "./release/KeySAVe-linux-" + process.arch }, cb);
@@ -86,7 +85,7 @@ const zipUpdate = process.platform === "darwin" ? function(cb) {
                     "../../../../../KeySAVe-" + pkg.version + "-update-darwin-x64.zip"
                 ], { cwd: "./release/KeySAVe-darwin-x64/KeySAVe.app/Contents/Resources/app", stdio: "inherit" }).on("close", cb);
 } : process.platform === "linux" ? function(cb) {
-    exec("zip -9yrq ../release/KeySAVe-" + pkg.version + "-update-linux-" + process.arch + ".zip .",
+    exec("zip -9yrq ../../../KeySAVe-" + pkg.version + "-update-linux-" + process.arch + ".zip .",
          { cwd: "./release/KeySAVe-linux-" + process.arch + "/resources/app/" }, cb);
 } : function(cb) {
     spawn("powershell.exe", ["[Reflection.Assembly]::LoadWithPartialName(\"System.IO.Compression.FileSystem\"); " +

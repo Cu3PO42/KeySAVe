@@ -14,14 +14,13 @@ install:
     - npm install
 
 build_script:
-    - npm run build
+    - npm run package
 
 platform: x86
 
 cache:
     - node_modules
-    - src/node_modules
-    - src/app/bower_components
+    - nativedeps/node_modules
     - cache
 
 artifacts:

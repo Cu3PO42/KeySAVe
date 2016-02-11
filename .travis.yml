@@ -6,7 +6,7 @@ before_install:
 install:
     - npm install
 script:
-    - npm run build
+    - npm run package
 sudo: false
 deploy:
     provider: releases
@@ -23,8 +23,7 @@ deploy:
 cache:
     directories:
         - node_modules
-        - src/node_modules
-        - src/app/bower_components
+        - nativedeps/node_modules
         - cache
 
 notifications:
