@@ -17,26 +17,17 @@
     "filesGlob": [
         "./**/*.ts",
         "./**/*.tsx",
+        "!./src/**/*.ts",
         "!./node_modules/**/*",
         "!./**/bower_components/**/*",
-        "!./build/**/*",
         "!./cache/**/*",
         "!./release/**/*"
     ],
+    "atom": {
+        "rewriteTsconfig": true
+    },
+    "compileOnSave": false,
     "files": [
-        "./app/elements/data-dumper/data-dumper.ts",
-        "./app/elements/electron-updater/electron-updater.ts",
-        "./app/elements/external-link/external-link.ts",
-        "./app/elements/file-input/file-input.ts",
-        "./app/elements/key-breaker/key-breaker.ts",
-        "./app/elements/keysav-about/keysav-about.ts",
-        "./app/elements/keysav-options/keysav-options.ts",
-        "./app/elements/pkm-list/pkm-list.ts",
-        "./init/promisify-fs.ts",
-        "./main.ts",
-        "./server/dumper.ts",
-        "./server/file-dialog-service.ts",
-        "./server/updater.ts",
         "./typings/bluebird/bluebird.d.ts",
         "./typings/chokidar/chokidar.d.ts",
         "./typings/fs-extra/fs-extra.d.ts",
@@ -45,12 +36,10 @@
         "./typings/lodash/lodash.d.ts",
         "./typings/node/node.d.ts",
         "./typings/path-extra/path-extra.d.ts",
+        "./typings/react-router/history.d.ts",
+        "./typings/react-router/react-router.d.ts",
+        "./typings/react/react.d.ts",
         "./typings/sanitize-filename/sanitize-filename.d.ts",
-        "./workers/dumper.ts",
-        "./workers/search-keysav.ts"
-    ],
-    "atom": {
-        "rewriteTsconfig": true
-    },
-    "compileOnSave": true
+        "./app/components/Home.tsx"
+    ]
 }

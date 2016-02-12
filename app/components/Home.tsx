@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
+import * as React from 'react';
+import { Component } from 'react';
 import { Link } from 'react-router';
-import styles from './Home.module.css';
+const styles = require('./Home.module.css');
 
 
-export default class Home extends Component {
+export default class Home extends Component<{}, {}> {
   render() {
+      var test: number = 10;
     return (
       <div>
         <div className={styles.container}>

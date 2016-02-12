@@ -37,6 +37,7 @@ const DEFAULT_OPTS = {
     ProductName: "KeySAVe",
     InternalName: "KeySAVe"
   },
+  cache: "./cache",
   ignore: [
     '/test($|/)',
     '/tools($|/)',
