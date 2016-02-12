@@ -1,5 +1,5 @@
 import * as KeySAV from "keysavcore";
-import * as path from "path-extra";
+import * as path from "path";
 import * as fs from "fs-extra";
 import * as Promise from "bluebird";
 import * as _ from "lodash";

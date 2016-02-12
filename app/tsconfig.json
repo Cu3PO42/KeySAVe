@@ -1,0 +1,39 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es6",
+        "noImplicitAny": false,
+        "sourceMap": false,
+        "isolatedModules": false,
+        "jsx": "react",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "declaration": false,
+        "preserveConstEnums": true,
+        "noEmit": true
+    },
+    "filesGlob": [
+        "./**/*.ts",
+        "./**/*.tsx",
+        "../typings/**/*.d.ts"
+    ],
+    "files": [
+        "./components/Home.tsx",
+        "../typings/bluebird/bluebird.d.ts",
+        "../typings/chokidar/chokidar.d.ts",
+        "../typings/fs-extra/fs-extra.d.ts",
+        "../typings/github-electron/github-electron.d.ts",
+        "../typings/handlebars/handlebars.d.ts",
+        "../typings/lodash/lodash.d.ts",
+        "../typings/node/node.d.ts",
+        "../typings/path-extra/path-extra.d.ts",
+        "../typings/react-router/history.d.ts",
+        "../typings/react-router/react-router.d.ts",
+        "../typings/react/react.d.ts",
+        "../typings/sanitize-filename/sanitize-filename.d.ts",
+    ],
+    "atom": {
+        "rewriteTsconfig": true
+    },
+    "compileOnSave": false
+}

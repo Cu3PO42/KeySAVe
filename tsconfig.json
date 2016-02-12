@@ -17,17 +17,22 @@
     "filesGlob": [
         "./**/*.ts",
         "./**/*.tsx",
+        "!./app/**/*",
         "!./src/**/*.ts",
         "!./node_modules/**/*",
-        "!./**/bower_components/**/*",
         "!./cache/**/*",
         "!./release/**/*"
     ],
     "atom": {
         "rewriteTsconfig": true
     },
-    "compileOnSave": false,
+    "compileOnSave": true,
     "files": [
+        "./init/promisify-fs.ts",
+        "./main.ts",
+        "./server/dumper.ts",
+        "./server/file-dialog-service.ts",
+        "./server/updater.ts",
         "./typings/bluebird/bluebird.d.ts",
         "./typings/chokidar/chokidar.d.ts",
         "./typings/fs-extra/fs-extra.d.ts",
@@ -40,6 +45,7 @@
         "./typings/react-router/react-router.d.ts",
         "./typings/react/react.d.ts",
         "./typings/sanitize-filename/sanitize-filename.d.ts",
-        "./app/components/Home.tsx"
+        "./workers/dumper.ts",
+        "./workers/search-keysav.ts"
     ]
 }
