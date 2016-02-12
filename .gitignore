@@ -1,12 +1,8 @@
 node_modules/
 dist/
-bower_components/
-app/bower_components/
-KeySAVe-*/
-build/
 cache/
 release/
-.tmp/
-src/**/*.js
 npm-debug.log
-
+main.js
+server/**/*.js
+workers/**/*.js
