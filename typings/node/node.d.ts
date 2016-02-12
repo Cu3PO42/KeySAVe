@@ -61,6 +61,7 @@ interface NodeModule {
     loaded: boolean;
     parent: any;
     children: any[];
+    hot: any;
 }
 
 declare var module: NodeModule;

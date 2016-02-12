@@ -1,8 +1,8 @@
 import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
+import * as thunk from 'redux-thunk';
 import rootReducer from '../reducers';
 
-const enhancer = compose(
+const enhancer: () => any = <any>compose(
   applyMiddleware(thunk)
 );
 

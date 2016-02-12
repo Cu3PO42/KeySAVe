@@ -1,9 +1,18 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
-import styles from './Counter.module.css';
+const styles = require('./Counter.module.css');
 
-class Counter extends Component {
-  static propTypes = {
+interface CounterProps {
+    increment: () => void;
+    incrementIfOdd: () => void;
+    incrementAsync: () => void;
+    decrement: () => void;
+    counter: number;
+}
+
+class Counter extends Component<CounterProps, {}> {
+  static propTypes: React.ValidationMap<any> = {
     increment: PropTypes.func.isRequired,
     incrementIfOdd: PropTypes.func.isRequired,
     incrementAsync: PropTypes.func.isRequired,
@@ -31,7 +40,7 @@ class Counter extends Component {
             <i className="fa fa-minus"></i>
           </button>
           <button className={styles.btn} onClick={incrementIfOdd}>odd</button>
-          <button className={styles.btn} onClick={() => incrementAsync()}>async</button>
+          <button className={styles.btn} onClick={incrementAsync}>async</button>
         </div>
       </div>
     );

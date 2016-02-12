@@ -9,8 +9,7 @@
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "declaration": false,
-        "preserveConstEnums": true,
-        "noEmit": true
+        "preserveConstEnums": true
     },
     "filesGlob": [
         "./**/*.ts",
@@ -18,7 +17,20 @@
         "../typings/**/*.d.ts"
     ],
     "files": [
+        "./actions/counter.ts",
+        "./reducers/counter.ts",
+        "./reducers/index.ts",
+        "./store/configureStore.development.ts",
+        "./store/configureStore.production.ts",
+        "./store/configureStore.ts",
+        "./components/Counter.tsx",
         "./components/Home.tsx",
+        "./containers/App.tsx",
+        "./containers/CounterPage.tsx",
+        "./containers/DevTools.tsx",
+        "./containers/HomePage.tsx",
+        "./index.tsx",
+        "./routes.tsx",
         "../typings/bluebird/bluebird.d.ts",
         "../typings/chokidar/chokidar.d.ts",
         "../typings/fs-extra/fs-extra.d.ts",
@@ -27,10 +39,17 @@
         "../typings/lodash/lodash.d.ts",
         "../typings/node/node.d.ts",
         "../typings/path-extra/path-extra.d.ts",
+        "../typings/react-redux/react-redux.d.ts",
         "../typings/react-router/history.d.ts",
         "../typings/react-router/react-router.d.ts",
+        "../typings/react/react-dom.d.ts",
         "../typings/react/react.d.ts",
-        "../typings/sanitize-filename/sanitize-filename.d.ts",
+        "../typings/redux-devtools-dock-monitor/redux-devtools-dock-monitor.d.ts",
+        "../typings/redux-devtools-log-monitor/redux-devtools-log-monitor.d.ts",
+        "../typings/redux-devtools/redux-devtools.d.ts",
+        "../typings/redux-thunk/redux-thunk.d.ts",
+        "../typings/redux/redux.d.ts",
+        "../typings/sanitize-filename/sanitize-filename.d.ts"
     ],
     "atom": {
         "rewriteTsconfig": true
