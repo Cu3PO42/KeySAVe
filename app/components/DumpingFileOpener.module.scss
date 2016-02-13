@@ -1,0 +1,39 @@
+.paper {
+    margin: 20px;
+    padding: 10px 20px;
+}
+
+.flexFromRight {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+
+.sliderWrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    & > div > div {
+        margin: 12px 0 !important;
+    }
+}
+
+.radioButtonWrapper {
+    flex: 1;
+    & > * {
+        display: flex;
+        flex-direction: row;
+        & > * {
+            width: auto !important;
+            white-space: nowrap;
+            &:first-child {
+                margin-right: 10px;
+            }
+        }
+    }
+}
+
+.keyWarning {
+    color: red;
+    font-weight: bold;
+}

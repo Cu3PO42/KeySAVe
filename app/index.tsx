@@ -4,7 +4,10 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import routes from './routes';
 import configureStore from './store/configureStore';
+import "../init/promisify-fs";
 import './app.scss';
+
+require("react-tap-event-plugin")();
 
 const store = configureStore();
 

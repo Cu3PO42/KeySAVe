@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
-const styles = require('./Counter.module.css');
+const styles = require('./Counter.module.scss');
 
 interface CounterProps {
     increment: () => void;

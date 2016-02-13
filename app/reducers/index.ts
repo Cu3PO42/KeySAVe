@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
-import counter from './counter';
+import file from "./file";
+import filter from "./filter";
 
 const rootReducer = combineReducers({
-  counter
+  file,
+  filter
 });
 
 export default rootReducer;
