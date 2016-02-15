@@ -19,7 +19,7 @@
     "fs-extra": "^0.26.4",
     "handlebars": "^3.0.3",
     "handlebars-helper-moment": "^0.2.0",
-    "keysavcore": "^0.14.3",
+    "keysavcore": "^0.14.4",
     "lodash": "^3.10.0",
     "path-extra": "^1.0.3",
     "polymer-decorators": "^0.1.0",
