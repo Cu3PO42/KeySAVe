@@ -85,8 +85,11 @@ class KeyBreaker extends PolymerElement {
     async folderChanged(newValue, oldValue) {
         if (this.ipcClient !== undefined) {
             this.$.dialogBreakingFolder.toggle();
-            await this.ipcClient.send("break-folder", newValue);
-            this.$.dialogBreakingFolder.toggle();
+            try {
+                await this.ipcClient.send("break-folder", newValue);
+            } finally {
+                this.$.dialogBreakingFolder.toggle();
+            }
         }
     }
 }
