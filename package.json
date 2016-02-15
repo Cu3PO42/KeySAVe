@@ -79,7 +79,7 @@
     "handlebars": "^3.0.3",
     "handlebars-helper-moment": "^0.2.0",
     "history": "^1.17.0",
-    "keysavcore": "^0.14.2",
+    "keysavcore": "^0.14.4",
     "lodash": "^3.10.0",
     "material-ui": "^0.14.4",
     "pure-render-decorator": "^0.2.0",
