@@ -42,7 +42,6 @@
         "./typings/node/node.d.ts",
         "./typings/path-extra/path-extra.d.ts",
         "./typings/pure-render-decorator/pure-render-decorator.d.ts",
-        "./typings/rc-slider/rc-slider.d.ts",
         "./typings/react-redux/react-redux.d.ts",
         "./typings/react-router/history.d.ts",
         "./typings/react-router/react-router.d.ts",

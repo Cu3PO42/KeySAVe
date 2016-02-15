@@ -6,13 +6,13 @@ import { openFile, openFileSuccess, openFileError, SAV, BV } from "../actions/fi
 import { setFilterBv, setFilterSav } from "../actions/filter";
 import PkmList from "../components/PkmList";
 import { Dialog, FlatButton } from "material-ui";
-import { Pkx } from "keysavcore";
 import * as fse from "fs-extra";
 import * as path from "path";
 import IpcClient from "electron-ipc-tunnel/client";
+import Pkx from "keysavcore/pkx";
 
 interface HomeState {
-    pokemon?: Pkx[],
+    pokemon?: Pkx[]|Pkx[][],
     file?: string,
     dialogOpen?: boolean;
     type?: string;
@@ -73,14 +73,14 @@ export default class Home extends Component<{}, HomeState> {
         if (file.data !== undefined) {
             const { type } = file.data;
             const { lower, upper, isOpponent } = filter;
-            this.setState({lowerBox: lower, upperBox: upper, isOpponent: isOpponent});
+            this.setState({lowerBox: lower, upperBox: upper, isOpponent});
             if (type === SAV) {
                 this.setState({boxFilter: function(pkm) {
                     return lower-1 <= pkm.box && pkm.box < upper;
                 }});
             } else {
                 this.setState({boxFilter: function(pkm) {
-                    return !!pkm.isOpponent === isOpponent;
+                    return true;
                 }});
             }
         }
@@ -101,13 +101,13 @@ export default class Home extends Component<{}, HomeState> {
                 case 232*30*31:
                 case 0x70000:
                 case 0x80000:
-                    var { pokemon, isNewKey } = await this.ipcClient.send("dump-save", file);
+                    let { pokemon, isNewKey } = await this.ipcClient.send("dump-save", file);
                     store.dispatch(openFileSuccess(SAV, pokemon, isNewKey));
                     break;
                 case 28256:
-                    var { enemyDumpable, myTeam, enemyTeam } = await this.ipcClient.send("dump-bv", file);
-                    var pokemon = enemyDumpable ? myTeam.concat(enemyTeam.map(e => { e.isOpponent = true; return e; })) : myTeam;
-                    store.dispatch(openFileSuccess(BV, pokemon, enemyDumpable));
+                    let { enemyDumpable, myTeam, enemyTeam } = await this.ipcClient.send("dump-bv", file);
+                    let pokemonBV = enemyDumpable ? [myTeam, enemyTeam] : [myTeam];
+                    store.dispatch(openFileSuccess(BV, pokemonBV, enemyDumpable));
                     break;
                 default:
                     this.setState({dialogOpen: true, dialogMessage: "Sorry, but this is neither a valid save nor a valid battle video."});
@@ -156,7 +156,13 @@ export default class Home extends Component<{}, HomeState> {
                     isOpponent={this.state.isOpponent}
                     bvFilterChanged={this.updateBvFilter}
                     savFilterChanged={this.updateSavFilter} />
-                <PkmList pokemon={this.state.pokemon} filter={this.state.boxFilter} />
+                <PkmList
+                    pokemon={this.state.type === BV ?
+                             (this.state.isOpponent && this.state.goodKey ?
+                                this.state.pokemon[1] :
+                                this.state.pokemon[0]) :
+                                this.state.pokemon}
+                    filter={this.state.boxFilter} />
                 <Dialog
                     modal={true}
                     open={this.state.dialogOpen}

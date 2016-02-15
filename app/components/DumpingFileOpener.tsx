@@ -41,20 +41,23 @@ class DumpingFileOpener extends Component<DumpingFileOpenerProps, DumpingFileOpe
     }
 
     lowerBoxChanged = (e, value) => {
-        this.updateSav(value, this.props.upperBox);
+        if (value <= this.props.upperBox) {
+            this.props.savFilterChanged(value, this.props.upperBox);
+        } else {
+            this.props.savFilterChanged(value, value);
+        }
     }
 
     upperBoxChanged = (e, value) => {
-        this.updateSav(this.props.lowerBox, value);
+        if (this.props.lowerBox <= value) {
+            this.props.savFilterChanged(this.props.lowerBox, value);
+        } else {
+            this.props.savFilterChanged(value, value);
+        }
     }
 
     radioChanged = (e, value) => {
         this.props.bvFilterChanged(value === "opponentTeam");
-    }
-
-    updateSav(lowerBox, upperBox) {
-        let [lower, upper] = [lowerBox, upperBox].sort((a, b) => a-b);
-        this.props.savFilterChanged(lower, upper);
     }
 
     render() {
@@ -67,8 +70,8 @@ class DumpingFileOpener extends Component<DumpingFileOpenerProps, DumpingFileOpe
                     </IconButton>
                     {this.props.type === "SAV" ?
                         <div className={styles.sliderWrapper}>
-                            <Slider min={1} max={31} step={1} value={this.props.lowerBox} onChange={this.lowerBoxChanged} name="firstBox" style={{width: "100px", marginRight: "10px"}} />
-                            <Slider min={1} max={31} step={1} value={this.props.upperBox} onChange={this.upperBoxChanged} name="secondBox" style={{width: "100px"}} />
+                            <Slider min={1} max={31} step={1} value={Math.min(this.props.lowerBox, this.props.upperBox)} onChange={this.lowerBoxChanged} name="firstBox" style={{width: "100px", marginRight: "10px"}} />
+                            <Slider min={1} max={31} step={1} value={Math.max(this.props.lowerBox, this.props.upperBox)} onChange={this.upperBoxChanged} name="secondBox" style={{width: "100px"}} />
                         </div>
                      : this.props.type === "BV" ?
                         <div className={styles.radioButtonWrapper}>

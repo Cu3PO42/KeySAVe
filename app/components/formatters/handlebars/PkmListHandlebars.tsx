@@ -160,7 +160,7 @@ class PkmListHandlebars extends Component<PkmListProps, {}> {
         return (
             <Paper className={styles.paper}>
                 {this.props.pokemon.filter(this.props.filter).map(pkm =>
-                    <div key={pkm.box*30+pkm.slot+30*((pkm as any).isOpponent ? 1 : 0)} dangerouslySetInnerHTML={{__html: template(pkm, {helpers: this.handlebarsHelpers})}}></div>
+                    <div key={pkm.box*30+pkm.slot} dangerouslySetInnerHTML={{__html: template(pkm, {helpers: this.handlebarsHelpers})}}></div>
                 )}
             </Paper>
         );
