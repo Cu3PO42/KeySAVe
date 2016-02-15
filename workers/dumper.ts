@@ -6,11 +6,7 @@ import * as _ from "lodash";
 import "../init/promisify-fs";
 
 function bufToArr(buf: Buffer) {
-    var tmp: Uint8Array = new Uint8Array(buf.length);
-    for (let i = 0; i < buf.length; i++) {
-        tmp[i] = buf.readUInt8(i);
-    }
-    return tmp;
+    return new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength);
 }
 
 var dataDirectory = process.argv[2];
@@ -86,22 +82,24 @@ async function breakFolder(args) {
     try {
         await fs.readdirAsync(args.folder)
         .map(async (fileName) => {
-            var file = path.join(args.folder, fileName);
-            var stat = await fs.statAsync(file);
-            if (stat.isDirectory())
-                return;
-            switch (stat.size) {
-                case 0x100000:
-                case 0x10009C:
-                case 0x10019A:
-                    break;
-                default:
+            try {
+                var file = path.join(args.folder, fileName);
+                var stat = await fs.statAsync(file);
+                if (stat.isDirectory())
                     return;
-            }
-            var buf = await fs.readFileAsync(file)
-            var arr = bufToArr(buf);
-            var reader = await KeySAV.loadSav(arr);
-            reader.scanSlots();
+                switch (stat.size) {
+                    case 0x100000:
+                    case 0x10009C:
+                    case 0x10019A:
+                        break;
+                    default:
+                        return;
+                }
+                var buf = await fs.readFileAsync(file)
+                var arr = bufToArr(buf);
+                var reader = await KeySAV.loadSav(arr);
+                reader.scanSlots();
+            } catch (e) {}
         });
         process.send({ id: args.id });
     } catch (e) {

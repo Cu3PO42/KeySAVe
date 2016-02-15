@@ -114,6 +114,18 @@ declare var Buffer: {
      * @param array The octets to store.
      */
     new (array: any[]): Buffer;
+    /**
+     * Copies the passed {buffer} data onto a new {Buffer} instance.
+     *
+     * @param buffer The buffer to copy.
+     */
+    new (buffer: Buffer): Buffer;
+    /**
+     * Shares the memory of the passed {buffer}.
+     *
+     * @param buffer The ArrayBuffer whose memory to share.
+     */
+    new (buffer: ArrayBuffer): Buffer;
     prototype: Buffer;
     /**
      * Returns true if {obj} is a Buffer
@@ -359,6 +371,9 @@ interface NodeBuffer {
     compare(otherBuffer: Buffer): number;
     copy(targetBuffer: Buffer, targetStart?: number, sourceStart?: number, sourceEnd?: number): number;
     slice(start?: number, end?: number): Buffer;
+    buffer: ArrayBuffer;
+    byteOffset: number;
+    byteLength: number;
     writeUIntLE(value: number, offset: number, byteLength: number, noAssert?: boolean): number;
     writeUIntBE(value: number, offset: number, byteLength: number, noAssert?: boolean): number;
     writeIntLE(value: number, offset: number, byteLength: number, noAssert?: boolean): number;
@@ -396,6 +411,7 @@ interface NodeBuffer {
     writeDoubleLE(value: number, offset: number, noAssert?: boolean): number;
     writeDoubleBE(value: number, offset: number, noAssert?: boolean): number;
     fill(value: any, offset?: number, end?: number): Buffer;
+    indexOf(value: string | number | Buffer, byteOffset?: number): number;
 }
 
 /************************************************
