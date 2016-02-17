@@ -3,6 +3,13 @@ import * as Promise from "bluebird";
 import registerIpc from "electron-ipc-tunnel/server";
 import { fork } from "child_process";
 
+function deserializeError(e) {
+    var res = new Error(e.message);
+    res.name = e.name;
+    Object.assign(res, e.props); 
+    return res;
+}
+
 export default function() {
     var worker = fork(__dirname + "/../workers/dumper.js", [app.getPath("userData") + "/keys"]);
 
@@ -12,15 +19,10 @@ export default function() {
 
     var id: number = 0;
     var promises: { [id: number]: { resolve: Function, reject: Function} } = {};
-    registerIpc("dump-save", async function(reply, args) {
-        worker.send({ cmd: "dump-save", path: args, id: id });
-        return new Promise(function(resolve, reject) {
-            promises[id++] = { resolve: resolve, reject: reject };
-        });
-    });
 
-    registerIpc("dump-bv", async function(reply, args) {
-        worker.send({ cmd: "dump-bv", path: args, id: id });
+    registerIpc("dump-save-or-bv", async function(reply, args) {
+        console.log("received request to dump save or bv: " + args);
+        worker.send({ cmd: "dump-save-or-bv", file: args, id: id });
         return new Promise(function(resolve, reject) {
             promises[id++] = { resolve: resolve, reject: reject };
         });
@@ -44,7 +46,7 @@ export default function() {
         if (res.err === undefined) {
             promises[res.id].resolve(res.res);
         } else {
-            promises[res.id].reject(res.err);
+            promises[res.id].reject(deserializeError(res.err));
         }
         delete promises[res.id];
     });

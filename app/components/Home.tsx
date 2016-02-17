@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { Tabs, Tab } from "material-ui";
 import DumpingContainer from "../containers/DumpingContainer";
+import FormattingContainer from "../containers/FormattingContainer";
 const styles = require('./Home.module.scss');
 
 
@@ -13,7 +14,7 @@ export default class Home extends Component<{}, {}> {
                 <DumpingContainer />
             </Tab>
             <Tab label="Options">
-                This will be the formatting options.
+                <FormattingContainer />
             </Tab>
         </Tabs>
     );

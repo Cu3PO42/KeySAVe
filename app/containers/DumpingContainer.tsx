@@ -90,31 +90,21 @@ export default class Home extends Component<{}, HomeState> {
         const { store } = this.context;
         store.dispatch(openFile(file));
         try {
-            let stats = await fse.statAsync(file);
-            switch (stats.size) {
-                case 0x100000:
-                case 0x10009C:
-                case 0x10019A:
-                case 0x76000:
-                case 0x65600:
-                case 232*30*32:
-                case 232*30*31:
-                case 0x70000:
-                case 0x80000:
-                    let { pokemon, isNewKey } = await this.ipcClient.send("dump-save", file);
-                    store.dispatch(openFileSuccess(SAV, pokemon, isNewKey));
-                    break;
-                case 28256:
-                    let { enemyDumpable, myTeam, enemyTeam } = await this.ipcClient.send("dump-bv", file);
-                    let pokemonBV = enemyDumpable ? [myTeam, enemyTeam] : [myTeam];
-                    store.dispatch(openFileSuccess(BV, pokemonBV, enemyDumpable));
-                    break;
-                default:
-                    this.setState({dialogOpen: true, dialogMessage: "Sorry, but this is neither a valid save nor a valid battle video."});
-            }
+            var { pokemon, goodKey, type } = await this.ipcClient.send("dump-save-or-bv", file);
+            store.dispatch(openFileSuccess(type, pokemon, goodKey));
         } catch(e) {
             store.dispatch(openFileError());
-            this.setState({dialogOpen: true, dialogMessage: "Couldn't open this file."});
+            switch(e.name) {
+                case "NoKeyAvailableError":
+                    console.log(e.keyType);
+                    this.setState({ dialogOpen: true, dialogMessage: `You have to break for this ${e.keyType === "SAV" ? "save" : "battle video"} first!` });
+                    break;
+                case "NotASaveOrBattleVideoError":
+                    this.setState({ dialogOpen: true, dialogMessage: `This file is neither a supported save nor a supported battle video.` });
+                    break;
+                default:
+                    this.setState({dialogOpen: true, dialogMessage: `An unknown error occured: ${e.name}`});
+            }
         }
     }
 

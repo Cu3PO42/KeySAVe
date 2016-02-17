@@ -590,7 +590,7 @@ declare namespace __MaterialUI {
     // Old menu implementation.  Being replaced by new "menus".
     namespace Menu {
         interface ItemTapEventHandler {
-            (e: TouchTapEvent, index: number, menuItem: MenuItemRequest): void;
+            (e: TouchTapEvent, index: number, menuItem: any): void;
         }
 
         // almost extends MenuItemProps, but certain required items are generated in Menu and not passed here.
@@ -630,7 +630,9 @@ declare namespace __MaterialUI {
         }
 
         interface MenuItemProps extends React.Props<MenuItem> {
-            index: number;
+            key: number;
+            value?: any;
+            primaryText?: string;
             icon?: React.ReactElement<any>;
             iconClassName?: string;
             iconRightClassName?: string;
@@ -785,7 +787,6 @@ declare namespace __MaterialUI {
         displayMember?: string;
         valueMember?: string;
         autoWidth?: boolean;
-        menuItems: Menu.MenuItemRequest[];
         menuItemStyle?: React.CSSProperties;
         selectedIndex?: number;
         underlineStyle?: React.CSSProperties;
@@ -795,7 +796,7 @@ declare namespace __MaterialUI {
         style?: React.CSSProperties;
         disabled?: boolean;
         valueLink?: ReactLink<any>;
-        value?: number;
+        value?: any;
 
         onChange?: Menu.ItemTapEventHandler;
         onEnterKeyDown?: React.KeyboardEventHandler;
