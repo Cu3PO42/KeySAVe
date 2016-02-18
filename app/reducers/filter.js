@@ -11,13 +11,12 @@ export default function (state = initialFilter, action) {
         case SET_FILTER_BV:
             return {
                 ...state,
-                isOpponent: action.isOpponent
+                ...action.payload
             };
         case SET_FILTER_SAV:
             return {
                 ...state,
-                lower: action.lower,
-                upper: action.upper
+                ...action.payload
             }
         default:
             return state;

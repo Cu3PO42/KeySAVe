@@ -1,26 +1,28 @@
-import { OPEN_FILE, OPEN, OPENED, FAILURE } from "../actions/file";
+import { handleAction } from "redux-actions";
+import { OPEN_FILE, OPEN_FILE_DISMISS_ERROR } from "../actions/file";
 
-export default function file(file = { name: "" }, action) {
+export default function(file = { name: "", isError: false }, action) {
     switch (action.type) {
         case OPEN_FILE:
-            switch (action.status) {
-                case OPEN:
-                    return {
-                        name: action.file,
-                        status: "OPENING"
-                    };
-                case OPENED:
-                    return {
-                        name: file.name,
-                        status: "OPENED",
-                        data: action.data
-                    };
-                case FAILURE:
-                    return {
-                        name: ""
-                    };
+            if (action.error) {
+                console.log(action.payload);
+                return {
+                    name: "",
+                    isError: true,
+                    error: action.payload
+                }
+            } else {
+                return {
+                    ...action.payload,
+                    isError: false
+                };
             }
+        case OPEN_FILE_DISMISS_ERROR:
+            return {
+                name: "",
+                isError: false
+            };
         default:
             return file;
     }
-}
+} 
