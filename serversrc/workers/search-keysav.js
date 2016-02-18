@@ -1,6 +1,5 @@
 import * as fs from "fs-extra";
 import { join } from "path";
-import "../../init/promisify-fs";
 
 async function search(path, depth, callback) {
     try {

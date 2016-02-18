@@ -44,6 +44,7 @@ const DEFAULT_OPTS = {
     '/resources($|/)',
     '/release($|/)',
     '/cache($|/)',
+    '/serversrc',
     '/webpack\.config\..+\.js$'
   ].concat(devDeps.map(name => `/node_modules/${name}($|/)`))
 };

@@ -1,6 +1,6 @@
 import { dialog } from "electron";
 import registerIpc from "electron-ipc-tunnel/server";
-import * as Promise from "bluebird";
+import Promise from "bluebird";
 
 export default function(window) {
     var counter = 1;

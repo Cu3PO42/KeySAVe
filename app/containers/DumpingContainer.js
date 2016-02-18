@@ -82,14 +82,13 @@ export default class Home extends Component {
             store.dispatch(openFileError());
             switch(e.name) {
                 case "NoKeyAvailableError":
-                    console.log(e.keyType);
                     this.setState({ dialogOpen: true, dialogMessage: `You have to break for this ${e.keyType === "SAV" ? "save" : "battle video"} first!` });
                     break;
                 case "NotASaveOrBattleVideoError":
                     this.setState({ dialogOpen: true, dialogMessage: `This file is neither a supported save nor a supported battle video.` });
                     break;
                 default:
-                    this.setState({dialogOpen: true, dialogMessage: `An unknown error occured: ${e.name}`});
+                    this.setState({dialogOpen: true, dialogMessage: `An unknown error occured: ${e}`});
             }
         }
     };

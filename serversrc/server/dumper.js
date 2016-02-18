@@ -1,5 +1,5 @@
 import { app } from "electron";
-import * as Promise from "bluebird";
+import Promise from "bluebird";
 import registerIpc from "electron-ipc-tunnel/server";
 import { fork } from "child_process";
 
@@ -21,7 +21,6 @@ export default function() {
     var promises: { [id: number]: { resolve: Function, reject: Function} } = {};
 
     registerIpc("dump-save-or-bv", async function(reply, args) {
-        console.log("received request to dump save or bv: " + args);
         worker.send({ cmd: "dump-save-or-bv", file: args, id: id });
         return new Promise(function(resolve, reject) {
             promises[id++] = { resolve: resolve, reject: reject };
