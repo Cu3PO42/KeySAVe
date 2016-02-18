@@ -1,6 +1,9 @@
 {
   "presets": ["react"],
   "plugins": [
+      "transform-class-properties",
+      "transform-async-to-generator",
+      "transform-decorators-legacy",
       "transform-es2015-modules-commonjs",
       "transform-es2015-destructuring",
       "transform-es2015-parameters",
@@ -10,7 +13,6 @@
       "transform-es2015-function-name",
       "transform-es2015-classes",
       "transform-class-constructor-call",
-      "transform-class-properties",
       "transform-es2015-arrow-functions",
       "transform-exponentiation-operator",
       "transform-object-rest-spread"

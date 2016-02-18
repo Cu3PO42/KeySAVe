@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
 import DumpingFileOpener from "../components/DumpingFileOpener";
-import { Store } from "redux";
 import { openFile, openFileSuccess, openFileError, SAV, BV } from "../actions/file";
 import { setFilterBv, setFilterSav } from "../actions/filter";
 import PkmList from "../components/PkmList";
@@ -9,37 +8,13 @@ import { Dialog, FlatButton } from "material-ui";
 import * as fse from "fs-extra";
 import * as path from "path";
 import IpcClient from "electron-ipc-tunnel/client";
-import Pkx from "keysavcore/pkx";
 
-interface HomeState {
-    pokemon?: Pkx[]|Pkx[][],
-    file?: string,
-    dialogOpen?: boolean;
-    type?: string;
-    dialogMessage?: string;
-    goodKey?: boolean;
-    boxFilter?: (pkm) => boolean;
-    lowerBox?: number;
-    upperBox?: number;
-    isOpponent?: boolean;
-}
-
-export default class Home extends Component<{}, HomeState> {
+export default class Home extends Component {
     static contextTypes = {
         store: React.PropTypes.object
-    }
+    };
 
-    context: { store: Store };
-    unsubscribe: Function;
     ipcClient = new IpcClient();
-
-    componentWillMount() {
-        this.unsubscribe = this.context.store.subscribe(() => this.updateState());
-    }
-
-    componentWillUnmount() {
-        this.unsubscribe();
-    }
 
     state = {
         file: "",
@@ -52,6 +27,14 @@ export default class Home extends Component<{}, HomeState> {
         lowerBox: 1,
         upperBox: 31,
         isOpponent: false
+    };
+
+    componentWillMount() {
+        this.unsubscribe = this.context.store.subscribe(() => this.updateState());
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     updateState() {
@@ -62,9 +45,10 @@ export default class Home extends Component<{}, HomeState> {
     updateStateFile() {
         const { name, data } = this.context.store.getState().file;
         if (data === undefined) {
-            this.setState({file: "", pokemon: [], type: "", goodKey: false});
-        } else {
-            this.setState({file: name, pokemon: data.pokemon, type: data.type, goodKey: data.goodKey})
+            this.setState({ file: "", pokemon: [], type: "", goodKey: false });
+        }
+        else {
+            this.setState({ file: name, pokemon: data.pokemon, type: data.type, goodKey: data.goodKey });
         }
     }
 
@@ -73,15 +57,16 @@ export default class Home extends Component<{}, HomeState> {
         if (file.data !== undefined) {
             const { type } = file.data;
             const { lower, upper, isOpponent } = filter;
-            this.setState({lowerBox: lower, upperBox: upper, isOpponent});
+            this.setState({ lowerBox: lower, upperBox: upper, isOpponent });
             if (type === SAV) {
-                this.setState({boxFilter: function(pkm) {
-                    return lower-1 <= pkm.box && pkm.box < upper;
-                }});
-            } else {
-                this.setState({boxFilter: function(pkm) {
-                    return true;
-                }});
+                this.setState({ boxFilter: function (pkm) {
+                        return lower - 1 <= pkm.box && pkm.box < upper;
+                    } });
+            }
+            else {
+                this.setState({ boxFilter: function (pkm) {
+                        return true;
+                    } });
             }
         }
     }
@@ -106,10 +91,10 @@ export default class Home extends Component<{}, HomeState> {
                     this.setState({dialogOpen: true, dialogMessage: `An unknown error occured: ${e.name}`});
             }
         }
-    }
+    };
 
-    backup = async (file: string) => {
-        var dialogMessage: string;
+    backup = async (file) => {
+        var dialogMessage;
         try {
             let name = this.state.type === "SAV" ? "Save" : "Battle Video";
             var dest = await this.ipcClient.send("file-dialog-save",
@@ -121,42 +106,27 @@ export default class Home extends Component<{}, HomeState> {
             dialogMessage = `Couldn't backup ${name}.`
         }
         this.setState({dialogOpen: true, dialogMessage});
-    }
+    };
 
     updateSavFilter = (lower, upper) => {
         this.context.store.dispatch(setFilterSav(lower, upper));
-    }
+    };
 
     updateBvFilter = isOpponent => {
         this.context.store.dispatch(setFilterBv(isOpponent));
-    }
+    };
 
     render() {
-        const closeDialog = () => this.setState({dialogOpen: false});
+        const closeDialog = () => this.setState({ dialogOpen: false });
         return (
             <div>
-                <DumpingFileOpener
-                    file={this.state.file}
-                    fileOpened={this.fileOpened}
-                    backup={this.backup}
-                    type={this.state.type}
-                    goodKey={this.state.goodKey}
-                    lowerBox={this.state.lowerBox}
-                    upperBox={this.state.upperBox}
-                    isOpponent={this.state.isOpponent}
-                    bvFilterChanged={this.updateBvFilter}
-                    savFilterChanged={this.updateSavFilter} />
-                <PkmList
-                    pokemon={this.state.type === BV ?
-                             (this.state.isOpponent && this.state.goodKey ?
-                                this.state.pokemon[1] :
-                                this.state.pokemon[0]) :
-                                this.state.pokemon}
-                    filter={this.state.boxFilter} />
-                <Dialog
-                    modal={true}
-                    open={this.state.dialogOpen}
-                    actions={[<FlatButton label="Ok" primary={true} onTouchTap={closeDialog} />]}>
+                <DumpingFileOpener file={this.state.file} fileOpened={this.fileOpened} backup={this.backup} type={this.state.type} goodKey={this.state.goodKey} lowerBox={this.state.lowerBox} upperBox={this.state.upperBox} isOpponent={this.state.isOpponent} bvFilterChanged={this.updateBvFilter} savFilterChanged={this.updateSavFilter}/>
+                <PkmList pokemon={this.state.type === BV ?
+                                 (this.state.isOpponent && this.state.goodKey ?
+                                      this.state.pokemon[1] :
+                                      this.state.pokemon[0]) :
+                                  this.state.pokemon} filter={this.state.boxFilter}/>
+                <Dialog modal={true} open={this.state.dialogOpen} actions={[<FlatButton label="Ok" primary={true} onTouchTap={closeDialog}/>]}>
                     {this.state.dialogMessage}
                 </Dialog>
             </div>

@@ -9,11 +9,7 @@ module.exports = {
       test: /\.jsx?$/,
       loaders: ['babel-loader'],
       exclude: /node_modules/
-  }, {
-      test: /\.tsx?$/,
-      loaders: ['babel-loader', 'ts-loader'],
-      exclude: /node_modules/
-  }]
+    }]
   },
   output: {
     path: path.join(__dirname, 'dist'),

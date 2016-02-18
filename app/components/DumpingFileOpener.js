@@ -3,31 +3,11 @@ import { Component } from 'react';
 import FileOpener from "../components/FileOpener";
 import { Paper, IconButton, Slider, RadioButton, RadioButtonGroup } from "material-ui";
 import { FileCloudDownload } from "material-ui/lib/svg-icons";
-import * as pureRender from "pure-render-decorator";
-const styles = require("./DumpingFileOpener.module.scss");
+import pureRender from "pure-render-decorator";
+import styles from "./DumpingFileOpener.module.scss";
 
-interface DumpingFileOpenerProps {
-    file: string;
-    fileOpened: (file: string) => void;
-    backup: (file: string) => any;
-    type: string;
-    goodKey: boolean;
-    bvFilterChanged: (isOpponent: boolean) => any;
-    savFilterChanged: (lower: number, upper: number) => any;
-    lowerBox: number;
-    upperBox: number;
-    isOpponent: boolean;
-}
-
-interface DumpingFileOpenerState {
-    lowerBox?: number;
-    upperBox?: number;
-    isOpponent?: boolean;
-}
-
-@pureRender
-class DumpingFileOpener extends Component<DumpingFileOpenerProps, DumpingFileOpenerState> {
-    static propTypes: React.ValidationMap<any> = {
+class DumpingFileOpener extends Component {
+    static propTypes = {
         file: React.PropTypes.string,
         fileOpened: React.PropTypes.func,
         backup: React.PropTypes.func,
@@ -38,7 +18,7 @@ class DumpingFileOpener extends Component<DumpingFileOpenerProps, DumpingFileOpe
         lowerBox: React.PropTypes.number,
         upperBox: React.PropTypes.number,
         isOpponent: React.PropTypes.bool
-    }
+    };
 
     lowerBoxChanged = (e, value) => {
         if (value <= this.props.upperBox) {
@@ -46,7 +26,7 @@ class DumpingFileOpener extends Component<DumpingFileOpenerProps, DumpingFileOpe
         } else {
             this.props.savFilterChanged(value, value);
         }
-    }
+    };
 
     upperBoxChanged = (e, value) => {
         if (this.props.lowerBox <= value) {
@@ -54,11 +34,11 @@ class DumpingFileOpener extends Component<DumpingFileOpenerProps, DumpingFileOpe
         } else {
             this.props.savFilterChanged(value, value);
         }
-    }
+    };
 
     radioChanged = (e, value) => {
         this.props.bvFilterChanged(value === "opponentTeam");
-    }
+    };
 
     render() {
         return (

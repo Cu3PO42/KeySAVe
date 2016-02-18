@@ -10,18 +10,13 @@ const inputStyle = {
     color: "black"
 };
 
-interface FileOpenerProps {
-    fileOpened: (file: string) => void;
-    file: string;
-}
-
-export default class FileOpener extends Component<FileOpenerProps, {}> {
-    static propTypes: React.ValidationMap<any> = {
+export default class FileOpener extends Component {
+    static propTypes = {
         file: PropTypes.string.isRequired,
         fileOpened: PropTypes.func.isRequired
     };
 
-    private ipcClient = new IpcClient();
+    ipcClient = new IpcClient();
 
     handleClick = () => {
         setTimeout(async () => {

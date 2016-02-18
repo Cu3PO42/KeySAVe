@@ -1,15 +1,9 @@
 import { OPEN_FILE, OPEN, OPENED, FAILURE } from "../actions/file";
 
-interface FileData {
-    name: string,
-    status?: string,
-    data?: any
-}
-
-export default function file(file = { name: "" }, action): FileData {
+export default function file(file = { name: "" }, action) {
     switch (action.type) {
         case OPEN_FILE:
-            switch(action.status) {
+            switch (action.status) {
                 case OPEN:
                     return {
                         name: action.file,

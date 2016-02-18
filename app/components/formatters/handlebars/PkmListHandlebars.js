@@ -3,108 +3,97 @@ import { Component } from "react";
 import { Paper } from "material-ui";
 import * as handlebars from "handlebars";
 import * as pureRender from "pure-render-decorator";
-import { Pkx, Localization, Calculator as StatCalculator } from "keysavcore";
-const styles = require("./PkmListHandlebars.module.scss");
+import { Localization, Calculator as StatCalculator } from "keysavcore";
+import styles from "./PkmListHandlebars.module.scss";
 
-interface PkmListProps {
-    pokemon: Pkx[];
-    language: string;
-    format: string;
-    filter: (pkm) => boolean;
-}
-
-@pureRender
-class PkmListHandlebars extends Component<PkmListProps, {}> {
-    static propTypes: React.ValidationMap<any> = {
+class PkmListHandlebars extends Component {
+    static propTypes = {
         pokemon: React.PropTypes.array,
         language: React.PropTypes.string,
         format: React.PropTypes.string,
         filter: React.PropTypes.func
-    }
+    };
 
-    handlebarsHelpers: { [helper: string]: Function };
-
-    constructor() {
-        super();
+    constructor(...args) {
+        super(...args);
         const self = this;
-
         this.handlebarsHelpers = {
-            row: function() {
-                return Math.floor(this.slot/6) + 1;
+            row: function () {
+                return Math.floor(this.slot / 6) + 1;
             },
-            column: function() {
-                return this.slot%6 + 1;
+            column: function () {
+                return this.slot % 6 + 1;
             },
-            box: function() {
-                return this.box+1;
+            box: function () {
+                return this.box + 1;
             },
-            level: function() {
+            level: function () {
                 return StatCalculator.level(this);
             },
-            hp: function() {
+            hp: function () {
                 return StatCalculator.hp(this);
             },
-            atk: function() {
+            atk: function () {
                 return StatCalculator.atk(this);
             },
-            def: function() {
+            def: function () {
                 return StatCalculator.def(this);
             },
-            spAtk: function() {
+            spAtk: function () {
                 return StatCalculator.spAtk(this);
             },
-            spDef: function() {
+            spDef: function () {
                 return StatCalculator.spDef(this);
             },
-            spe: function() {
+            spe: function () {
                 return StatCalculator.spe(this);
             },
-            speciesName: function() {
+            speciesName: function () {
                 return Localization[self.props.language].species[this.species];
             },
-            hasAlternateForm: function() {
+            hasAlternateForm: function () {
                 return !!Localization[self.props.language].forms[this.species];
             },
-            formName: function() {
+            formName: function () {
                 return Localization[self.props.language].forms[this.species] ? Localization[self.props.language].forms[this.species][this.form] : "";
             },
-            natureName: function() {
+            natureName: function () {
                 return Localization[self.props.language].natures[this.nature];
             },
-            abilityName: function() {
+            abilityName: function () {
                 return Localization[self.props.language].abilities[this.ability];
             },
-            typeName: function(typeId) {
+            typeName: function (typeId) {
                 return Localization[self.props.language].types[typeId];
             },
-            moveName: function(moveId) {
+            moveName: function (moveId) {
                 return moveId ? Localization[self.props.language].moves[moveId] : "";
             },
-            itemName: function(itemId) {
+            itemName: function (itemId) {
                 return itemId ? Localization[self.props.language].items[itemId] : "";
             },
-            ballName: function() {
+            ballName: function () {
                 return Localization[self.props.language].getBallName(this.ball);
             },
-            metLocationName: function() {
+            metLocationName: function () {
                 return Localization[self.props.language].getLocation(this);
             },
-            eggLocationName: function() {
+            eggLocationName: function () {
                 return Localization[self.props.language].getEggLocation(this);
             },
-            ballImage: function(ball) {
-                return "[](/" + Localization[self.props.language].items[this.ball].replace(" ", "").replace("é", "e").toLowerCase() + ")"
+            ballImage: function (ball) {
+                return "[](/" + Localization[self.props.language].items[this.ball].replace(" ", "").replace("é", "e").toLowerCase() + ")";
             },
-            esv: function() {
-                return ("0000"+this.esv).slice(-4);
+            esv: function () {
+                return ("0000" + this.esv).slice(-4);
             },
-            tsv: function() {
-                return ("0000"+this.tsv).slice(-4);
+            tsv: function () {
+                return ("0000" + this.tsv).slice(-4);
             },
-            language: function() {
+            language: function () {
                 return Localization[self.props.language].languageTags[this.otLang];
             },
-            genderString: function(gender) {
+            genderString: function (gender) {
                 switch (gender) {
                     case 0:
                         return "♂";
@@ -114,42 +103,42 @@ class PkmListHandlebars extends Component<PkmListProps, {}> {
                         return "-";
                 }
             },
-            gameVersionString: function() {
+            gameVersionString: function () {
                 return Localization[self.props.language].games[this.gameVersion];
             },
-            stepsToHatch: function() {
-                return this.isEgg * (this.otFriendship-1) * 256;
+            stepsToHatch: function () {
+                return this.isEgg * (this.otFriendship - 1) * 256;
             },
-            hasHa: function() {
+            hasHa: function () {
                 return this.abilityNum === 4;
             },
-            checkmark: function(condition) {
+            checkmark: function (condition) {
                 return condition ? "✓" : "✗";
             },
-            pentagon: function() {
+            pentagon: function () {
                 return this.gameVersion >= 24 && this.gameVersion <= 27 ? "⬟" : "";
             },
-            shinyMark: function() {
+            shinyMark: function () {
                 return this.isShiny ? "★" : "";
             },
-            markings: function() {
-                return ((this.markings&0x01 ? "●" : "◯")
-                      + (this.markings&0x02 ? "▲" : "△")
-                      + (this.markings&0x04 ? "■" : "□")
-                      + (this.markings&0x08 ? "♥" : "♡")
-                      + (this.markings&0x10 ? "★" : "☆")
-                      + (this.markings&0x20 ? "◆" : "◇"));
+            markings: function () {
+                return ((this.markings & 0x01 ? "●" : "◯")
+                    + (this.markings & 0x02 ? "▲" : "△")
+                    + (this.markings & 0x04 ? "■" : "□")
+                    + (this.markings & 0x08 ? "♥" : "♡")
+                    + (this.markings & 0x10 ? "★" : "☆")
+                    + (this.markings & 0x20 ? "◆" : "◇"));
             },
-            regionName: function() {
+            regionName: function () {
                 return Localization[self.props.language].regions[this.gameVersion];
             },
-            countryName: function() {
+            countryName: function () {
                 return Localization[self.props.language].countries[this.countryID];
             },
-            ribbons: function() {
+            ribbons: function () {
                 return Localization[self.props.language].getRibbons(this);
             },
-            toJson: function(e) {
+            toJson: function (e) {
                 return new handlebars.SafeString(JSON.stringify(e));
             }
         };
@@ -159,12 +148,10 @@ class PkmListHandlebars extends Component<PkmListProps, {}> {
         const template = handlebars.compile(this.props.format);
         return (
             <Paper className={styles.paper}>
-                {this.props.pokemon.filter(this.props.filter).map(pkm =>
-                    <div key={pkm.box*30+pkm.slot} dangerouslySetInnerHTML={{__html: template(pkm, {helpers: this.handlebarsHelpers})}}></div>
-                )}
+                {this.props.pokemon.filter(this.props.filter).map(pkm => <div key={pkm.box * 30 + pkm.slot} dangerouslySetInnerHTML={{ __html: template(pkm, { helpers: this.handlebarsHelpers }) }}></div>)}
             </Paper>
         );
     }
-}
+};
 
 export default PkmListHandlebars;

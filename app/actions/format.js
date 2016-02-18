@@ -4,5 +4,5 @@ export function changeFormatLanguage(language) {
     return {
         type: FORMAT_LANGUAGE_CHANGED,
         language
-    }
+    };
 }

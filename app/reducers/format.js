@@ -7,9 +7,10 @@ const defaultFormat = {
 export default function format(formattingOptions = defaultFormat, action) {
     switch (action.type) {
         case FORMAT_LANGUAGE_CHANGED:
-            return Object.assign({}, formattingOptions, {
+            return {
+                ...formattingOptions,
                 language: action.language
-            });
+            };
         default:
             return formattingOptions;
     }
