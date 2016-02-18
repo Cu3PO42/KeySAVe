@@ -1,9 +1,9 @@
 import * as KeySAV from "keysavcore";
 import * as path from "path";
 import * as fs from "fs-extra";
-import * as Promise from "bluebird";
+import Promise from "bluebird";
 import * as _ from "lodash";
-import "../init/promisify-fs";
+import "../../init/promisify-fs";
 
 function bufToArr(buf: Buffer) {
     return new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength);
@@ -17,7 +17,7 @@ function serializeError(e: Error) {
     }
 }
 
-var dataDirectory = process.argv[2];
+var dataDirectory = process.argv[3];
 var store = new KeySAV.KeyStoreFileSystem(dataDirectory);
 KeySAV.setKeyStore(store);
 
@@ -59,11 +59,10 @@ async function dumpSaveOrBv(args) {
         var file = bufToArr(await fs.readFileAsync(args.file));
         var res = await KeySAV.loadSavOrBv(file);
         var reader = res.reader;
-        console.log("got reader");
         if (res.type === "SAV") {
-            process.send({ res: { pokemon: reader.getAllPkx(), goodKey: (reader as KeySAV.SaveReader).isNewKey, type: "SAV" }, id: args.id });
+            process.send({ res: { pokemon: reader.getAllPkx(), goodKey: reader.isNewKey, type: "SAV" }, id: args.id });
         } else {
-            process.send({ res: { pokemon: reader.getAllPkx(), goodKey: (reader as KeySAV.BattleVideoReader).dumpsEnemy, type: "BV" }, id: args.id });
+            process.send({ res: { pokemon: reader.getAllPkx(), goodKey: reader.dumpsEnemy, type: "BV" }, id: args.id });
         }
     }
     catch (e) {

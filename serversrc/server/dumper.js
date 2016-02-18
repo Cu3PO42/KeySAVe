@@ -11,7 +11,7 @@ function deserializeError(e) {
 }
 
 export default function() {
-    var worker = fork(__dirname + "/../workers/dumper.js", [app.getPath("userData") + "/keys"]);
+    var worker = fork(__dirname + "/../workers/bootstrap.js", [__dirname + "/../workers/dumper", app.getPath("userData") + "/keys"]);
 
     app.on("window-all-closed", () => {
         worker.send({ cmd: "close" });

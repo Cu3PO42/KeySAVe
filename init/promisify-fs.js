@@ -1,6 +1,7 @@
 "use strict";
 var fs = require("fs-extra");
 var Promise = require("bluebird");
+
 Promise.promisifyAll(fs);
 fs.existsAsync = function (path) {
     return new Promise(function (resolve, reject) {

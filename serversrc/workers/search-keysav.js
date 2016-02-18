@@ -1,10 +1,10 @@
 import * as fs from "fs-extra";
 import { join } from "path";
-import "../init/promisify-fs";
+import "../../init/promisify-fs";
 
-async function search(path: string, depth: number, callback: (path: string) => void) {
+async function search(path, depth, callback) {
     try {
-        await fs.readdirAsync(path).map<string, void>(async function(path2) {
+        await fs.readdirAsync(path).map(async function(path2) {
             var compoundPath = join(path, path2);
                 if (depth > 0 && (await fs.statAsync(compoundPath)).isDirectory())
                     await search(compoundPath, depth-1, callback);

@@ -72,6 +72,7 @@ export default class Home extends Component {
     }
 
     fileOpened = async (file) => {
+        console.log("want to open " + file);
         const { store } = this.context;
         store.dispatch(openFile(file));
         try {

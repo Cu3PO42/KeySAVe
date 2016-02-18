@@ -1,12 +1,10 @@
 import updater from "electron-gh-releases-updater";
 import { app } from "electron";
 import * as child_process from "child_process";
+import registerIpc from "electron-ipc-tunnel/server";
 
 var prevCwd = process.cwd();
-
 var update;
-
-import registerIpc from "electron-ipc-tunnel/server";
 
 export default function() {
     registerIpc("update-query", async () => {

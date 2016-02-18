@@ -29,7 +29,7 @@ export default class PkmList extends Component {
     }
 
     render() {
-        const format = "B{{box}} - {{row}},{{column}} - {{speciesName}} ({{genderString gender}}) - {{natureName}} - {{abilityName}} - {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} - {{typeName hpType}} [{{esv}}]";
+        const format = "bla B{{box}} - {{row}},{{column}} - {{speciesName}} ({{genderString gender}}) - {{natureName}} - {{abilityName}} - {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} - {{typeName hpType}} [{{esv}}]";
         return (<div className={styles.listContainer}>
                 <PkmListHandlebars format={format} pokemon={this.props.pokemon} filter={this.props.filter} language={this.state.language}/>
             </div>);

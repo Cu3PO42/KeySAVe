@@ -2,7 +2,7 @@ import { dialog } from "electron";
 import registerIpc from "electron-ipc-tunnel/server";
 import * as Promise from "bluebird";
 
-export default function(window: GitHubElectron.BrowserWindow) {
+export default function(window) {
     var counter = 1;
 
     registerIpc("file-dialog-open", function(reply, arg_) {

@@ -10,7 +10,7 @@
   "main": "main.js",
   "scripts": {
     "start": "cross-env NODE_ENV=production electron ./",
-    "compile": "tsc",
+    "compile": "babel serversrc -d serverlib",
     "installnativedeps": "cd nativedeps && npm install && cd ..",
     "buildnative": "electron-rebuild -m nativedeps/node_modules",
     "hot-server": "node server.js",
@@ -23,6 +23,7 @@
   "license": "MIT",
   "devDependencies": {
     "asar": "^0.9.0",
+    "babel-cli": "^6.5.1",
     "babel-core": "^6.3.26",
     "babel-eslint": "^5.0.0-beta6",
     "babel-loader": "^6.2.0",
@@ -33,6 +34,7 @@
     "babel-preset-react": "^6.3.13",
     "babel-preset-react-hmre": "^1.0.1",
     "babel-preset-stage-0": "^6.3.13",
+    "babel-register": "^6.5.2",
     "chai": "^3.3.0",
     "chromedriver": "^2.19.0",
     "co-mocha": "^1.1.2",
@@ -62,8 +64,6 @@
     "selenium-webdriver": "^2.48.2",
     "sinon": "^1.17.2",
     "style-loader": "^0.13.0",
-    "ts-loader": "^0.8.1",
-    "typescript": "1.8.0-dev.20160125",
     "webpack": "^1.12.1",
     "webpack-dev-middleware": "^1.2.0",
     "webpack-hot-middleware": "^2.4.1",

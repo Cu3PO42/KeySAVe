@@ -6,7 +6,7 @@ import Dumper from "./server/dumper";
 import Updater from "./server/updater";
 import * as fs from "fs-extra";
 import { fork } from "child_process";
-import "./init/promisify-fs";
+import "../init/promisify-fs";
 
 let menu;
 let template;
@@ -32,7 +32,7 @@ if (!fs.existsSync(keyPath)) {
         } catch (e) {
             await fs.mkdirpAsync(keyPath);
         }
-        var searcher = fork(__dirname + "/workers/search-keysav.js");
+        var searcher = fork(__dirname + "/workers/bootstrap.js", [__dirname + "/workers/search-keysav"]);
         searcher.send({ path: app.getPath("home"), depth: 5 });
         searcher.on("message", async function(path) {
             try {
@@ -54,9 +54,9 @@ app.on('ready', () => {
     mainWindow = new BrowserWindow({ width: 1024, height: 728 });
 
     if (process.env.HOT) {
-        mainWindow.loadURL(`file://${__dirname}/app/hot-dev-app.html`);
+        mainWindow.loadURL(`file://${__dirname}/../app/hot-dev-app.html`);
     } else {
-        mainWindow.loadURL(`file://${__dirname}/app/app.html`);
+        mainWindow.loadURL(`file://${__dirname}/../app/app.html`);
     }
 
     mainWindow.on('closed', () => {
