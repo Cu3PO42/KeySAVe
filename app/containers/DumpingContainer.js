@@ -1,130 +1,143 @@
 import React from 'react';
 import { Component } from 'react';
-import DumpingFileOpener from "../components/DumpingFileOpener";
-import { openFile, dismissError } from "../actions/file";
-import { setFilterBv, setFilterSav } from "../actions/filter";
-import PkmList from "../components/PkmList";
-import { Dialog, FlatButton } from "material-ui";
-import * as fse from "fs-extra";
-import * as path from "path";
-import { send as sendMessage } from "electron-ipc-tunnel/client";
+import DumpingFileOpener from '../components/DumpingFileOpener';
+import { openFile, dismissError } from '../actions/file';
+import { setFilterBv, setFilterSav } from '../actions/filter';
+import PkmList from '../components/PkmList';
+import { Dialog, FlatButton } from 'material-ui';
+import * as fse from 'fs-extra';
+import * as path from 'path';
 
 export default class Home extends Component {
-    static contextTypes = {
-        store: React.PropTypes.object
-    };
+  static contextTypes = {
+    store: React.PropTypes.object
+  };
 
-    state = {
-        file: "",
-        pokemon: [],
-        dialogOpen: false,
-        type: "",
-        dialogMessage: "",
-        goodKey: false,
-        boxFilter: () => true,
-        lowerBox: 1,
-        upperBox: 31,
-        isOpponent: false,
-        error: undefined
-    };
+  state = {
+    file: '',
+    pokemon: [],
+    dialogOpen: false,
+    type: '',
+    dialogMessage: '',
+    goodKey: false,
+    boxFilter: () => true,
+    lowerBox: 1,
+    upperBox: 31,
+    isOpponent: false,
+    error: undefined
+  };
 
-    componentWillMount() {
-        this.unsubscribe = this.context.store.subscribe(() => this.updateState());
+  componentWillMount() {
+    this.unsubscribe = this.context.store.subscribe(() => this.updateState());
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
+  updateState() {
+    this.updateStateFile();
+    this.updateStateFilter();
+  }
+
+  updateStateFile() {
+    const { name, pokemon, type, isError, error, goodKey } = this.context.store.getState().file;
+    if (name === '') {
+      if (isError) {
+        this.setState({ file: '', pokemon: [], type: '', goodKey: false, error });
+      } else {
+        this.setState({ file: '', pokemon: [], type: '', goodKey: false, error: undefined });
+      }
+    } else {
+      this.setState({ file: name, pokemon, type, goodKey, error: undefined });
     }
+  }
 
-    componentWillUnmount() {
-        this.unsubscribe();
+  updateStateFilter() {
+    const { filter, file } = this.context.store.getState();
+    if (file.data !== undefined) {
+      const { type } = file.data;
+      const { lower, upper, isOpponent } = filter;
+      this.setState({ lowerBox: lower, upperBox: upper, isOpponent });
+      if (type === 'SAV') {
+        this.setState({ boxFilter(pkm) {
+          return lower - 1 <= pkm.box && pkm.box < upper;
+        } });
+      } else {
+        this.setState({ boxFilter() {
+          return true;
+        } });
+      }
     }
+  }
 
-    updateState() {
-        this.updateStateFile();
-        this.updateStateFilter();
+  fileOpened = file => {
+    const { store } = this.context;
+    store.dispatch(openFile(file));
+  };
+
+  backup = async (file) => {
+    var dialogMessage;
+    try {
+      const name = this.state.type === 'SAV' ? 'Save' : 'Battle Video';
+      var dest = await this.ipcClient.send('file-dialog-save',
+              { options: { filters: [{ name,
+                                      extensions: [path.extname(file).slice(1)] }] } });
+      await fse.copyAsync(file, dest);
+      dialogMessage = `${name} backupped!`;
+    } catch (e) {
+      dialogMessage = `Couldn't backup ${name}.`;
     }
+    this.setState({ dialogOpen: true, dialogMessage });
+  };
 
-    updateStateFile() {
-        const { name, pokemon, type, isError, error, goodKey } = this.context.store.getState().file;
-        if (name === "") {
-            if (isError) {
-                this.setState({ file: "", pokemon: [], type: "", goodKey: false, error });
-            } else {
-                this.setState({ file: "", pokemon: [], type: "", goodKey: false, error: undefined });
-            }
-        }
-        else {
-            this.setState({ file: name, pokemon: pokemon, type: type, goodKey: goodKey, error: undefined });
-        }
-    }
+  updateSavFilter = (lower, upper) => {
+    this.context.store.dispatch(setFilterSav(lower, upper));
+  };
 
-    updateStateFilter() {
-        const { filter, file } = this.context.store.getState();
-        if (file.data !== undefined) {
-            const { type } = file.data;
-            const { lower, upper, isOpponent } = filter;
-            this.setState({ lowerBox: lower, upperBox: upper, isOpponent });
-            if (type === SAV) {
-                this.setState({ boxFilter: function (pkm) {
-                        return lower - 1 <= pkm.box && pkm.box < upper;
-                    } });
-            }
-            else {
-                this.setState({ boxFilter: function (pkm) {
-                        return true;
-                    } });
-            }
-        }
-    }
+  updateBvFilter = isOpponent => {
+    this.context.store.dispatch(setFilterBv(isOpponent));
+  };
 
-    fileOpened = file => {
-        const { store } = this.context;
-        store.dispatch(openFile(file));
-    };
-
-    backup = async (file) => {
-        var dialogMessage;
-        try {
-            let name = this.state.type === "SAV" ? "Save" : "Battle Video";
-            var dest = await this.ipcClient.send("file-dialog-save",
-                { options: { filters: [{ name,
-                                        extensions: [path.extname(file).slice(1)]}]}});
-            await fse.copyAsync(file, dest);
-            dialogMessage = `${name} backupped!`
-        } catch (e) {
-            dialogMessage = `Couldn't backup ${name}.`
-        }
-        this.setState({dialogOpen: true, dialogMessage});
-    };
-
-    updateSavFilter = (lower, upper) => {
-        this.context.store.dispatch(setFilterSav(lower, upper));
-    };
-
-    updateBvFilter = isOpponent => {
-        this.context.store.dispatch(setFilterBv(isOpponent));
-    };
-
-    render() {
-        const closeDialog = () => this.context.store.dispatch(dismissError());
-        return (
-            <div>
-                <DumpingFileOpener file={this.state.file} fileOpened={this.fileOpened} backup={this.backup} type={this.state.type} goodKey={this.state.goodKey} lowerBox={this.state.lowerBox} upperBox={this.state.upperBox} isOpponent={this.state.isOpponent} bvFilterChanged={this.updateBvFilter} savFilterChanged={this.updateSavFilter}/>
-                <PkmList pokemon={this.state.type === "BV" ?
-                                 (this.state.isOpponent && this.state.goodKey ?
-                                      this.state.pokemon[1] :
-                                      this.state.pokemon[0]) :
-                                  this.state.pokemon} filter={this.state.boxFilter}/>
-                <Dialog modal={true} open={this.state.error !== undefined} actions={[<FlatButton label="Ok" primary={true} onTouchTap={closeDialog}/>]}>
-                    {((e) => {
-                        switch (e.name) {
-                            case "NoKeyAvailableError": 
-                                return `You have to break for this ${e.keyType === "SAV" ? "save" : "battle video"} first!`;
-                            case "NotASaveOrBattleVideoError":
-                                return `This file is neither a supported save nor a supported battle video.`;
-                            default:
-                                return `An unknown error occured: ${e}`;
-                        }
-                    })(this.state.error || {})}
-                </Dialog>
-            </div>
-        );
-    }
+  render() {
+    const closeDialog = () => this.context.store.dispatch(dismissError());
+    return (
+          <div>
+              <DumpingFileOpener
+                file={this.state.file}
+                fileOpened={this.fileOpened}
+                backup={this.backup}
+                type={this.state.type}
+                goodKey={this.state.goodKey}
+                lowerBox={this.state.lowerBox}
+                upperBox={this.state.upperBox}
+                isOpponent={this.state.isOpponent}
+                bvFilterChanged={this.updateBvFilter}
+                savFilterChanged={this.updateSavFilter}
+              />
+              <PkmList pokemon={this.state.type === 'BV' ?
+                               (this.state.isOpponent && this.state.goodKey ?
+                                    this.state.pokemon[1] :
+                                    this.state.pokemon[0]) :
+                                this.state.pokemon} filter={this.state.boxFilter}
+              />
+              <Dialog
+                modal
+                open={this.state.error !== undefined}
+                actions={[<FlatButton label="Ok" primary onTouchTap={closeDialog}/>]}
+              >
+                {((e) => {
+                  switch (e.name) {
+                    case 'NoKeyAvailableError':
+                      return `You have to break for this ${e.keyType === 'SAV' ? 'save' : 'battle video'} first!`;
+                    case 'NotASaveOrBattleVideoError':
+                      return `This file is neither a supported save nor a supported battle video.`;
+                    default:
+                      return `An unknown error occured: ${e}`;
+                  }
+                })(this.state.error || {})}
+              </Dialog>
+          </div>
+      );
+  }
 }

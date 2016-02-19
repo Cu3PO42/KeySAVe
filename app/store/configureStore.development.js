@@ -7,9 +7,10 @@ import DevTools from '../containers/DevTools';
 
 const enhancer = compose(applyMiddleware(thunk), applyMiddleware(reduxPromise), DevTools.instrument(), persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/)));
 export default function configureStore(initialState) {
-    const store = createStore(rootReducer, initialState, enhancer);
-    if (module.hot) {
-        module.hot.accept('../reducers', () => store.replaceReducer(require('../reducers')));
-    }
-    return store;
+  const store = createStore(rootReducer, initialState, enhancer);
+  if (module.hot) {
+    module.hot.accept('../reducers', () => store.replaceReducer(require('../reducers')));
+  }
+
+  return store;
 }

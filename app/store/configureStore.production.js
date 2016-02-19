@@ -6,5 +6,5 @@ import rootReducer from '../reducers';
 const enhancer = compose(applyMiddleware(thunk), applyMiddleware(reduxPromise));
 
 export default function configureStore(initialState) {
-    return createStore(rootReducer, initialState, enhancer);
+  return createStore(rootReducer, initialState, enhancer);
 }

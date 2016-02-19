@@ -1,40 +1,40 @@
 .paper {
-    margin: 20px;
-    padding: 10px 20px;
+  margin: 20px;
+  padding: 10px 20px;
 }
 
 .flexFromRight {
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
 }
 
 .sliderWrapper {
-    flex: 1;
-    display: flex;
-    flex-direction: row;
-    & > div > div {
-        margin: 12px 0 !important;
-    }
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  & > div > div {
+    margin: 12px 0 !important;
+  }
 }
 
 .radioButtonWrapper {
-    flex: 1;
+  flex: 1;
+  & > * {
+    display: flex;
+    flex-direction: row;
     & > * {
-        display: flex;
-        flex-direction: row;
-        & > * {
-            width: auto !important;
-            white-space: nowrap;
-            &:first-child {
-                margin-right: 10px;
-            }
-        }
+      width: auto !important;
+      white-space: nowrap;
+      &:first-child {
+        margin-right: 10px;
+      }
     }
+  }
 }
 
 .keyWarning {
-    color: red;
-    font-weight: bold;
-    font-size: 0.8em;
+  color: red;
+  font-weight: bold;
+  font-size: 0.8em;
 }

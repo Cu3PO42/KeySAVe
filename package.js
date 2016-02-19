@@ -21,23 +21,23 @@ const DEFAULT_OPTS = {
   dir: './',
   name: appName,
   asar: shouldUseAsar,
-  "app-bundle-id": "com.cu3po42.keysave",
-  "app-category-type": "public.app-category.productivity",
-  "app-version": pkg.version,
-  "build-version": pkg.version,
-  "helper-bundle-id": "com.cu3po42.keysave",
-  icon: "./resources/keysave-logo",
+  'app-bundle-id': 'com.cu3po42.keysave',
+  'app-category-type': 'public.app-category.productivity',
+  'app-version': pkg.version,
+  'build-version': pkg.version,
+  'helper-bundle-id': 'com.cu3po42.keysave',
+  icon: './resources/keysave-logo',
   overwrite: true,
-  version: "0.36.3",
-  "version-string": {
-    CompanyName: "Cu3PO42",
-    LegalCopyright: "Cu3PO42",
-    FileDescription: "The best KeySAV ever.",
-    OriginalFilename: "KeySAVe.exe",
-    ProductName: "KeySAVe",
-    InternalName: "KeySAVe"
+  version: '0.36.3',
+  'version-string': {
+    CompanyName: 'Cu3PO42',
+    LegalCopyright: 'Cu3PO42',
+    FileDescription: 'The best KeySAV ever.',
+    OriginalFilename: 'KeySAVe.exe',
+    ProductName: 'KeySAVe',
+    InternalName: 'KeySAVe'
   },
-  cache: "./cache",
+  cache: './cache',
   ignore: [
     '/test($|/)',
     '/tools($|/)',
@@ -64,38 +64,38 @@ if (DEFAULT_OPTS.version) {
   });
 }
 
-const zipElectron = process.platform === "darwin" ? function(cb) {
-    spawn("ditto", ["-ck", "--sequesterRsrc", "--keepParent",
-                    "--zlibCompressionLevel", "9", "KeySAVe.app",
-                    "../KeySAVe-" + pkg.version + "-darwin-x64.zip"
-                ], { cwd: "./release/KeySAVe-darwin-x64", stdio: "ignore" }).on("close", cb);
-} : process.platform === "linux" ? function(cb) {
-    exec("zip -9yrq ../KeySAVe-" + pkg.version + "-linux-" + process.arch + ".zip .",
-         { cwd: "./release/KeySAVe-linux-" + process.arch }, cb);
-} : function(cb) {
-    spawn("powershell.exe", ["[Reflection.Assembly]::LoadWithPartialName(\"System.IO.Compression.FileSystem\"); " +
-                             "[System.IO.Compression.ZipFile]::CreateFromDirectory(" +
-                                  "\"release\\KeySAVe-win32-" + process.arch + "\", " +
-                                  "\"release\\KeySAVe-" + pkg.version + "-win32-" + process.arch + ".zip\", " +
-                                  "[System.IO.Compression.CompressionLevel]::Optimal, $FALSE)"],
-                            { stdio: "ignore" }).on("close", cb);
+const zipElectron = process.platform === 'darwin' ? function zipElectronDarwin(cb) {
+  spawn('ditto', ['-ck', '--sequesterRsrc', '--keepParent',
+                    '--zlibCompressionLevel', '9', 'KeySAVe.app',
+                    '../KeySAVe-' + pkg.version + '-darwin-x64.zip'
+                ], { cwd: './release/KeySAVe-darwin-x64', stdio: 'ignore' }).on('close', cb);
+} : process.platform === 'linux' ? function zipElectronLinux(cb) {
+  exec('zip -9yrq ../KeySAVe-' + pkg.version + '-linux-' + process.arch + '.zip .',
+         { cwd: './release/KeySAVe-linux-' + process.arch }, cb);
+} : function zipElectronWindows(cb) {
+  spawn('powershell.exe', ['[Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem"); ' +
+                             '[System.IO.Compression.ZipFile]::CreateFromDirectory(' +
+                                  '"release\\KeySAVe-win32-' + process.arch + '", ' +
+                                  '"release\\KeySAVe-' + pkg.version + '-win32-' + process.arch + '.zip", ' +
+                                  '[System.IO.Compression.CompressionLevel]::Optimal, $FALSE)'],
+                            { stdio: 'ignore' }).on('close', cb);
 };
 
-const zipUpdate = process.platform === "darwin" ? function(cb) {
-    spawn("ditto", ["-ck", "--sequesterRsrc",
-                    "--zlibCompressionLevel", "9", ".",
-                    "../../../../../KeySAVe-" + pkg.version + "-update-darwin-x64.zip"
-                ], { cwd: "./release/KeySAVe-darwin-x64/KeySAVe.app/Contents/Resources/app", stdio: "inherit" }).on("close", cb);
-} : process.platform === "linux" ? function(cb) {
-    exec("zip -9yrq ../../../KeySAVe-" + pkg.version + "-update-linux-" + process.arch + ".zip .",
-         { cwd: "./release/KeySAVe-linux-" + process.arch + "/resources/app/" }, cb);
-} : function(cb) {
-    spawn("powershell.exe", ["[Reflection.Assembly]::LoadWithPartialName(\"System.IO.Compression.FileSystem\"); " +
-                             "[System.IO.Compression.ZipFile]::CreateFromDirectory(" +
-                                  "\"release\\KeySAVe-win32-" + process.arch + "\\resources\\app\", " +
-                                  "\"release\\KeySAVe-" + pkg.version + "-update-win32-" + process.arch + ".zip\", " +
-                                  "[System.IO.Compression.CompressionLevel]::Optimal, $FALSE)"],
-                            { stdio: "ignore" }).on("close", cb);
+const zipUpdate = process.platform === 'darwin' ? function zipUpdateDarwin(cb) {
+  spawn('ditto', ['-ck', '--sequesterRsrc',
+                  '--zlibCompressionLevel', '9', '.',
+                  '../../../../../KeySAVe-' + pkg.version + '-update-darwin-x64.zip'
+                 ], { cwd: './release/KeySAVe-darwin-x64/KeySAVe.app/Contents/Resources/app', stdio: 'inherit' }).on('close', cb);
+} : process.platform === 'linux' ? function zipUpdateLinux(cb) {
+  exec('zip -9yrq ../../../KeySAVe-' + pkg.version + '-update-linux-' + process.arch + '.zip .',
+       { cwd: './release/KeySAVe-linux-' + process.arch + '/resources/app/' }, cb);
+} : function zipUpdateWindows(cb) {
+  spawn('powershell.exe', ['[Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem"); ' +
+                           '[System.IO.Compression.ZipFile]::CreateFromDirectory(' +
+                           '"release\\KeySAVe-win32-' + process.arch + '\\resources\\app", ' +
+                           '"release\\KeySAVe-' + pkg.version + '-update-win32-' + process.arch + '.zip", ' +
+                           '[System.IO.Compression.CompressionLevel]::Optimal, $FALSE)'],
+                           { stdio: 'ignore' }).on('close', cb);
 };
 
 function startPack() {
@@ -124,21 +124,21 @@ function pack(plat, arch, cb) {
     out: `release/`
   });
 
-  packager(opts, function(err) {
-      if (err) {
+  packager(opts, (err) => {
+    if (err) {
+      cb(err);
+      return;
+    }
+    del(['version', 'LICENSE', 'LICENSES.chromium.html'], { cwd: 'release/KeySAVe-' + process.platform + '-' + process.arch }).then(() => {
+      console.log('Packaging your Electron app now.');
+      zipElectron((err) => {
+        if (err) {
           cb(err);
           return;
-      }
-      del(["version", "LICENSE", "LICENSES.chromium.html"], { cwd: "release/KeySAVe-" + process.platform + "-" + process.arch }).then(function() {
-          console.log("Packaging your Electron app now.");
-          zipElectron(function(err) {
-              if (err) {
-                  cb(err);
-                  return;
-              }
-              console.log("Packaging update file.");
-              zipUpdate(cb);
-          });
+        }
+        console.log('Packaging update file.');
+        zipUpdate(cb);
+      });
     }).catch(cb);
   });
 }

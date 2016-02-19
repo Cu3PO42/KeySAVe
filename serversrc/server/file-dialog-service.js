@@ -1,21 +1,19 @@
-import { dialog } from "electron";
-import registerIpc from "electron-ipc-tunnel/server";
-import Promise from "bluebird";
+import { dialog } from 'electron';
+import registerIpc from 'electron-ipc-tunnel/server';
+import Promise from 'bluebird';
 
-export default function(window) {
-    var counter = 1;
-
-    registerIpc("file-dialog-open", function(reply, arg_) {
-        var arg = arg_ || {};
-        return new Promise(function(resolve, reject) {
-            dialog.showOpenDialog(window, arg.options, resolve);
-        });
+export default function (window) {
+  registerIpc('file-dialog-open', function fileDialogOpen(reply, arg_) {
+    var arg = arg_ || {};
+    return new Promise((resolve) => {
+      dialog.showOpenDialog(window, arg.options, resolve);
     });
+  });
 
-    registerIpc("file-dialog-save", function(reply, arg_) {
-        var arg = arg_ || {};
-        return new Promise(function(resolve, reject) {
-            dialog.showSaveDialog(window, arg.options, resolve);
-        });
+  registerIpc('file-dialog-save', function fileDialogSave(reply, arg_) {
+    var arg = arg_ || {};
+    return new Promise((resolve) => {
+      dialog.showSaveDialog(window, arg.options, resolve);
     });
+  });
 }

@@ -1,26 +1,24 @@
-import updater from "electron-gh-releases-updater";
-import { app } from "electron";
-import * as child_process from "child_process";
-import registerIpc from "electron-ipc-tunnel/server";
+import updater from 'electron-gh-releases-updater';
+import registerIpc from 'electron-ipc-tunnel/server';
 
-var prevCwd = process.cwd();
 var update;
 
-export default function() {
-    registerIpc("update-query", async () => {
-        update = await updater(require("../package.json"));
-        if (update.updateAvailable) {
-            return { available: true, changelog: update.changelog };
-        } else {
-            return { available: false };
-        }
-    });
+export default function () {
+  registerIpc('update-query', async () => {
+    update = await updater(require('../package.json'));
+    if (update.updateAvailable) {
+      return { available: true, changelog: update.changelog };
+    }
 
-    registerIpc("update-do", async (reply) => {
-        if (!update || !update.updateAvailable)
-            throw new Error("No update avaiable.");
-        update.update((progress) => {
-            reply("update-progress", progress);
-        });
+    return { available: false };
+  });
+
+  registerIpc('update-do', async (reply) => {
+    if (!update || !update.updateAvailable) {
+      throw new Error('No update avaiable.');
+    }
+    update.update((progress) => {
+      reply('update-progress', progress);
     });
-};
+  });
+}
