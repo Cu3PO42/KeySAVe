@@ -1,12 +1,12 @@
-import * as React from 'react';
+import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
+import '../init/promisify-fs';
 import routes from './routes';
 import configureStore from './store/configureStore';
-import '../init/promisify-fs';
-import './app.scss';
 import tapEventPlugin from 'react-tap-event-plugin';
+import './app.scss';
 
 tapEventPlugin();
 const store = configureStore();

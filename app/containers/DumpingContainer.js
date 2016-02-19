@@ -3,8 +3,11 @@ import { Component } from 'react';
 import DumpingFileOpener from '../components/DumpingFileOpener';
 import { openFile, dismissError } from '../actions/file';
 import { setFilterBv, setFilterSav } from '../actions/filter';
+import { openDialog } from '../actions/dialog';
 import PkmList from '../components/PkmList';
-import { Dialog, FlatButton } from 'material-ui';
+import Dialog from 'material-ui/lib/dialog';
+import FlatButton from 'material-ui/lib/flat-button';
+import { send } from 'electron-ipc-tunnel/client';
 import * as fse from 'fs-extra';
 import * as path from 'path';
 
@@ -77,18 +80,17 @@ export default class Home extends Component {
   };
 
   backup = async (file) => {
-    var dialogMessage;
     try {
       const name = this.state.type === 'SAV' ? 'Save' : 'Battle Video';
-      var dest = await this.ipcClient.send('file-dialog-save',
+      var dest = await send('file-dialog-save',
               { options: { filters: [{ name,
                                       extensions: [path.extname(file).slice(1)] }] } });
       await fse.copyAsync(file, dest);
-      dialogMessage = `${name} backupped!`;
+      this.context.store.dispatch(openDialog(`${name} backupped!`));
     } catch (e) {
-      dialogMessage = `Couldn't backup ${name}.`;
+      console.log(e);
+      this.context.store.dispatch(openDialog(`Couldn't backup ${name}.`));
     }
-    this.setState({ dialogOpen: true, dialogMessage });
   };
 
   updateSavFilter = (lower, upper) => {
