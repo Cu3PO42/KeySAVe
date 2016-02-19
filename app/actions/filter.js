@@ -1,4 +1,4 @@
-import { createAction } from 'redux-actions';
+import createAction from '../utils/createAction';
 
 export const SET_FILTER_BV = 'SET_FILTER_BV';
 export const SET_FILTER_SAV = 'SET_FILTER_SAV';

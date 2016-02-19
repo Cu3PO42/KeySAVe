@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Component, PropTypes } from 'react';
-import { FlatButton, TextField } from 'material-ui';
+import FlatButton from 'material-ui/lib/flat-button';
+import TextField from 'material-ui/lib/text-field';
 import IpcClient from 'electron-ipc-tunnel/client';
 const styles = require('./FileOpener.module.scss');
 

@@ -1,4 +1,4 @@
-import { createAction } from 'redux-actions';
+import createAction from '../utils/createAction';
 import { send as sendMessage } from 'electron-ipc-tunnel/client';
 
 export const OPEN_FILE = 'OPEN_FILE';

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { FormattingOptions as FormattingOptionsHandlebars } from './formatters/handlebars';
-import { Paper, MenuItem, SelectField } from 'material-ui';
+import Paper from 'material-ui/lib/paper';
+import MenuItem from 'material-ui/lib/menus/menu-item';
+import SelectField from 'material-ui/lib/select-field';
 import styles from './FormattingOptions.module.scss';
 
 const languages = [

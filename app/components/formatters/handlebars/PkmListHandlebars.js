@@ -2,10 +2,11 @@ import * as React from 'react';
 import { Component } from 'react';
 import { Paper } from 'material-ui';
 import * as handlebars from 'handlebars';
-import * as pureRender from 'pure-render-decorator';
+import pureRender from 'pure-render-decorator';
 import { Localization, Calculator as StatCalculator } from 'keysavcore';
 import styles from './PkmListHandlebars.module.scss';
 
+@pureRender
 class PkmListHandlebars extends Component {
   static propTypes = {
     pokemon: React.PropTypes.array,

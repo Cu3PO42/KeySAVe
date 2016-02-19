@@ -1,27 +1,25 @@
+import { handleActions } from '../utils/handleAction';
 import { OPEN_FILE, OPEN_FILE_DISMISS_ERROR } from '../actions/file';
 
-export default function (file = { name: '', isError: false }, action) {
-  switch (action.type) {
-    case OPEN_FILE:
-      if (action.error) {
-        console.log(action.payload);
-        return {
-          name: '',
-          isError: true,
-          error: action.payload
-        };
-      }
+const defaultState = { name: '', isError: false };
 
+export default handleActions({
+  [OPEN_FILE]: {
+    success(file, action) {
       return {
         ...action.payload,
         isError: false
       };
-    case OPEN_FILE_DISMISS_ERROR:
+    },
+    error(file, action) {
       return {
         name: '',
-        isError: false
+        isError: true,
+        error: action.payload
       };
-    default:
-      return file;
+    }
+  },
+  [OPEN_FILE_DISMISS_ERROR]() {
+    return defaultState;
   }
-}
+}, defaultState);

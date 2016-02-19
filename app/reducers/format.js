@@ -1,17 +1,11 @@
+import { handleAction } from '../utils/handleAction';
 import { FORMAT_LANGUAGE_CHANGED } from '../actions/format';
 
 const defaultFormat = {
   language: 'en'
 };
 
-export default function (formattingOptions = defaultFormat, action) {
-  switch (action.type) {
-    case FORMAT_LANGUAGE_CHANGED:
-      return {
-        ...formattingOptions,
-        ...action.payload
-      };
-    default:
-      return formattingOptions;
-  }
-}
+export default handleAction(FORMAT_LANGUAGE_CHANGED, (formattingOptions, action) => ({
+  ...formattingOptions,
+  ...action.payload
+}), defaultFormat);

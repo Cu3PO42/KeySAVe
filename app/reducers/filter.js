@@ -1,3 +1,4 @@
+import { handleActions } from '../utils/handleAction';
 import { SET_FILTER_BV, SET_FILTER_SAV } from '../actions/filter';
 
 const initialFilter = {
@@ -6,19 +7,14 @@ const initialFilter = {
   upper: 31
 };
 
-export default function (state = initialFilter, action) {
-  switch (action.type) {
-    case SET_FILTER_BV:
-      return {
-        ...state,
-        ...action.payload
-      };
-    case SET_FILTER_SAV:
-      return {
-        ...state,
-        ...action.payload
-      };
-    default:
-      return state;
-  }
+function setFilter(state, action) {
+  return {
+    ...state,
+    ...action.payload
+  };
 }
+
+export default handleActions({
+  [SET_FILTER_BV]: setFilter,
+  [SET_FILTER_SAV]: setFilter
+}, initialFilter);
