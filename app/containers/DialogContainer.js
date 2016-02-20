@@ -1,15 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
 import Dialog from 'material-ui/lib/dialog';
 import FlatButton from 'material-ui/lib/flat-button';
 import { closeDialog } from '../actions/dialog';
 
-function mapStateToProps(state) {
-  return {
-    open: state.dialog.open,
-    content: state.dialog.message
-  };
-}
+const mapStateToProps = createSelector(
+  state => state.dialog.open,
+  state => state.dialog.message,
+  (open, content) => ({ open, content })
+);
 
 function mapDispatchToProps(dispatch) {
   return {

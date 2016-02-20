@@ -9,10 +9,9 @@ import styles from './PkmListHandlebars.module.scss';
 @pureRender
 class PkmListHandlebars extends Component {
   static propTypes = {
-    pokemon: React.PropTypes.array,
+    pokemon: React.PropTypes.object,
     language: React.PropTypes.string,
-    format: React.PropTypes.string,
-    filter: React.PropTypes.func
+    format: React.PropTypes.string
   };
 
   constructor(...args) {
@@ -148,9 +147,10 @@ class PkmListHandlebars extends Component {
 
   render() {
     const template = handlebars.compile(this.props.format);
+    window.pokemonTest = (this.props.pokemon);
     return (
       <Paper className={styles.paper}>
-        {this.props.pokemon.filter(this.props.filter).map(pkm => <div key={pkm.box * 30 + pkm.slot} dangerouslySetInnerHTML={{ __html: template(pkm, { helpers: this.handlebarsHelpers }) }}></div>)}
+        {this.props.pokemon.map(pkm => <div key={pkm.box * 30 + pkm.slot} dangerouslySetInnerHTML={{ __html: template(pkm, { helpers: this.handlebarsHelpers }) }}></div>)}
       </Paper>
     );
   }

@@ -5,8 +5,7 @@ import styles from './PkmList.module.scss';
 
 export default class PkmList extends Component {
   static propTypes = {
-    pokemon: React.PropTypes.array,
-    filter: React.PropTypes.func
+    pokemon: React.PropTypes.object
   };
 
   static contextTypes = {
@@ -33,7 +32,7 @@ export default class PkmList extends Component {
     const format = 'B{{box}} - {{row}},{{column}} - {{speciesName}} ({{genderString gender}}) - {{natureName}} - {{abilityName}} - {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} - {{typeName hpType}} [{{esv}}]';
     return (
       <div className={styles.listContainer}>
-        <PkmListHandlebars format={format} pokemon={this.props.pokemon} filter={this.props.filter} language={this.state.language}/>
+        <PkmListHandlebars format={format} pokemon={this.props.pokemon} language={this.state.language}/>
       </div>
     );
   }

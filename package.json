@@ -80,6 +80,7 @@
     "handlebars": "^3.0.3",
     "handlebars-helper-moment": "^0.2.0",
     "history": "^1.17.0",
+    "immutable": "^3.7.6",
     "keysavcore": "^0.14.4",
     "lodash": "^3.10.0",
     "material-ui": "^0.14.4",
@@ -92,6 +93,7 @@
     "redux": "^3.2.1",
     "redux-promise": "^0.5.1",
     "redux-thunk": "^1.0.2",
+    "reselect": "^2.0.3",
     "sanitize-filename": "^1.5.3"
   },
   "devEngines": {
