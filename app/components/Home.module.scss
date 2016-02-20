@@ -1,0 +1,11 @@
+.tabs {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  & > div:last-child {
+    flex: 1;
+    overflow-y: auto;
+  }
+}
+

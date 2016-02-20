@@ -11,7 +11,7 @@ export default class Home extends Component {
     return (
       <div>
         <DialogContainer />
-        <Tabs>
+        <Tabs className={styles.tabs}>
           <Tab label="Dumping">
             <DumpingContainer />
           </Tab>
