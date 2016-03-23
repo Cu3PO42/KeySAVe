@@ -2,6 +2,11 @@ import * as React from 'react';
 import Paper from 'material-ui/lib/paper';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import SelectField from 'material-ui/lib/select-field';
+import DropDownMenu from 'material-ui/lib/DropDownMenu';
+import IconButton from 'material-ui/lib/icon-button';
+import AddIcon from 'material-ui/lib/svg-icons/content/add';
+import CreateIcon from 'material-ui/lib/svg-icons/content/create';
+import DeleteIcon from 'material-ui/lib/svg-icons/action/delete';
 import styles from './FormattingOptions.module.scss';
 
 const languages = [
@@ -14,12 +19,22 @@ const languages = [
   <MenuItem key={7} value="ko" primaryText="Korean"/>
 ];
 
-const FormattingOptions = ({ language, changeFormatLanguage, formattingOptions, currentFormat, plugins, addFormattingOption, cloneCurrentFormattingOption, updateCurrentFormattingOption, selectFormattingOption, deleteCurrentFormattingOption }) => (
+const FormattingOptions = ({ language, changeFormatLanguage, formattingOptions, current, currentIndex, plugins, addFormattingOption, cloneCurrentFormattingOption, updateCurrentFormattingOption, selectFormattingOption, deleteCurrentFormattingOption }) => (
   <Paper className={styles.paper}>
     <h2>Formatting</h2>
     <SelectField onChange={(e, i, v) => changeFormatLanguage(v)} value={language} floatingLabelText="Language">
       {languages}
     </SelectField>
+    <DropDownMenu value={currentIndex} onChange={(e, i, v) => selectFormattingOption(v)}>
+      {formattingOptions.map((option, i) => <MenuItem key={i} value={i} primaryText={option.name} />)}
+    </DropDownMenu>
+    <DropDownMenu value={current.plugin.name}>
+      {plugins.toList().map(({ name }) => <MenuItem key={name} value={name} primaryText={name} />)}
+    </DropDownMenu>
+    <IconButton><AddIcon /></IconButton>
+    <IconButton onClick={cloneCurrentFormattingOption}><CreateIcon /></IconButton>
+    <IconButton onClick={deleteCurrentFormattingOption}><DeleteIcon /></IconButton>
+    <current.plugin.FormatOptionPlugin />
   </Paper>
 );
 

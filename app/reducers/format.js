@@ -1,5 +1,15 @@
 import { handleActions } from '../utils/handleAction';
-import { FORMAT_LANGUAGE_CHANGED, ADD_FORMATTING_OPTION, CHANGE_CURRENT_FORMATTING_OPTION, DELETE_CURRENT_FORMATTING_OPTION, CLONE_CURRENT_FORMATTING_OPTION, REGISTER_FORMATTING_PLUGIN, SELECT_FORMATTING_OPTION } from '../actions/format';
+import {
+  FORMAT_LANGUAGE_CHANGED,
+  ADD_FORMATTING_OPTION,
+  CHANGE_CURRENT_FORMATTING_OPTION,
+  DELETE_CURRENT_FORMATTING_OPTION,
+  CLONE_CURRENT_FORMATTING_OPTION,
+  REGISTER_FORMATTING_PLUGIN,
+  SELECT_FORMATTING_OPTION,
+  UPDATE_CURRENT_FORMATTING_OPTION,
+  CHANGE_CURRENT_FORMATTING_OPTION_NAME
+} from '../actions/format';
 import { List, Map } from 'immutable';
 
 const defaultFormat = {
@@ -92,6 +102,35 @@ export default handleActions({
     return {
       ...options,
       current: format
+    };
+  },
+
+  [UPDATE_CURRENT_FORMATTING_OPTION](options, action) {
+    let { formattingOptions } = UPDATE_CURRENT_FORMATTING_OPTION;
+
+    const current = {
+      ...options.current,
+      format: action.payload
+    };
+    formattingOptions = formattingOptions.set(options.currentIndex, current);
+    return {
+      ...options,
+      formattingOptions,
+      current
+    };
+  },
+
+  [CHANGE_CURRENT_FORMATTING_OPTION_NAME](options, action) {
+    let { formattingOptions } = UPDATE_CURRENT_FORMATTING_OPTION;
+    const current = {
+      ...options.current,
+      name: action.payload
+    };
+    formattingOptions = formattingOptions.set(options.currentIndex, current);
+    return {
+      ...options,
+      formattingOptions,
+      current
     };
   }
 }, defaultFormat);
