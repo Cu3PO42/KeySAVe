@@ -1,6 +1,7 @@
-import { changeFormatLanguage } from '../actions/format';
+import * as formatActions from '../actions/format';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import { bindActionCreators } from 'redux';
 import FormattingOptions from '../components/FormattingOptions';
 
 const mapStateToProps = createSelector(
@@ -8,8 +9,6 @@ const mapStateToProps = createSelector(
   format => format
 );
 
-const mapDispatchToProps = dispatch => ({
-  languageChanged: l => dispatch(changeFormatLanguage(l))
-});
+const mapDispatchToProps = dispatch => bindActionCreators(formatActions, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormattingOptions);

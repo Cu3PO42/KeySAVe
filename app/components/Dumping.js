@@ -4,7 +4,7 @@ import PkmList from '../components/PkmList';
 import Dialog from 'material-ui/lib/dialog';
 import FlatButton from 'material-ui/lib/flat-button';
 
-const Dumping = ({ name, openFile, backup, type, goodKey, filter, setFilterBv, setFilterSav, pokemon, error, closeDialog }) => (
+const Dumping = ({ name, openFile, backup, type, goodKey, filter, setFilterBv, setFilterSav, pokemon, error, format, closeDialog }) => (
   <div>
       <DumpingFileOpener
         file={name}
@@ -18,7 +18,12 @@ const Dumping = ({ name, openFile, backup, type, goodKey, filter, setFilterBv, s
         bvFilterChanged={setFilterBv}
         savFilterChanged={setFilterSav}
       />
-      <PkmList pokemon={pokemon} />
+      <PkmList
+        pokemon={pokemon}
+        language={format.language}
+        format={format.current.format}
+        plugin={format.current.plugin}
+      />
       <Dialog
         modal
         open={error !== undefined}

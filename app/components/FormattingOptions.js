@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FormattingOptions as FormattingOptionsHandlebars } from './formatters/handlebars';
 import Paper from 'material-ui/lib/paper';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import SelectField from 'material-ui/lib/select-field';
@@ -15,18 +14,17 @@ const languages = [
   <MenuItem key={7} value="ko" primaryText="Korean"/>
 ];
 
-const FormattingOptions = ({ language, languageChanged }) => (
+const FormattingOptions = ({ language, changeFormatLanguage, formattingOptions, currentFormat, plugins, addFormattingOption, cloneCurrentFormattingOption, updateCurrentFormattingOption, selectFormattingOption, deleteCurrentFormattingOption }) => (
   <Paper className={styles.paper}>
     <h2>Formatting</h2>
-    <SelectField onChange={(e, i, v) => languageChanged(v)} value={language} floatingLabelText="Language">
+    <SelectField onChange={(e, i, v) => changeFormatLanguage(v)} value={language} floatingLabelText="Language">
       {languages}
     </SelectField>
-    <FormattingOptionsHandlebars />
   </Paper>
 );
 
 FormattingOptions.propTypes = {
   language: React.PropTypes.string.isRequired,
-  languageChanged: React.PropTypes.func.isRequired
+  changeFormatLanguage: React.PropTypes.func.isRequired
 };
 export default FormattingOptions;
