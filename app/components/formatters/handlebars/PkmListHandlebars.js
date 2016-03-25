@@ -146,7 +146,7 @@ class PkmListHandlebars extends Component {
   }
 
   render() {
-    const template = handlebars.compile(this.props.format.format);
+    const template = handlebars.compile(this.props.format.format || '');
     return (
       <Paper className={styles.paper}>
         {this.props.pokemon.map(pkm => <div key={pkm.box * 30 + pkm.slot} dangerouslySetInnerHTML={{ __html: template(pkm, { helpers: this.handlebarsHelpers }) }}></div>)}

@@ -66,25 +66,32 @@ export default handleActions({
     };
   },
 
-  [DELETE_CURRENT_FORMATTING_OPTION]({ formattingOptions, language, plugins, currentIndex }) {
+  [DELETE_CURRENT_FORMATTING_OPTION](options) {
+    if (current.default) {
+      return options;
+    }
+    const { formattingOptions, language, plugins, currentIndex, current } = options;
     const ret = formattingOptions.delete(currentIndex);
+    const curIndex = ret.size >= currentIndex ? currentIndex - 1 : currentIndex;
     return {
       formattingOptions: ret,
-      current: ret.get(currentIndex),
-      currentIndex: ret.size >= currentIndex ? currentIndex - 1 : currentIndex,
+      current: ret.get(curIndex),
+      currentIndex: curIndex,
       language,
       plugins
     };
   },
 
-  [CLONE_CURRENT_FORMATTING_OPTION]({ formattingOptions, language, plugins }) {
-    const cur = formattingOptions.get(currentIndex);
-    const ret = formattingOptions.push(cur);
-    const currentIndex = ret.size - 1;
+  [CLONE_CURRENT_FORMATTING_OPTION]({ formattingOptions, language, plugins, currentIndex }) {
+    const current = {
+      ...formattingOptions.get(currentIndex),
+      default: false
+     };
+    const ret = formattingOptions.push(current);
     return {
       formattingOptions: ret,
-      current: cur,
-      currentIndex,
+      current,
+      currentIndex: ret.size - 1,
       language,
       plugins
     };
@@ -101,12 +108,13 @@ export default handleActions({
     const format = options.formattingOptions.get(action.payload);
     return {
       ...options,
-      current: format
+      current: format,
+      currentIndex: action.payload
     };
   },
 
   [UPDATE_CURRENT_FORMATTING_OPTION](options, action) {
-    let { formattingOptions } = UPDATE_CURRENT_FORMATTING_OPTION;
+    let { formattingOptions } = options;
 
     const current = {
       ...options.current,
@@ -121,7 +129,7 @@ export default handleActions({
   },
 
   [CHANGE_CURRENT_FORMATTING_OPTION_NAME](options, action) {
-    let { formattingOptions } = UPDATE_CURRENT_FORMATTING_OPTION;
+    let { formattingOptions } = options;
     const current = {
       ...options.current,
       name: action.payload
