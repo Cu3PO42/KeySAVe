@@ -57,14 +57,14 @@ class DumpingFileOpener extends Component {
               <Slider min={1} max={31} step={1} value={Math.min(this.props.lowerBox, this.props.upperBox)} onChange={this.lowerBoxChanged} name="firstBox" style={{ width: '100px', marginRight: '10px' }} />
               <Slider min={1} max={31} step={1} value={Math.max(this.props.lowerBox, this.props.upperBox)} onChange={this.upperBoxChanged} name="secondBox" style={{ width: '100px' }} />
             </div>
-           : this.props.type === 'BV' ?
+          : this.props.type === 'BV' ?
             <div className={styles.radioButtonWrapper}>
               <RadioButtonGroup name="bv" onChange={this.radioChanged} valueSelected={this.props.isOpponent ? 'opponentTeam' : 'myTeam'}>
                 <RadioButton value="myTeam" label="My Team" />
                 <RadioButton value="opponentTeam" label="Opponent Team" disabled={!this.props.goodKey} />
               </RadioButtonGroup>
             </div>
-           :
+          :
             <div></div>
           }
         </div>

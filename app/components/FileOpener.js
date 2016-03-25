@@ -32,12 +32,12 @@ export default class FileOpener extends Component {
 
   render() {
     return (
-          <div className={styles.flexHorizontal}>
-              <div className={styles.padRight}>
-                  <FlatButton label="Open File" onClick={this.handleClick} className={styles.button}/>
-              </div>
-              <TextField floatingLabelText="File" value={this.props.file} disabled inputStyle={inputStyle} fullWidth />
-          </div>
-      );
+      <div className={styles.flexHorizontal}>
+        <div className={styles.padRight}>
+          <FlatButton label="Open File" onClick={this.handleClick} className={styles.button}/>
+        </div>
+        <TextField floatingLabelText="File" value={this.props.file} disabled inputStyle={inputStyle} fullWidth />
+      </div>
+    );
   }
 }
