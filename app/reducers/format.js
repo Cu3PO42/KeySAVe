@@ -8,6 +8,7 @@ import {
   REGISTER_FORMATTING_PLUGIN,
   SELECT_FORMATTING_OPTION,
   UPDATE_CURRENT_FORMATTING_OPTION,
+  UPDATE_FORMATTING_OPTION,
   CHANGE_CURRENT_FORMATTING_OPTION_NAME
 } from '../actions/format';
 import { List, Map } from 'immutable';
@@ -67,10 +68,10 @@ export default handleActions({
   },
 
   [DELETE_CURRENT_FORMATTING_OPTION](options) {
-    if (current.default) {
+    if (options.current.default) {
       return options;
     }
-    const { formattingOptions, language, plugins, currentIndex, current } = options;
+    const { formattingOptions, language, plugins, currentIndex } = options;
     const ret = formattingOptions.delete(currentIndex);
     const curIndex = ret.size >= currentIndex ? currentIndex - 1 : currentIndex;
     return {
@@ -86,7 +87,7 @@ export default handleActions({
     const current = {
       ...formattingOptions.get(currentIndex),
       default: false
-     };
+    };
     const ret = formattingOptions.push(current);
     return {
       formattingOptions: ret,
@@ -114,17 +115,33 @@ export default handleActions({
   },
 
   [UPDATE_CURRENT_FORMATTING_OPTION](options, action) {
-    let { formattingOptions } = options;
-
     const current = {
       ...options.current,
-      format: action.payload
+      format: {
+        ...options.current.format,
+        ...action.payload
+      }
     };
-    formattingOptions = formattingOptions.set(options.currentIndex, current);
+    const formattingOptions = options.formattingOptions.set(options.currentIndex, current);
     return {
       ...options,
       formattingOptions,
       current
+    };
+  },
+
+  [UPDATE_FORMATTING_OPTION](options, action) {
+    const oldFormat = options.formattingOptions.get(action.payload.index);
+    const newFormat = {
+      ...oldFormat,
+      format: {
+        ...oldFormat.format,
+        ...action.payload.format
+      }
+    };
+    return {
+      ...options,
+      formattingOptions: options.formattingOptions.set(action.payload.index, newFormat)
     };
   },
 

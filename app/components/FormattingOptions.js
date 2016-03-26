@@ -20,7 +20,7 @@ const languages = [
   <MenuItem key={7} value="ko" primaryText="Korean"/>
 ];
 
-const FormattingOptions = ({ language, changeFormatLanguage, formattingOptions, current, currentIndex, plugins, addFormattingOption, cloneCurrentFormattingOption, updateCurrentFormattingOption, selectFormattingOption, deleteCurrentFormattingOption, changeCurrentFormattingOptionName }) => (
+const FormattingOptions = ({ language, changeFormatLanguage, formattingOptions, current, currentIndex, plugins, addFormattingOption, cloneCurrentFormattingOption, updateCurrentFormattingOption, updateFormattingOption, selectFormattingOption, deleteCurrentFormattingOption, changeCurrentFormattingOptionName }) => (
   <Paper className={styles.paper}>
     <h2>Formatting</h2>
     <SelectField onChange={(e, i, v) => changeFormatLanguage(v)} value={language} floatingLabelText="Language">
@@ -33,7 +33,12 @@ const FormattingOptions = ({ language, changeFormatLanguage, formattingOptions, 
     <CreateFormattingOption optionCreated={addFormattingOption} plugins={plugins} />
     <IconButton onClick={cloneCurrentFormattingOption}><CreateIcon /></IconButton>
     <IconButton onClick={deleteCurrentFormattingOption} disabled={current.default}><DeleteIcon /></IconButton>
-    <current.plugin.FormatOptionPlugin />
+    <current.plugin.FormatOptionPlugin
+      updateCurrentFormat={updateCurrentFormattingOption}
+      updateFormat={updateFormattingOption}
+      format={current.format}
+      index={currentIndex}
+    />
   </Paper>
 );
 
