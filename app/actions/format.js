@@ -11,7 +11,7 @@ export const CHANGE_CURRENT_FORMATTING_OPTION_NAME = 'CHANGE_CURRENT_FORMATTING_
 export const REGISTER_FORMATTING_PLUGIN = 'REGISTER_FORMATTING_PLUGIN';
 
 export const changeFormatLanguage = createAction(FORMAT_LANGUAGE_CHANGED, language => language);
-export const addFormattingOption = createAction(ADD_FORMATTING_OPTION, (name, plugin, format) => ({ name, plugin, format: (format || {}) }));
+export const addFormattingOption = createAction(ADD_FORMATTING_OPTION, (name, plugin, format, d) => ({ name, plugin, format: (format || {}), default: d }));
 export const selectFormattingOption = createAction(SELECT_FORMATTING_OPTION, id => id);
 export const deleteCurrentFormattingOption = createAction(DELETE_CURRENT_FORMATTING_OPTION);
 export const cloneCurrentFormattingOption = createAction(CLONE_CURRENT_FORMATTING_OPTION);
