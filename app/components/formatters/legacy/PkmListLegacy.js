@@ -1,6 +1,8 @@
 import React from 'react';
+import Paper from 'material-ui/lib/paper';
 import { Localization, Calculator as StatCalculator } from 'keysavcore';
 import { defaultMemoize } from 'reselect';
+import styles from './PkmListLegacy.module.scss';
 
 const replaceDatabase = {
   0: '"B"+("0"+(pkm.box+1)).slice(-2)',
@@ -115,10 +117,13 @@ const compile = defaultMemoize(function compile(template) {
 const PkmListLegacy = ({ pokemon, format, language }) => {
   const Template = compile(format.format);
   const local = Localization[language];
-  return (
-    <div>
+  console.log(pokemon.first());
+  return pokemon.first() ? (
+    <Paper className={styles.paper}>
       {pokemon.map((e, i) => <Template key={e.box * 30 + e.slot} pkm={e} index={i} local={local} />)}
-    </div>
+    </Paper>
+  ) : (
+    <div></div>
   );
 };
 
