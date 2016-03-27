@@ -3,9 +3,9 @@ import { Localization, Calculator as StatCalculator } from 'keysavcore';
 import { defaultMemoize } from 'reselect';
 
 const replaceDatabase = {
-  0: 'B+(pkm.box+1)',
-  1: 'Math.floor(this.slot/6)+1}+","+(this.slot%6+1)',
-  2: 'local.species[pkm.species]',
+  0: '"B"+("0"+(pkm.box+1)).slice(-2)',
+  1: 'Math.floor(pkm.slot/6)+1+","+(pkm.slot%6+1)',
+  2: 'getSpecies(pkm.species, pkm.form, local)',
   3: 'genderString(pkm.gender)',
   4: 'local.natures[pkm.nature]',
   5: 'local.abilities[pkm.ability]',
@@ -16,7 +16,7 @@ const replaceDatabase = {
   10: 'pkm.ivSpDef',
   11: 'pkm.ivSpe',
   12: 'local.types[pkm.hpType]',
-  13: '("0000" + pkm.esv).slice(-4)',
+  13: 'pkm.isEgg ? ("0000" + pkm.esv).slice(-4) : ""',
   14: '("0000" + pkm.tsv).slice(-4)',
   15: 'pkm.nickname',
   16: 'pkm.ot',
@@ -92,13 +92,23 @@ const compile = defaultMemoize(function compile(template) {
         return '-';
     }
   }
+  function getSpecies(id, form, local) {
+    if (id >= 664 && id <= 666) {
+      return `${local.species[id]}-${local.forms[666][form]}`;
+    } else if (id === 201) {
+      return `${local.species[201]}-${local.forms[201][form]}`;
+    }
+    return local.species[id];
+  }
+  const react = React;
   /* eslint-enable no-unused-vars */
   /* eslint-disable no-eval */
-  return eval(
-    'function(props) { var pkm = props.pkm, local = props.local; return React.createElement("div", null, "' +
-    template.replace(/\\/, '\\\\').replace(/"/, '\\"').replace(/{(\d+)}/, (string, count) => `", ${replaceDatabase[count]}, "`) +
-    '"); }'
-  );
+  const fn =
+    '(function(props) { var pkm = props.pkm, local = props.local; return react.createElement("div", null, "' +
+    template.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/{(\d+)}/g, (string, count) => `", ${replaceDatabase[count]}, "`) +
+    '"); })';
+  console.log(fn);
+  return eval(fn);
   /* eslint-enable no-eval */
 });
 
@@ -113,3 +123,21 @@ const PkmListLegacy = ({ pokemon, format, language }) => {
 };
 
 export default PkmListLegacy;
+
+/* export default class PkmListLegacy extends React.Component {
+  static propTypes = {
+    format: React.PropTypes.object,
+    language: React.PropTypes.string,
+    pokemon: React.PropTypes.object
+  }
+
+  render() {
+    const Template = compile(this.props.format.format);
+    const local = Localization[this.props.language];
+    return (
+      <div>
+        {this.props.pokemon.map((e, i) => <Template key={e.box * 30 + e.slot} pkm={e} index={i} local={local} />)}
+      </div>
+    );
+  }
+}*/

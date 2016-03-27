@@ -1,7 +1,10 @@
 import { registerFormattingPlugin, addFormattingOption } from './actions/format';
-import { PkmList, FormattingOptions } from './components/formatters/handlebars';
+import { PkmList as PkmListHandlebars, FormattingOptions as FormattingOptionsHandlebars } from './components/formatters/handlebars';
+import { PkmList as PkmListLegacy, FormattingOptions as FormattingOptionsLegacy } from './components/formatters/legacy';
 
 export default function loadConfig(store) {
-  store.dispatch(registerFormattingPlugin('Handlebars', PkmList, FormattingOptions));
+  store.dispatch(registerFormattingPlugin('Handlebars', PkmListHandlebars, FormattingOptionsHandlebars));
+  store.dispatch(registerFormattingPlugin('Legacy', PkmListLegacy, FormattingOptionsLegacy));
   store.dispatch(addFormattingOption('Default', 'Handlebars', { title: 'ohi', format: 'B{{box}} - {{row}},{{column}} - {{speciesName}} ({{genderString gender}}) - {{natureName}} - {{abilityName}} - {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} - {{typeName hpType}} [{{esv}}]' }));
+  store.dispatch(addFormattingOption('Legacy', 'Legacy', { format: '{0} - {1} - {2} ({3}) - {4} - {5} - {6}.{7}.{8}.{9}.{10}.{11} - {12} - {13}' }));
 }
