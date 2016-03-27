@@ -109,7 +109,6 @@ const compile = defaultMemoize(function compile(template) {
     '(function(props) { var pkm = props.pkm, local = props.local; return react.createElement("div", null, "' +
     template.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/{(\d+)}/g, (string, count) => `", ${replaceDatabase[count]}, "`) +
     '"); })';
-  console.log(fn);
   return eval(fn);
   /* eslint-enable no-eval */
 });
@@ -117,7 +116,6 @@ const compile = defaultMemoize(function compile(template) {
 const PkmListLegacy = ({ pokemon, format, language }) => {
   const Template = compile(format.format);
   const local = Localization[language];
-  console.log(pokemon.first());
   return pokemon.first() ? (
     <Paper className={styles.paper}>
       {pokemon.map((e, i) => <Template key={e.box * 30 + e.slot} pkm={e} index={i} local={local} />)}
@@ -128,21 +126,3 @@ const PkmListLegacy = ({ pokemon, format, language }) => {
 };
 
 export default PkmListLegacy;
-
-/* export default class PkmListLegacy extends React.Component {
-  static propTypes = {
-    format: React.PropTypes.object,
-    language: React.PropTypes.string,
-    pokemon: React.PropTypes.object
-  }
-
-  render() {
-    const Template = compile(this.props.format.format);
-    const local = Localization[this.props.language];
-    return (
-      <div>
-        {this.props.pokemon.map((e, i) => <Template key={e.box * 30 + e.slot} pkm={e} index={i} local={local} />)}
-      </div>
-    );
-  }
-}*/
