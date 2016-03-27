@@ -139,6 +139,9 @@ class PkmListHandlebars extends Component {
       ribbons() {
         return Localization[self.props.language].getRibbons(this);
       },
+      esacpe(str) {
+        return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+      },
       toJson(e) {
         return new handlebars.SafeString(JSON.stringify(e));
       }
