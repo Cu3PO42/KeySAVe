@@ -72,6 +72,7 @@
   "dependencies": {
     "app-module-path": "^1.0.5",
     "bluebird": "^2.9.34",
+    "dashbars": "github:cu3po42/dashbars",
     "electron-debug": "^0.5.1",
     "electron-gh-releases-updater": "^0.7.0",
     "electron-ipc-tunnel": "^3.0.0",

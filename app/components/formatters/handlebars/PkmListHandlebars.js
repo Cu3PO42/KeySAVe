@@ -1,10 +1,13 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { Paper } from 'material-ui';
-import * as handlebars from 'handlebars';
+import handlebars from 'handlebars';
+import dashbars from 'dashbars';
 import pureRender from 'pure-render-decorator';
 import { Localization, Calculator as StatCalculator } from 'keysavcore';
 import styles from './PkmListHandlebars.module.scss';
+
+dashbars.help(handlebars);
 
 @pureRender
 class PkmListHandlebars extends Component {
@@ -150,11 +153,19 @@ class PkmListHandlebars extends Component {
 
   render() {
     const template = handlebars.compile(this.props.format.format || '');
-    return (
-      <Paper className={styles.paper}>
-        {this.props.pokemon.map(pkm => <div key={pkm.box * 30 + pkm.slot} dangerouslySetInnerHTML={{ __html: template(pkm, { helpers: this.handlebarsHelpers }) }}></div>)}
-      </Paper>
-    );
+    try {
+      return (
+        <Paper className={styles.paper}>
+          {this.props.pokemon.map(pkm => <div key={pkm.box * 30 + pkm.slot} dangerouslySetInnerHTML={{ __html: template(pkm, { helpers: this.handlebarsHelpers }) }}></div>)}
+        </Paper>
+      );
+    } catch (e) {
+      return (
+        <Paper className={styles.paper}>
+          Template error! Please check your format string!
+        </Paper>
+      );
+    }
   }
 }
 

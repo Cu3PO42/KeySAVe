@@ -2,7 +2,6 @@ import React from 'react';
 import DumpingFileOpener from '../components/DumpingFileOpener';
 import Dialog from 'material-ui/lib/dialog';
 import FlatButton from 'material-ui/lib/flat-button';
-import PkmListLegacy from './formatters/legacy/PkmListLegacy';
 import styles from './Dumping.module.scss';
 
 const Dumping = ({ name, openFile, backup, type, goodKey, filter, setFilterBv, setFilterSav, pokemon, error, format, closeDialog }) => (
@@ -20,12 +19,7 @@ const Dumping = ({ name, openFile, backup, type, goodKey, filter, setFilterBv, s
       savFilterChanged={setFilterSav}
     />
     <div className={styles.pkmContainer}>
-      {/* <format.current.plugin.FormatPlugin
-        language={format.language}
-        format={format.current.format}
-        pokemon={pokemon}
-      />*/}
-      <PkmListLegacy
+      <format.current.plugin.FormatPlugin
         language={format.language}
         format={format.current.format}
         pokemon={pokemon}
