@@ -47,7 +47,7 @@ export default class FormattingOptionsHandlebars extends React.Component {
     return (
       <div>
         <TextField value={this.state.title} onChange={this.updateTitle} />
-        <TextField value={this.state.format} onChange={this.updateFormat} />
+        <TextField value={this.state.format} onChange={this.updateFormat} multiLine={true} />
       </div>
     );
   }
