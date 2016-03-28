@@ -32,20 +32,30 @@ export default class PkmListReddit extends React.Component {
 
   render() {
     const local = Localization[this.props.language];
+    const grouped = this.props.pokemon.groupBy(e => e.box);
     return this.props.pokemon.first() ? (
-      <Paper className={styles.paper}>
-        Box | Slot | Species (Gender) | Nature | Ability | HP.ATK.DEF.SPATK.SPDEF.SPE | HP | ESV
-        <br />
-        |---|---|---|---|---|---|---|---|
-        {this.props.pokemon.map(e =>
-          <div>
-            B{e.box + 1} | {Math.floor(e.slot / 6) + 1},{e.slot % 6 + 1} |&nbsp;
-            {getSpecies(e.species, e.form, local)} ({genderString(e.gender)}) |&nbsp;
-            {local.abilities[e.ability]} | {e.ivHp}.{e.ivAtk}.{e.ivDef}.{e.ivSpAtk}.{e.ivSpDef}.{e.ivSpe} |&nbsp;
-            {local.abilities[e.hpType]} | {e.esv}
-          </div>
-        )}
-      </Paper>
+      <div>
+        {grouped.map((pkm, box) =>
+          <Paper className={styles.paper} key={box}>
+            <table className={styles.table}><tbody>
+              <tr><th>Box</th><th>| Slot</th><th>| Species (Gender)</th><th>| Nature</th><th>| Ability</th><th>| HP.ATK.DEF.SPATK.SPDEF.SPE</th><th>| HP</th><th>| ESV</th></tr>
+              <tr><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|:---:|</th></tr>
+              {pkm.map(e =>
+                <tr>
+                  <td>B{('00' + (e.box + 1)).slice(-2)} </td>
+                  <td>| {Math.floor(e.slot / 6) + 1},{e.slot % 6 + 1} </td>
+                  <td>| {getSpecies(e.species, e.form, local)} ({genderString(e.gender)}) </td>
+                  <td>| {local.natures[e.nature]}</td>
+                  <td>| {local.abilities[e.ability]} </td>
+                  <td>| {e.ivHp}.{e.ivAtk}.{e.ivDef}.{e.ivSpAtk}.{e.ivSpDef}.{e.ivSpe} </td>
+                  <td>| {local.types[e.hpType]} </td>
+                  <td>| {('0000' + e.esv).slice(-4)}</td>
+                </tr>
+              )}
+            </tbody></table>
+          </Paper>
+        ).valueSeq()}
+      </div>
     ) : (
       <div></div>
     );

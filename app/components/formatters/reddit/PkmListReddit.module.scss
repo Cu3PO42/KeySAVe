@@ -4,4 +4,21 @@
   font-family: "Fira Mono", monospace !important;
   white-space: nowrap;
   overflow-x: auto;
+
+  &:not(:first-child) {
+    margin-top: 20px;
+  }
+}
+
+.table {
+  border-collapse: collapse;
+  th {
+    text-align: left;
+  }
+  td:not(:first-child)::first-letter {
+    font-weight: bold;
+  }
+  tr:hover {
+    font-weight: bold;
+  }
 }
