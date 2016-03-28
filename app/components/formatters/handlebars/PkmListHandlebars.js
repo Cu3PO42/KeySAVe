@@ -1,13 +1,14 @@
-import * as React from 'react';
-import { Component } from 'react';
-import { Paper } from 'material-ui';
+import React, { Component } from 'react';
+import Paper from 'material-ui/lib/paper';
 import handlebars from 'handlebars';
 import dashbars from 'dashbars';
+import helperMoment from 'handlebars-helper-moment';
 import pureRender from 'pure-render-decorator';
 import { Localization, Calculator as StatCalculator } from 'keysavcore';
 import styles from './PkmListHandlebars.module.scss';
 
 dashbars.help(handlebars);
+handlebars.registerHelper(helperMoment());
 
 @pureRender
 class PkmListHandlebars extends Component {
