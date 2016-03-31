@@ -1,0 +1,94 @@
+.paper {
+  font-size: 0.8em;
+  white-space: nowrap;
+  overflow-x: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+
+  &:not(:first-child) {
+    margin-top: 20px;
+  }
+}
+
+.sprite {
+  img {
+    display: block;
+    height: 54px;
+    width: 72px;
+  }
+}
+
+.infoSide {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.nameLine {
+  padding: 5px 5px 5px 10px;
+  font-family: monospace;
+  font-size: 1.2em;
+  font-weight: bolder;
+}
+
+.box {
+}
+
+.dexNo {
+  padding-left: 30px;
+}
+
+.dexHash {
+  font-size: 0.8em;
+}
+
+.genderFemale {
+  color: #e546b9;
+}
+
+.genderMale {
+  color: #549dc7;
+}
+
+.ivLine {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+}
+
+.ivBox {
+  align-items: stretch;
+  vertical-align: middle;
+  display: flex;
+  flex-direction: row;
+  width: 80px;
+  justify-content: center;
+}
+
+.ivValue {
+  display: box;
+  font-size: 1.7em;
+  align-self: flex-end;
+  width: 1.3em;
+  text-align: center;
+}
+
+.ivName {
+  display: box;
+  text-transform: uppercase;
+  align-self: flex-start;
+  font-size: 0.8em;
+  padding-top: 7px;
+  letter-spacing: -1px;
+}
+
+.ivGood {
+  color: green;
+  background-color: lighten(green, 60%);
+}
+
+.ivBad {
+  color: red;
+  background-color: lighten(red, 40%);
+}
