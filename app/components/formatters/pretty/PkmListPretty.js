@@ -25,6 +25,9 @@ function pad2(n) {
 function pad3(n) {
   return ('000' + n).slice(-3);
 }
+function pad4(n) {
+  return ('0000' + n).slice(-4);
+}
 
 export default class PkmListPretty extends React.Component {
   static propTypes = {
@@ -45,7 +48,24 @@ export default class PkmListPretty extends React.Component {
             /></div>
             <div className={styles.infoSide}>
               <div className={styles.nameLine}>
-                <span className={styles.box}>Box {pad2(pkm.box + 1)} - {Math.floor(pkm.slot / 6) + 1},{pkm.slot % 6 + 1}</span><span className={styles.dexNo}><span className={styles.dexHash}>#</span>{pad3(pkm.species)}</span> <span className={genderStyles[pkm.gender]}>{local.species[pkm.species]}{pkm.form === 0 ? '' : ` (${local.forms[pkm.form]})`}</span>
+                <div>
+                  <div className={styles.box}>Box {pad2(pkm.box + 1)} - {Math.floor(pkm.slot / 6) + 1},{pkm.slot % 6 + 1}</div>
+                  <div>
+                    <span className={styles.dexNo}><span className={styles.dexHash}>#</span>{pad3(pkm.species)}</span>&nbsp;
+                    <span className={genderStyles[pkm.gender]}>{local.species[pkm.species]}{pkm.form === 0 ? '' : ` (${local.forms[pkm.form]})`}</span>
+                  </div>
+                </div>
+                <div>
+                  <div className={styles.nature}>
+                    Nature: &nbsp;{local.natures[pkm.nature]}
+                  </div>
+                  <div className={styles.ability}>
+                    Ability: {local.abilities[pkm.ability]}
+                  </div>
+                </div>
+
+                <span className={styles.flexFiller}></span>
+                <span className={styles.langTag}>{local.languageTags[pkm.otLang]}</span>
               </div>
               <div className={styles.ivLine}>
                 {ivNames.map((iv, i) =>
@@ -54,6 +74,11 @@ export default class PkmListPretty extends React.Component {
                     <span className={styles.ivValue}>{pkm['iv' + iv]}</span>
                   </div>
                 )}
+                <div className={styles.flexFiller}></div>
+                <div className={styles.esvBox}>
+                  <span className={styles.esvName}>ESV</span>
+                  <span className={styles.esvValue}>{pad4(pkm.esv)}</span>
+                </div>
               </div>
             </div>
           </Paper>

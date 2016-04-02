@@ -14,8 +14,8 @@
 .sprite {
   img {
     display: block;
-    height: 54px;
-    width: 72px;
+    height: 60px;
+    width: 80px;
   }
 }
 
@@ -23,20 +23,25 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  align-content: space-between;
 }
 
 .nameLine {
-  padding: 5px 5px 5px 10px;
-  font-family: monospace;
-  font-size: 1.2em;
-  font-weight: bolder;
+  padding: 5px 5px 5px 20px;
+  display: flex;
+  flex-grow: 1;
+
+  :not(.langTag) {
+    font-family: monospace;
+    //font-size: 1.2em;
+    font-weight: bolder;
+  }
 }
 
 .box {
 }
 
 .dexNo {
-  padding-left: 30px;
 }
 
 .dexHash {
@@ -51,13 +56,21 @@
   color: #549dc7;
 }
 
+.nature, .ability{
+  padding-left: 30px;
+}
+
+.langTag {
+  font-size: 0.8em;
+  align-self: flex-start;
+}
+
 .ivLine {
   display: flex;
   flex-direction: row;
-  flex-grow: 1;
 }
 
-.ivBox {
+.ivBox, .esvBox {
   align-items: stretch;
   vertical-align: middle;
   display: flex;
@@ -66,7 +79,7 @@
   justify-content: center;
 }
 
-.ivValue {
+.ivValue, .esvValue {
   display: box;
   font-size: 1.7em;
   align-self: flex-end;
@@ -74,12 +87,12 @@
   text-align: center;
 }
 
-.ivName {
+.ivName, .esvName {
   display: box;
   text-transform: uppercase;
   align-self: flex-start;
   font-size: 0.8em;
-  padding-top: 7px;
+  padding-top: 3px;
   letter-spacing: -1px;
 }
 
@@ -91,4 +104,13 @@
 .ivBad {
   color: red;
   background-color: lighten(red, 40%);
+}
+
+.esvValue {
+  width: 2.6em;
+  text-align: right;
+}
+
+.flexFiller {
+  flex-grow: 1;
 }
