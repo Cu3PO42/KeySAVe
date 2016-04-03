@@ -42,9 +42,10 @@ export default class PkmListPretty extends React.Component {
       <div>
         {this.props.pokemon.map(pkm =>
           <Paper key={pkm.box * 30 + pkm.slot} className={styles.paper}>
-            <div className={styles.sprite}><img
-              src={`resources/sprites/${pkm.species + (pkm.form === 0 ? '' : '-' + pkm.form)}.png`}
+            <div className={styles.sprite}
               style={{ backgroundColor: backgroundColors[pkm.species + (pkm.form === 0 ? '' : '-' + pkm.form)] }}
+            ><img
+              src={`resources/sprites/${pkm.species + (pkm.form === 0 ? '' : '-' + pkm.form)}.png`}
             /></div>
             <div className={styles.infoSide}>
               <div className={styles.nameLine}>

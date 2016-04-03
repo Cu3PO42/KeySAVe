@@ -12,9 +12,10 @@
 }
 
 .sprite {
+  padding: 10px;
   img {
     display: block;
-    height: 60px;
+    height: 80px;
     width: 80px;
   }
 }
@@ -31,9 +32,9 @@
   display: flex;
   flex-grow: 1;
 
-  :not(.langTag) {
+  &>:not(.langTag) {
     font-family: monospace;
-    //font-size: 1.2em;
+    font-size: 1.4em;
     font-weight: bolder;
   }
 }
