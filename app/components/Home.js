@@ -4,6 +4,7 @@ import { Tabs, Tab } from 'material-ui';
 import DumpingContainer from '../containers/DumpingContainer';
 import FormattingContainer from '../containers/FormattingContainer';
 import DialogContainer from '../containers/DialogContainer';
+import BreakingContainer from '../containers/BreakingContainer';
 import styles from './Home.module.scss';
 
 export default class Home extends Component {
@@ -17,6 +18,9 @@ export default class Home extends Component {
           </Tab>
           <Tab label="Options">
             <FormattingContainer />
+          </Tab>
+          <Tab label="Breaking">
+            <BreakingContainer />
           </Tab>
         </Tabs>
       </div>

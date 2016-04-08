@@ -69,7 +69,8 @@ async function dumpSaveOrBv(args) {
 async function breakKey(args) {
   try {
     var files = await Promise.map([fs.readFileAsync(args.file1), fs.readFileAsync(args.file2)], bufToArr);
-    return await KeySAV.breakSavOrBv(files[0], files[1]);
+    var res = await KeySAV.breakSavOrBv(files[0], files[1]);
+    process.send({ res, id: args.id });
   } catch (e) {
     process.send({ err: serializeError(e), id: args.id });
   }

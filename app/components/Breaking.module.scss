@@ -1,0 +1,31 @@
+.paper {
+  margin: 20px;
+  padding: 10px 20px;
+}
+
+.flexRow {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.flexStretch {
+  align-items: stretch;
+}
+
+.flexFill {
+  flex-grow: 1;
+}
+
+.fileType {
+  width: 9em;
+  padding-left: 1em;
+}
+
+.fileTypeType {
+  font-weight: bold;
+}
+
+.buttonWrapper {
+  padding-left: 10px;
+}

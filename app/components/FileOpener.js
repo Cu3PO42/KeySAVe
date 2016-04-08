@@ -1,9 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import { Component, PropTypes } from 'react';
 import FlatButton from 'material-ui/lib/flat-button';
 import TextField from 'material-ui/lib/text-field';
 import IpcClient from 'electron-ipc-tunnel/client';
-const styles = require('./FileOpener.module.scss');
+import styles from './FileOpener.module.scss';
 
 const options = {};
 
@@ -14,7 +14,9 @@ const inputStyle = {
 export default class FileOpener extends Component {
   static propTypes = {
     file: PropTypes.string.isRequired,
-    fileOpened: PropTypes.func.isRequired
+    fileOpened: PropTypes.func.isRequired,
+    buttonText: PropTypes.string,
+    inputText: PropTypes.string
   };
 
   ipcClient = new IpcClient();
@@ -34,9 +36,9 @@ export default class FileOpener extends Component {
     return (
       <div className={styles.flexHorizontal}>
         <div className={styles.padRight}>
-          <FlatButton label="Open File" onClick={this.handleClick} className={styles.button}/>
+          <FlatButton label={this.props.buttonText || 'Open File'} onClick={this.handleClick} className={styles.button}/>
         </div>
-        <TextField floatingLabelText="File" value={this.props.file} disabled inputStyle={inputStyle} fullWidth />
+        <TextField floatingLabelText={this.props.inputText || 'File'} value={this.props.file} disabled inputStyle={inputStyle} fullWidth />
       </div>
     );
   }
