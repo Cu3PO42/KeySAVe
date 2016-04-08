@@ -6,7 +6,7 @@ const initialState = {
   file2: '',
   file1Type: 'none',
   file2Type: 'none',
-  breakState: 'SUCCESS',
+  breakState: 'NONE',
   reply: {}
 };
 
