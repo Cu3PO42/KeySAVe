@@ -1,4 +1,4 @@
-import { BREAKING_OPEN_FILE_1, BREAKING_OPEN_FILE_2, BREAK_KEY, DISMISS_BREAK_STATE } from '../actions/breaking';
+import { BREAKING_OPEN_FILE_1, BREAKING_OPEN_FILE_2, BREAK_KEY, DISMISS_BREAK_STATE, SCAN_FOLDER, SCAN_FOLDER_FINISH } from '../actions/breaking';
 import { handleActions } from '../utils/handleAction';
 
 const initialState = {
@@ -7,7 +7,8 @@ const initialState = {
   file1Type: 'none',
   file2Type: 'none',
   breakState: 'NONE',
-  reply: {}
+  reply: {},
+  breakFolder: ''
 };
 
 export default handleActions({
@@ -47,5 +48,19 @@ export default handleActions({
 
   [DISMISS_BREAK_STATE]() {
     return initialState;
+  },
+
+  [SCAN_FOLDER](state, { payload }) {
+    return {
+      ...state,
+      breakFolder: payload
+    };
+  },
+
+  [SCAN_FOLDER_FINISH](state) {
+    return {
+      ...state,
+      breakFolder: ''
+    };
   }
 }, initialState);

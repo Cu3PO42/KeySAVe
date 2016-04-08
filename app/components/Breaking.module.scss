@@ -38,3 +38,20 @@
   height: 48px !important;
   width: 48px !important;
 }
+
+.flexFromRight {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.center {
+  text-align: center;
+}
+
+.spinnerContainer {
+  padding-top: 15px;
+}
+
+.folder {
+  font-family: monospace;
+}

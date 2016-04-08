@@ -1,10 +1,12 @@
 import React from 'react';
 import FileOpener from './FileOpener';
+import { send as ipcSend } from 'electron-ipc-tunnel/client';
 import Paper from 'material-ui/lib/paper';
 import FlatButton from 'material-ui/lib/flat-button';
 import Dialog from 'material-ui/lib/dialog';
 import WarningIcon from 'material-ui/lib/svg-icons/alert/warning';
 import ErrorIcon from 'material-ui/lib/svg-icons/alert/error';
+import CircularProgress from 'material-ui/lib/circular-progress';
 import styles from './Breaking.module.scss';
 import colors from 'material-ui/lib/styles/colors';
 
@@ -133,45 +135,67 @@ export default class Breaking extends React.Component {
     file2: React.PropTypes.string.isRequired,
     file2Type: React.PropTypes.string.isRequired,
     breakState: React.PropTypes.string.isRequired,
+    breakFolder: React.PropTypes.string.isRequired,
     reply: React.PropTypes.object.isRequired,
     openFile1: React.PropTypes.func.isRequired,
     openFile2: React.PropTypes.func.isRequired,
     breakKey: React.PropTypes.func.isRequired,
-    dismissBreakState: React.PropTypes.func.isRequired
+    dismissBreakState: React.PropTypes.func.isRequired,
+    scanFolder: React.PropTypes.func.isRequired,
+    scanFolderFinish: React.PropTypes.func.isRequired
   }
 
   break = () => this.props.breakKey(this.props.file1, this.props.file2);
   closeDialog = () => this.props.dismissBreakState();
+  scanFolder = async () => {
+    const folder = await ipcSend('file-dialog-open', { options: { properties: ['openDirectory'] } });
+    if (folder === undefined || folder[0] === undefined) return;
+    this.props.scanFolder(folder[0]);
+    await ipcSend('break-folder', folder[0]);
+    this.props.scanFolderFinish();
+  }
 
   render() {
     return (
-      <Paper className={styles.paper}>
-        <Dialog
-          className={styles.dialog}
-          open={this.props.breakState !== 'NONE'}
-          actions={[<FlatButton onClick={this.closeDialog} label="OK" primary />]}
-        >
-          {this.props.breakState === 'ERROR' ?
-            errorMessages[this.props.reply.name](this.props.reply)
-          : successMessages[this.props.reply]
-          }
+      <div>
+        <Dialog open={this.props.breakFolder !== ''} className={styles.center} modal>
+          Scanning <span className={styles.folder}>{this.props.breakFolder}</span> for saves.
+          <div className={styles.spinnerContainer}><CircularProgress /></div>
         </Dialog>
-        <div className={`${styles.flexRow} ${styles.flexStretch}`}>
-          <div className={styles.flexFill}>
-            <div className={styles.flexRow}>
-              <div className={styles.flexFill}><FileOpener file={this.props.file1} fileOpened={this.props.openFile1} inputText="File 1" /></div>
-              <div className={styles.fileType}><span className={styles.fileTypeType}>Type:</span> {nameMap[this.props.file1Type]}</div>
+        <Paper className={styles.paper}>
+          <Dialog
+            className={styles.dialog}
+            open={this.props.breakState !== 'NONE'}
+            actions={[<FlatButton onClick={this.closeDialog} label="OK" primary />]}
+          >
+            {this.props.breakState === 'ERROR' ?
+              errorMessages[this.props.reply.name](this.props.reply)
+            : successMessages[this.props.reply]
+            }
+          </Dialog>
+          <div className={`${styles.flexRow} ${styles.flexStretch}`}>
+            <div className={styles.flexFill}>
+              <div className={styles.flexRow}>
+                <div className={styles.flexFill}><FileOpener file={this.props.file1} fileOpened={this.props.openFile1} inputText="File 1" /></div>
+                <div className={styles.fileType}><span className={styles.fileTypeType}>Type:</span> {nameMap[this.props.file1Type]}</div>
+              </div>
+              <div className={styles.flexRow}>
+                <div className={styles.flexFill}><FileOpener file={this.props.file2} fileOpened={this.props.openFile2} inputText="File 2" /></div>
+                <div className={styles.fileType}><span className={styles.fileTypeType}>Type:</span> {nameMap[this.props.file2Type]}</div>
+              </div>
             </div>
-            <div className={styles.flexRow}>
-              <div className={styles.flexFill}><FileOpener file={this.props.file2} fileOpened={this.props.openFile2} inputText="File 2" /></div>
-              <div className={styles.fileType}><span className={styles.fileTypeType}>Type:</span> {nameMap[this.props.file2Type]}</div>
+            <div className={`${styles.flexRow} ${styles.flexStretch} ${styles.buttonWrapper}`}>
+              <FlatButton label="Break" disabled={this.props.file1Type !== this.props.file2Type || this.props.file1Type !== 'sav' && this.props.file2Type !== 'bv'} onTouchTap={this.break} />
             </div>
           </div>
-          <div className={`${styles.flexRow} ${styles.flexStretch} ${styles.buttonWrapper}`}>
-            <FlatButton label="Break" disabled={this.props.file1Type !== this.props.file2Type || this.props.file1Type !== 'sav' && this.props.file2Type !== 'bv'} onTouchTap={this.break} />
-          </div>
-        </div>
-      </Paper>
+        </Paper>
+        <Paper className={styles.paper}>
+          Scan all saves in a folder to improve your save keys.
+          This will use all saves for which you have a key to unlock more slots in your keys.
+          Please read the manual for more info.
+          <div className={styles.flexFromRight}><FlatButton label="Scan Folder" onClick={this.scanFolder} /></div>
+        </Paper>
+      </div>
     );
   }
 }
