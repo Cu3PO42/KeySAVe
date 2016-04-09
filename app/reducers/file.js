@@ -1,7 +1,13 @@
 import { handleActions } from '../utils/handleAction';
 import { OPEN_FILE, OPEN_FILE_DISMISS_ERROR } from '../actions/file';
 
-const defaultState = { name: '', isError: false };
+const defaultState = {
+  name: '',
+  isError: false,
+  goodKey: true,
+  type: '',
+  error: undefined
+};
 
 export default handleActions({
   [OPEN_FILE]: {

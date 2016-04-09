@@ -17,8 +17,8 @@ const nameMap = {
   'neither': 'Neither'
 };
 
-const WarningSign = () => <div className={styles.iconContainer}><WarningIcon color={colors.yellow600} /></div>
-const ErrorSign = () => <div className={styles.iconContainer}><ErrorIcon color={colors.red800} /></div>
+const WarningSign = () => <div className={styles.iconContainer}><WarningIcon color={colors.yellow600} /></div>;
+const ErrorSign = () => <div className={styles.iconContainer}><ErrorIcon color={colors.red800} /></div>;
 
 const successMessages = {
   // Battle Video Breaking success messages
