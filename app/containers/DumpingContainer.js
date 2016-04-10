@@ -18,7 +18,7 @@ const getPokemonSeq = createSelector(
     type === 'SAV' ?
       new Seq(pokemon) :
     type === 'BV' ?
-      isOpponent ? new Seq(pokemon[1]) : new Seq(pokemon[0]) :
+      isOpponent ? new Seq(pokemon.enemyTeam) : new Seq(pokemon.myTeam) :
       new Seq()
 );
 
@@ -49,6 +49,7 @@ function mapDispatchToProps() {
 
   return (dispatch, { type }) => {
     fileType = type;
+    // TODO move this to component
     if (!res) {
       res = bindActionCreators({ openFile, dismissError, setFilterSav, setFilterBv, openDialog }, dispatch);
       res.backup = async (file) => {

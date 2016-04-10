@@ -31,7 +31,7 @@ export default class Dumping extends React.Component {
     error: React.PropTypes.object,
     format: React.PropTypes.object.isRequired,
     openDialog: React.PropTypes.func.isRequired,
-    closeDialog: React.PropTypes.func.isRequired
+    dismissError: React.PropTypes.func.isRequired
   };
 
   copyClipboard = () => {
@@ -96,7 +96,7 @@ export default class Dumping extends React.Component {
   };
 
   render() {
-    const { name, openFile, backup, type, goodKey, filter, setFilterBv, setFilterSav, pokemon, error, format, closeDialog } = this.props;
+    const { name, openFile, backup, type, goodKey, filter, setFilterBv, setFilterSav, pokemon, error, format, dismissError } = this.props;
     return (
       <div>
         <DumpingFileOpener
@@ -124,11 +124,10 @@ export default class Dumping extends React.Component {
             pokemon={pokemon}
           />
         </div>
-        {/* TODO figure out how the dialog works and if it makes sense at all */}
         <Dialog
           modal
           open={error !== undefined}
-          actions={[<FlatButton label="Ok" primary onTouchTap={closeDialog}/>]}
+          actions={[<FlatButton label="Ok" primary onTouchTap={dismissError}/>]}
         >
           {((e) => {
             switch (e.name) {

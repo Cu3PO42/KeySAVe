@@ -7,7 +7,7 @@ const initialState = {
   file1Type: 'none',
   file2Type: 'none',
   breakState: 'NONE',
-  reply: {},
+  reply: undefined,
   breakFolder: ''
 };
 

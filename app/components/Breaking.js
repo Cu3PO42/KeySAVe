@@ -10,6 +10,15 @@ import CircularProgress from 'material-ui/lib/circular-progress';
 import styles from './Breaking.module.scss';
 import colors from 'material-ui/lib/styles/colors';
 
+function stringOrObjOrUndefined(props, propName, componentName) {
+  const val = props[propName];
+  if (val === undefined || typeof val === 'string' || val instanceof String || val instanceof Error) {
+    return null;
+  }
+
+  return Error(`${propName} in ${componentName || 'ANONYMOUS'} should be either a string or an Error object.`);
+}
+
 const nameMap = {
   'sav': 'Save',
   'bv': 'Battle Video',
@@ -136,7 +145,7 @@ export default class Breaking extends React.Component {
     file2Type: React.PropTypes.string.isRequired,
     breakState: React.PropTypes.string.isRequired,
     breakFolder: React.PropTypes.string.isRequired,
-    reply: React.PropTypes.object.isRequired,
+    reply: stringOrObjOrUndefined,
     openFile1: React.PropTypes.func.isRequired,
     openFile2: React.PropTypes.func.isRequired,
     breakKey: React.PropTypes.func.isRequired,
