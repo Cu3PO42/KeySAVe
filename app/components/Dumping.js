@@ -7,7 +7,7 @@ import CopyIcon from 'material-ui/lib/svg-icons/content/content-copy';
 import SaveIcon from 'material-ui/lib/svg-icons/content/save';
 import ArchiveIcon from 'material-ui/lib/svg-icons/content/archive';
 import { remote } from 'electron';
-const clipboard = remote.require('clibboard');
+const clipboard = remote.require('clipboard');
 import { send as ipcSend } from 'electron-ipc-tunnel/client';
 import * as fs from 'fs-extra';
 import * as path from 'path';
@@ -42,10 +42,10 @@ export default class Dumping extends React.Component {
   saveOutput = async () => {
     let ext;
     let filters;
-    if (this.formatName.toLowerCase().indexOf('csv') !== -1) {
+    if (this.props.format.current.name.toLowerCase().indexOf('csv') !== -1) {
       ext = '.csv';
       filters = [{ name: 'CSV', extensions: ['csv'] }];
-    } else if (this.formatName.toLowerCase().indexOf('json') !== -1) {
+    } else if (this.props.format.current.name.toLowerCase().indexOf('json') !== -1) {
       ext = '.json';
       filters = [{ name: 'JSON', extensions: ['json'] }];
     } else {
@@ -53,10 +53,10 @@ export default class Dumping extends React.Component {
       filters = [{ name: 'Text', extensions: ['txt'] }];
     }
     var filename = await ipcSend('file-dialog-save', { options:
-      { defaultPath: path.basename(this.fileName, path.extname(this.fileName)) + ext, filters } });
+      { defaultPath: path.basename(this.props.name, path.extname(this.props.name)) + ext, filters } });
     if (!filename) return;
     try {
-      await fs.writeFileAsync(filename, this.refs.dumping.innerText, { encoding: 'utf-8' });
+      await fs.writeFileAsync(filename, this.refs.dumper.innerText, { encoding: 'utf-8' });
       this.props.openDialog('File saved successfully!');
     } catch (e) {
       this.props.openDialog('Couldn\'t save file. Please try again.');
@@ -73,7 +73,7 @@ export default class Dumping extends React.Component {
       if (dbDirectory === undefined || dbDirectory[0] === undefined) return;
       dbDirectory = dbDirectory[0];
       var files = await fs.readdirAsync(dbDirectory);
-      const count = (await Promise.resolve(this.props.pokemon).map(async (pkm) => {
+      const count = (await Promise.all(this.props.pokemon.map(async (pkm) => {
         if (pkm.isGhost) {
           ++ghosts;
           return;
@@ -88,7 +88,7 @@ export default class Dumping extends React.Component {
         files.push(fileName);
         await fs.writeFileAsync(path.join(dbDirectory, fileName), new Buffer(pkm.data));
         return;
-      })).length;
+      }).toArray())).length;
       this.props.openDialog('Saved ' + (count - ghosts) + ' Pokémon.');
     } catch (e) {
       this.props.openDialog('An error occured.');
