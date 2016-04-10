@@ -9,3 +9,22 @@
   }
 }
 
+.mainWrapper {
+  height: 100vh;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.stretch {
+  flex-grow: 1;
+
+  & > div {
+    height: calc(100vh - 48px) !important;
+
+    & > div {
+      height: 100% !important;
+      max-height: 100% !important;
+    }
+  }
+}
