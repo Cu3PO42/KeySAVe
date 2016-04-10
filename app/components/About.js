@@ -24,6 +24,11 @@ const About = () => (
     <p>
       The included sprites were originally ripped by <ExternalLink href="http://www.pkparaiso.com">pkparaiso.com</ExternalLink> and only modified by me.
     </p>
+    <p>
+      I would also like to thank everyone who helped me in the development of KeySAV<sup>e</sup> by testing,
+      providind feedback, giving me ideas for features I could implement and by helping me collect
+      localization data.
+    </p>
     <h2>Copyright</h2>
     <p>
       KeySAV<sup>e</sup> itself is written by Cu3PO42, other code is used under the terms of the respective licenses.
