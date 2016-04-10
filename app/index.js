@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, hashHistory } from 'react-router';
-import '../init/promisify-fs';
+import '../init';
 import routes from './routes';
 import configureStore from './store/configureStore';
 import tapEventPlugin from 'react-tap-event-plugin';

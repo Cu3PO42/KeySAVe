@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Seq } from 'immutable';
-import { openFile, dismissError } from '../actions/file';
+import { openFile, openFileWatch, dismissError } from '../actions/file';
 import { setFilterBv, setFilterSav } from '../actions/filter';
 import { openDialog } from '../actions/dialog';
 import { send } from 'electron-ipc-tunnel/client';
@@ -51,7 +51,7 @@ function mapDispatchToProps() {
     fileType = type;
     // TODO move this to component
     if (!res) {
-      res = bindActionCreators({ openFile, dismissError, setFilterSav, setFilterBv, openDialog }, dispatch);
+      res = bindActionCreators({ openFile, openFileWatch, dismissError, setFilterSav, setFilterBv, openDialog }, dispatch);
       res.backup = async (file) => {
         try {
           const name = fileType === 'SAV' ? 'Save' : 'Battle Video';
