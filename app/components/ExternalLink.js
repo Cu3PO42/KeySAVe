@@ -11,6 +11,6 @@ const ExternalLink = (props) => (
   <a {...props} onClick={openLink}>{props.children}</a>
 );
 ExternalLink.propTypes = {
-  children: React.PropTypes.node.isRequireds
+  children: React.PropTypes.node.isRequired
 };
 export default ExternalLink;
