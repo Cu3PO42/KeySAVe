@@ -1,0 +1,20 @@
+.flexRow {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+}
+
+.column {
+  flex-grow: 1;
+  width: 50%;
+  & > h4 {
+    margin-top: 0;
+  }
+}
+
+.menuRow {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: flex-start;
+}
