@@ -30,34 +30,69 @@ export default class PkmListReddit extends React.Component {
     format: React.PropTypes.object
   };
 
-  render() {
+  getBoxHeader(box) {
+    switch (this.props.format.color) {
+      case 0:
+        return '##';
+      case 1:
+        return ['###', '####', '#####', '######'][box % 4];
+      case 2:
+        return '###';
+      case 3:
+        return '####';
+      case 4:
+        return '#####';
+      case 5:
+        return '######';
+      default:
+        return '##';
+    }
+  }
+
+  renderBox(pkm, box) {
     const local = Localization[this.props.language];
-    const grouped = this.props.pokemon.groupBy(e => e.box);
-    return this.props.pokemon.first() ? (
-      <div>
-        {grouped.map((pkm, box) =>
-          <Paper className={styles.paper} key={box}>
-            <table className={styles.table}><tbody>
-              <tr><th>Box</th><th>| Slot</th><th>| Species (Gender)</th><th>| Nature</th><th>| Ability</th><th>| HP.ATK.DEF.SPATK.SPDEF.SPE</th><th>| HP</th><th>| ESV</th></tr>
-              <tr><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|:---:|</th></tr>
-              {pkm.map(e =>
-                <tr>
-                  <td>B{('00' + (e.box + 1)).slice(-2)} </td>
-                  <td>| {Math.floor(e.slot / 6) + 1},{e.slot % 6 + 1} </td>
-                  <td>| {getSpecies(e.species, e.form, local)} ({genderString(e.gender)}) </td>
-                  <td>| {local.natures[e.nature]}</td>
-                  <td>| {local.abilities[e.ability]} </td>
-                  <td>| {e.ivHp}.{e.ivAtk}.{e.ivDef}.{e.ivSpAtk}.{e.ivSpDef}.{e.ivSpe} </td>
-                  <td>| {local.types[e.hpType]} </td>
-                  <td>| {('0000' + e.esv).slice(-4)}</td>
-                </tr>
-              )}
-            </tbody></table>
-          </Paper>
-        ).valueSeq()}
-      </div>
-    ) : (
-      <div></div>
+    return (
+      <Paper className={styles.paper} key={box}>
+        <table className={styles.table}><tbody>
+          <tr><th>|Box</th><th>|Slot</th><th>|Species (Gender)</th><th>|Nature</th><th>|Ability</th><th>|HP.ATK.DEF.SPATK.SPDEF.SPE</th><th>|HP</th><th>|ESV</th><th>|</th></tr>
+          <tr><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|</th></tr>
+          {pkm.map(e => this.props.format.ghosts === 'hide' && e.isGhost ?
+            null :
+            <tr className={this.props.format.ghosts === 'mark' && e.isGhost ? styles.ghost : ''}>
+              <td>|{this.props.format.ghosts === 'mark' && e.isGhost ? '~' : ''}B{('00' + (e.box + 1)).slice(-2)}</td>
+              <td>|{Math.floor(e.slot / 6) + 1},{e.slot % 6 + 1}</td>
+              <td>|{getSpecies(e.species, e.form, local)} ({genderString(e.gender)})</td>
+              <td>|{local.natures[e.nature]}</td>
+              <td>|{local.abilities[e.ability]} </td>
+              <td>|{e.ivHp}.{e.ivAtk}.{e.ivDef}.{e.ivSpAtk}.{e.ivSpDef}.{e.ivSpe}</td>
+              <td>|{local.types[e.hpType]}</td>
+              <td>|{('0000' + e.esv).slice(-4)}</td>
+              <td>|</td>
+            </tr>
+          )}
+        </tbody></table>
+      </Paper>
     );
+  }
+
+  render() {
+    if (!this.props.pokemon.first()) {
+      return <div></div>;
+    }
+    if (this.props.format.splitBoxes) {
+      const grouped = this.props.pokemon.groupBy(e => e.box);
+      return (
+        <div>
+          {grouped.map((pkm, box) => (
+            <div>
+              <h2 className={styles.boxNumber}><span className={styles.hide}>{this.getBoxHeader(box)} </span>Box {box + 1}</h2>
+              {this.renderBox(pkm, box)}
+            </div>
+          )).valueSeq()}
+        </div>
+      );
+    }
+
+    return this.renderBox(this.props.pokemon, 0);
   }
 }

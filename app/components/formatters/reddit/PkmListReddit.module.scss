@@ -15,10 +15,26 @@
   th {
     text-align: left;
   }
-  td:not(:first-child)::first-letter {
+  td::first-letter {
     font-weight: bold;
   }
   tr:hover {
     font-weight: bold;
   }
+}
+
+.boxNumber {
+  font-family: sans-serif;
+  color: #999;
+  margin-bottom: 0;
+}
+
+.boxNumber + .paper {
+  margin-top: 5px;
+}
+
+.hide {
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
 }
