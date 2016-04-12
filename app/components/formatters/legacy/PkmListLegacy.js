@@ -1,10 +1,10 @@
 import React from 'react';
 import Paper from 'material-ui/lib/paper';
 import { Localization, Calculator as StatCalculator } from 'keysavcore';
-import { defaultMemoize } from 'reselect';
+import { createSelector } from 'reselect';
 import styles from './PkmListLegacy.module.scss';
 
-const replaceDatabase = {
+const replaceDatabaseMaker = format => ({
   0: '"B"+("0"+(pkm.box+1)).slice(-2)',
   1: 'Math.floor(pkm.slot/6)+1+","+(pkm.slot%6+1)',
   2: 'getSpecies(pkm.species, pkm.form, local)',
@@ -18,7 +18,7 @@ const replaceDatabase = {
   10: 'pkm.ivSpDef',
   11: 'pkm.ivSpe',
   12: 'local.types[pkm.hpType]',
-  13: 'pkm.isEgg ? ("0000" + pkm.esv).slice(-4) : ""',
+  13: format.alwaysShowEsv ? '("0000" + pkm.esv).slice(-4)' : 'pkm.isEgg ? ("0000" + pkm.esv).slice(-4) : ""',
   14: '("0000" + pkm.tsv).slice(-4)',
   15: 'pkm.nickname',
   16: 'pkm.ot',
@@ -74,55 +74,90 @@ const replaceDatabase = {
   66: 'pkm.isEgg ? pkm.otFriendship * 255 : ""',
   67: '"[](/" + Localization[self.props.language].items[this.ball].replace(" ", "").replace("é", "e").toLowerCase() + ")"',
   68: 'pkm.abilityNum === 4 ? "✓" : ""'
-};
+});
 
-const compile = defaultMemoize(function compile(template) {
-  /* eslint-disable no-unused-vars */
-  function moveName(local, id) {
-    return id ? local.moves[id] : '';
+/* eslint-disable no-unused-vars */
+function moveName(local, id) {
+  return id ? local.moves[id] : '';
+}
+function formatDate(date) {
+  return date[0] + '-' + ('0' + (date[1] + 1)).slice(-2) + '-' + ('0' + date[2]).slice(-2);
+}
+function genderString(gender) {
+  switch (gender) {
+    case 0:
+      return '♂';
+    case 1:
+      return '♀';
+    default:
+      return '-';
   }
-  function formatDate(date) {
-    return date[0] + '-' + ('0' + (date[1] + 1)).slice(-2) + '-' + ('0' + date[2]).slice(-2);
+}
+function getSpecies(id, form, local) {
+  if (id >= 664 && id <= 666) {
+    return `${local.species[id]}-${local.forms[666][form]}`;
+  } else if (id === 201) {
+    return `${local.species[201]}-${local.forms[201][form]}`;
   }
-  function genderString(gender) {
-    switch (gender) {
-      case 0:
-        return '♂';
-      case 1:
-        return '♀';
-      default:
-        return '-';
-    }
-  }
-  function getSpecies(id, form, local) {
-    if (id >= 664 && id <= 666) {
-      return `${local.species[id]}-${local.forms[666][form]}`;
-    } else if (id === 201) {
-      return `${local.species[201]}-${local.forms[201][form]}`;
-    }
-    return local.species[id];
-  }
+  return local.species[id];
+}
+
+function compile(format) {
   const react = React;
+  const replaceDatabase = replaceDatabaseMaker(format);
   /* eslint-enable no-unused-vars */
   /* eslint-disable no-eval */
   const fn =
-    '(function(props) { var pkm = props.pkm, local = props.local; return react.createElement("div", null, "' +
-    template.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/{(\d+)}/g, (string, count) => `", ${replaceDatabase[count]}, "`) +
+    '(function(props) { var pkm = props.pkm, local = props.local; return ' +
+    'react.createElement("div", null, ' + (format.ghost === 'mark' ? 'pkm.isGhost ? "~" : "", ' : '') + '"' +
+    format.format.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/{(\d+)}/g, (string, count) => `", ${replaceDatabase[count]}, "`) +
     '"); })';
   return eval(fn);
   /* eslint-enable no-eval */
-});
+}
 
-const PkmListLegacy = ({ pokemon, format, language }) => {
-  const Template = compile(format.format);
-  const local = Localization[language];
-  return pokemon.first() ? (
-    <Paper className={styles.paper}>
-      {pokemon.map((e, i) => <Template key={e.box * 30 + e.slot} pkm={e} index={i} local={local} />)}
-    </Paper>
-  ) : (
-    <div></div>
-  );
-};
+export default class PkmListLegacy extends React.Component {
+  static propTypes = {
+    pokemon: React.PropTypes.object,
+    language: React.PropTypes.string,
+    format: React.PropTypes.object
+  };
 
-export default PkmListLegacy;
+  getTemplate = createSelector(
+    () => this.props.format,
+    compile
+  )
+
+  renderBox(pkm) {
+    const local = Localization[this.props.language];
+    const Template = this.getTemplate();
+    return (
+      <Paper className={styles.paper}>
+        {this.props.format.header}
+        {pkm.map((e, i) => <Template key={e.box * 30 + e.slot} pkm={e} index={i} local={local} />)}
+      </Paper>
+    );
+  }
+
+  render() {
+    if (!this.props.pokemon.first()) {
+      return <div></div>;
+    }
+
+    if (this.props.format.splitBoxes) {
+      const grouped = this.props.pokemon.groupBy(e => e.box);
+      return (
+        <div>
+          {grouped.map((pkm, box) => (
+            <div key={box}>
+              <h3 className={styles.boxHeader}>Box {box + 1}</h3>
+              {this.renderBox(pkm)}
+            </div>
+          )).valueSeq()}
+        </div>
+      );
+    }
+
+    return this.renderBox(this.props.pokemon);
+  }
+}
