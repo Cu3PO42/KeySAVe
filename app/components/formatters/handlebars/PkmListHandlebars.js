@@ -4,6 +4,7 @@ import handlebars from 'handlebars';
 import dashbars from 'dashbars';
 import helperMoment from 'handlebars-helper-moment';
 import pureRender from 'pure-render-decorator';
+import { createSelector } from 'reselect';
 import { Localization, Calculator as StatCalculator } from 'keysavcore';
 import styles from './PkmListHandlebars.module.scss';
 
@@ -152,17 +153,51 @@ class PkmListHandlebars extends Component {
     };
   }
 
+  getFormatTemplate = createSelector(
+    () => this.props.format.format || '',
+    handlebars.compile
+  );
+
+  getBoxHeaderTemplate = createSelector(
+    () => this.props.format.boxHeader || '',
+    handlebars.compile
+  );
+
+  renderBox(pkm) {
+    const template = this.getFormatTemplate();
+
+    return (
+      <Paper className={styles.paper}>
+        {pkm.map(e => <div key={e.box * 30 + e.slot} dangerouslySetInnerHTML={{ __html: template(e, { helpers: this.handlebarsHelpers }) }}></div>)}
+      </Paper>
+    );
+  }
+
   render() {
     try {
-      const template = handlebars.compile(this.props.format.format || '');
-      return this.props.pokemon.first() ? (
-        <Paper className={styles.paper}>
-          {this.props.pokemon.map(pkm => <div key={pkm.box * 30 + pkm.slot} dangerouslySetInnerHTML={{ __html: template(pkm, { helpers: this.handlebarsHelpers }) }}></div>)}
-        </Paper>
-      ) : (
-        <div></div>
-      );
+      if (!this.props.pokemon.first()) {
+        return <div></div>;
+      }
+
+      if (this.props.format.splitBoxes) {
+        const grouped = this.props.pokemon.groupBy(e => e.box);
+        const boxHeaderTemplate = this.getBoxHeaderTemplate();
+
+        return (
+          <div>
+            {grouped.map((pkm, box) => (
+              <div key={box}>
+                <div dangerouslySetInnerHTML={{ __html: boxHeaderTemplate({ box }) }}></div>
+                {this.renderBox(pkm, box)}
+              </div>
+            )).valueSeq()}
+          </div>
+        );
+      }
+
+      return this.renderBox(this.props.pokemon);
     } catch (e) {
+      console.log(e);
       return (
         <Paper className={styles.paper}>
           Template error! Please check your format string!

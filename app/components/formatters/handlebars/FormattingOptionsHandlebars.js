@@ -2,6 +2,7 @@ import React from 'react';
 import TextField from 'material-ui/lib/text-field';
 import IconButton from 'material-ui/lib/icon-button';
 import ReloadIcon from 'material-ui/lib/svg-icons/action/cached';
+import CheckBox from 'material-ui/lib/checkbox';
 import debounce from 'lodash.debounce';
 import handlebars from 'handlebars';
 import { createSelector } from 'reselect';
@@ -17,7 +18,7 @@ export default class FormattingOptionsHandlebars extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = props.format;
+    this.state = { ...props.format };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -27,6 +28,12 @@ export default class FormattingOptionsHandlebars extends React.Component {
     } else if (this.flushed) {
       this.setState(nextProps.format);
     }
+  }
+
+  updateBoxHeader = (e) => {
+    this.setState({ boxHeader: e.target.value });
+    this.flushed = false;
+    this.flush();
   }
 
   updateFormat = (e) => {
@@ -41,6 +48,10 @@ export default class FormattingOptionsHandlebars extends React.Component {
     this.flush();
   }
 
+  updateSplitBoxes = (e, splitBoxes) => {
+    this.props.updateCurrentFormat({ splitBoxes });
+  }
+
   flush = debounce(() => {
     this.props.updateCurrentFormat(this.state);
     this.flushed = true;
@@ -48,14 +59,26 @@ export default class FormattingOptionsHandlebars extends React.Component {
 
   flushed = true;
 
-  getErrorText = createSelector(
+  getFormatErrorText = createSelector(
     () => this.props.format.format,
     format => {
       try {
         handlebars.precompile(format);
         return null;
       } catch (e) {
-        return <div className={styles.errorText}>Your templating string is invalid.</div>;
+        return <div className={styles.errorText}>Your template string is invalid.</div>;
+      }
+    }
+  )
+
+  getBoxHeaderErrorText = createSelector(
+    () => this.props.format.boxHeader,
+    boxHeader => {
+      try {
+        handlebars.precompile(boxHeader);
+        return null;
+      } catch (e) {
+        return <div className={styles.errorText}>Your template string is invalid.</div>;
       }
     }
   )
@@ -178,6 +201,7 @@ export default class FormattingOptionsHandlebars extends React.Component {
             value={this.state.title}
             onChange={this.updateTitle}
             className={styles.input}
+            hintText="Header"
             fullWidth
             multiline
           />
@@ -188,9 +212,28 @@ export default class FormattingOptionsHandlebars extends React.Component {
             value={this.state.format}
             onChange={this.updateFormat}
             className={styles.input}
-            errorText={this.getErrorText()}
+            hintText="Format string"
+            errorText={this.getFormatErrorText()}
             fullWidth
             multiLine
+          />
+        </div>
+        <div>
+          <TextField
+            value={this.state.boxHeader}
+            onChange={this.updateBoxHeader}
+            className={styles.input}
+            hintText="Box Header"
+            errorText={this.getBoxHeaderErrorText()}
+            fullWidth
+            multiline
+          />
+        </div>
+        <div>
+          <CheckBox
+            checked={this.props.format.splitBoxes}
+            onCheck={this.updateSplitBoxes}
+            label="Split boxes"
           />
         </div>
       </div>

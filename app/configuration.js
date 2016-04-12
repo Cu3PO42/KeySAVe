@@ -9,8 +9,8 @@ export default function loadConfig(store) {
   store.dispatch(registerFormattingPlugin('Legacy', PkmListLegacy, FormattingOptionsLegacy));
   store.dispatch(registerFormattingPlugin('Reddit', PkmListReddit, FormattingOptionsReddit));
   store.dispatch(registerFormattingPlugin('Pretty', PkmListPretty, FormattingOptionsPretty));
-  store.dispatch(addFormattingOption('Default', 'Handlebars', { title: 'ohi', format: 'B{{box}} - {{row}},{{column}} - {{speciesName}} ({{genderString gender}}) - {{natureName}} - {{abilityName}} - {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} - {{typeName hpType}} [{{esv}}]' }));
+  store.dispatch(addFormattingOption('Default', 'Handlebars', { title: 'ohi', format: 'B{{box}} - {{row}},{{column}} - {{speciesName}} ({{genderString gender}}) - {{natureName}} - {{abilityName}} - {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} - {{typeName hpType}} [{{esv}}]', boxHeader: '<h3 style="margin-bottom: 0; color: #999; font-family: sans-serif;">Box {{box}}</h3>' }));
   store.dispatch(addFormattingOption('Legacy', 'Legacy', { format: '{0} - {1} - {2} ({3}) - {4} - {5} - {6}.{7}.{8}.{9}.{10}.{11} - {12} - {13}' }));
   store.dispatch(addFormattingOption('Reddit', 'Reddit', {}));
-  store.dispatch(addFormattingOption('Pretty', 'Pretty', {}))
+  store.dispatch(addFormattingOption('Pretty', 'Pretty', {}));
 }
