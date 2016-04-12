@@ -4,6 +4,7 @@ import IconButton from 'material-ui/lib/icon-button';
 import ReloadIcon from 'material-ui/lib/svg-icons/action/cached';
 import debounce from 'lodash.debounce';
 import handlebars from 'handlebars';
+import { createSelector } from 'reselect';
 import styles from './FormattingOptionsHandlebars.module.scss';
 
 export default class FormattingOptionsHandlebars extends React.Component {
@@ -46,6 +47,18 @@ export default class FormattingOptionsHandlebars extends React.Component {
   }, 1000);
 
   flushed = true;
+
+  getErrorText = createSelector(
+    () => this.props.format.format,
+    format => {
+      try {
+        handlebars.precompile(format);
+        return null;
+      } catch (e) {
+        return <div className={styles.errorText}>Your templating string is invalid.</div>;
+      }
+    }
+  )
 
   generateHeader = () => {
     this.updateTitle({ target: { value: handlebars.compile(this.props.format.format)({
@@ -175,6 +188,7 @@ export default class FormattingOptionsHandlebars extends React.Component {
             value={this.state.format}
             onChange={this.updateFormat}
             className={styles.input}
+            errorText={this.getErrorText()}
             fullWidth
             multiLine
           />
