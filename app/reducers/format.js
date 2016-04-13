@@ -44,6 +44,7 @@ export default handleActions({
     const newOption = {
       ...action.payload,
       format: plugin.fixFormattingOption(action.payload.format),
+      default: false,
       plugin
     };
     const ret = formattingOptions.push(newOption);
@@ -97,8 +98,10 @@ export default handleActions({
       return options;
     }
     const { formattingOptions, language, plugins, currentIndex } = options;
+    const oldFormat = formattingOptions.get(currentIndex);
     const current = {
-      ...formattingOptions.get(currentIndex),
+      ...oldFormat,
+      name: oldFormat.name + ' (Clone)',
       default: false
     };
     const ret = formattingOptions.push(current);
@@ -118,12 +121,12 @@ export default handleActions({
         ...plugin.defaultOptions.map(e => ({
           name: e.name,
           format: plugin.fixFormattingOption(e.format),
-          isDefault: true,
+          default: true,
           plugin
         }))) :
       options.formattingOptions.push({
         name: plugin.name,
-        isDefault: true,
+        default: false,
         format: plugin.fixFormattingOption(plugin.defaultOptions),
         plugin
       });

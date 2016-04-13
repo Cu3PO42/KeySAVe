@@ -29,15 +29,16 @@ const FormattingOptions = ({ language, changeFormatLanguage, formattingOptions, 
     <DropDownMenu value={currentIndex} onChange={(e, i, v) => selectFormattingOption(v)}>
       {formattingOptions.map((option, i) => <MenuItem key={i} value={i} primaryText={option.name} />)}
     </DropDownMenu>
-    <TextField value={current.name} onChange={e => changeCurrentFormattingOptionName(e.target.value)} />
+    <TextField value={current.name} disabled={current.default || !current.plugin.multipleInstances} onChange={e => changeCurrentFormattingOptionName(e.target.value)} />
     <CreateFormattingOption optionCreated={addFormattingOption} plugins={plugins} />
-    <IconButton onClick={cloneCurrentFormattingOption}><CreateIcon /></IconButton>
-    <IconButton onClick={deleteCurrentFormattingOption} disabled={current.default}><DeleteIcon /></IconButton>
+    <IconButton onClick={cloneCurrentFormattingOption} disabled={!current.plugin.multipleInstances}><CreateIcon /></IconButton>
+    <IconButton onClick={deleteCurrentFormattingOption} disabled={current.default || !current.plugin.multipleInstances}><DeleteIcon /></IconButton>
     <current.plugin.FormattingOptions
       updateCurrentFormat={updateCurrentFormattingOption}
       updateFormat={updateFormattingOption}
       format={current.format}
       index={currentIndex}
+      isDefault={current.default}
     />
   </Paper>
 );

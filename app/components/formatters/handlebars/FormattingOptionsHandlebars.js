@@ -13,7 +13,8 @@ export default class FormattingOptionsHandlebars extends React.Component {
     updateFormat: React.PropTypes.func.isRequired,
     updateCurrentFormat: React.PropTypes.func.isRequired,
     format: React.PropTypes.object.isRequired,
-    index: React.PropTypes.number.isRequired
+    index: React.PropTypes.number.isRequired,
+    isDefault: React.PropTypes.bool
   }
 
   constructor(props) {
@@ -204,8 +205,9 @@ export default class FormattingOptionsHandlebars extends React.Component {
             hintText="Header"
             fullWidth
             multiline
+            disabled={this.props.isDefault}
           />
-          <IconButton onClick={this.generateHeader}><ReloadIcon /></IconButton>
+          <IconButton disabled={this.props.isDefault} onClick={this.generateHeader}><ReloadIcon /></IconButton>
         </div>
         <div>
           <TextField
@@ -216,6 +218,7 @@ export default class FormattingOptionsHandlebars extends React.Component {
             errorText={this.getFormatErrorText()}
             fullWidth
             multiLine
+            disabled={this.props.isDefault}
           />
         </div>
         <div>
@@ -227,6 +230,7 @@ export default class FormattingOptionsHandlebars extends React.Component {
             errorText={this.getBoxHeaderErrorText()}
             fullWidth
             multiline
+            disabled={this.props.isDefault}
           />
         </div>
         <div>
@@ -234,6 +238,7 @@ export default class FormattingOptionsHandlebars extends React.Component {
             checked={this.props.format.splitBoxes}
             onCheck={this.updateSplitBoxes}
             label="Split boxes"
+            disabled={this.props.isDefault}
           />
         </div>
       </div>

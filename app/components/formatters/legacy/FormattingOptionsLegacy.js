@@ -85,7 +85,8 @@ export default class FormattingOptionsLegacy extends React.Component {
     updateFormat: React.PropTypes.func.isRequired,
     updateCurrentFormat: React.PropTypes.func.isRequired,
     format: React.PropTypes.object.isRequired,
-    index: React.PropTypes.number.isRequired
+    index: React.PropTypes.number.isRequired,
+    isDefault: React.PropTypes.bool
   }
 
   constructor(props) {
@@ -149,8 +150,9 @@ export default class FormattingOptionsLegacy extends React.Component {
             hintText="Header"
             fullWidth
             multiline
+            disabled={this.props.isDefault}
           />
-          <IconButton onClick={this.generateHeader}><ReloadIcon /></IconButton>
+          <IconButton disabled={this.props.isDefault} onClick={this.generateHeader}><ReloadIcon /></IconButton>
         </div>
         <div>
           <TextField
@@ -160,6 +162,7 @@ export default class FormattingOptionsLegacy extends React.Component {
             hintText="Format string"
             fullWidth
             multiLine
+            disabled={this.props.isDefault}
           />
         </div>
         <div className={styles.flexRow}>
@@ -169,11 +172,13 @@ export default class FormattingOptionsLegacy extends React.Component {
               label="Split Boxes"
               checked={this.props.format.splitBoxes}
               onCheck={this.updateSplitBoxes}
+              disabled={this.props.isDefault}
             />
             <CheckBox
               label="Show ESV for hatched Pokémon"
               checked={this.props.format.alwaysShowEsv}
               onCheck={this.updateAlwaysShowEsv}
+              disabled={this.props.isDefault}
             />
           </div>
           <div className={styles.column}>
@@ -182,6 +187,7 @@ export default class FormattingOptionsLegacy extends React.Component {
               name="Ghosts"
               valueSelected={this.props.format.ghosts}
               onChange={this.updateGhosts}
+              disabled={this.props.isDefault}
             >
               <RadioButton value="show" label="Show" />
               <RadioButton value="mark" label="Mark with ~ (recommended)" />

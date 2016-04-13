@@ -13,7 +13,8 @@ const FormattingOptionReddit = ({
     color,
     boldPerfectIVs
   },
-  updateCurrentFormat
+  updateCurrentFormat,
+  isDefault
 }) => (
   <div className={styles.flexRow}>
     <div className={styles.column}>
@@ -22,6 +23,7 @@ const FormattingOptionReddit = ({
         name="Ghosts"
         valueSelected={ghosts}
         onChange={(e, v) => updateCurrentFormat({ ghosts: v })}
+        disabled={isDefault}
       >
         <RadioButton value="show" label="Show" />
         <RadioButton value="mark" label="Mark with ~ (recommended)" />
@@ -34,17 +36,20 @@ const FormattingOptionReddit = ({
         label="Split boxes"
         checked={splitBoxes}
         onCheck={(e, v) => updateCurrentFormat({ splitBoxes: v })}
+        disabled={isDefault}
       />
       <CheckBox
         label="Bold perfect IVs"
         checked={boldPerfectIVs}
         onCheck={(e, v) => updateCurrentFormat({ boldPerfectIVs: v })}
+        disabled={isDefault}
       />
       <div className={styles.menuRow}>
         <span>Color boxes:</span>
         <DropDownMenu
           value={color}
           onChange={(e, v) => updateCurrentFormat({ color: v })}
+          disabled={isDefault}
         >
           <MenuItem value={0} primaryText="None" />
           <MenuItem value={1} primaryText="Cycle" />
