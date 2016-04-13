@@ -9,7 +9,8 @@ import {
   SELECT_FORMATTING_OPTION,
   UPDATE_CURRENT_FORMATTING_OPTION,
   UPDATE_FORMATTING_OPTION,
-  CHANGE_CURRENT_FORMATTING_OPTION_NAME
+  CHANGE_CURRENT_FORMATTING_OPTION_NAME,
+  OVERWRITE_SINGLE_PLUGIN_OPTION
 } from '../actions/format';
 import { List, Map } from 'immutable';
 
@@ -197,7 +198,7 @@ export default handleActions({
   },
 
   [CHANGE_CURRENT_FORMATTING_OPTION_NAME](options, action) {
-    if (options.currentIndex === -1 || options.current.default) {
+    if (options.currentIndex === -1 || options.current.default || !options.current.plugin.multipleInstances) {
       return options;
     }
     let { formattingOptions } = options;
@@ -210,6 +211,27 @@ export default handleActions({
       ...options,
       formattingOptions,
       current
+    };
+  },
+
+  [OVERWRITE_SINGLE_PLUGIN_OPTION](options, { payload: { name, format } }) {
+    const [index, oldOption] = options.formattingOptions.find(e => e.name === name);
+    const newOption = {
+      ...oldOption,
+      format
+    };
+    const formattingOptions = options.formattingOptions.set(index, newOption);
+    if (options.currentIndex === index) {
+      return {
+        ...options,
+        formattingOptions,
+        current: newOption
+      };
+    }
+
+    return {
+      ...options,
+      formattingOptions
     };
   }
 }, defaultFormat);

@@ -21,10 +21,6 @@ app.on('window-all-closed', () => {
 var keyPath = app.getPath('userData') + '/keys';
 if (!fs.existsSync(keyPath)) {
   (async () => {
-    await fs.mkdirpAsync(app.getPath('userData'));
-    try {
-      await fs.moveAsync(app.getPath('home') + '/Documents/KeySAVe/config.json', app.getPath('userData') + '/config.json', { clobber: false });
-    } catch (e) { /* ignore */ }
     try {
       await fs.moveAsync(app.getPath('home') + '/Documents/KeySAVe/data', keyPath, { clobber: false });
     } catch (e) {
