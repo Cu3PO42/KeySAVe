@@ -58,13 +58,23 @@ export default class PkmListReddit extends React.Component {
           <tr><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|</th></tr>
           {pkm.map(e => this.props.format.ghosts === 'hide' && e.isGhost ?
             null :
-            <tr className={this.props.format.ghosts === 'mark' && e.isGhost ? styles.ghost : ''}>
+            <tr key={e.box * 30 + e.slot} className={this.props.format.ghosts === 'mark' && e.isGhost ? styles.ghost : ''}>
               <td>|{this.props.format.ghosts === 'mark' && e.isGhost ? '~' : ''}B{('00' + (e.box + 1)).slice(-2)}</td>
               <td>|{Math.floor(e.slot / 6) + 1},{e.slot % 6 + 1}</td>
               <td>|{getSpecies(e.species, e.form, local)} ({genderString(e.gender)})</td>
               <td>|{local.natures[e.nature]}</td>
               <td>|{local.abilities[e.ability]} </td>
-              <td>|{e.ivHp}.{e.ivAtk}.{e.ivDef}.{e.ivSpAtk}.{e.ivSpDef}.{e.ivSpe}</td>
+              {this.props.format.boldPerfectIVs ?
+                <td>
+                  |{e.ivHp === 31 ? <span className={styles.boldIV}>**31**</span> : e.ivHp}
+                  .{e.ivAtk === 31 ? <span className={styles.boldIV}>**31**</span> : e.ivAtk}
+                  .{e.ivDef === 31 ? <span className={styles.boldIV}>**31**</span> : e.ivDef}
+                  .{e.ivSpAtk === 31 ? <span className={styles.boldIV}>**31**</span> : e.ivSpAtk}
+                  .{e.ivSpDef === 31 ? <span className={styles.boldIV}>**31**</span> : e.ivSpDef}
+                  .{e.ivSpe === 31 ? <span className={styles.boldIV}>**31**</span> : e.ivSpe}
+                </td> :
+                <td>|{e.ivHp}.{e.ivAtk}.{e.ivDef}.{e.ivSpAtk}.{e.ivSpDef}.{e.ivSpe}</td>
+              }
               <td>|{local.types[e.hpType]}</td>
               <td>|{('0000' + e.esv).slice(-4)}</td>
               <td>|</td>

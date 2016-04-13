@@ -10,7 +10,8 @@ const FormattingOptionReddit = ({
   format: {
     ghosts,
     splitBoxes,
-    color
+    color,
+    boldPerfectIVs
   },
   updateCurrentFormat
 }) => (
@@ -28,10 +29,16 @@ const FormattingOptionReddit = ({
       </RadioButtonGroup>
     </div>
     <div className={styles.column}>
+      <h4>Miscellaneous</h4>
       <CheckBox
         label="Split boxes"
         checked={splitBoxes}
         onCheck={(e, v) => updateCurrentFormat({ splitBoxes: v })}
+      />
+      <CheckBox
+        label="Bold perfect IVs"
+        checked={boldPerfectIVs}
+        onCheck={(e, v) => updateCurrentFormat({ boldPerfectIVs: v })}
       />
       <div className={styles.menuRow}>
         <span>Color boxes:</span>
