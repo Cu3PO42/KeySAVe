@@ -168,6 +168,7 @@ class PkmListHandlebars extends Component {
 
     return (
       <Paper className={styles.paper}>
+        {this.props.format.header}
         {pkm.map(e => <div key={e.box * 30 + e.slot} dangerouslySetInnerHTML={{ __html: template(e, { helpers: this.handlebarsHelpers }) }}></div>)}
       </Paper>
     );
@@ -197,7 +198,6 @@ class PkmListHandlebars extends Component {
 
       return this.renderBox(this.props.pokemon);
     } catch (e) {
-      console.log(e);
       return (
         <Paper className={styles.paper}>
           Template error! Please check your format string!

@@ -42,8 +42,8 @@ export default class FormattingOptionsHandlebars extends React.Component {
     this.flush();
   }
 
-  updateTitle = (e) => {
-    this.setState({ title: e.target.value });
+  updateHeader = (e) => {
+    this.setState({ header: e.target.value });
     this.flushed = false;
     this.flush();
   }
@@ -198,8 +198,8 @@ export default class FormattingOptionsHandlebars extends React.Component {
       <div>
         <div className={styles.flexRow}>
           <TextField
-            value={this.state.title}
-            onChange={this.updateTitle}
+            value={this.state.header}
+            onChange={this.updateHeader}
             className={styles.input}
             hintText="Header"
             fullWidth
