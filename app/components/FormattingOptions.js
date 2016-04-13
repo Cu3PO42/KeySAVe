@@ -33,7 +33,7 @@ const FormattingOptions = ({ language, changeFormatLanguage, formattingOptions, 
     <CreateFormattingOption optionCreated={addFormattingOption} plugins={plugins} />
     <IconButton onClick={cloneCurrentFormattingOption}><CreateIcon /></IconButton>
     <IconButton onClick={deleteCurrentFormattingOption} disabled={current.default}><DeleteIcon /></IconButton>
-    <current.plugin.FormatOptionPlugin
+    <current.plugin.FormattingOptions
       updateCurrentFormat={updateCurrentFormattingOption}
       updateFormat={updateFormattingOption}
       format={current.format}

@@ -20,12 +20,13 @@ const defaultFormat = {
   current: {
     plugin: {
       name: 'none',
-      FormatPlugin: () => undefined,
-      FormattingOptionsPlugin: () => undefined
+      PkmList: () => null,
+      FormattingOptions: () => null
     },
     format: {},
     default: false
-  }
+  },
+  currentIndex: -1
 };
 
 export default handleActions({
@@ -37,9 +38,11 @@ export default handleActions({
   },
 
   [ADD_FORMATTING_OPTION]({ formattingOptions, language, plugins }, action) {
+    const plugin = plugins.get(action.payload.plugin);
     const newOption = {
       ...action.payload,
-      plugin: plugins.get(action.payload.plugin)
+      format: plugin.fixFormattingOption(action.payload.format),
+      plugin
     };
     const ret = formattingOptions.push(newOption);
     const currentIndex = ret.size - 1;
@@ -68,7 +71,7 @@ export default handleActions({
   },
 
   [DELETE_CURRENT_FORMATTING_OPTION](options) {
-    if (options.current.default) {
+    if (options.current.default || options.currentIndex === -1) {
       return options;
     }
     const { formattingOptions, language, plugins, currentIndex } = options;
@@ -83,7 +86,11 @@ export default handleActions({
     };
   },
 
-  [CLONE_CURRENT_FORMATTING_OPTION]({ formattingOptions, language, plugins, currentIndex }) {
+  [CLONE_CURRENT_FORMATTING_OPTION](options) {
+    if (options.currentIndex === -1) {
+      return options;
+    }
+    const { formattingOptions, language, plugins, currentIndex } = options;
     const current = {
       ...formattingOptions.get(currentIndex),
       default: false
@@ -98,10 +105,36 @@ export default handleActions({
     };
   },
 
-  [REGISTER_FORMATTING_PLUGIN](options, action) {
+  [REGISTER_FORMATTING_PLUGIN](options, { payload: plugin }) {
+    const plugins = options.plugins.set(plugin.name, plugin);
+    const formattingOptions = plugin.multipleInstances ?
+      options.formattingOptions.push(
+        ...plugin.defaultOptions.map(e => ({
+          name: e.name,
+          format: plugin.fixFormattingOption(e.format),
+          isDefault: true,
+          plugin
+        }))) :
+      options.formattingOptions.push({
+        name: plugin.name,
+        isDefault: true,
+        format: plugin.fixFormattingOption(plugin.defaultOptions),
+        plugin
+      });
+    let currentIndex;
+    let current;
+    if (options.currentIndex === -1 && formattingOptions.size > 0) {
+      currentIndex = 0;
+      current = formattingOptions.get(0);
+    } else {
+      ({ currentIndex, current } = options);
+    }
     return {
       ...options,
-      plugins: options.plugins.set(action.payload.name, action.payload)
+      plugins,
+      formattingOptions,
+      currentIndex,
+      current
     };
   },
 
@@ -115,6 +148,9 @@ export default handleActions({
   },
 
   [UPDATE_CURRENT_FORMATTING_OPTION](options, action) {
+    if (options.currentIndex === -1) {
+      return options;
+    }
     const current = {
       ...options.current,
       format: {
@@ -131,6 +167,9 @@ export default handleActions({
   },
 
   [UPDATE_FORMATTING_OPTION](options, action) {
+    if (options.currentIndex === -1) {
+      return -1;
+    }
     const oldFormat = options.formattingOptions.get(action.payload.index);
     const newFormat = {
       ...oldFormat,
@@ -146,6 +185,9 @@ export default handleActions({
   },
 
   [CHANGE_CURRENT_FORMATTING_OPTION_NAME](options, action) {
+    if (options.currentIndex === -1) {
+      return options;
+    }
     let { formattingOptions } = options;
     const current = {
       ...options.current,

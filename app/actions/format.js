@@ -18,4 +18,4 @@ export const cloneCurrentFormattingOption = createAction(CLONE_CURRENT_FORMATTIN
 export const updateCurrentFormattingOption = createAction(UPDATE_CURRENT_FORMATTING_OPTION, format => format);
 export const updateFormattingOption = createAction(UPDATE_FORMATTING_OPTION, (index, format) => ({ index, format }));
 export const changeCurrentFormattingOptionName = createAction(CHANGE_CURRENT_FORMATTING_OPTION_NAME, name => name);
-export const registerFormattingPlugin = createAction(REGISTER_FORMATTING_PLUGIN, (name, FormatPlugin, FormatOptionPlugin) => ({ name, FormatPlugin, FormatOptionPlugin }));
+export const registerFormattingPlugin = createAction(REGISTER_FORMATTING_PLUGIN, plugin => plugin);

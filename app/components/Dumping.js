@@ -118,7 +118,7 @@ export default class Dumping extends React.Component {
           <IconButton onClick={this.exportPk6} tooltip="Export .pk6 files"><ArchiveIcon /></IconButton>
         </div>
         <div className={styles.pkmContainer} ref="dumper">
-          <format.current.plugin.FormatPlugin
+          <format.current.plugin.PkmList
             language={format.language}
             format={format.current.format}
             pokemon={pokemon}
