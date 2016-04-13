@@ -37,8 +37,10 @@ export default handleActions({
     };
   },
 
-  [ADD_FORMATTING_OPTION]({ formattingOptions, language, plugins }, action) {
+  [ADD_FORMATTING_OPTION](options, action) {
+    const { formattingOptions, language, plugins } = options;
     const plugin = plugins.get(action.payload.plugin);
+    if (!plugin.multipleInstances) return options;
     const newOption = {
       ...action.payload,
       format: plugin.fixFormattingOption(action.payload.format),
@@ -55,7 +57,11 @@ export default handleActions({
     };
   },
 
-  [CHANGE_CURRENT_FORMATTING_OPTION]({ formattingOptions, language, current, plugins, currentIndex }, action) {
+  [CHANGE_CURRENT_FORMATTING_OPTION](options, action) {
+    const { formattingOptions, language, current, plugins, currentIndex } = options;
+    if (current.default || currentIndex === -1) {
+      return options;
+    }
     const newOption = {
       ...current,
       format: action.payload
@@ -71,7 +77,7 @@ export default handleActions({
   },
 
   [DELETE_CURRENT_FORMATTING_OPTION](options) {
-    if (options.current.default || options.currentIndex === -1) {
+    if (options.current.default || options.currentIndex === -1 || !options.current.plugin.multipleInstances) {
       return options;
     }
     const { formattingOptions, language, plugins, currentIndex } = options;
@@ -87,7 +93,7 @@ export default handleActions({
   },
 
   [CLONE_CURRENT_FORMATTING_OPTION](options) {
-    if (options.currentIndex === -1) {
+    if (!options.current.plugin.multipleInstances || options.currentIndex === -1) {
       return options;
     }
     const { formattingOptions, language, plugins, currentIndex } = options;
@@ -140,6 +146,9 @@ export default handleActions({
 
   [SELECT_FORMATTING_OPTION](options, action) {
     const format = options.formattingOptions.get(action.payload);
+    if (format === undefined) {
+      return options;
+    }
     return {
       ...options,
       current: format,
@@ -148,7 +157,7 @@ export default handleActions({
   },
 
   [UPDATE_CURRENT_FORMATTING_OPTION](options, action) {
-    if (options.currentIndex === -1) {
+    if (options.currentIndex === -1 || options.current.default) {
       return options;
     }
     const current = {
@@ -167,10 +176,10 @@ export default handleActions({
   },
 
   [UPDATE_FORMATTING_OPTION](options, action) {
-    if (options.currentIndex === -1) {
-      return -1;
-    }
     const oldFormat = options.formattingOptions.get(action.payload.index);
+    if (oldFormat === undefined || oldFormat.default) {
+      return options;
+    }
     const newFormat = {
       ...oldFormat,
       format: {
@@ -185,7 +194,7 @@ export default handleActions({
   },
 
   [CHANGE_CURRENT_FORMATTING_OPTION_NAME](options, action) {
-    if (options.currentIndex === -1) {
+    if (options.currentIndex === -1 || options.current.default) {
       return options;
     }
     let { formattingOptions } = options;
