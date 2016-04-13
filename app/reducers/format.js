@@ -43,7 +43,7 @@ export default handleActions({
     const plugin = plugins.get(action.payload.plugin);
     if (!plugin.multipleInstances) return options;
     const newOption = {
-      ...action.payload,
+      name: action.payload.name,
       format: plugin.fixFormattingOption(action.payload.format),
       default: false,
       plugin
@@ -215,7 +215,7 @@ export default handleActions({
   },
 
   [OVERWRITE_SINGLE_PLUGIN_OPTION](options, { payload: { name, format } }) {
-    const [index, oldOption] = options.formattingOptions.find(e => e.name === name);
+    const [index, oldOption] = options.formattingOptions.findEntry(e => e.name === name);
     const newOption = {
       ...oldOption,
       format
