@@ -38,19 +38,24 @@ export default class CreateFormattingOption extends React.Component {
 
   createOption = () => {
     this.props.optionCreated(this.state.name, this.state.currentPlugin);
+    this.closeDialog();
+  }
+
+  closeDialog = () => {
     this.setState({ name: '', dialogOpen: false });
   }
 
   render() {
-    const pluginList = this.props.plugins.toList();
+    const plugins = this.props.plugins.valueSeq();
     return (
       <span>
         <Dialog
           open={this.state.dialogOpen}
-          actions={[<FlatButton onClick={this.createOption}>Create</FlatButton>]}
+          actions={[<FlatButton onClick={this.closeDialog}>Cancel</FlatButton>, <FlatButton onClick={this.createOption} primary>Create</FlatButton>]}
+          onRequestClose={this.closeDialog}
         >
           <DropDownMenu value={this.state.currentPlugin} onChange={this.pluginSelected}>
-            {pluginList.map(({ name }) => <MenuItem key={name} value={name} primaryText={name} />)}
+            {plugins.filter(({ multipleInstances: m }) => m).map(({ name }) => <MenuItem key={name} value={name} primaryText={name} />)}
           </DropDownMenu>
           <TextField value={this.state.name} onChange={this.nameChanged} />
         </Dialog>
