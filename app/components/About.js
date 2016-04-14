@@ -14,7 +14,9 @@ const About = () => (
       contact me (Cu3PO42) on <a href="irc://irc.synirc.net:6667">synIRC</a>,
       message me on Twitter (<ExternalLink href="https://twitter.com/Cu3PO42">@Cu3PO42</ExternalLink>)
       or send me an <a href="mailto:cu3po42@gmail.com">e-mail</a>.
-      Any and all feedback is appreciated.
+      Any and all feedback is appreciated. If you report an issue, make sure to
+      include your operating system, the version of KeySAV<sup>e</sup> you're on
+      and how to reproduce the issue.
     </p>
     <h2>Thanks</h2>
     <p>
