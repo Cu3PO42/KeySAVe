@@ -29,6 +29,21 @@ function pad4(n) {
   return ('0000' + n).slice(-4);
 }
 
+function getSprite(pkm) {
+  const sprite = pkm.species + (pkm.form ? '-' + pkm.form : '') + (pkm.tsv === pkm.esv ? '-s' : '');
+  if (backgroundColors[sprite]) {
+    return sprite;
+  }
+  return '' + pkm.species + (pkm.tsv === pkm.esv ? '-s' : '');
+}
+
+function getSpecies(pkm, local) {
+  if (pkm.form && local.forms[pkm.species] && local.forms[pkm.species][pkm.form]) {
+    return local.species[pkm.species] + ' (' + local.forms[pkm.species][pkm.form] + ')';
+  }
+  return local.species[pkm.species];
+}
+
 export default class PkmListPretty extends React.Component {
   static propTypes = {
     pokemon: React.PropTypes.object,
@@ -36,54 +51,68 @@ export default class PkmListPretty extends React.Component {
     format: React.PropTypes.object
   };
 
+  /*
+  Include:
+  - Nickname
+  - OT Name (and Gender)
+  - Ball?
+  - HP Type
+  Highlight low speed with negative speed nature positively?
+  */
   render() {
     const local = Localization[this.props.language];
+    const pokemon = this.props.format.ghosts === 'hide' ?
+      this.props.pokemon.filter(e => !e.isGhost) :
+      this.props.pokemon;
     return (
       <div>
-        {this.props.pokemon.map(pkm =>
-          <Paper key={pkm.box * 30 + pkm.slot} className={styles.paper}>
-            <div className={styles.sprite}
-              style={{ backgroundColor: backgroundColors[pkm.species + (pkm.form === 0 ? '' : '-' + pkm.form)] }}
-            ><img
-              src={`resources/sprites/${pkm.species + (pkm.form === 0 ? '' : '-' + pkm.form)}.png`}
-            /></div>
-            <div className={styles.infoSide}>
-              <div className={styles.nameLine}>
-                <div>
-                  <div className={styles.box}>Box {pad2(pkm.box + 1)} - {Math.floor(pkm.slot / 6) + 1},{pkm.slot % 6 + 1}</div>
+        {pokemon.map(pkm => {
+          const sprite = getSprite(pkm);
+          return (
+            <Paper key={pkm.box * 30 + pkm.slot} className={`${styles.paper} ${pkm.isGhost && this.props.format.ghosts === 'mark' ? styles.ghost : ''}`}>
+              <div className={styles.sprite}
+                style={{ backgroundColor: backgroundColors[sprite] }}
+              ><img
+                src={`resources/sprites/${sprite}.png`}
+              /></div>
+              <div className={styles.infoSide}>
+                <div className={styles.nameLine}>
                   <div>
-                    <span className={styles.dexNo}><span className={styles.dexHash}>#</span>{pad3(pkm.species)}</span>&nbsp;
-                    <span className={genderStyles[pkm.gender]}>{local.species[pkm.species]}{pkm.form === 0 ? '' : ` (${local.forms[pkm.form]})`}</span>
+                    <div className={styles.box}><span className={styles.boxName}>Box </span>{pad2(pkm.box + 1)} - {Math.floor(pkm.slot / 6) + 1},{pkm.slot % 6 + 1}</div>
+                    <div>
+                      <span className={styles.dexNo}><span className={styles.dexHash}>#</span>{pad3(pkm.species)}</span>&nbsp;
+                      <span className={genderStyles[pkm.gender]}>{getSpecies(pkm, local)}</span>
+                    </div>
                   </div>
-                </div>
-                <div>
-                  <div className={styles.nature}>
-                    Nature: &nbsp;{local.natures[pkm.nature]}
+                  <div>
+                    <div className={styles.nature}>
+                      <div>Nature:</div><div>{local.natures[pkm.nature]}</div>
+                    </div>
+                    <div className={styles.ability}>
+                      <div>Ability:</div><div>{local.abilities[pkm.ability]}</div>
+                    </div>
                   </div>
-                  <div className={styles.ability}>
-                    Ability: {local.abilities[pkm.ability]}
-                  </div>
-                </div>
 
-                <span className={styles.flexFiller}></span>
-                <span className={styles.langTag}>{local.languageTags[pkm.otLang]}</span>
-              </div>
-              <div className={styles.ivLine}>
-                {ivNames.map((iv, i) =>
-                  <div className={`${styles.ivBox} ${getIvClass(pkm['iv' + iv])}`} key={i}>
-                    <span className={styles.ivName}>{iv}</span>
-                    <span className={styles.ivValue}>{pkm['iv' + iv]}</span>
+                  <span className={styles.flexFiller}></span>
+                  <span className={styles.langTag}>{local.languageTags[pkm.otLang]}</span>
+                </div>
+                <div className={styles.ivLine}>
+                  {ivNames.map((iv, i) =>
+                    <div className={`${styles.ivBox} ${getIvClass(pkm['iv' + iv])}`} key={i}>
+                      <span className={styles.ivName}>{iv}</span>
+                      <span className={styles.ivValue}>{pkm['iv' + iv]}</span>
+                    </div>
+                  )}
+                  <div className={styles.flexFiller}></div>
+                  <div className={styles.esvBox}>
+                    <span className={styles.esvName}>ESV</span>
+                    <span className={styles.esvValue}>{pad4(pkm.esv)}</span>
                   </div>
-                )}
-                <div className={styles.flexFiller}></div>
-                <div className={styles.esvBox}>
-                  <span className={styles.esvName}>ESV</span>
-                  <span className={styles.esvValue}>{pad4(pkm.esv)}</span>
                 </div>
               </div>
-            </div>
-          </Paper>
-        )}
+            </Paper>
+          );
+        })}
       </div>
     );
   }

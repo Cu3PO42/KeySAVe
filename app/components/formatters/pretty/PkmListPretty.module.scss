@@ -5,9 +5,31 @@
   display: flex;
   flex-direction: row;
   align-items: stretch;
+  width: 100%;
 
   &:not(:first-child) {
     margin-top: 20px;
+  }
+
+  &:hover {
+    margin-left: 20px;
+  }
+}
+
+.ghost {
+  position: relative;
+  &::before {
+    content: "";
+    display: block;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    pointer-events: none;
+    background-blend-mode: luminosity;
+    transition: background-color 0.5s ease;
+  }
+  &:not(:hover)::before {
+    background-color: rgba(100, 100, 100, 0.5);
   }
 }
 
@@ -32,17 +54,24 @@
   display: flex;
   flex-grow: 1;
 
-  &>:not(.langTag) {
+  /*&>:not(.langTag) {
     font-family: monospace;
     font-size: 1.4em;
     font-weight: bolder;
-  }
+  }*/
 }
 
 .box {
 }
 
+.boxName {
+  font-weight: bold;
+}
+
 .dexNo {
+  font-family: monospace;
+  font-size: 1.2em;
+  font-weight: bold;
 }
 
 .dexHash {
@@ -51,14 +80,32 @@
 
 .genderFemale {
   color: #e546b9;
+
+  &::after {
+    content: "(♀)";
+    padding-left: 0.6em;
+  }
 }
 
 .genderMale {
   color: #549dc7;
+
+  &::after {
+    content: "(♂)";
+    padding-left: 0.6em;
+  }
 }
 
 .nature, .ability{
   padding-left: 30px;
+  display: table-row;
+
+  & > div {
+    display: table-cell;
+    &:first-child {
+      font-weight: bold;
+    }
+  }
 }
 
 .langTag {
