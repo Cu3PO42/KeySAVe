@@ -59,7 +59,7 @@ export default class CreateFormattingOption extends React.Component {
           </DropDownMenu>
           <TextField value={this.state.name} onChange={this.nameChanged} />
         </Dialog>
-        <IconButton onClick={this.openDialog}><AddIcon /></IconButton>
+        <IconButton tooltip="Create formatting option" onClick={this.openDialog}><AddIcon /></IconButton>
       </span>
     );
   }
