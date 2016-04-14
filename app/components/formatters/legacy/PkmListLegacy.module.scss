@@ -1,5 +1,5 @@
 .paper {
-  padding: 10px;
+  padding: 10px 0 10px 10px;
   font-size: 0.8em;
   font-family: "Fira Mono", monospace !important;
   white-space: nowrap;
@@ -10,4 +10,9 @@
   font-family: sans-serif;
   color: #999;
   margin-bottom: 0;
+}
+
+.box {
+  display: inline-block;
+  padding-right: 10px;
 }

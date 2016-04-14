@@ -133,8 +133,10 @@ export default class PkmListLegacy extends React.Component {
     const Template = this.getTemplate();
     return (
       <Paper className={styles.paper}>
-        {this.props.format.header}
-        {pkm.map((e, i) => <Template key={e.box * 30 + e.slot} pkm={e} index={i} local={local} />)}
+        <div className={styles.box}>
+          {this.props.format.header}
+          {pkm.map((e, i) => <Template key={e.box * 30 + e.slot} pkm={e} index={i} local={local} />)}
+        </div>
       </Paper>
     );
   }
