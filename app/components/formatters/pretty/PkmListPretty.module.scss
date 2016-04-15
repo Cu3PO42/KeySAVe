@@ -62,6 +62,7 @@
 }
 
 .box {
+  margin: 5px 0;
 }
 
 .boxName {
@@ -96,14 +97,23 @@
   }
 }
 
-.nature, .ability{
-  padding-left: 30px;
-  display: table-row;
+.nameColumn {
+  display: table;
+  margin-left: 30px;
+  border-collapse: separate;
+  border-spacing: 5px;
 
   & > div {
-    display: table-cell;
-    &:first-child {
-      font-weight: bold;
+    display: table-row;
+
+    & > div {
+      display: table-cell;
+      &:first-child {
+        font-weight: bold;
+        &::after {
+          content: ":";
+        }
+      }
     }
   }
 }

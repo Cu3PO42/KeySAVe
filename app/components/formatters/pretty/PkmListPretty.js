@@ -53,8 +53,6 @@ export default class PkmListPretty extends React.Component {
 
   /*
   Include:
-  - Nickname
-  - OT Name (and Gender)
   - Ball?
   - HP Type
   Highlight low speed with negative speed nature positively?
@@ -84,12 +82,20 @@ export default class PkmListPretty extends React.Component {
                       <span className={genderStyles[pkm.gender]}>{getSpecies(pkm, local)}</span>
                     </div>
                   </div>
-                  <div>
-                    <div className={styles.nature}>
-                      <div>Nature:</div><div>{local.natures[pkm.nature]}</div>
+                  <div className={styles.nameColumn}>
+                    <div>
+                      <div>OT</div><div className={genderStyles[pkm.otGender]}>{pkm.ot}</div>
                     </div>
-                    <div className={styles.ability}>
-                      <div>Ability:</div><div>{local.abilities[pkm.ability]}</div>
+                    <div>
+                      <div>Nickname</div><div>{pkm.nickname}</div>
+                    </div>
+                  </div>
+                  <div className={styles.nameColumn}>
+                    <div>
+                      <div>Nature</div><div>{local.natures[pkm.nature]}</div>
+                    </div>
+                    <div>
+                      <div>Ability</div><div>{local.abilities[pkm.ability]}</div>
                     </div>
                   </div>
 
