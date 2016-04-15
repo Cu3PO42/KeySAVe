@@ -41,7 +41,7 @@ const FormattingOptions = ({ language, changeFormatLanguage, formattingOptions, 
         onChange={(e, i, v) => selectFormattingOption(v)}
         floatingLabelText="Formatting Option"
         className={styles.formattingOptions}
-        style={{ width: '200px', marginRight: '15px' }}
+        style={{ marginRight: '15px' }}
       >
         {formattingOptions
           .entrySeq()
@@ -65,9 +65,9 @@ const FormattingOptions = ({ language, changeFormatLanguage, formattingOptions, 
         value={current.name}
         disabled={current.default || !current.plugin.multipleInstances}
         onChange={e => changeCurrentFormattingOptionName(e.target.value)}
-        floatingLabelText="Formatting Option Name"
+        floatingLabelText="Name"
         className={styles.formatName}
-        style={{ width: '200px', marginRight: '15px' }}
+        style={{ marginRight: '15px' }}
       />
       <TextField
         value={current.plugin.name}

@@ -54,11 +54,9 @@
   display: flex;
   flex-grow: 1;
 
-  /*&>:not(.langTag) {
-    font-family: monospace;
-    font-size: 1.4em;
-    font-weight: bolder;
-  }*/
+  &>:not(.langTag) {
+    flex-grow: 1;
+  }
 }
 
 .box {
@@ -98,8 +96,7 @@
 }
 
 .nameColumn {
-  display: table;
-  margin-left: 30px;
+  display: block;
   border-collapse: separate;
   border-spacing: 5px;
 
@@ -135,6 +132,14 @@
   flex-direction: row;
   width: 80px;
   justify-content: center;
+}
+
+.ivBox {
+  flex-grow: 1;
+}
+
+.esvBox {
+  margin-left: 30px;
 }
 
 .ivValue, .esvValue {

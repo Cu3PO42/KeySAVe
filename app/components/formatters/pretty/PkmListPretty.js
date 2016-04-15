@@ -7,12 +7,22 @@ import styles from './PkmListPretty.module.scss';
 const ivNames = ['Hp', 'Atk', 'Def', 'SpAtk', 'SpDef', 'Spe'];
 const genderStyles = [styles.genderMale, styles.genderFemale, styles.genderNeutral];
 
-function getIvClass(iv) {
-  if (31 - iv <= 1) {
+function getIvClass(pkm, iv) {
+  const val = pkm['iv' + iv];
+  if (iv === 'Spe' && pkm.nature % 5 === 2) {
+    if (31 - val <= 1) {
+      return styles.ivBad;
+    }
+
+    if (val <= 1) {
+      return styles.ivGood;
+    }
+  }
+  if (31 - val <= 1) {
     return styles.ivGood;
   }
 
-  if (iv <= 1) {
+  if (val <= 1) {
     return styles.ivBad;
   }
 
@@ -55,7 +65,6 @@ export default class PkmListPretty extends React.Component {
   Include:
   - Ball?
   - HP Type
-  Highlight low speed with negative speed nature positively?
   */
   render() {
     const local = Localization[this.props.language];
@@ -99,17 +108,15 @@ export default class PkmListPretty extends React.Component {
                     </div>
                   </div>
 
-                  <span className={styles.flexFiller}></span>
                   <span className={styles.langTag}>{local.languageTags[pkm.otLang]}</span>
                 </div>
                 <div className={styles.ivLine}>
                   {ivNames.map((iv, i) =>
-                    <div className={`${styles.ivBox} ${getIvClass(pkm['iv' + iv])}`} key={i}>
+                    <div className={`${styles.ivBox} ${getIvClass(pkm, iv)}`} key={i}>
                       <span className={styles.ivName}>{iv}</span>
                       <span className={styles.ivValue}>{pkm['iv' + iv]}</span>
                     </div>
                   )}
-                  <div className={styles.flexFiller}></div>
                   <div className={styles.esvBox}>
                     <span className={styles.esvName}>ESV</span>
                     <span className={styles.esvValue}>{pad4(pkm.esv)}</span>
