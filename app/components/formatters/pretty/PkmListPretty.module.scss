@@ -53,9 +53,10 @@
   padding: 5px 5px 5px 20px;
   display: flex;
   flex-grow: 1;
+  white-space: normal;
 
   &>:not(.langTag) {
-    flex-grow: 1;
+    width: 25%;
   }
 }
 
@@ -118,6 +119,7 @@
 .langTag {
   font-size: 0.8em;
   align-self: flex-start;
+  margin-left: auto;
 }
 
 .ivLine {
