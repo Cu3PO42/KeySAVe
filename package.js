@@ -28,7 +28,7 @@ const DEFAULT_OPTS = {
   'helper-bundle-id': 'com.cu3po42.keysave',
   icon: './resources/keysave-logo',
   overwrite: true,
-  version: '0.36.3',
+  version: '0.37.6',
   'version-string': {
     CompanyName: 'Cu3PO42',
     LegalCopyright: 'Cu3PO42',
@@ -55,7 +55,7 @@ if (DEFAULT_OPTS.version) {
   // use the same version as the currently-installed electron-prebuilt
   exec('npm list electron-prebuilt', (err, stdout) => {
     if (err) {
-      DEFAULT_OPTS.version = '0.36.2';
+      DEFAULT_OPTS.version = '0.37.6';
     } else {
       DEFAULT_OPTS.version = stdout.split('electron-prebuilt@')[1].replace(/\s/g, '');
     }
