@@ -31,15 +31,19 @@ config.module.loaders.push({
   test: /^((?!\.module).)*\.scss$/,
   loader: ExtractTextPlugin.extract(
     'style-loader',
-    'css-loader',
-    'sass-loader'
+    [
+      'css-loader',
+      'sass-loader'
+    ]
   )
 }, {
   test: /\.module\.scss$/,
   loader: ExtractTextPlugin.extract(
     'style-loader',
-    'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
-    'sass-loader'
+    [
+      'css-loader?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
+      'sass-loader?sourceMap'
+    ]
   )
 });
 
