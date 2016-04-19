@@ -4,3 +4,4 @@ cache/
 release/
 npm-debug.log
 serverlib/
+app/resources/sprites.*

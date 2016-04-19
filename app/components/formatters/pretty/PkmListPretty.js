@@ -2,7 +2,12 @@ import React from 'react';
 import Paper from 'material-ui/lib/paper';
 import { Localization } from 'keysavcore';
 import backgroundColors from './background-colors.json';
+import sprites from '../../../resources/sprites.json';
+import spritesheetPath from 'file!../../../resources/sprites.png';
 import styles from './PkmListPretty.module.scss';
+
+const spritesheetUrl = `url(${spritesheetPath})`;
+const spritesheetSize = `${sprites.width * 0.8}px ${sprites.height * 0.8}px`;
 
 const ivNames = ['Hp', 'Atk', 'Def', 'SpAtk', 'SpDef', 'Spe'];
 const genderStyles = [styles.genderMale, styles.genderFemale, styles.genderNeutral];
@@ -75,12 +80,18 @@ export default class PkmListPretty extends React.Component {
       <div>
         {pokemon.map(pkm => {
           const sprite = getSprite(pkm);
+          const spriteClass = sprites.sprites[sprite];
           return (
             <Paper key={pkm.box * 30 + pkm.slot} className={`${styles.paper} ${pkm.isGhost && this.props.format.ghosts === 'mark' ? styles.ghost : ''}`}>
               <div className={styles.sprite}
                 style={{ backgroundColor: backgroundColors[sprite] }}
-              ><img
-                src={`resources/sprites/${sprite}.png`}
+              ><div style={{
+                width: '80px',
+                height: '80px',
+                backgroundPosition: `${spriteClass.x * 0.8}px ${spriteClass.y * 0.8}px`,
+                backgroundImage: spritesheetUrl,
+                backgroundSize: spritesheetSize
+              }}
               /></div>
               <div className={styles.infoSide}>
                 <div className={styles.nameLine}>
