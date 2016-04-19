@@ -44,8 +44,20 @@ const DEFAULT_OPTS = {
     '/resources($|/)',
     '/release($|/)',
     '/cache($|/)',
-    '/serversrc',
-    '/webpack\.config\..+\.js$'
+    '/serversrc($|/)',
+    '/.idea($|/)',
+    '/webpack\.config\..+\.js$',
+    '/nativedeps($|/)',
+    '/dist/.+\.map$',
+    '.babelrc$',
+    '.DS_Store$',
+    '.eslintrc$',
+    '.gitignore$',
+    '.travis.yml$',
+    'appveyor.yml$',
+    'gulpfile.js$',
+    'package.js$',
+    'README.md$'
   ].concat(devDeps.map(name => `/node_modules/${name}($|/)`))
 };
 

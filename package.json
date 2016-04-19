@@ -71,7 +71,7 @@
     "selenium-webdriver": "^2.48.2",
     "sinon": "^1.17.2",
     "style-loader": "^0.13.0",
-    "webpack": "^1.12.1",
+    "webpack": "^1.13.0",
     "webpack-dev-middleware": "^1.2.0",
     "webpack-hot-middleware": "^2.4.1",
     "webpack-target-electron-renderer": "^0.3.0"
@@ -105,9 +105,7 @@
     "redux-promise": "^0.5.1",
     "redux-thunk": "^1.0.2",
     "reselect": "^2.0.3",
-    "sanitize-filename": "^1.5.3",
-    "sass-loader": "^3.2.0",
-    "webpack": "^1.13.0"
+    "sanitize-filename": "^1.5.3"
   },
   "devEngines": {
     "node": "4.x || 5.x",

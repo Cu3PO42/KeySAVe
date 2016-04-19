@@ -1,1 +1,1 @@
-require('app-module-path').addPath(__dirname + '/../nativedeps');
+//require('app-module-path').addPath(__dirname + '/../nativedeps');
