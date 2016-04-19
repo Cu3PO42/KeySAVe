@@ -107,6 +107,14 @@
     "reselect": "^2.0.3",
     "sanitize-filename": "^1.5.3"
   },
+  "serverOnlyDependencies": [
+    "bluebird",
+    "electron-debug",
+    "electron-gh-releases-updater",
+    "electron-ipc-tunnel",
+    "fs-extra",
+    "keysavcore"
+  ],
   "devEngines": {
     "node": "4.x || 5.x",
     "npm": "2.x || 3.x"

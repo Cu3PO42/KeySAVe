@@ -10,6 +10,7 @@ const exec = require('child_process').exec;
 const spawn = require('child_process').spawn;
 const argv = require('minimist')(process.argv.slice(2));
 const pkg = require('./package.json');
+const fs = require('fs');
 const devDeps = Object.keys(pkg.devDependencies);
 
 const appName = argv.name || argv.n || pkg.productName;
@@ -110,6 +111,52 @@ const zipUpdate = process.platform === 'darwin' ? function zipUpdateDarwin(cb) {
                            { stdio: 'ignore' }).on('close', cb);
 };
 
+function pruneNodeModules(callback) {
+  let appPath;
+  if (process.platform === 'darwin') {
+    appPath = `${__dirname}/release/KeySAVe-darwin-x64/KeySAVe.app/Contents/Resources/app`;
+  } else {
+    appPath = `${__dirname}/release/KeySAVe-${process.platform}-${process.arch}/resources/app`;
+  }
+  const pkgPath = `${appPath}/package.json`;
+  fs.readFile(pkgPath, 'utf-8', (err, res) => {
+    if (err) {
+      callback(err);
+      return;
+    }
+
+    let pkg;
+    try {
+      pkg = JSON.parse(res);
+    } catch (e) {
+      callback(e);
+      return;
+    }
+
+    const newDeps = {};
+    for (const dep of pkg.serverOnlyDependencies || []) {
+      newDeps[dep] = pkg.dependencies[dep];
+    }
+    pkg.dependencies = newDeps;
+
+    fs.writeFile(pkgPath, JSON.stringify(pkg), 'utf-8', (err) => {
+      if (err) {
+        callback(err);
+        return;
+      }
+
+      exec('npm prune --production', { cwd: appPath }, (err) => {
+        if (err) {
+          callback(err);
+          return;
+        }
+
+        fs.writeFile(pkgPath, res, 'utf-8', callback);
+      });
+    });
+  });
+}
+
 function startPack() {
   console.log('start pack...');
   webpack(cfg, (err, stats) => {
@@ -143,13 +190,15 @@ function pack(plat, arch, cb) {
     }
     del(['version', 'LICENSE', 'LICENSES.chromium.html'], { cwd: 'release/KeySAVe-' + process.platform + '-' + process.arch }).then(() => {
       console.log('Packaging your Electron app now.');
-      zipElectron((err) => {
-        if (err) {
-          cb(err);
-          return;
-        }
-        console.log('Packaging update file.');
-        zipUpdate(cb);
+      pruneNodeModules((err) => {
+        zipElectron((err) => {
+          if (err) {
+            cb(err);
+            return;
+          }
+          console.log('Packaging update file.');
+          zipUpdate(cb);
+        });
       });
     }).catch(cb);
   });
