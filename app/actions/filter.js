@@ -18,10 +18,11 @@ export const SET_SHINIES_ONLY = 'SET_SHINIES_ONLY';
 export const SET_SHINY_OVERRIDE = 'SET_SHINY_OVERRIDE';
 export const SET_EGGS_HAVE_MY_SV = 'SET_EGGS_HAVE_MY_SV';
 export const SET_EGGS_HAVE_SVS = 'SET_EGGS_HAVE_SVS';
+export const SET_CUSTOM_FILTER = 'SET_CUSTOM_FILTER';
 
 export const setFilterBv = createAction(SET_FILTER_BV, isOpponent => ({ isOpponent }));
 export const setFilterSav = createAction(SET_FILTER_SAV, (lower, upper) => ({ lower, upper }));
-export const setEggsOnly = createAction(SHOW_EGGS_ONLY);
+export const setEggsOnly = createAction(SET_EGGS_ONLY);
 export const setSpeciesFilter = createAction(SET_SPECIES_FILTER);
 export const setGenderFilter = createAction(SET_GENDER_FILTER);
 export const setHpFilter = createAction(SET_HP_FILTER);
@@ -37,3 +38,4 @@ export const setShiniesOnly = createAction(SET_SHINIES_ONLY);
 export const setShinyOverride = createAction(SET_SHINY_OVERRIDE);
 export const setEggsHaveMySv = createAction(SET_EGGS_HAVE_MY_SV);
 export const setEggsHaveSvs = createAction(SET_EGGS_HAVE_SVS);
+export const setCustomFilter = createAction(SET_CUSTOM_FILTER);
