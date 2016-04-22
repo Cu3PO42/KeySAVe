@@ -59,7 +59,7 @@ async function dumpSaveOrBv(args) {
     if (res.type === 'SAV') {
       process.send({ res: { pokemon: reader.getAllPkx(), goodKey: reader.isNewKey, type: 'SAV', name: args.file }, id: args.id });
     } else {
-      process.send({ res: { pokemon: reader.getAllPkx(), goodKey: reader.dumpsEnemy, type: 'BV', name: args.file }, id: args.id });
+      process.send({ res: { pokemon: reader.getAllPkx(), goodKey: reader.dumpsOpponent, type: 'BV', name: args.file }, id: args.id });
     }
   } catch (e) {
     process.send({ err: serializeError(e), id: args.id });

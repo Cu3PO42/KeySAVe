@@ -18,7 +18,7 @@ const getPokemonSeq = createSelector(
     type === 'SAV' ?
       new Seq(pokemon) :
     type === 'BV' ?
-      isOpponent ? new Seq(pokemon.enemyTeam) : new Seq(pokemon.myTeam) :
+      isOpponent ? new Seq(pokemon.opponentTeam) : new Seq(pokemon.myTeam) :
       new Seq()
 );
 
