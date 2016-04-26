@@ -31,6 +31,10 @@ const About = () => (
       providind feedback, giving me ideas for features I could implement and by helping me collect
       localization data.
     </p>
+    <h2>Documentation</h2>
+    <p>
+      The documentation can be found <ExternalLink href="https://cu3po42.gitbooks.io/keysave/content/">here</ExternalLink>.
+    </p>
     <h2>Copyright</h2>
     <p>
       KeySAV<sup>e</sup> itself is written by Cu3PO42, other code is used under the terms of the respective licenses.
