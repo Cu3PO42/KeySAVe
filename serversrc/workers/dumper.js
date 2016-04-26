@@ -16,6 +16,7 @@ function serializeError(e: Error) {
 }
 
 var dataDirectory = process.argv[3];
+fs.mkdirpSync(dataDirectory);
 var store = new KeySAV.KeyStoreFileSystem(dataDirectory);
 KeySAV.setKeyStore(store);
 
