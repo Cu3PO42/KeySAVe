@@ -10,14 +10,14 @@
   "main": "main.js",
   "scripts": {
     "start": "cross-env NODE_ENV=production electron ./",
-    "compile": "babel serversrc -d serverlib",
+    "build-server": "babel serversrc -d serverlib",
     "installnativedeps": "cd nativedeps && npm install && cd ..",
     "buildnative": "electron-rebuild -m nativedeps/node_modules",
     "hot-server": "node server.js",
-    "build": "cross-env NODE_ENV=production webpack --config webpack.config.production.js --progress --profile --colors",
+    "build-client": "cross-env NODE_ENV=production webpack --config webpack.config.production.js --progress --profile --colors",
     "start-hot": "cross-env HOT=1 NODE_ENV=development electron ./",
     "package": "cross-env NODE_ENV=production node package.js",
-    "postinstall": "npm run installnativedeps && npm run buildnative && node node_modules/fbjs-scripts/node/check-dev-engines.js package.json && npm run compile"
+    "postinstall": "npm run installnativedeps && npm run buildnative && node node_modules/fbjs-scripts/node/check-dev-engines.js package.json"
   },
   "author": "Cu3PO42",
   "license": "MIT",
