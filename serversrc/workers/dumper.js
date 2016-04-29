@@ -77,6 +77,25 @@ async function breakKey(args) {
   }
 }
 
+async function mergeKeyFolder(args) {
+  try {
+    const files = await fs.readdirAsync(args.folder);
+    for (const file of files) {
+      const filePath = args.folder + '/' + file;
+      const stats = await fs.statAsync(filePath);
+      if (stats.isFile() && stats.size === 0xB4AD4) {
+        const buf = fs.readFileAsync(filePath);
+        const ui8 = new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength);
+        const key = new KeySAV.SaveKey(ui8);
+        store.setOrMergeSaveKey(key);
+      }
+    }
+    process.send({ id: args.id });
+  } catch (e) {
+    process.send({ err: serializeError(e), id: args.id });
+  }
+}
+
 process.on('message', function handleMessage(m) {
   switch (m.cmd) {
     case 'dump-save-or-bv':
@@ -90,6 +109,9 @@ process.on('message', function handleMessage(m) {
       break;
     case 'close':
       close();
+      break;
+    case 'merge-key-folder':
+      mergeKeyFolder(m);
       break;
     default:
   }
