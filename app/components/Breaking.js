@@ -1,14 +1,17 @@
 import React from 'react';
 import FileOpener from './FileOpener';
 import { send as ipcSend } from 'electron-ipc-tunnel/client';
+import { importKeySAV2Config } from '../configuration';
 import Paper from 'material-ui/lib/paper';
 import FlatButton from 'material-ui/lib/flat-button';
 import Dialog from 'material-ui/lib/dialog';
 import WarningIcon from 'material-ui/lib/svg-icons/alert/warning';
 import ErrorIcon from 'material-ui/lib/svg-icons/alert/error';
 import CircularProgress from 'material-ui/lib/circular-progress';
+import DocumentationLink from './DocumentationLink';
 import styles from './Breaking.module.scss';
 import colors from 'material-ui/lib/styles/colors';
+import Promise from 'bluebird';
 
 function stringOrObjOrUndefined(props, propName, componentName) {
   const val = props[propName];
@@ -154,8 +157,13 @@ export default class Breaking extends React.Component {
     scanFolderFinish: React.PropTypes.func.isRequired
   }
 
+  state = {
+    showProgress: false
+  };
+
   break = () => this.props.breakKey(this.props.file1, this.props.file2);
   closeDialog = () => this.props.dismissBreakState();
+
   scanFolder = async () => {
     const folder = await ipcSend('file-dialog-open', { options: { properties: ['openDirectory'] } });
     if (folder === undefined || folder[0] === undefined) return;
@@ -164,24 +172,41 @@ export default class Breaking extends React.Component {
     this.props.scanFolderFinish();
   }
 
+  importFromKeySAV2 = async () => {
+    try {
+      const timeoutId = setTimeout(() => this.setState({ showProgress: true }), 1000);
+      const [folder] = await ipcSend('file-dialog-open');
+      await Promise.all([importKeySAV2Config(folder), ipcSend('merge-key-folder')]);
+      clearTimeout(timeoutId);
+      this.setState({ showProgress: false });
+    } catch (e) { /* ignore */ }
+  }
+
+  scanKeySAV2 = async () => {
+    const timeoutId = setTimeout(() => this.setState({ showProgress: true }), 1000);
+    const folders = await ipcSend('search-keysav2');
+    await Promise.map(folders, importKeySAV2Config);
+    clearTimeout(timeoutId);
+    this.setState({ showProgress: false });
+  }
+
   render() {
     return (
       <div>
-        <Dialog open={this.props.breakFolder !== ''} className={styles.center} modal>
-          Scanning <span className={styles.folder}>{this.props.breakFolder}</span> for saves.
-          <div className={styles.spinnerContainer}><CircularProgress /></div>
+        <div className={`${styles.centerOnView} ${this.state.showProgress || this.props.breakFolder !== '' ? '' : styles.hideCenter}`}>
+          <div className={styles.progressWrapper}><CircularProgress /></div>
+        </div>
+        <Dialog
+          className={styles.dialog}
+          open={this.props.breakState !== 'NONE'}
+          actions={[<FlatButton onClick={this.closeDialog} label="OK" primary />]}
+        >
+          {this.props.breakState === 'ERROR' ?
+            errorMessages[this.props.reply.name](this.props.reply)
+          : successMessages[this.props.reply]
+          }
         </Dialog>
         <Paper className={styles.paper}>
-          <Dialog
-            className={styles.dialog}
-            open={this.props.breakState !== 'NONE'}
-            actions={[<FlatButton onClick={this.closeDialog} label="OK" primary />]}
-          >
-            {this.props.breakState === 'ERROR' ?
-              errorMessages[this.props.reply.name](this.props.reply)
-            : successMessages[this.props.reply]
-            }
-          </Dialog>
           <div className={`${styles.flexRow} ${styles.flexStretch}`}>
             <div className={styles.flexFill}>
               <div className={styles.flexRow}>
@@ -199,10 +224,21 @@ export default class Breaking extends React.Component {
           </div>
         </Paper>
         <Paper className={styles.paper}>
-          Scan all saves in a folder to improve your save keys.
-          This will use all saves for which you have a key to unlock more slots in your keys.
-          Please read the manual for more info.
-          <div className={styles.flexFromRight}><FlatButton label="Scan Folder" onClick={this.scanFolder} /></div>
+          <p>
+            Scan all saves in a folder to improve your save keys, i.e. unlock more slots.
+            Please <DocumentationLink link="dumping/saves#ghosts">read the documentation</DocumentationLink> for more info.
+          </p>
+          <p>
+            You can also import your keys (and custom formats) from any KeySAV2 installation.
+            All imported keys will be merged with the ones that are currently known. No keys will be overwritten.
+            You can either specify the folder of your KeySAV2 installation manually or let KeySAVe search for it
+            in your home directory. It will be found if it is nested 5 folder or less deep.
+          </p>
+          <div className={styles.flexFromRight}>
+            <FlatButton label="Scan Folder" onClick={this.scanFolder} />
+            <FlatButton label="Import from KeySAV2" onClick={this.importFromKeySAV2} />
+            <FlatButton label="Search for KeySAV2 installations" onClick={this.scanKeySAV2} />
+          </div>
         </Paper>
       </div>
     );

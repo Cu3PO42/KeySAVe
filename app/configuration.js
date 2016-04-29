@@ -66,3 +66,21 @@ export default async function loadConfig(store) {
     await fs.writeFileAsync(getPath('userData') + '/config.json', JSON.stringify(config, null, '    '), 'utf-8');
   }, false);
 }
+
+export async function importKeySAV2Config(folder, store) {
+  const files = await fs.readdirAsync(folder);
+  const dataFolder = files.includes('data') && files.includes('KeySAV2.exe') &&
+     !(await fs.statAsync(folder + '/data')).isFile() ?
+     folder + '/data' : folder;
+  const configFile = dataFolder + '/config.ini';
+  if (! await fs.existsAsync(configFile)) {
+    return;
+  }
+  const lines = (await fs.readFileAsync(configFile, 'utf-8')).match(/.+/g);
+  const formats = lines.slice(1, 3);
+  const curOption = store.getState().format.currentIndex;
+  for (const format of formats) {
+    store.dispatch(addFormattingOption('Imported Custom', 'Legacy (KeySAV2)', { format }));
+  }
+  store.dispatch(selectFormattingOption(curOption));
+}

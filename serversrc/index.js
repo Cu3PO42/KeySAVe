@@ -3,7 +3,6 @@ import fileDialogServices from './server/file-dialog-service';
 import dumper, { mergeKeyFolder } from './server/dumper';
 import updater from './server/updater';
 import * as fs from 'fs-extra';
-import { fork } from 'child_process';
 import '../init/promisify-fs';
 
 let menu;
@@ -18,22 +17,9 @@ app.on('window-all-closed', () => {
   app.quit();
 });
 
-var keyPath = app.getPath('userData') + '/keys';
-if (!fs.existsSync(keyPath)) {
-  (async () => {
-    try {
-      await fs.moveAsync(app.getPath('home') + '/Documents/KeySAVe/data', keyPath, { clobber: false });
-    } catch (e) {
-      await fs.mkdirpAsync(keyPath);
-    }
-    var searcher = fork(__dirname + '/workers/bootstrap.js', [__dirname + '/workers/search-keysav']);
-    searcher.send({ path: app.getPath('home'), depth: 5 });
-    searcher.on('message', async (path) => {
-      try {
-        mergeKeyFolder(path + '/data');
-      } catch (e) { /* ignore */ }
-    });
-  })();
+var oldPath = app.getPath('documents') + '/KeySAVe/data';
+if (fs.existsSync(oldPath)) {
+  mergeKeyFolder(oldPath);
 }
 
 app.on('ready', () => {
