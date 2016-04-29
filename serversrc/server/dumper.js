@@ -25,29 +25,35 @@ function storePromise(resolve, reject) {
   promises[id++] = { resolve, reject };
 }
 
-export async function dumpSaveOrBv(reply, args) {
+function skipArg1(fn) {
+  return function (reply, ...args) {
+    return fn.apply(this, args);
+  };
+}
+
+export async function dumpSaveOrBv(args) {
   worker.send({ cmd: 'dump-save-or-bv', file: args, id });
   return new Promise(storePromise);
 }
-registerIpc('dump-save-or-bv', dumpSaveOrBv);
+registerIpc('dump-save-or-bv', skipArg1(dumpSaveOrBv));
 
-export async function breakKey(reply, args) {
+export async function breakKey(args) {
   worker.send({ cmd: 'break-key', file1: args.file1, file2: args.file2, id });
   return new Promise(storePromise);
 }
-registerIpc('break-key', breakKey);
+registerIpc('break-key', skipArg1(breakKey));
 
-export async function breakFolder(reply, folder) {
+export async function breakFolder(folder) {
   worker.send({ cmd: 'break-folder', folder, id });
   return new Promise(storePromise);
 }
-registerIpc('break-folder', breakFolder);
+registerIpc('break-folder', skipArg1(breakFolder));
 
-export async function mergeKeyFolder(reply, folder) {
+export async function mergeKeyFolder(folder) {
   worker.send({ cmd: 'merge-key-folder', folder, id });
   return new Promise(storePromise);
 }
-registerIpc('merge-key-folder', mergeKeyFolder);
+registerIpc('merge-key-folder', skipArg1(mergeKeyFolder));
 
 worker.on('message', function onMessage(res) {
   if (res.err === undefined) {

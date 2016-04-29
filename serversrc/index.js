@@ -1,6 +1,6 @@
 import { app, BrowserWindow, Menu, shell } from 'electron';
 import fileDialogServices from './server/file-dialog-service';
-import dumper from './server/dumper';
+import dumper, { mergeKeyFolder } from './server/dumper';
 import updater from './server/updater';
 import * as fs from 'fs-extra';
 import { fork } from 'child_process';
@@ -30,15 +30,7 @@ if (!fs.existsSync(keyPath)) {
     searcher.send({ path: app.getPath('home'), depth: 5 });
     searcher.on('message', async (path) => {
       try {
-        await fs.readdirAsync(path + '/data').map(async(file) => {
-          try {
-            var stats = await fs.statAsync(path + '/data/' + file);
-            if (stats.isFile() && !(await fs.existsAsync(keyPath + file))
-                        && (stats.size === 0xB4AD4 || stats.size === 0x1000)) {
-              await fs.copyAsync(path + '/data/' + file, keyPath + '/' + file);
-            }
-          } catch (e) { /* ignore */ }
-        });
+        mergeKeyFolder(path + '/data');
       } catch (e) { /* ignore */ }
     });
   })();
