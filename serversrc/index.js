@@ -1,9 +1,10 @@
 import { app, BrowserWindow, Menu, shell } from 'electron';
+import '../init/promisify-fs';
 import fileDialogServices from './server/file-dialog-service';
 import dumper, { mergeKeyFolder } from './server/dumper';
 import updater from './server/updater';
+import './server/import-keysav2';
 import * as fs from 'fs-extra';
-import '../init/promisify-fs';
 
 let menu;
 let template;

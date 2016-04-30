@@ -19,15 +19,15 @@ registerIpc('import-keysav2-folder', async function importKeySAV2Folder(reply, f
 registerIpc('search-keysav2', function searchKeySAV2() {
   const promises = [];
   const folders = [];
-  return new Promise((reject, resolve) => {
+  return new Promise((resolve) => {
     const searcher = fork(__dirname + '/../workers/bootstrap.js', [__dirname + '/../workers/search-keysav']);
     searcher.send({ path: app.getPath('home'), depth: 5 });
     searcher.on('message', async (path) => {
-      promises.push(mergeKeyFolder(path + '/data'));
+      promises.push(mergeKeyFolder(path + '/data').catch(() => {}));
       folders.push(path);
     });
     searcher.on('close', async () => {
-      await promises;
+      await Promise.all(promises);
       resolve(folders);
     });
   });

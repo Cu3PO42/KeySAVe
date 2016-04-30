@@ -157,6 +157,10 @@ export default class Breaking extends React.Component {
     scanFolderFinish: React.PropTypes.func.isRequired
   }
 
+  static contextTypes = {
+    store: React.PropTypes.object
+  };
+
   state = {
     showProgress: false
   };
@@ -173,20 +177,24 @@ export default class Breaking extends React.Component {
   }
 
   importFromKeySAV2 = async () => {
+    let timeoutId = 0;
     try {
-      const timeoutId = setTimeout(() => this.setState({ showProgress: true }), 1000);
-      const [folder] = await ipcSend('file-dialog-open');
-      await Promise.all([importKeySAV2Config(folder), ipcSend('merge-key-folder')]);
-      clearTimeout(timeoutId);
-      this.setState({ showProgress: false });
+      const [folder] = await ipcSend('file-dialog-open', { options: { properties: ['openDirectory'] } });
+      timeoutId = setTimeout(() => this.setState({ showProgress: true }), 1000);
+      await Promise.all([importKeySAV2Config(folder, this.context.store), ipcSend('import-keysav2-folder', folder)]);
     } catch (e) { /* ignore */ }
+    if (timeoutId) clearTimeout(timeoutId);
+    this.setState({ showProgress: false });
   }
 
   scanKeySAV2 = async () => {
-    const timeoutId = setTimeout(() => this.setState({ showProgress: true }), 1000);
-    const folders = await ipcSend('search-keysav2');
-    await Promise.map(folders, importKeySAV2Config);
-    clearTimeout(timeoutId);
+    let timeoutId = 0;
+    try {
+      timeoutId = setTimeout(() => this.setState({ showProgress: true }), 1000);
+      const folders = await ipcSend('search-keysav2');
+      await Promise.map(folders, folder => importKeySAV2Config(folder).catch(() => {}));
+    } catch (e) { /* ignore */ }
+    if (timeoutId) clearTimeout(timeoutId);
     this.setState({ showProgress: false });
   }
 

@@ -79,8 +79,9 @@ export async function importKeySAV2Config(folder, store) {
   const lines = (await fs.readFileAsync(configFile, 'utf-8')).match(/.+/g);
   const formats = lines.slice(1, 3);
   const curOption = store.getState().format.currentIndex;
+  let i = 0;
   for (const format of formats) {
-    store.dispatch(addFormattingOption('Imported Custom', 'Legacy (KeySAV2)', { format }));
+    store.dispatch(addFormattingOption(`Imported (${++i})`, 'Legacy (KeySAV2)', { format }));
   }
   store.dispatch(selectFormattingOption(curOption));
 }

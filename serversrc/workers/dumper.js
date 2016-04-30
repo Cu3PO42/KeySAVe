@@ -1,4 +1,6 @@
 import * as KeySAV from 'keysavcore';
+import SaveKey from 'keysavcore/save-key';
+import BattleVideoKey from 'keysavcore/battle-video-key';
 import * as path from 'path';
 import * as fs from 'fs-extra';
 import Promise from 'bluebird';
@@ -83,11 +85,19 @@ async function mergeKeyFolder(args) {
     for (const file of files) {
       const filePath = args.folder + '/' + file;
       const stats = await fs.statAsync(filePath);
-      if (stats.isFile() && stats.size === 0xB4AD4) {
-        const buf = fs.readFileAsync(filePath);
+      if (stats.isFile() && (stats.size === 0xB4AD4 || stats.size === 0x80000)) {
+        const buf = new Buffer(0xB4AD4);
+        const fd = await fs.openAsync(filePath, 'r');
+        await fs.readAsync(fd, buf, 0, stats.size, 0);
+        await fs.closeAsync(fd);
         const ui8 = new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength);
-        const key = new KeySAV.SaveKey(ui8);
+        const key = new SaveKey(ui8);
         store.setOrMergeSaveKey(key);
+      } else if (stats.isFile() && stats.size === 0x1000) {
+        const buf = await fs.readFileAsync(filePath);
+        const ui8 = new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength);
+        const key = new BattleVideoKey(ui8);
+        store.setOrMergeBvKey(key);
       }
     }
     process.send({ id: args.id });
