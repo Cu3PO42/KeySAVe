@@ -147,7 +147,7 @@ export default class Breaking extends React.Component {
     file2: React.PropTypes.string.isRequired,
     file2Type: React.PropTypes.string.isRequired,
     breakState: React.PropTypes.string.isRequired,
-    breakFolder: React.PropTypes.string.isRequired,
+    scanning: React.PropTypes.bool.isRequired,
     reply: stringOrObjOrUndefined,
     openFile1: React.PropTypes.func.isRequired,
     openFile2: React.PropTypes.func.isRequired,
@@ -159,10 +159,6 @@ export default class Breaking extends React.Component {
 
   static contextTypes = {
     store: React.PropTypes.object
-  };
-
-  state = {
-    showProgress: false
   };
 
   break = () => this.props.breakKey(this.props.file1, this.props.file2);
@@ -180,28 +176,28 @@ export default class Breaking extends React.Component {
     let timeoutId = 0;
     try {
       const [folder] = await ipcSend('file-dialog-open', { options: { properties: ['openDirectory'] } });
-      timeoutId = setTimeout(() => this.setState({ showProgress: true }), 1000);
+      timeoutId = setTimeout(this.props.scanFolder, 1000);
       await Promise.all([importKeySAV2Config(folder, this.context.store), ipcSend('import-keysav2-folder', folder)]);
     } catch (e) { /* ignore */ }
     if (timeoutId) clearTimeout(timeoutId);
-    this.setState({ showProgress: false });
+    this.props.scanFolderFinish();
   }
 
   scanKeySAV2 = async () => {
     let timeoutId = 0;
     try {
-      timeoutId = setTimeout(() => this.setState({ showProgress: true }), 1000);
+      timeoutId = setTimeout(this.props.scanFolder, 1000);
       const folders = await ipcSend('search-keysav2');
       await Promise.map(folders, folder => importKeySAV2Config(folder).catch(() => {}));
     } catch (e) { /* ignore */ }
     if (timeoutId) clearTimeout(timeoutId);
-    this.setState({ showProgress: false });
+    this.props.scanFolderFinish();
   }
 
   render() {
     return (
       <div>
-        <div className={`${styles.centerOnView} ${this.state.showProgress || this.props.breakFolder !== '' ? '' : styles.hideCenter}`}>
+        <div className={`${styles.centerOnView} ${this.props.scanning ? '' : styles.hideCenter}`}>
           <div className={styles.progressWrapper}><CircularProgress /></div>
         </div>
         <Dialog

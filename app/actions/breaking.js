@@ -38,5 +38,5 @@ export const openFile1 = createAction(BREAKING_OPEN_FILE_1, checkType);
 export const openFile2 = createAction(BREAKING_OPEN_FILE_2, checkType);
 export const breakKey = createAction(BREAK_KEY, (file1, file2) => ipcSend('break-key', { file1, file2 }));
 export const dismissBreakState = createAction(DISMISS_BREAK_STATE);
-export const scanFolder = createAction(SCAN_FOLDER, folder => folder);
+export const scanFolder = createAction(SCAN_FOLDER);
 export const scanFolderFinish = createAction(SCAN_FOLDER_FINISH);

@@ -8,7 +8,7 @@ const initialState = {
   file2Type: 'none',
   breakState: 'NONE',
   reply: undefined,
-  breakFolder: ''
+  scanning: false
 };
 
 export default handleActions({
@@ -50,17 +50,17 @@ export default handleActions({
     return initialState;
   },
 
-  [SCAN_FOLDER](state, { payload }) {
+  [SCAN_FOLDER](state) {
     return {
       ...state,
-      breakFolder: payload
+      scanning: true
     };
   },
 
   [SCAN_FOLDER_FINISH](state) {
     return {
       ...state,
-      breakFolder: ''
+      scanning: false
     };
   }
 }, initialState);
