@@ -1,11 +1,12 @@
 import updater from 'electron-gh-releases-updater';
 import registerIpc from 'electron-ipc-tunnel/server';
+import pkgJson from '../../package.json';
 
 var update;
 
 export default function () {
   registerIpc('update-query', async () => {
-    update = await updater(require('../package.json'));
+    update = await updater(pkgJson);
     if (update.updateAvailable) {
       return { available: true, changelog: update.changelog };
     }

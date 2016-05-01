@@ -4,12 +4,14 @@ import filter from './filter';
 import format from './format';
 import dialog from './dialog';
 import breaking from './breaking';
+import updater from './updater';
 
 const rootReducer = combineReducers({
   file,
   filter,
   format,
   dialog,
-  breaking
+  breaking,
+  updater
 });
 export default rootReducer;

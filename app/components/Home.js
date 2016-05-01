@@ -6,6 +6,7 @@ import DumpingContainer from '../containers/DumpingContainer';
 import FormattingContainer from '../containers/FormattingContainer';
 import DialogContainer from '../containers/DialogContainer';
 import BreakingContainer from '../containers/BreakingContainer';
+import UpdaterContainer from '../containers/UpdaterContainer';
 import About from './About';
 import styles from './Home.module.scss';
 
@@ -32,6 +33,7 @@ export default class Home extends Component {
     return (
       <div className={styles.mainWrapper}>
         <DialogContainer />
+        <UpdaterContainer />
         <Tabs
           value={this.props.params.tab}
           onChange={this.tabChanged}
