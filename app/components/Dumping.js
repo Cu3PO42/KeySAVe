@@ -1,5 +1,6 @@
 import React from 'react';
 import DumpingFileOpener from '../components/DumpingFileOpener';
+import FilterContainer from '../containers/FilterContainer';
 import Dialog from 'material-ui/lib/dialog';
 import FlatButton from 'material-ui/lib/flat-button';
 import IconButton from 'material-ui/lib/icon-button';
@@ -119,6 +120,7 @@ export default class Dumping extends React.Component {
           bvFilterChanged={setFilterBv}
           savFilterChanged={setFilterSav}
         />
+        <FilterContainer />
         <div className={`${styles.buttonRow} ${pokemon.first() ? '' : styles.hide}`}>
           <div className={styles.flexFill} />
           <IconButton onClick={this.copyClipboard} tooltip="Copy output to clibboard"><CopyIcon /></IconButton>

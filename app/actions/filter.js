@@ -2,6 +2,7 @@ import createAction from '../utils/createAction';
 
 export const SET_FILTER_BV = 'SET_FILTER_BV';
 export const SET_FILTER_SAV = 'SET_FILTER_SAV';
+export const TOGGLE_FILTERS = 'TOGGLE_FILTERS';
 export const SET_EGGS_ONLY = 'SET_EGGS_ONLY';
 export const SET_SPECIES_FILTER = 'SET_SPECIES_FILTER';
 export const SET_GENDER_FILTER = 'SET_GENDER_FILTER';
@@ -22,6 +23,7 @@ export const SET_CUSTOM_FILTER = 'SET_CUSTOM_FILTER';
 
 export const setFilterBv = createAction(SET_FILTER_BV, isOpponent => ({ isOpponent }));
 export const setFilterSav = createAction(SET_FILTER_SAV, (lower, upper) => ({ lower, upper }));
+export const toggleFilters = createAction(TOGGLE_FILTERS, () => undefined);
 export const setEggsOnly = createAction(SET_EGGS_ONLY);
 export const setSpeciesFilter = createAction(SET_SPECIES_FILTER);
 export const setGenderFilter = createAction(SET_GENDER_FILTER);

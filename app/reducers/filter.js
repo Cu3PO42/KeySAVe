@@ -2,6 +2,7 @@ import { handleActions } from '../utils/handleAction';
 import {
   SET_FILTER_BV,
   SET_FILTER_SAV,
+  TOGGLE_FILTERS,
   SET_EGGS_ONLY,
   SET_SPECIES_FILTER,
   SET_GENDER_FILTER,
@@ -22,6 +23,7 @@ import {
 } from '../actions/filter';
 
 const initialFilter = {
+  enabled: false,
   isOpponent: false,
   lower: 1,
   upper: 31,
@@ -60,6 +62,12 @@ function setFilter(state, action) {
 export default handleActions({
   [SET_FILTER_BV]: setFilter,
   [SET_FILTER_SAV]: setFilter,
+  [TOGGLE_FILTERS](state) {
+    return {
+      ...state,
+      enabled: !state.enabled
+    };
+  },
   [SET_EGGS_ONLY](state, { payload }) {
     return {
       ...state,
