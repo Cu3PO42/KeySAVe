@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import Paper from 'material-ui/lib/paper';
 import handlebars from 'handlebars';
 import dashbars from 'dashbars';
@@ -151,6 +152,17 @@ class PkmListHandlebars extends Component {
         return new handlebars.SafeString(JSON.stringify(e));
       }
     };
+  }
+
+  getPlainText() {
+    const node = ReactDOM.findDOMNode(this);
+    if (this.props.format.splitBoxes) {
+      return Array.from(node.childNodes).map(child =>
+        child.firstChild.innerText + '\n' + child.lastChild.innerText
+      ).join('\n');
+    }
+
+    return node.innerText;
   }
 
   getFormatTemplate = createSelector(
