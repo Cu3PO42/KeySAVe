@@ -30,6 +30,33 @@ export default class PkmListReddit extends React.Component {
     format: React.PropTypes.object
   };
 
+  getPlainTextBox(pkm) {
+    const local = Localization[this.props.language];
+    const { ghosts } = this.props.format;
+    const header = '| Box | Slot | Species (Gender) | Nature | Ability | HP.ATK.DEF.SPA.SPD.SPE | HiddenPower | ESV |\n|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|\n';
+    return header + (ghosts === 'hide' ? pkm.filter(e => !e.isGhost) : pkm).map(e =>
+      `| ${ghosts === 'mark' && e.isGhost ? '~' : ''}` +
+      `Box ${('0' + (e.box + 1)).slice(-2)} | ${Math.floor(e.slot / 6) + 1},${e.slot % 6 + 1} | ` +
+      `${getSpecies(e.species, e.form, local)} (${genderString(e.gender)}) | ` +
+      `${local.natures[e.nature]} | ${local.abilities[e.ability]} | ` +
+      (this.props.format.boldPerfectIVs ?
+        ['Hp', 'Atk', 'Def', 'SpAtk', 'SpDef', 'Spe'].map(iv => e['iv' + iv] === 31 ? '**31**' : '' + e['iv' + iv]).join('.') :
+        ['Hp', 'Atk', 'Def', 'SpAtk', 'SpDef', 'Spe'].map(iv => e['iv' + iv]).join('.')) +
+      ` | ${local.types[e.hpType]} | ${('0000' + e.esv).slice(-4)} |`
+    ).join('\n');
+  }
+
+  getPlainText() {
+    if (this.props.format.splitBoxes) {
+      const grouped = this.props.pokemon.groupBy(e => e.box);
+      return grouped.map((pkm, box) =>
+        `${this.getBoxHeader(box) + ' '}Box ${box + 1}\n\n${this.getPlainTextBox(pkm)}`
+      ).join('\n\n');
+    }
+
+    return `${this.getBoxHeader(0)} All Boxes\n\n${this.getPlainTextBox(this.props.pokemon)}`;
+  }
+
   getBoxHeader(box) {
     switch (this.props.format.color) {
       case 0:

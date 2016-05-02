@@ -34,9 +34,17 @@ export default class Dumping extends React.Component {
     dismissError: React.PropTypes.func.isRequired
   };
 
+  getText() {
+    const { dumper, dumperContainer } = this.refs;
+    if (dumper && typeof dumper.getPlainText === 'function') {
+      return dumper.getPlainText();
+    }
+
+    return dumperContainer.innerText;
+  }
+
   copyClipboard = () => {
-    const { dumper } = this.refs;
-    clipboard.write({ text: dumper.innerText, html: dumper.innerHTML });
+    clipboard.write({ text: this.getText() });
   };
 
   saveOutput = async () => {
@@ -56,7 +64,7 @@ export default class Dumping extends React.Component {
       { defaultPath: path.basename(this.props.name, path.extname(this.props.name)) + ext, filters } });
     if (!filename) return;
     try {
-      await fs.writeFileAsync(filename, this.refs.dumper.innerText, { encoding: 'utf-8' });
+      await fs.writeFileAsync(filename, this.getText(), { encoding: 'utf-8' });
       this.props.openDialog('File saved successfully!');
     } catch (e) {
       this.props.openDialog('Couldn\'t save file. Please try again.');
@@ -117,11 +125,12 @@ export default class Dumping extends React.Component {
           <IconButton onClick={this.saveOutput} tooltip="Save output as file"><SaveIcon /></IconButton>
           <IconButton onClick={this.exportPk6} tooltip="Export .pk6 files"><ArchiveIcon /></IconButton>
         </div>
-        <div className={styles.pkmContainer} ref="dumper">
+        <div className={styles.pkmContainer} ref="dumperContainer">
           <format.current.plugin.PkmList
             language={format.language}
             format={format.current.format}
             pokemon={pokemon}
+            ref="dumper"
           />
         </div>
         <Dialog
