@@ -190,7 +190,7 @@ class PkmListHandlebars extends Component {
           <div>
             {grouped.map((pkm, box) => (
               <div key={box}>
-                <div dangerouslySetInnerHTML={{ __html: boxHeaderTemplate({ box }) }}></div>
+                <div dangerouslySetInnerHTML={{ __html: boxHeaderTemplate({ box: box + 1 }) }}></div>
                 {this.renderBox(pkm, box)}
               </div>
             )).valueSeq()}

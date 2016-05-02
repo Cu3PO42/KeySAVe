@@ -26,7 +26,7 @@ export const defaultOptions = [{
   format: {
     header: 'Box - Slot - Species (Gender) - Nature - Ability - HP.ATK.DEF.SPATK.SPDEF.SPE - HP [ESV]',
     format: '{{#if isGhost}}~{{/if}}B{{box}} - {{row}},{{column}} - {{speciesName}} ({{genderString gender}}) - {{natureName}} - {{abilityName}} - {{ivHp}}.{{ivAtk}}.{{ivDef}}.{{ivSpAtk}}.{{ivSpDef}}.{{ivSpe}} - {{typeName hpType}} [{{esv}}]',
-    boxHeader: '<h3 style="margin-bottom: 0; font-family: Roboto, sans-serif; color: #999"></h3>',
+    boxHeader: '<h3 style="margin-bottom: 0; font-family: Roboto, sans-serif; color: #999">Box {{box}}</h3>',
     splitBoxes: false
   }
 }, {
@@ -34,7 +34,7 @@ export const defaultOptions = [{
   format: {
     header: 'Box - Slot - OT - TID - SID - TSV',
     format: '{{#if isGhost}}~{{/if}}B{{box}} - {{row}},{{column}} - {{ot}} - {{tid}} - {{sid}} - {{tsv}}',
-    boxHeader: '<h3 style="margin-bottom: 0; font-family: Roboto, sans-serif; color: #999"></h3>',
+    boxHeader: '<h3 style="margin-bottom: 0; font-family: Roboto, sans-serif; color: #999">Box {{box}}</h3>',
     splitBoxes: false
   }
 }, {
