@@ -6,6 +6,7 @@ before_install:
 install:
     - npm install
 script:
+    - npm run build-server
     - npm run package
 sudo: false
 deploy:
