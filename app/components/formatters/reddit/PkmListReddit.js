@@ -1,5 +1,4 @@
 import React from 'react';
-import Paper from 'material-ui/lib/paper';
 import { Localization } from 'keysavcore';
 import styles from './PkmListReddit.module.scss';
 
