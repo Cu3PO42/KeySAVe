@@ -76,39 +76,55 @@ export default class PkmListReddit extends React.Component {
     }
   }
 
+  getBoxClass(box) {
+    switch (this.props.format.color) {
+      case 0:
+        return styles.colorNone;
+      case 1:
+        return [styles.colorBlue, styles.colorGreen, styles.colorYellow, styles.colorRed][box % 4];
+      case 2:
+        return styles.colorBlue;
+      case 3:
+        return styles.colorGreen;
+      case 4:
+        return styles.colorYellow;
+      case 5:
+        return styles.colorRed;
+      default:
+        return styles.colorNone;
+    }
+  }
+
   renderBox(pkm, box) {
     const local = Localization[this.props.language];
     return (
-      <Paper className={styles.paper} key={box}>
-        <table className={styles.table}><tbody>
-          <tr><th>|Box</th><th>|Slot</th><th>|Species (Gender)</th><th>|Nature</th><th>|Ability</th><th>|HP.ATK.DEF.SPATK.SPDEF.SPE</th><th>|HP</th><th>|ESV</th><th>|</th></tr>
-          <tr><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|:---:</th><th>|</th></tr>
-          {pkm.map(e => this.props.format.ghosts === 'hide' && e.isGhost ?
-            null :
-            <tr key={e.box * 30 + e.slot} className={this.props.format.ghosts === 'mark' && e.isGhost ? styles.ghost : ''}>
-              <td>|{this.props.format.ghosts === 'mark' && e.isGhost ? '~' : ''}B{('00' + (e.box + 1)).slice(-2)}</td>
-              <td>|{Math.floor(e.slot / 6) + 1},{e.slot % 6 + 1}</td>
-              <td>|{getSpecies(e.species, e.form, local)} ({genderString(e.gender)})</td>
-              <td>|{local.natures[e.nature]}</td>
-              <td>|{local.abilities[e.ability]} </td>
-              {this.props.format.boldPerfectIVs ?
-                <td>
-                  |{e.ivHp === 31 ? <span className={styles.boldIV}>**31**</span> : e.ivHp}
-                  .{e.ivAtk === 31 ? <span className={styles.boldIV}>**31**</span> : e.ivAtk}
-                  .{e.ivDef === 31 ? <span className={styles.boldIV}>**31**</span> : e.ivDef}
-                  .{e.ivSpAtk === 31 ? <span className={styles.boldIV}>**31**</span> : e.ivSpAtk}
-                  .{e.ivSpDef === 31 ? <span className={styles.boldIV}>**31**</span> : e.ivSpDef}
-                  .{e.ivSpe === 31 ? <span className={styles.boldIV}>**31**</span> : e.ivSpe}
-                </td> :
-                <td>|{e.ivHp}.{e.ivAtk}.{e.ivDef}.{e.ivSpAtk}.{e.ivSpDef}.{e.ivSpe}</td>
-              }
-              <td>|{local.types[e.hpType]}</td>
-              <td>|{('0000' + e.esv).slice(-4)}</td>
-              <td>|</td>
-            </tr>
-          )}
-        </tbody></table>
-      </Paper>
+      <table className={`${styles.table} ${this.getBoxClass(box)}`} key={box}><tbody>
+        <tr><th>Box</th><th>Slot</th><th>Species (Gender)</th><th>Nature</th><th>Ability</th><th>HP.ATK.DEF.SPATK.SPDEF.SPE</th><th>HP</th><th>ESV</th></tr>
+        {pkm.map(e => this.props.format.ghosts === 'hide' && e.isGhost ?
+          null :
+          <tr key={e.box * 30 + e.slot} className={this.props.format.ghosts === 'mark' && e.isGhost ? styles.ghost : ''}>
+            <td>{this.props.format.ghosts === 'mark' && e.isGhost ? '~' : ''}B{('00' + (e.box + 1)).slice(-2)}</td>
+            <td>{Math.floor(e.slot / 6) + 1},{e.slot % 6 + 1}</td>
+            <td>{getSpecies(e.species, e.form, local)} ({genderString(e.gender)})</td>
+            <td>{local.natures[e.nature]}</td>
+            <td>{local.abilities[e.ability]} </td>
+            {this.props.format.boldPerfectIVs ?
+              <td>
+                 {e.ivHp === 31 ? <span className={styles.boldIV}>31</span> : e.ivHp}
+                .{e.ivAtk === 31 ? <span className={styles.boldIV}>31</span> : e.ivAtk}
+                .{e.ivDef === 31 ? <span className={styles.boldIV}>31</span> : e.ivDef}
+                .{e.ivSpAtk === 31 ? <span className={styles.boldIV}>31</span> : e.ivSpAtk}
+                .{e.ivSpDef === 31 ? <span className={styles.boldIV}>31</span> : e.ivSpDef}
+                .{e.ivSpe === 31 ? <span className={styles.boldIV}>31</span> : e.ivSpe}
+              </td> :
+              <td>|{e.ivHp}.{e.ivAtk}.{e.ivDef}.{e.ivSpAtk}.{e.ivSpDef}.{e.ivSpe}</td>
+            }
+            <td>{local.types[e.hpType]}</td>
+            <td>{('0000' + e.esv).slice(-4)}</td>
+            <td></td>
+          </tr>
+        )}
+      </tbody></table>
     );
   }
 
