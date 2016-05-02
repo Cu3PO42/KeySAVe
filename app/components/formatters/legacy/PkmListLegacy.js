@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Paper from 'material-ui/lib/paper';
 import { Localization, Calculator as StatCalculator } from 'keysavcore';
 import { createSelector } from 'reselect';
@@ -122,6 +123,11 @@ export default class PkmListLegacy extends React.Component {
     language: React.PropTypes.string,
     format: React.PropTypes.object
   };
+
+  getPlainText() {
+    const node = ReactDOM.findDOMNode(this);
+    return node.innerText.replace(/^(Box \d+)$/gm, '\n$1\n').substring(1);
+  }
 
   getTemplate = createSelector(
     () => this.props.format,
