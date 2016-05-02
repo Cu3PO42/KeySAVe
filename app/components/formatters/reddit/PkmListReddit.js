@@ -32,7 +32,7 @@ export default class PkmListReddit extends React.Component {
   getPlainTextBox(pkm) {
     const local = Localization[this.props.language];
     const { ghosts } = this.props.format;
-    const header = '| Box | Slot | Species (Gender) | Nature | Ability | HP.ATK.DEF.SPA.SPD.SPE | HiddenPower | ESV |\n|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|\n';
+    const header = '| Box | Slot | Species (Gender) | Nature | Ability | HP.ATK.DEF.SPA.SPD.SPE | Hidden Power | ESV |\n|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|\n';
     return header + (ghosts === 'hide' ? pkm.filter(e => !e.isGhost) : pkm).map(e =>
       `| ${ghosts === 'mark' && e.isGhost ? '~' : ''}` +
       `Box ${('0' + (e.box + 1)).slice(-2)} | ${Math.floor(e.slot / 6) + 1},${e.slot % 6 + 1} | ` +

@@ -60,12 +60,36 @@ function getSpecies(pkm, local) {
   return local.species[pkm.species];
 }
 
+function genderString(gender) {
+  switch (gender) {
+    case 0:
+      return '♂';
+    case 1:
+      return '♀';
+    default:
+      return '-';
+  }
+}
+
 export default class PkmListPretty extends React.Component {
   static propTypes = {
     pokemon: React.PropTypes.object,
     language: React.PropTypes.string,
     format: React.PropTypes.object
   };
+
+  getPlainText() {
+    const local = Localization[this.props.language];
+    const header = 'Box - Slot - Species (Gender) - Nature - Ability - HP.ATK.DEF.SPA.SPD.SPE - Hidden Power [ESV]';
+    return header + this.props.pokemon.map(e =>
+      `${e.isGhost ? '~' : ''}` +
+      `Box ${pad2(e.box + 1)} - ${Math.floor(e.slot / 6) + 1},${e.slot % 6 + 1} - ` +
+      `${getSpecies(e, local)} (${genderString(e.gender)}) - ` +
+      `${local.natures[e.nature]} - ${local.abilities[e.ability]} - ` +
+      ['Hp', 'Atk', 'Def', 'SpAtk', 'SpDef', 'Spe'].map(iv => e['iv' + iv]).join('.') +
+      ` - ${local.types[e.hpType]} [${('0000' + e.esv).slice(-4)}]`
+    ).join('\n');
+  }
 
   getPokemon = createSelector(
     () => this.props.format.ghosts === 'hide',
