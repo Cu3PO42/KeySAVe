@@ -29,7 +29,7 @@ const initialFilter = {
   upper: 31,
   eggsOnly: false,
   species: '',
-  gender: 3,
+  gender: '3',
   hpTypes: '',
   natures: '',
   abilities: '',

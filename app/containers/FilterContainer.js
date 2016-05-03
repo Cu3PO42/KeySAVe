@@ -6,7 +6,8 @@ import Filters from '../components/Filters';
 
 const mapStateToProps = createSelector(
   state => state.filter,
-  filter => filter
+  state => state.format.language,
+  (filter, language) => ({ ...filter, language })
 );
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
