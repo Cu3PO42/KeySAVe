@@ -97,7 +97,7 @@ export default class PkmListReddit extends React.Component {
   renderBox(pkm, box) {
     const local = Localization[this.props.language];
     return (
-      <table className={`${styles.table} ${this.getBoxClass(box)}`} key={box}><tbody>
+      <table className={`${styles.table} ${this.getBoxClass(box)}`}><tbody>
         <tr><th>Box</th><th>Slot</th><th>Species (Gender)</th><th>Nature</th><th>Ability</th><th>HP.ATK.DEF.SPATK.SPDEF.SPE</th><th>HP</th><th>ESV</th></tr>
         {pkm.map(e => this.props.format.ghosts === 'hide' && e.isGhost ?
           null :
@@ -120,7 +120,6 @@ export default class PkmListReddit extends React.Component {
             }
             <td>{local.types[e.hpType]}</td>
             <td>{('0000' + e.esv).slice(-4)}</td>
-            <td></td>
           </tr>
         )}
       </tbody></table>
@@ -136,7 +135,7 @@ export default class PkmListReddit extends React.Component {
       return (
         <div>
           {grouped.map((pkm, box) => (
-            <div>
+            <div key={box}>
               <h2 className={styles.boxNumber}><span className={styles.hide}>{this.getBoxHeader(box)} </span>Box {box + 1}</h2>
               {this.renderBox(pkm, box)}
             </div>
