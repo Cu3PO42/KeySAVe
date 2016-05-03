@@ -55,6 +55,8 @@ const initialFilter = {
   shinyOverride: false,
   eggsHaveMySv: false,
   svs: '',
+  customFilter: undefined,
+  customFilterRaw: ''
 };
 
 function setFilter(state, action) {
@@ -194,7 +196,8 @@ export default handleActions({
     }
     return {
       ...state,
-      customFilter: fn
+      customFilter: fn,
+      customFilterRaw: payload
     };
   },
 
@@ -204,6 +207,8 @@ export default handleActions({
       ...state,
       species: fixSelectedOptions(state.species, local.species),
       hpTypes: fixSelectedOptions(state.hpTypes, local.types),
+      natures: fixSelectedOptions(state.natures, local.natures),
+      abilities: fixSelectedOptions(state.abilities, local.abilities)
     };
   }
 }, initialFilter);

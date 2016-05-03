@@ -13,6 +13,7 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
 import TextField from 'material-ui/lib/text-field';
 import { createSelector } from 'reselect';
 import { Localization } from 'keysavcore';
+import { debounce } from 'lodash';
 import styles from './Filters.module.scss';
 
 export default class Filters extends React.Component {
@@ -32,6 +33,8 @@ export default class Filters extends React.Component {
     shinyOverride: PropTypes.bool.isRequired,
     eggsHaveMySv: PropTypes.bool.isRequired,
     svs: PropTypes.string.isRequired,
+    customFilter: PropTypes.func,
+    customFilterRaw: PropTypes.string.isRequired,
 
     toggleFilters: PropTypes.func.isRequired,
     setEggsOnly: PropTypes.func.isRequired,
@@ -47,8 +50,16 @@ export default class Filters extends React.Component {
     setShiniesOnly: PropTypes.func.isRequired,
     setShinyOverride: PropTypes.func.isRequired,
     setEggsHaveMySv: PropTypes.func.isRequired,
-    setEggsHaveSvs: PropTypes.func.isRequired
+    setEggsHaveSvs: PropTypes.func.isRequired,
+    setCustomFilter: PropTypes.func.isRequired
   };
+
+  constructor(props) {
+    super();
+    this.state = {
+      customFilterRaw: props.customFilterRaw
+    };
+  }
 
   setEggsOnly = (e, v) => this.props.setEggsOnly(v)
 
@@ -70,7 +81,14 @@ export default class Filters extends React.Component {
   setShinyOverride = (e, v) => this.props.setShinyOverride(v)
 
   setEggsHaveMySv = (e, v) => this.props.setEggsHaveMySv(v)
-  setEggsHaveSvs = (e) => this.props.setEggsHaveSvs(e.target.value)
+  setEggsHaveSvs = e => this.props.setEggsHaveSvs(e.target.value)
+
+  setCustomFilterRaw = e => {
+    this.setState({ customFilterRaw: e.target.value });
+    this.flushCustomFilter();
+  }
+
+  flushCustomFilter = debounce(() => this.props.setCustomFilter(this.state.customFilterRaw), 1000);
 
   getSpeciesOptions = createSelector(
     () => this.props.language,
@@ -108,6 +126,7 @@ export default class Filters extends React.Component {
       shinyOverride,
       eggsHaveMySv,
       svs,
+      customFilter,
 
       toggleFilters,
       setSpeciesFilter,
@@ -203,6 +222,12 @@ export default class Filters extends React.Component {
                 floatingLabelText="these SVs"
                 value={svs}
                 onChange={this.setEggsHaveSvs}
+              />
+              <TextField
+                floatingLabelText="Custom Filter"
+                value={this.state.customFilterRaw}
+                onChange={this.setCustomFilterRaw}
+                errorText={customFilter === null ? 'This is not a valid JS expression.' : undefined}
               />
             </Paper>
           </div>
