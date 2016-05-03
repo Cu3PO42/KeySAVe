@@ -17,6 +17,7 @@ $select-input-bg-disabled:         #f9f9f9 !default;
 $select-input-border-color:        #e0e0e0 !default;
 $select-input-border-radius:       4px !default;
 $select-input-border-focus:        #00bcd6 !default; // blue
+$select-input-border-focus-width:  2px !default; // blue
 $select-input-border-width:        1px !default;
 $select-input-height:              36px !default;
 $select-input-internal-height:     ($select-input-height - ($select-input-border-width * 2)) !default;

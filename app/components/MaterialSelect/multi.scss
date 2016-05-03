@@ -34,6 +34,10 @@
 		margin-left: $select-item-gutter;
 		margin-top: $select-item-gutter;
 		vertical-align: top;
+
+		&:hover, &:active, &:focus {
+			box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.30);
+		}
 	}
 
 	// common
@@ -74,12 +78,6 @@
 
 		background-color: $select-item-icon-background-color;
 		color: $select-item-bg;
-
-		&:hover,
-		&:focus,
-		&:active {
-			background-color: $select-item-border-color;
-		}
 	}
 
 }
