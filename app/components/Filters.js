@@ -7,7 +7,7 @@ import Collapse from 'react-collapse';
 import CheckBox from 'material-ui/lib/checkbox';
 import RadioButtonGroup from 'material-ui/lib/radio-button-group';
 import RadioButton from 'material-ui/lib/radio-button';
-import Select from 'react-select';
+import Select from './MaterialSelect';
 import { createSelector } from 'reselect';
 import { Localization } from 'keysavcore';
 import styles from './Filters.module.scss';
@@ -18,7 +18,7 @@ export default class Filters extends React.Component {
     language: PropTypes.string.isRequired,
     eggsOnly: PropTypes.bool.isRequired,
     gender: PropTypes.string.isRequired,
-    species: PropTypes.string.isRequired,
+    species: PropTypes.array.isRequired,
 
     toggleFilters: PropTypes.func.isRequired,
     setEggsOnly: PropTypes.func.isRequired,
