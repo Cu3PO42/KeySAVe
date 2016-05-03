@@ -97,7 +97,7 @@ export default class Filters extends React.Component {
 
   getHpOptions = createSelector(
     () => this.props.language,
-    lang => Localization[lang].types.map((e, i) => ({ value: i, label: e }))
+    lang => Localization[lang].types.map((e, i) => ({ value: i, label: e })).slice(1)
   )
 
   getNatureOptions = createSelector(
@@ -107,7 +107,7 @@ export default class Filters extends React.Component {
 
   getAbilityOptions = createSelector(
     () => this.props.language,
-    lang => Localization[lang].abilities.map((e, i) => ({ value: i, label: e }))
+    lang => Localization[lang].abilities.map((e, i) => ({ value: i, label: e })).slice(1)
   )
 
   render() {
