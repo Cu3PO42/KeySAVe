@@ -2,7 +2,6 @@ import React from 'react';
 import Paper from 'material-ui/lib/paper';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import SelectField from 'material-ui/lib/select-field';
-import DropDownMenu from 'material-ui/lib/DropDownMenu';
 import IconButton from 'material-ui/lib/icon-button';
 import CreateIcon from 'material-ui/lib/svg-icons/content/create';
 import DeleteIcon from 'material-ui/lib/svg-icons/action/delete';

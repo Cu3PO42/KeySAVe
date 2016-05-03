@@ -21,6 +21,12 @@ import {
   SET_EGGS_HAVE_SVS,
   SET_CUSTOM_FILTER
 } from '../actions/filter';
+import { FORMAT_LANGUAGE_CHANGED } from '../actions/format';
+import { Localization } from 'keysavcore';
+
+function fixSelectedOptions(options, lookup) {
+  return options.map(({ value }) => ({ value, label: lookup[value] }));
+}
 
 const initialFilter = {
   enabled: false,
@@ -30,9 +36,9 @@ const initialFilter = {
   eggsOnly: false,
   species: [],
   gender: '3',
-  hpTypes: '',
-  natures: '',
-  abilities: '',
+  hpTypes: [],
+  natures: [],
+  abilities: [],
   haOnly: false,
   specialAttacker: false,
   trickroom: false,
@@ -49,7 +55,6 @@ const initialFilter = {
   shinyOverride: false,
   eggsHaveMySv: false,
   svs: '',
-
 };
 
 function setFilter(state, action) {
@@ -89,13 +94,13 @@ export default handleActions({
   [SET_HP_FILTER](state, { payload }) {
     return {
       ...state,
-      hp: payload
+      hpTypes: payload
     };
   },
   [SET_NATURE_FILTER](state, { payload }) {
     return {
       ...state,
-      nature: payload
+      natures: payload
     };
   },
   [SET_ABILITY_FILTER](state, { payload }) {
@@ -190,6 +195,15 @@ export default handleActions({
     return {
       ...state,
       customFilter: fn
+    };
+  },
+
+  [FORMAT_LANGUAGE_CHANGED](state, { payload }) {
+    const local = Localization[payload];
+    return {
+      ...state,
+      species: fixSelectedOptions(state.species, local.species),
+      hpTypes: fixSelectedOptions(state.hpTypes, local.types),
     };
   }
 }, initialFilter);
