@@ -3,7 +3,6 @@ import Paper from 'material-ui/lib/paper';
 import RaisedButton from 'material-ui/lib/raised-button';
 import ExpandMoreIcon from 'material-ui/lib/svg-icons/navigation/expand-more';
 import ExpandLessIcon from 'material-ui/lib/svg-icons/navigation/expand-less';
-import Collapse from 'react-collapse';
 import CheckBox from 'material-ui/lib/checkbox';
 import RadioButtonGroup from 'material-ui/lib/radio-button-group';
 import RadioButton from 'material-ui/lib/radio-button';
@@ -143,7 +142,7 @@ export default class Filters extends React.Component {
           onClick={toggleFilters}
           icon={enabled ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         />
-        <Collapse isOpened={enabled}>
+        <div style={enabled ? {} : { display: 'none' }}>
           <div className={styles.paperWrapper}>
             <Paper className={styles.paper}>
               <CheckBox
@@ -231,7 +230,7 @@ export default class Filters extends React.Component {
               />
             </Paper>
           </div>
-        </Collapse>
+        </div>
       </div>
     );
   }
