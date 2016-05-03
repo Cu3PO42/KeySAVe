@@ -28,6 +28,8 @@ export default class Filters extends React.Component {
     haOnly: PropTypes.bool.isRequired,
     numPerfectIvs: PropTypes.number.isRequired,
     ivs: PropTypes.object.isRequired,
+    trickroom: PropTypes.bool.isRequired,
+    specialAttacker: PropTypes.bool.isRequired,
     shiniesOnly: PropTypes.bool.isRequired,
     shinyOverride: PropTypes.bool.isRequired,
     eggsHaveMySv: PropTypes.bool.isRequired,
@@ -46,6 +48,8 @@ export default class Filters extends React.Component {
     setNumPerfectIvs: PropTypes.func.isRequired,
     setAllPerfectIvs: PropTypes.func.isRequired,
     setPerfectIv: PropTypes.func.isRequired,
+    setTrickRoom: PropTypes.func.isRequired,
+    setSpecialAttacker: PropTypes.func.isRequired,
     setShiniesOnly: PropTypes.func.isRequired,
     setShinyOverride: PropTypes.func.isRequired,
     setEggsHaveMySv: PropTypes.func.isRequired,
@@ -75,6 +79,9 @@ export default class Filters extends React.Component {
   toggleSpAtk = (e, v) => this.props.setPerfectIv('spAtk', v);
   toggleSpDef = (e, v) => this.props.setPerfectIv('spDef', v);
   toggleSpe = (e, v) => this.props.setPerfectIv('spe', v);
+
+  setTrickRoom = (e, v) => this.props.setTrickRoom(v)
+  setSpecialAttacker = (e, v) => this.props.setSpecialAttacker(v)
 
   setShiniesOnly = (e, v) => this.props.setShiniesOnly(v)
   setShinyOverride = (e, v) => this.props.setShinyOverride(v)
@@ -121,6 +128,8 @@ export default class Filters extends React.Component {
       haOnly,
       numPerfectIvs,
       ivs,
+      trickroom,
+      specialAttacker,
       shiniesOnly,
       shinyOverride,
       eggsHaveMySv,
@@ -154,6 +163,7 @@ export default class Filters extends React.Component {
                 name="Gender"
                 valueSelected={gender}
                 onChange={this.setGenderFilter}
+                className={styles.radioHorizontal}
               >
                 <RadioButton label="♂" value="0" />
                 <RadioButton label="♀" value="1" />
@@ -206,19 +216,31 @@ export default class Filters extends React.Component {
                 <MenuItem primaryText="5" value={6} />
                 <MenuItem primaryText="6" value={7} />
               </SelectField>
-              These perfect IVs: <CheckBox label="All" checked={ivs.hp && ivs.atk && ivs.def && ivs.spAtk && ivs.spDef && ivs.spe} onCheck={this.setAllPerfectIvs} />
-              <CheckBox label="HP" checked={ivs.hp} onCheck={this.toggleHp} />
-              <CheckBox label="Atk" checked={ivs.atk} onCheck={this.toggleAtk} />
-              <CheckBox label="Def" checked={ivs.def} onCheck={this.toggleDef} />
-              <CheckBox label="SpAtk" checked={ivs.spAtk} onCheck={this.toggleSpAtk} />
-              <CheckBox label="SpDef" checked={ivs.spDef} onCheck={this.toggleSpDef} />
-              <CheckBox label="Spe" checked={ivs.spe} onCheck={this.toggleSpe} />
+              <p>These perfect IVs:</p>
+              <div className={styles.checkBoxCols}>
+                <div>
+                  <CheckBox label="All" checked={ivs.hp && ivs.atk && ivs.def && ivs.spAtk && ivs.spDef && ivs.spe} onCheck={this.setAllPerfectIvs} />
+                  <CheckBox label="Trickroom" checked={trickroom} onCheck={this.setTrickRoom} />
+                  <CheckBox label="Special Attacker" checked={specialAttacker} onCheck={this.setSpecialAttacker} />
+                </div>
+                <div>
+                  <CheckBox label="HP" checked={ivs.hp} onCheck={this.toggleHp} />
+                  <CheckBox label="Atk" checked={ivs.atk} onCheck={this.toggleAtk} />
+                  <CheckBox label="Def" checked={ivs.def} onCheck={this.toggleDef} />
+                </div>
+                <div>
+                  <CheckBox label="SpAtk" checked={ivs.spAtk} onCheck={this.toggleSpAtk} />
+                  <CheckBox label="SpDef" checked={ivs.spDef} onCheck={this.toggleSpDef} />
+                  <CheckBox label="Spe" checked={ivs.spe} onCheck={this.toggleSpe} />
+                </div>
+              </div>
+              <p>Shinyness:</p>
               <CheckBox label="Is Shiny" checked={shiniesOnly} onCheck={this.setShiniesOnly} />
               <CheckBox label="Shiny override" checked={shinyOverride} onCheck={this.setShinyOverride} />
-              Eggs have
+              <p>Eggs have...</p>
               <CheckBox label="My SV" checked={eggsHaveMySv} onCheck={this.setEggsHaveMySv} />
               <TextField
-                floatingLabelText="these SVs"
+                floatingLabelText="any of these SVs"
                 value={svs}
                 onChange={this.setEggsHaveSvs}
               />
@@ -227,6 +249,7 @@ export default class Filters extends React.Component {
                 value={this.state.customFilterRaw}
                 onChange={this.setCustomFilterRaw}
                 errorText={customFilter === null ? 'This is not a valid JS expression.' : undefined}
+                fullWidth
               />
             </Paper>
           </div>

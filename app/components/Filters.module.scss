@@ -10,3 +10,24 @@
 .paperWrapper {
   padding-top: 20px;
 }
+
+.radioHorizontal {
+  display: flex;
+  flex-direction: row;
+
+  & > div {
+    width: auto !important;
+    &:not(:last-child) {
+      padding-right: 20px;
+    }
+  }
+}
+
+.checkBoxCols {
+  display: flex;
+  flex-direction: row;
+
+  & > div:not(:last-child) {
+    padding-right: 20px;
+  }
+}
