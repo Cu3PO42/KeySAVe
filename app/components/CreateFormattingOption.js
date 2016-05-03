@@ -54,10 +54,11 @@ export default class CreateFormattingOption extends React.Component {
           actions={[<FlatButton onClick={this.closeDialog}>Cancel</FlatButton>, <FlatButton onClick={this.createOption} primary>Create</FlatButton>]}
           onRequestClose={this.closeDialog}
         >
-          <DropDownMenu value={this.state.currentPlugin} onChange={this.pluginSelected}>
+          <h3>Create a new formatting option</h3>
+          <DropDownMenu floatingLabelText="Plugin" value={this.state.currentPlugin} onChange={this.pluginSelected}>
             {plugins.filter(({ multipleInstances: m }) => m).map(({ name }) => <MenuItem key={name} value={name} primaryText={name} />)}
           </DropDownMenu>
-          <TextField value={this.state.name} onChange={this.nameChanged} />
+          <TextField floatingLabelText="Name" value={this.state.name} onChange={this.nameChanged} />
         </Dialog>
         <IconButton tooltip="Create formatting option" onClick={this.openDialog}><AddIcon /></IconButton>
       </span>
