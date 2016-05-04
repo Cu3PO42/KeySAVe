@@ -34,8 +34,8 @@ const getFilter = createSelector(
   (filter, type, svList) => {
     return pkm => {
       if (type === 'SAV' &&
-        (filter.lowerBox !== undefined && filter.lowerBox > pkm.box + 1 ||
-         filter.upperBox !== undefined && filter.upperBox > pkm.box)) return false;
+        (filter.lower !== undefined && filter.lower > pkm.box + 1 ||
+         filter.upper !== undefined && filter.upper < pkm.box)) return false;
       if (!filter.enabled) return true;
       if (filter.eggsOnly && !pkm.isEgg) return false;
       const shinyCond = !pkm.isEgg && pkm.isShiny ||
