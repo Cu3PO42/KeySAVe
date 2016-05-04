@@ -116,7 +116,7 @@ export default class PkmListReddit extends React.Component {
                 .{e.ivSpDef === 31 ? <span className={styles.boldIV}>31</span> : e.ivSpDef}
                 .{e.ivSpe === 31 ? <span className={styles.boldIV}>31</span> : e.ivSpe}
               </td> :
-              <td>|{e.ivHp}.{e.ivAtk}.{e.ivDef}.{e.ivSpAtk}.{e.ivSpDef}.{e.ivSpe}</td>
+              <td>{e.ivHp}.{e.ivAtk}.{e.ivDef}.{e.ivSpAtk}.{e.ivSpDef}.{e.ivSpe}</td>
             }
             <td>{local.types[e.hpType]}</td>
             <td>{('0000' + e.esv).slice(-4)}</td>
