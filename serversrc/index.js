@@ -46,19 +46,14 @@ app.on('ready', () => {
 
   if (process.platform === 'darwin') {
     template = [{
-      label: 'Electron',
+      label: 'KeySAVe',
       submenu: [{
-        label: 'About ElectronReact',
+        label: 'About KeySAVe',
         selector: 'orderFrontStandardAboutPanel:'
       }, {
         type: 'separator'
       }, {
-        label: 'Services',
-        submenu: []
-      }, {
-        type: 'separator'
-      }, {
-        label: 'Hide ElectronReact',
+        label: 'Hide KeySAVe',
         accelerator: 'Command+H',
         selector: 'hide:'
       }, {
@@ -75,6 +70,15 @@ app.on('ready', () => {
         accelerator: 'Command+Q',
         click() {
           app.quit();
+        }
+      }]
+    }, {
+      label: 'File',
+      submenu: [{
+        label: 'Open',
+        accelerator: 'Command+O',
+        click() {
+          mainWindow.webContents.send('trigger-open-file');
         }
       }]
     }, {
@@ -171,7 +175,10 @@ app.on('ready', () => {
       label: '&File',
       submenu: [{
         label: '&Open',
-        accelerator: 'Ctrl+O'
+        accelerator: 'Ctrl+O',
+        click() {
+          mainWindow.webContents.send('trigger-open-file');
+        }
       }, {
         label: '&Close',
         accelerator: 'Ctrl+W',
