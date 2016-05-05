@@ -26,7 +26,7 @@ export default class Updater extends React.Component {
     super();
     this.ipcClient.on('update-progress', ({ percentage }) => this.props.setProgress(percentage * 100));
     (async () => {
-      if (process.NODE_ENV === 'production') {
+      if (process.env.NODE_ENV === 'production') {
         const { available, changelog } = await this.ipcClient.send('update-query');
         if (available) {
           this.props.setUpdateAvailable(changelog);
