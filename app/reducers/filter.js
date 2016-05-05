@@ -188,7 +188,7 @@ export default handleActions({
     } else {
       try {
         /* eslint-disable no-eval */
-        fn = eval(`(function(pkm) { return (${payload});})`);
+        fn = eval(`(function(pkm) { return !!(${payload});})`);
         /* eslint-enable no-eval */
       } catch (e) {
         fn = null;
