@@ -33,7 +33,7 @@ const DEFAULT_OPTS = {
   'version-string': {
     CompanyName: 'Cu3PO42',
     LegalCopyright: 'Cu3PO42',
-    FileDescription: 'KeySAVe,
+    FileDescription: 'KeySAVe',
     OriginalFilename: 'KeySAVe.exe',
     ProductName: 'KeySAVe',
     InternalName: 'KeySAVe'
