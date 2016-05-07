@@ -24,7 +24,7 @@ const getPokemonSeq = createSelector(
 
 const getSvList = createSelector(
   state => state.filter.svs,
-  svs => (svs.match(/\b\d{1,4}\b/g) || []).map(parseInt)
+  svs => (svs.match(/\b\d{1,4}\b/g) || []).map(sv => parseInt(sv, 10))
 );
 
 const getFilter = createSelector(
