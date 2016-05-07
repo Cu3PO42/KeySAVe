@@ -26,6 +26,7 @@ export default class FormattingOptionsHandlebars extends React.Component {
     if (nextProps.index !== this.props.index) {
       this.props.updateFormat(this.props.index);
       this.flush.cancel();
+      this.setState(nextProps.format);
     } else if (this.flushed) {
       this.setState(nextProps.format);
     }
