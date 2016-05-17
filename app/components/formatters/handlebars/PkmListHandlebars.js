@@ -150,6 +150,15 @@ class PkmListHandlebars extends Component {
       },
       toJson(e) {
         return new handlebars.SafeString(JSON.stringify(e));
+      },
+      eval(expr) {
+        /* eslint-disable no-unused-vars */
+        const local = Localization[self.props.language];
+        const pkm = this;
+        /* eslint-enable no-unused-vars */
+        /* eslint-disable no-eval */
+        return eval(expr);
+        /* eslint-enable no-eval */
       }
     };
   }
