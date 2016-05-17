@@ -65,7 +65,7 @@ export default class Dumping extends React.Component {
       { defaultPath: path.basename(this.props.name, path.extname(this.props.name)) + ext, filters } });
     if (!filename) return;
     try {
-      await fs.writeFileAsync(filename, this.getText(), { encoding: 'utf-8' });
+      await fs.writeFileAsync(filename, '\ufeff' + this.getText(), { encoding: 'utf-8' }); // feff is the universal bom in node
       this.props.openDialog('File saved successfully!');
     } catch (e) {
       this.props.openDialog('Couldn\'t save file. Please try again.');
