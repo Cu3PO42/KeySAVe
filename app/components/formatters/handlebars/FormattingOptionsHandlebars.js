@@ -192,6 +192,7 @@ export default class FormattingOptionsHandlebars extends React.Component {
       countryName() { return 'Country'; },
       ribbons() { return ['Ribbons']; },
       hasHa() { return true; },
+      characteristic() { return 'Characteristic'; },
       eval(expr) { return `'${expr}'`; },
     } }) } });
   }

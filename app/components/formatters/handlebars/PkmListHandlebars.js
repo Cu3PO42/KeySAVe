@@ -146,6 +146,9 @@ class PkmListHandlebars extends Component {
       ribbons() {
         return Localization[self.props.language].getRibbons(this);
       },
+      characteristic() {
+        return Localization[self.props.language].getCharacteristic(this);
+      },
       esacpe(str) {
         return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
       },
@@ -222,6 +225,7 @@ class PkmListHandlebars extends Component {
 
       return this.renderBox(this.props.pokemon);
     } catch (e) {
+      console.log(e);
       return (
         <Paper className={styles.paper}>
           Template error! Please check your format string!
