@@ -2,12 +2,16 @@ import React, { Component } from 'react';
 import FileOpener from '../components/FileOpener';
 import Paper from 'material-ui/lib/paper';
 import IconButton from 'material-ui/lib/icon-button';
-import Slider from 'material-ui/lib/slider';
 import RadioButton from 'material-ui/lib/radio-button';
 import RadioButtonGroup from 'material-ui/lib/radio-button-group';
+import DropDownMenu from 'material-ui/lib/DropDownMenu';
+import MenuItem from 'material-ui/lib/menus/menu-item';
 import FileCloudDownload from 'material-ui/lib/svg-icons/file/cloud-download';
 import pureRender from 'pure-render-decorator';
 import styles from './DumpingFileOpener.module.scss';
+import { range } from 'lodash';
+
+const menuItems1To31 = range(1, 32).map(i => <MenuItem value={i} primaryText={'' + i} />);
 
 @pureRender
 class DumpingFileOpener extends Component {
@@ -24,20 +28,12 @@ class DumpingFileOpener extends Component {
     isOpponent: React.PropTypes.bool
   };
 
-  lowerBoxChanged = (e, value) => {
-    if (value <= this.props.upperBox) {
-      this.props.savFilterChanged(value, this.props.upperBox);
-    } else {
-      this.props.savFilterChanged(value, value);
-    }
+  lowerBoxChanged = (e, i, value) => {
+    this.props.savFilterChanged(value, this.props.upperBox);
   };
 
-  upperBoxChanged = (e, value) => {
-    if (this.props.lowerBox <= value) {
-      this.props.savFilterChanged(this.props.lowerBox, value);
-    } else {
-      this.props.savFilterChanged(value, value);
-    }
+  upperBoxChanged = (e, i, value) => {
+    this.props.savFilterChanged(this.props.lowerBox, value);
   };
 
   radioChanged = (e, value) => {
@@ -53,10 +49,14 @@ class DumpingFileOpener extends Component {
             <FileCloudDownload />
           </IconButton>
           {this.props.type === 'SAV' ?
-            <div className={styles.sliderWrapper}>
-              <Slider min={1} max={31} step={1} value={Math.min(this.props.lowerBox, this.props.upperBox)} onChange={this.lowerBoxChanged} name="firstBox" style={{ width: '100px', marginRight: '10px' }} />
-              <Slider min={1} max={31} step={1} value={Math.max(this.props.lowerBox, this.props.upperBox)} onChange={this.upperBoxChanged} name="secondBox" style={{ width: '100px' }} />
-              <p className={styles.boxString}>Boxes {this.props.lowerBox} - {this.props.upperBox}</p>
+            <div className={styles.boxSelectorWrapper}>
+              <DropDownMenu value={this.props.lowerBox} onChange={this.lowerBoxChanged}>
+                {menuItems1To31.slice(0, this.props.upperBox)}
+              </DropDownMenu>
+              &ndash;
+              <DropDownMenu value={this.props.upperBox} onChange={this.upperBoxChanged}>
+                {menuItems1To31.slice(this.props.lowerBox - 1)}
+              </DropDownMenu>
             </div>
           : this.props.type === 'BV' ?
             <div className={styles.radioButtonWrapper}>

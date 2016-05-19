@@ -59,16 +59,20 @@ const initialFilter = {
   customFilterRaw: ''
 };
 
-function setFilter(state, action) {
-  return {
-    ...state,
-    ...action.payload
-  };
-}
-
 export default handleActions({
-  [SET_FILTER_BV]: setFilter,
-  [SET_FILTER_SAV]: setFilter,
+  [SET_FILTER_BV](state, { payload }) {
+    return {
+      ...state,
+      isOpponent: payload
+    };
+  },
+  [SET_FILTER_SAV](state, { payload: { lower, upper } }) {
+    return {
+      ...state,
+      lower: Math.min(lower, state.upper),
+      upper: Math.max(upper, state.lower)
+    };
+  },
   [TOGGLE_FILTERS](state) {
     return {
       ...state,

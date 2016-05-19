@@ -21,7 +21,7 @@ export const SET_EGGS_HAVE_MY_SV = 'SET_EGGS_HAVE_MY_SV';
 export const SET_EGGS_HAVE_SVS = 'SET_EGGS_HAVE_SVS';
 export const SET_CUSTOM_FILTER = 'SET_CUSTOM_FILTER';
 
-export const setFilterBv = createAction(SET_FILTER_BV, isOpponent => ({ isOpponent }));
+export const setFilterBv = createAction(SET_FILTER_BV);
 export const setFilterSav = createAction(SET_FILTER_SAV, (lower, upper) => ({ lower, upper }));
 export const toggleFilters = createAction(TOGGLE_FILTERS, () => undefined);
 export const setEggsOnly = createAction(SET_EGGS_ONLY);
