@@ -46,11 +46,11 @@ function pad4(n) {
 }
 
 function getSprite(pkm) {
-  const sprite = pkm.species + pkm.form + (pkm.tsv === pkm.esv ? '-s' : '');
+  const sprite = ('' + pkm.species) + pkm.form + (pkm.tsv === pkm.esv ? '-s' : '');
   if (backgroundColors[sprite]) {
     return sprite;
   }
-  return '' + pkm.species + (pkm.tsv === pkm.esv ? '-s' : '');
+  return '' + pkm.species + '-0' + (pkm.tsv === pkm.esv ? '-s' : '');
 }
 
 function getSpecies(pkm, local) {
