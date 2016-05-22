@@ -21,7 +21,8 @@ export default class NtrMenu extends React.Component {
     setNtrRegion: React.PropTypes.func.isRequired,
     ntrConnect: React.PropTypes.func.isRequired,
     ntrDisconnect: React.PropTypes.func.isRequired,
-    ntrDumpBoxes: React.PropTypes.func.isRequired
+    ntrDumpBoxes: React.PropTypes.func.isRequired,
+    ntrDumpTrade: React.PropTypes.func.isRequired
   };
 
   openMenu = () => this.props.openNtrMenu(true)
@@ -32,6 +33,7 @@ export default class NtrMenu extends React.Component {
   connect = () => this.props.client === null ? this.props.ntrConnect(this.props.ip) : this.props.ntrDisconnect()
 
   dumpBoxes = () => this.props.ntrDumpBoxes(this.props.client, this.props.game, this.props.region);
+  dumpTrade = () => this.props.ntrDumpTrade(this.props.client, this.props.game, this.props.region);
 
   render() {
     return (
@@ -59,6 +61,7 @@ export default class NtrMenu extends React.Component {
             <RaisedButton primary label={this.props.client === null ? 'Connect' : 'Disconnect'} onClick={this.connect} />
           </div>
           <FlatButton label="Dump Boxes" onClick={this.dumpBoxes} />
+          <FlatButton label="Dump Trade" onClick={this.dumpTrade} />
         </Dialog>
       </div>
     );

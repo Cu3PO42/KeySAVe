@@ -12,7 +12,7 @@ import pureRender from 'pure-render-decorator';
 import styles from './DumpingFileOpener.module.scss';
 import { range } from 'lodash';
 
-const menuItems1To31 = range(1, 32).map(i => <MenuItem value={i} primaryText={'' + i} />);
+const menuItems1To31 = range(1, 32).map(i => <MenuItem index={i} value={i} primaryText={'' + i} />);
 
 @pureRender
 class DumpingFileOpener extends Component {

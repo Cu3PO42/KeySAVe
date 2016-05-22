@@ -5,7 +5,9 @@ import {
   SET_NTR_REGION,
   SET_NTR_IP,
   NTR_CONNECT,
-  NTR_DISCONNECT
+  NTR_DISCONNECT,
+  NTR_SAVE_INTERVAL,
+  NTR_SET_PROGRESS
 } from '../actions/ntr';
 
 const initialState = {
@@ -13,7 +15,9 @@ const initialState = {
   ip: '',
   game: 'oras',
   region: 'pal',
-  client: null
+  client: null,
+  intervalId: null,
+  inProgress: ''
 };
 
 export default handleActions({
@@ -47,13 +51,33 @@ export default handleActions({
       client: payload
     };
   },
-  [NTR_DISCONNECT](state) {
-    if (state.client !== null) {
-      state.client.disconnect();
+  [NTR_SAVE_INTERVAL](state, { payload }) {
+    if (state.intervalId !== null) {
+      clearInterval(state.intervalId);
     }
     return {
       ...state,
-      client: null
+      intervalId: payload
+    };
+  },
+  [NTR_SET_PROGRESS](state, { payload }) {
+    return {
+      ...state,
+      inProgress: payload
+    };
+  },
+  [NTR_DISCONNECT](state) {
+    if (state.client !== null) {
+      state.client.disconnect();
+      if (state.intervalId !== null) {
+        clearInterval(state.intervalId);
+      }
+    }
+    return {
+      ...state,
+      client: null,
+      intervalId: null,
+      inProgress: ''
     };
   }
 }, initialState);
