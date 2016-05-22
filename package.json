@@ -93,6 +93,7 @@
     "lodash": "^3.10.0",
     "lodash.debounce": "^4.0.3",
     "material-ui": "^0.14.4",
+    "ntrclient": "github:cu3po42/NTRClientJS",
     "pure-render-decorator": "^0.2.0",
     "react": "^0.14.2",
     "react-dom": "^0.14.2",

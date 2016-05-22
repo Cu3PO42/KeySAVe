@@ -7,6 +7,7 @@ import RadioButtonGroup from 'material-ui/lib/radio-button-group';
 import DropDownMenu from 'material-ui/lib/DropDownMenu';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import FileCloudDownload from 'material-ui/lib/svg-icons/file/cloud-download';
+import NtrContainer from '../containers/NtrContainer';
 import pureRender from 'pure-render-decorator';
 import styles from './DumpingFileOpener.module.scss';
 import { range } from 'lodash';
@@ -48,6 +49,7 @@ class DumpingFileOpener extends Component {
           <IconButton onClick={() => this.props.backup(this.props.file)} disabled={this.props.file === ''}>
             <FileCloudDownload />
           </IconButton>
+          <NtrContainer />
           {this.props.type === 'SAV' ?
             <div className={styles.boxSelectorWrapper}>
               <DropDownMenu value={this.props.lowerBox} onChange={this.lowerBoxChanged}>

@@ -1,0 +1,9 @@
+.connectLine {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+
+  & > div {
+    display: block;
+  }
+}

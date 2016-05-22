@@ -1,10 +1,11 @@
-import { handleActions } from '../utils/handleActions';
+import { handleActions } from '../utils/handleAction';
 import {
   OPEN_NTR_MENU,
   SET_NTR_GAME,
   SET_NTR_REGION,
   SET_NTR_IP,
-  NTR_CONNECT
+  NTR_CONNECT,
+  NTR_DISCONNECT
 } from '../actions/ntr';
 
 const initialState = {
@@ -44,6 +45,15 @@ export default handleActions({
     return {
       ...state,
       client: payload
+    };
+  },
+  [NTR_DISCONNECT](state) {
+    if (state.client !== null) {
+      state.client.disconnect();
+    }
+    return {
+      ...state,
+      client: null
     };
   }
 }, initialState);
