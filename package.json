@@ -87,6 +87,7 @@
     "electron-debug": "^0.5.1",
     "electron-gh-releases-updater": "^0.7.0",
     "electron-ipc-tunnel": "^3.1.0",
+    "fbjs-scripts": "^0.7.0",
     "fs-extra": "^0.26.4",
     "handlebars": "^4.0.5",
     "handlebars-helper-moment": "^0.2.0",
