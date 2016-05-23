@@ -8,7 +8,7 @@ import CopyIcon from 'material-ui/lib/svg-icons/content/content-copy';
 import SaveIcon from 'material-ui/lib/svg-icons/content/save';
 import ArchiveIcon from 'material-ui/lib/svg-icons/content/archive';
 import { remote } from 'electron';
-const clipboard = remote.require('clipboard');
+const { clipboard } = remote.require('electron');
 import { send as ipcSend } from 'electron-ipc-tunnel/client';
 import * as fs from 'fs-extra';
 import * as path from 'path';
