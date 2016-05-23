@@ -22,7 +22,7 @@
   "author": "Cu3PO42",
   "license": "MIT",
   "devDependencies": {
-    "asar": "^0.9.0",
+    "asar": "^0.11.0",
     "babel-cli": "^6.5.1",
     "babel-core": "^6.3.26",
     "babel-eslint": "^6.0.4",
