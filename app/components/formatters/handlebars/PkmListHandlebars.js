@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Paper from 'material-ui/lib/paper';
+import Paper from 'material-ui/Paper';
 import handlebars from 'handlebars';
 import dashbars from 'dashbars';
 import helperMoment from 'handlebars-helper-moment';

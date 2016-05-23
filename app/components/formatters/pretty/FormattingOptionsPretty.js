@@ -1,6 +1,6 @@
 import React from 'react';
-import RadioButtonGroup from 'material-ui/lib/radio-button-group';
-import RadioButton from 'material-ui/lib/radio-button';
+import RadioButtonGroup from 'material-ui/RadioButton/RadioButtonGroup';
+import RadioButton from 'material-ui/RadioButton';
 
 const FormattingOptionsPretty = ({
   format: { ghosts },

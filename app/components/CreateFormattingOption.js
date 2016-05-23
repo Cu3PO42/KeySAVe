@@ -1,11 +1,11 @@
 import React from 'react';
-import IconButton from 'material-ui/lib/icon-button';
-import AddIcon from 'material-ui/lib/svg-icons/content/add';
-import Dialog from 'material-ui/lib/dialog';
-import DropDownMenu from 'material-ui/lib/DropDownMenu';
-import TextField from 'material-ui/lib/text-field';
-import MenuItem from 'material-ui/lib/menus/menu-item';
-import FlatButton from 'material-ui/lib/flat-button';
+import IconButton from 'material-ui/IconButton';
+import AddIcon from 'material-ui/svg-icons/content/add';
+import Dialog from 'material-ui/Dialog';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import TextField from 'material-ui/TextField';
+import MenuItem from 'material-ui/MenuItem';
+import FlatButton from 'material-ui/FlatButton';
 
 export default class CreateFormattingOption extends React.Component {
   static propTypes = {

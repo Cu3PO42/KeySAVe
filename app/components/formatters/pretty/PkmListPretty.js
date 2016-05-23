@@ -1,5 +1,5 @@
 import React from 'react';
-import Paper from 'material-ui/lib/paper';
+import Paper from 'material-ui/Paper';
 import { createSelector } from 'reselect';
 import { Localization } from 'keysavcore';
 import backgroundColors from './background-colors.json';

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Paper from 'material-ui/lib/paper';
+import Paper from 'material-ui/Paper';
 import { Localization, Calculator as StatCalculator } from 'keysavcore';
 import { createSelector } from 'reselect';
 import styles from './PkmListLegacy.module.scss';

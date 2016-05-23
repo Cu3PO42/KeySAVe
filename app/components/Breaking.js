@@ -2,15 +2,15 @@ import React from 'react';
 import FileOpener from './FileOpener';
 import { send as ipcSend } from 'electron-ipc-tunnel/client';
 import { importKeySAV2Config } from '../configuration';
-import Paper from 'material-ui/lib/paper';
-import FlatButton from 'material-ui/lib/flat-button';
-import Dialog from 'material-ui/lib/dialog';
-import WarningIcon from 'material-ui/lib/svg-icons/alert/warning';
-import ErrorIcon from 'material-ui/lib/svg-icons/alert/error';
-import CircularProgress from 'material-ui/lib/circular-progress';
+import Paper from 'material-ui/Paper';
+import FlatButton from 'material-ui/FlatButton';
+import Dialog from 'material-ui/Dialog';
+import WarningIcon from 'material-ui/svg-icons/alert/warning';
+import ErrorIcon from 'material-ui/svg-icons/alert/error';
+import CircularProgress from 'material-ui/CircularProgress';
 import DocumentationLink from './DocumentationLink';
 import styles from './Breaking.module.scss';
-import colors from 'material-ui/lib/styles/colors';
+import colors from 'material-ui/styles/colors';
 import Promise from 'bluebird';
 
 function stringOrObjOrUndefined(props, propName, componentName) {

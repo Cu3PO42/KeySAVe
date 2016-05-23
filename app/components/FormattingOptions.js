@@ -1,14 +1,14 @@
 import React from 'react';
-import Paper from 'material-ui/lib/paper';
-import MenuItem from 'material-ui/lib/menus/menu-item';
-import SelectField from 'material-ui/lib/select-field';
-import IconButton from 'material-ui/lib/icon-button';
-import CreateIcon from 'material-ui/lib/svg-icons/content/create';
-import DeleteIcon from 'material-ui/lib/svg-icons/action/delete';
-import LockedIcon from 'material-ui/lib/svg-icons/action/lock';
+import Paper from 'material-ui/Paper';
+import MenuItem from 'material-ui/MenuItem';
+import SelectField from 'material-ui/SelectField';
+import IconButton from 'material-ui/IconButton';
+import CreateIcon from 'material-ui/svg-icons/content/create';
+import DeleteIcon from 'material-ui/svg-icons/action/delete';
+import LockedIcon from 'material-ui/svg-icons/action/lock';
 import CreateFormattingOption from './CreateFormattingOption';
-import Divider from 'material-ui/lib/divider';
-import TextField from 'material-ui/lib/text-field';
+import Divider from 'material-ui/Divider';
+import TextField from 'material-ui/TextField';
 import { Seq } from 'immutable';
 import styles from './FormattingOptions.module.scss';
 

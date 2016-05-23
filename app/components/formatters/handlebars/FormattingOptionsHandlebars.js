@@ -1,8 +1,8 @@
 import React from 'react';
-import TextField from 'material-ui/lib/text-field';
-import IconButton from 'material-ui/lib/icon-button';
-import ReloadIcon from 'material-ui/lib/svg-icons/action/cached';
-import CheckBox from 'material-ui/lib/checkbox';
+import TextField from 'material-ui/TextField';
+import IconButton from 'material-ui/IconButton';
+import ReloadIcon from 'material-ui/svg-icons/action/cached';
+import CheckBox from 'material-ui/Checkbox';
 import debounce from 'lodash.debounce';
 import handlebars from 'handlebars';
 import { createSelector } from 'reselect';
