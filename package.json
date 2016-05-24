@@ -13,8 +13,8 @@
     "build-server": "babel serversrc -d serverlib",
     "installnativedeps": "cd nativedeps && npm install && cd ..",
     "buildnative": "electron-rebuild -m nativedeps/node_modules",
-    "hot-server": "node server.js",
-    "build-client": "cross-env NODE_ENV=production webpack --config webpack.config.production.js --progress --profile --colors",
+    "hot-server": "webpack-dev-server --hot --port 3000 --config webpack.config.development.js",
+    "build-client": "cross-env NODE_ENV=production webpack --config webpack.config.production.js",
     "start-hot": "cross-env HOT=1 NODE_ENV=development electron ./",
     "package": "cross-env NODE_ENV=production node package.js",
     "postinstall": "npm run installnativedeps && node node_modules/fbjs-scripts/node/check-dev-engines.js package.json"
@@ -36,7 +36,6 @@
     "babel-plugin-transform-es2015-unicode-regex": "^6.5.0",
     "babel-plugin-transform-exponentiation-operator": "^6.5.0",
     "babel-plugin-transform-object-rest-spread": "^6.6.5",
-    "babel-plugin-webpack-loaders": "^0.5.0",
     "babel-polyfill": "^6.3.14",
     "babel-preset-react": "^6.3.13",
     "babel-preset-react-hmre": "^1.1.1",
@@ -74,11 +73,9 @@
     "selenium-webdriver": "^2.48.2",
     "sinon": "^1.17.2",
     "style-loader": "^0.13.0",
-    "webpack": "^1.13.0",
-    "webpack-dev-middleware": "^1.2.0",
-    "webpack-hot-middleware": "^2.4.1",
-    "webpack-spritesmith": "^0.2.0",
-    "webpack-target-electron-renderer": "^0.4.0"
+    "webpack": "^2.1.0-beta.7",
+    "webpack-dev-server": "^2.1.0-beta.0",
+    "webpack-spritesmith": "^0.2.0"
   },
   "dependencies": {
     "app-module-path": "^1.0.6",

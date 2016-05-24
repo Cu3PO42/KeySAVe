@@ -36,8 +36,8 @@ module.exports = {
     libraryTarget: 'commonjs2'
   },
   resolve: {
-    extensions: ['', '.js', '.jsx', '.ts', '.tsx'],
-    packageMains: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main']
+    extensions: ['', '.js', '.jsx'],
+    mainFields: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main']
   },
   plugins: [
     new SpritesmithPlugin({
