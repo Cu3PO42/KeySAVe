@@ -7,17 +7,14 @@
       "transform-es2015-modules-commonjs",
       "transform-es2015-unicode-regex",
       "transform-es2015-function-name",
-      "transform-es2015-classes",
       "transform-exponentiation-operator",
       "transform-object-rest-spread",
   ],
   "env": {
     "development": {
-      "presets": ["react-hmre"]
-    },
-    "test": {
+      "presets": ["react-hmre"],
       "plugins": [
-        ["webpack-loaders", { "config": "webpack.config.node.js", "verbose": false }]
+        "transform-es2015-classes"
       ]
     }
   }

@@ -22,8 +22,8 @@ export default class Updater extends React.Component {
     <FlatButton label="Apply Update" onClick={() => this.ipcClient.send('update-do')} />
   ];
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.ipcClient.on('update-progress', ({ percentage }) => this.props.setProgress(percentage * 100));
     (async () => {
       if (process.env.NODE_ENV === 'production') {

@@ -7,7 +7,7 @@
     "type": "git",
     "url": "https://github.com/Cu3PO42/KeySAVe.git"
   },
-  "main": "main.js",
+  "main": "./serverlib",
   "scripts": {
     "start": "cross-env NODE_ENV=production electron ./",
     "build-server": "babel serversrc -d serverlib",

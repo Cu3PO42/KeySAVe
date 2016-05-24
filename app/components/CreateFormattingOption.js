@@ -13,9 +13,8 @@ export default class CreateFormattingOption extends React.Component {
     plugins: React.PropTypes.object
   };
 
-  constructor(props) {
-    super(props);
-    this.state.currentPlugin = props.plugins.toList().get(0).name;
+  state = {
+    currentPlugin: this.props.plugins.toList().get(0).name
   }
 
   state = {

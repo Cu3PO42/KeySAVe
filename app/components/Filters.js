@@ -57,11 +57,8 @@ export default class Filters extends React.Component {
     setCustomFilter: PropTypes.func.isRequired
   };
 
-  constructor(props) {
-    super();
-    this.state = {
-      customFilterRaw: props.customFilterRaw
-    };
+  state = {
+    customFilterRaw: this.props.customFilterRaw
   }
 
   setEggsOnly = (e, v) => this.props.setEggsOnly(v)

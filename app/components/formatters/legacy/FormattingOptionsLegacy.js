@@ -89,10 +89,9 @@ export default class FormattingOptionsLegacy extends React.Component {
     isDefault: React.PropTypes.bool
   }
 
-  constructor(props) {
-    super(props);
-    this.state = { ...props.format };
-  }
+  state = {
+    ...this.props.format
+  };
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.index !== this.props.index) {
