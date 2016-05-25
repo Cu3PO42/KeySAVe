@@ -63,17 +63,17 @@ const DEFAULT_OPTS = {
 };
 
 if (DEFAULT_OPTS.version) {
-  startPack();
+  buildServer(startPack);
 } else {
   // use the same version as the currently-installed electron-prebuilt
   exec('npm list electron-prebuilt', (err, stdout) => {
     if (err) {
-      DEFAULT_OPTS.version = '1.1.1';
+      DEFAULT_OPTS.version = '1.1.2';
     } else {
       DEFAULT_OPTS.version = stdout.split('electron-prebuilt@')[1].replace(/\s/g, '');
     }
 
-    startPack();
+    buildServer(startPack);
   });
 }
 
@@ -154,6 +154,19 @@ function pruneNodeModules(callback) {
         fs.writeFile(pkgPath, res, 'utf-8', callback);
       });
     });
+  });
+}
+
+function buildServer(callback) {
+  console.log('Building server files...');
+  exec('npm run build-server', (err) => {
+    if (err) {
+      console.log('Error building server.');
+      callback(err);
+      return;
+    }
+
+    callback(null);
   });
 }
 
