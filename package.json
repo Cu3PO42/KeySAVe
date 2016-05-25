@@ -1,7 +1,7 @@
 {
   "name": "keysave",
   "productName": "KeySAVe",
-  "version": "1.1.0",
+  "version": "1.0.0",
   "description": "A cross platform KeySAV based on GitHub Electron for all your Generation VI Pokémon decryption needs.",
   "repository": {
     "type": "git",
@@ -81,7 +81,7 @@
     "app-module-path": "^1.0.6",
     "bluebird": "^3.4.0",
     "dashbars": "github:cu3po42/dashbars",
-    "electron-gh-releases-updater": "^0.7.2",
+    "electron-gh-releases-updater": "^0.7.3",
     "electron-ipc-tunnel": "^3.1.0",
     "fbjs-scripts": "^0.7.0",
     "fs-extra": "^0.30.0",
