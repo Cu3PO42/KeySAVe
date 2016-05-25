@@ -1,20 +1,25 @@
 {
   "presets": ["react"],
   "plugins": [
-      "transform-class-properties",
-      "transform-async-to-generator",
-      "transform-decorators-legacy",
       "transform-es2015-modules-commonjs",
       "transform-es2015-unicode-regex",
       "transform-es2015-function-name",
       "transform-exponentiation-operator",
       "transform-object-rest-spread",
+      "transform-async-to-generator",
+      "transform-decorators-legacy",
   ],
   "env": {
     "development": {
       "presets": ["react-hmre"],
       "plugins": [
+        "transform-class-properties",
         "transform-es2015-classes"
+      ]
+    },
+    "production": {
+      "plugins": [
+        "transform-class-properties",
       ]
     }
   }
