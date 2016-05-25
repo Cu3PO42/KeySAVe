@@ -40,7 +40,7 @@ module.exports = {
     mainFields: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main']
   },
   plugins: [
-    /*new SpritesmithPlugin({
+    new SpritesmithPlugin({
       src: {
         cwd: 'app/resources/sprites/',
         glob: '*.png'
@@ -52,7 +52,7 @@ module.exports = {
       apiOptions: {
         cssImageRef: 'resources/sprites.png'
       }
-    })*/
+    })
   ],
   externals: [
       "chokidar"
