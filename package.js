@@ -14,14 +14,13 @@ const fs = require('fs');
 const devDeps = Object.keys(pkg.devDependencies);
 
 const appName = argv.name || argv.n || pkg.productName;
-const shouldUseAsar = argv.asar || argv.a || false;
 const shouldBuildAll = argv.all || false;
 
 
 const DEFAULT_OPTS = {
   dir: './',
   name: appName,
-  asar: shouldUseAsar,
+  asar: true,
   'app-bundle-id': 'com.cu3po42.keysave',
   'app-category-type': 'public.app-category.productivity',
   'app-version': pkg.version,
@@ -96,18 +95,21 @@ const zipElectron = process.platform === 'darwin' ? function zipElectronDarwin(c
 
 const zipUpdate = process.platform === 'darwin' ? function zipUpdateDarwin(cb) {
   spawn('ditto', ['-ck', '--sequesterRsrc',
-                  '--zlibCompressionLevel', '9', '.',
-                  `../../../../../KeySAVe-${pkg.version}-update-darwin-x64.zip`
-                 ], { cwd: './release/KeySAVe-darwin-x64/KeySAVe.app/Contents/Resources/app', stdio: 'inherit' }).on('close', cb);
+                  '--zlibCompressionLevel', '9', 'app.asar',
+                  `../../../../KeySAVe-${pkg.version}-update-darwin-x64.zip`
+                 ], { cwd: './release/KeySAVe-darwin-x64/KeySAVe.app/Contents/Resources/', stdio: 'inherit' }).on('close', cb);
 } : process.platform === 'linux' ? function zipUpdateLinux(cb) {
-  exec(`zip -9yrq ../../../KeySAVe-${pkg.version}-update-linux-${process.arch}.zip .`,
-       { cwd: `./release/KeySAVe-linux-${process.arch}/resources/app/` }, cb);
+  exec(`zip -9yrq ../../KeySAVe-${pkg.version}-update-linux-${process.arch}.zip app.asar`,
+       { cwd: `./release/KeySAVe-linux-${process.arch}/resources/` }, cb);
 } : function zipUpdateWindows(cb) {
   spawn('powershell.exe', ['[Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem"); ' +
-                           '[System.IO.Compression.ZipFile]::CreateFromDirectory(' +
-                               `"release\\KeySAVe-win32-${process.arch}\\resources\\app", ` +
-                               `"release\\KeySAVe-${pkg.version}-update-win32-${process.arch}.zip", ` +
-                           '[System.IO.Compression.CompressionLevel]::Optimal, $FALSE)'],
+                           `$zipfile = [System.IO.Compression.ZipFile]::Open("release\\KeySAVe-${pkg.version}-update-win32-${process.arch}.zip", "Update"); ` +
+                           '[System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile(' +
+                               '$zipfile, ' +
+                               `"release\\KeySAVe-win32-${process.arch}\\resources\\app.asar", ` +
+                               '"app.asar", ' +
+                               '[System.IO.Compression.CompressionLevel]::Optimal); ' +
+                           '$zipfile.Dispose();'],
                            { stdio: 'ignore' }).on('close', cb);
 };
 
