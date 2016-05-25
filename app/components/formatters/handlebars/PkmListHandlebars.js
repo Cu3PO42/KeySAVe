@@ -194,7 +194,7 @@ class PkmListHandlebars extends Component {
     return (
       <Paper className={styles.paper}>
         <div className={styles.box}>
-          {this.props.format.header}
+          <div dangerouslySetInnerHTML={{ __html: this.props.format.header }} />
           {pkm.map(e => <div key={e.box * 30 + e.slot} dangerouslySetInnerHTML={{ __html: template(e, { helpers: this.handlebarsHelpers }) }}></div>)}
         </div>
       </Paper>
