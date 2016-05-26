@@ -1,8 +1,8 @@
 import React from 'react';
-import Dialog from 'material-ui/lib/dialog';
-import FlatButton from 'material-ui/lib/flat-button';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 import Markdown from 'react-markdown';
-import LinearProgress from 'material-ui/lib/linear-progress';
+import LinearProgress from 'material-ui/LinearProgress';
 import IpcClient from 'electron-ipc-tunnel/client';
 import styles from './Updater.module.scss';
 
@@ -22,8 +22,8 @@ export default class Updater extends React.Component {
     <FlatButton label="Apply Update" onClick={() => this.ipcClient.send('update-do')} />
   ];
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.ipcClient.on('update-progress', ({ percentage }) => this.props.setProgress(percentage * 100));
     (async () => {
       if (process.env.NODE_ENV === 'production') {

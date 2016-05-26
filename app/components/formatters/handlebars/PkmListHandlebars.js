@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Paper from 'material-ui/lib/paper';
+import Paper from 'material-ui/Paper';
 import handlebars from 'handlebars';
 import dashbars from 'dashbars';
 import helperMoment from 'handlebars-helper-moment';
@@ -194,7 +194,7 @@ class PkmListHandlebars extends Component {
     return (
       <Paper className={styles.paper}>
         <div className={styles.box}>
-          {this.props.format.header}
+          <div dangerouslySetInnerHTML={{ __html: this.props.format.header }} />
           {pkm.map(e => <div key={e.box * 30 + e.slot} dangerouslySetInnerHTML={{ __html: template(e, { helpers: this.handlebarsHelpers }) }}></div>)}
         </div>
       </Paper>

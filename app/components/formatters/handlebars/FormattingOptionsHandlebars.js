@@ -1,8 +1,8 @@
 import React from 'react';
-import TextField from 'material-ui/lib/text-field';
-import IconButton from 'material-ui/lib/icon-button';
-import ReloadIcon from 'material-ui/lib/svg-icons/action/cached';
-import CheckBox from 'material-ui/lib/checkbox';
+import TextField from 'material-ui/TextField';
+import IconButton from 'material-ui/IconButton';
+import ReloadIcon from 'material-ui/svg-icons/action/cached';
+import CheckBox from 'material-ui/Checkbox';
 import debounce from 'lodash.debounce';
 import handlebars from 'handlebars';
 import { createSelector } from 'reselect';
@@ -17,10 +17,9 @@ export default class FormattingOptionsHandlebars extends React.Component {
     isDefault: React.PropTypes.bool
   }
 
-  constructor(props) {
-    super(props);
-    this.state = { ...props.format };
-  }
+  state = {
+    ...this.props.format
+  };
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.index !== this.props.index) {

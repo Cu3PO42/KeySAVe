@@ -32,15 +32,15 @@ export const defaultOptions = [{
 }, {
   name: 'TSV',
   format: {
-    header: 'Box - Slot - OT - TID - SID - TSV',
-    format: '{{#if isGhost}}~{{/if}}B{{box}} - {{row}},{{column}} - {{ot}} - {{tid}} - {{sid}} - {{tsv}}',
+    header: '| Box | Slot | OT | TID | SID | TSV |<br />|:---:|:---:|:---:|:---:|:---:|:---:|',
+    format: '| {{#if isGhost}}~{{/if}}B{{box}} | {{row}},{{column}} | {{ot}} | {{tid}} | {{sid}} | {{tsv}} |',
     boxHeader: '<h3 style="margin-bottom: 0; font-family: Roboto, sans-serif; color: #999">Box {{box}}</h3>',
     splitBoxes: false
   }
 }, {
   name: 'CSV',
   format: {
-    header: 'Box,Row,Column,Species,Gender,Nature,Ability,HP,ATK,DEF,SPATK,SPDEF,SPE,Hidden Power,ESV,TSV,Nickname,OT,Ball,TID,SID,HP EV,ATK EV,DEF EV,SPA EV,SPD EV,SPE EV,Move 1,Move 2,Move 3,Move 4,Relearn 1,Relearn 2,Relearn 3,Relearn 4,Shiny,Egg',
+    header: 'Box,Row,Column,Species,Gender,Nature,Ability,HP IV,ATK IV,DEF IF,SPA IV,SPD IV,SPE IV,HP Type,ESV,TSV,Nickname,OT,Ball,TID,SID,HP EV,ATK EV,DEF EV,SPA EV,SPD EV,SPE EV,Move 1,Move 2,Move 3,Move 4,Relearn 1,Relearn 2,Relearn 3,Relearn 4,Shiny,Egg',
     format: '{{#if isGhost}}~{{/if}}{{box}},{{row}},{{column}},{{speciesName}},{{genderString gender}},{{natureName}},{{abilityName}},{{ivHp}},{{ivAtk}},{{ivDef}},{{ivSpAtk}},{{ivSpDef}},{{ivSpe}},{{typeName hpType}},{{esv}},{{tsv}},{{nickname}},{{ot}},{{ballName}},{{tid}},{{sid}},{{evHp}},{{evAtk}},{{evDef}},{{evSpAtk}},{{evSpDef}},{{evSpe}},{{moveName move1}},{{moveName move2}},{{moveName move3}},{{moveName move4}},{{moveName eggMove1}},{{moveName eggMove2}},{{moveName eggMove3}},{{moveName eggMove4}},{{isShiny}},{{isEgg}}',
     boxHeader: '<div style="margin-bottom: 20px;"></div>',
     splitBoxes: false
@@ -48,7 +48,7 @@ export const defaultOptions = [{
 }, {
   name: 'CSV (Raw Data)',
   format: {
-    header: 'Box,Row,Column,Species,Gender,Nature,Ability,HP,ATK,DEF,SPATK,SPDEF,SPE,Hidden Power,ESV,TSV,Nickname,OT,Ball,TID,SID,HP EV,ATK EV,DEF EV,SPA EV,SPD EV,SPE EV,Move 1,Move 2,Move 3,Move 4,Relearn 1,Relearn 2,Relearn 3,Relearn 4,Shiny,Egg',
+    header: 'Box,Row,Column,Species,Gender,Nature,Ability,HP IV,ATK IV,DEF IF,SPA IV,SPD IV,SPE IV,HP Type,ESV,TSV,Nickname,OT,Ball,TID,SID,HP EV,ATK EV,DEF EV,SPA EV,SPD EV,SPE EV,Move 1,Move 2,Move 3,Move 4,Relearn 1,Relearn 2,Relearn 3,Relearn 4,Shiny,Egg',
     format: '{{#if isGhost}}~{{/if}}{{box}},{{row}},{{column}},{{species}},{{gender}},{{nature}},{{ability}},{{ivHp}},{{ivAtk}},{{ivSpAtk}},{{ivSpDef}},{{ivSpe}},{{hpType}},{{esv}},{{tsv}},{{nickname}},{{ot}},{{ball}},{{tid}},{{sid}},{{evHp}},{{evAtk}},{{evDef}},{{evSpAtk}},{{evSpDef}},{{evSpe}},{{move1}},{{move2}},{{move3}},{{move4}},{{eggMove1}},{{eggMove2}},{{eggMove3}},{{eggMove4}},{{isShiny}},{{isEgg}}',
     boxHeader: '<div style="margin-bottom: 20px;"></div>',
     splitBoxes: false

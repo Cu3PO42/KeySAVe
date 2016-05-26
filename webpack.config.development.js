@@ -2,7 +2,6 @@
 'use strict';
 
 const webpack = require('webpack');
-const webpackTargetElectronRenderer = require('webpack-target-electron-renderer');
 const baseConfig = require('./webpack.config.base');
 
 
@@ -13,7 +12,6 @@ config.debug = true;
 config.devtool = 'cheap-module-eval-source-map';
 
 config.entry = [
-  'webpack-hot-middleware/client?path=http://localhost:3000/__webpack_hmr',
   './app/index'
 ];
 
@@ -49,7 +47,6 @@ config.module.loaders.push({
 
 
 config.plugins.push(
-  new webpack.HotModuleReplacementPlugin(),
   new webpack.NoErrorsPlugin(),
   new webpack.DefinePlugin({
     '__DEV__': true,
@@ -59,6 +56,6 @@ config.plugins.push(
   })
 );
 
-config.target = webpackTargetElectronRenderer(config);
+config.target = 'electron-renderer';
 
 module.exports = config;

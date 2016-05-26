@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import FileOpener from '../components/FileOpener';
-import Paper from 'material-ui/lib/paper';
-import IconButton from 'material-ui/lib/icon-button';
-import RadioButton from 'material-ui/lib/radio-button';
-import RadioButtonGroup from 'material-ui/lib/radio-button-group';
-import DropDownMenu from 'material-ui/lib/DropDownMenu';
-import MenuItem from 'material-ui/lib/menus/menu-item';
-import FileCloudDownload from 'material-ui/lib/svg-icons/file/cloud-download';
+import Paper from 'material-ui/Paper';
+import IconButton from 'material-ui/IconButton';
+import RadioButton from 'material-ui/RadioButton';
+import RadioButtonGroup from 'material-ui/RadioButton/RadioButtonGroup';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
+import FileCloudDownload from 'material-ui/svg-icons/file/cloud-download';
 import NtrContainer from '../containers/NtrContainer';
 import pureRender from 'pure-render-decorator';
 import styles from './DumpingFileOpener.module.scss';
 import { range } from 'lodash';
 
-const menuItems1To31 = range(1, 32).map(i => <MenuItem index={i} value={i} primaryText={'' + i} />);
+const menuItems1To31 = range(1, 32).map(i => <MenuItem key={i} value={i} primaryText={`${i}`} />);
 
 @pureRender
 class DumpingFileOpener extends Component {

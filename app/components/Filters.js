@@ -1,15 +1,15 @@
 import React, { PropTypes } from 'react';
-import Paper from 'material-ui/lib/paper';
-import RaisedButton from 'material-ui/lib/raised-button';
-import ExpandMoreIcon from 'material-ui/lib/svg-icons/navigation/expand-more';
-import ExpandLessIcon from 'material-ui/lib/svg-icons/navigation/expand-less';
-import CheckBox from 'material-ui/lib/checkbox';
-import RadioButtonGroup from 'material-ui/lib/radio-button-group';
-import RadioButton from 'material-ui/lib/radio-button';
+import Paper from 'material-ui/Paper';
+import RaisedButton from 'material-ui/RaisedButton';
+import ExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
+import ExpandLessIcon from 'material-ui/svg-icons/navigation/expand-less';
+import CheckBox from 'material-ui/Checkbox';
+import RadioButtonGroup from 'material-ui/RadioButton/RadioButtonGroup';
+import RadioButton from 'material-ui/RadioButton';
 import Select from './MaterialSelect';
-import SelectField from 'material-ui/lib/select-field';
-import MenuItem from 'material-ui/lib/menus/menu-item';
-import TextField from 'material-ui/lib/text-field';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import TextField from 'material-ui/TextField';
 import { createSelector } from 'reselect';
 import { Localization } from 'keysavcore';
 import { debounce } from 'lodash';
@@ -57,11 +57,8 @@ export default class Filters extends React.Component {
     setCustomFilter: PropTypes.func.isRequired
   };
 
-  constructor(props) {
-    super();
-    this.state = {
-      customFilterRaw: props.customFilterRaw
-    };
+  state = {
+    customFilterRaw: this.props.customFilterRaw
   }
 
   setEggsOnly = (e, v) => this.props.setEggsOnly(v)

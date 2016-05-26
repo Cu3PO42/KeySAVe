@@ -3,7 +3,6 @@
 
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const webpackTargetElectronRenderer = require('webpack-target-electron-renderer');
 const baseConfig = require('./webpack.config.base');
 
 
@@ -48,7 +47,7 @@ config.module.loaders.push({
 });
 
 config.plugins.push(
-  new webpack.optimize.OccurenceOrderPlugin(),
+  new webpack.optimize.OccurrenceOrderPlugin(),
   new webpack.DefinePlugin({
     '__DEV__': false,
     'process.env': {
@@ -64,6 +63,6 @@ config.plugins.push(
   new ExtractTextPlugin('style.css', { allChunks: true })
 );
 
-config.target = webpackTargetElectronRenderer(config);
+config.target = 'electron-renderer';
 
 module.exports = config;

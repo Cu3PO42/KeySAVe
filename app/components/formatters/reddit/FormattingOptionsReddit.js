@@ -1,9 +1,9 @@
 import React from 'react';
-import RadioButtonGroup from 'material-ui/lib/radio-button-group';
-import RadioButton from 'material-ui/lib/radio-button';
-import CheckBox from 'material-ui/lib/checkbox';
-import DropDownMenu from 'material-ui/lib/drop-down-menu';
-import MenuItem from 'material-ui/lib/menus/menu-item';
+import RadioButtonGroup from 'material-ui/RadioButton/RadioButtonGroup';
+import RadioButton from 'material-ui/RadioButton';
+import CheckBox from 'material-ui/Checkbox';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
 import styles from './FormattingOptionsReddit.module.scss';
 
 const FormattingOptionReddit = ({

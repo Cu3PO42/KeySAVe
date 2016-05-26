@@ -14,14 +14,13 @@ const fs = require('fs');
 const devDeps = Object.keys(pkg.devDependencies);
 
 const appName = argv.name || argv.n || pkg.productName;
-const shouldUseAsar = argv.asar || argv.a || false;
 const shouldBuildAll = argv.all || false;
 
 
 const DEFAULT_OPTS = {
   dir: './',
   name: appName,
-  asar: shouldUseAsar,
+  asar: true,
   'app-bundle-id': 'com.cu3po42.keysave',
   'app-category-type': 'public.app-category.productivity',
   'app-version': pkg.version,
@@ -29,7 +28,6 @@ const DEFAULT_OPTS = {
   'helper-bundle-id': 'com.cu3po42.keysave',
   icon: './resources/keysave-logo',
   overwrite: true,
-  version: '0.37.6',
   'version-string': {
     CompanyName: 'Cu3PO42',
     LegalCopyright: 'Cu3PO42',
@@ -38,76 +36,80 @@ const DEFAULT_OPTS = {
     ProductName: 'KeySAVe',
     InternalName: 'KeySAVe'
   },
-  cache: './cache',
+  download: {
+    cache: './cache'
+  },
   ignore: [
-    '/test($|/)',
-    '/tools($|/)',
-    '/resources($|/)',
-    '/release($|/)',
-    '/cache($|/)',
-    '/serversrc($|/)',
+    '^/(?:app/)?resources($|/)',
+    '^/release($|/)',
+    '^/cache($|/)',
+    '^/serversrc($|/)',
+    '^/app/(?!app\\.html)(?!$)',
     '/.idea($|/)',
-    '/webpack\.config\..+\.js$',
-    '/nativedeps($|/)',
-    '/dist/.+\.map$',
-    '.babelrc$',
-    '.DS_Store$',
-    '.eslintrc$',
-    '.gitignore$',
-    '.travis.yml$',
-    'appveyor.yml$',
-    'gulpfile.js$',
-    'package.js$',
+    '/webpack\\.config\\..+\\.js$',
+    '^/nativedeps($|/)',
+    '^/dist/.+\\.map$',
+    '\\.babelrc$',
+    '\\.DS_Store$',
+    '\\.eslintrc$',
+    '\\.gitignore$',
+    '\\.travis\\.yml$',
+    'appveyor\\.yml$',
+    'gulpfile\\.js$',
+    '^/package\\.js$',
     'README.md$'
   ].concat(devDeps.map(name => `/node_modules/${name}($|/)`))
 };
 
 if (DEFAULT_OPTS.version) {
-  startPack();
+  buildServer(startPack);
 } else {
   // use the same version as the currently-installed electron-prebuilt
   exec('npm list electron-prebuilt', (err, stdout) => {
     if (err) {
-      DEFAULT_OPTS.version = '0.37.6';
+      DEFAULT_OPTS.version = '1.1.2';
     } else {
       DEFAULT_OPTS.version = stdout.split('electron-prebuilt@')[1].replace(/\s/g, '');
     }
 
-    startPack();
+    buildServer(startPack);
   });
 }
 
 const zipElectron = process.platform === 'darwin' ? function zipElectronDarwin(cb) {
   spawn('ditto', ['-ck', '--sequesterRsrc', '--keepParent',
                     '--zlibCompressionLevel', '9', 'KeySAVe.app',
-                    '../KeySAVe-' + pkg.version + '-darwin-x64.zip'
+                    `../KeySAVe-${pkg.version}-darwin-x64.zip`
                 ], { cwd: './release/KeySAVe-darwin-x64', stdio: 'ignore' }).on('close', cb);
 } : process.platform === 'linux' ? function zipElectronLinux(cb) {
-  exec('zip -9yrq ../KeySAVe-' + pkg.version + '-linux-' + process.arch + '.zip .',
-         { cwd: './release/KeySAVe-linux-' + process.arch }, cb);
+  exec(`zip -9yrq ../KeySAVe-${pkg.version}-linux-${process.arch}.zip .`,
+         { cwd: `./release/KeySAVe-linux-${process.arch}` }, cb);
 } : function zipElectronWindows(cb) {
   spawn('powershell.exe', ['[Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem"); ' +
                              '[System.IO.Compression.ZipFile]::CreateFromDirectory(' +
-                                  '"release\\KeySAVe-win32-' + process.arch + '", ' +
-                                  '"release\\KeySAVe-' + pkg.version + '-win32-' + process.arch + '.zip", ' +
+                                  `"release\\KeySAVe-win32-${process.arch}", ` +
+                                  `"release\\KeySAVe-${pkg.version}-win32-${process.arch}.zip", ` +
                                   '[System.IO.Compression.CompressionLevel]::Optimal, $FALSE)'],
                             { stdio: 'ignore' }).on('close', cb);
 };
 
 const zipUpdate = process.platform === 'darwin' ? function zipUpdateDarwin(cb) {
   spawn('ditto', ['-ck', '--sequesterRsrc',
-                  '--zlibCompressionLevel', '9', '.',
-                  '../../../../../KeySAVe-' + pkg.version + '-update-darwin-x64.zip'
-                 ], { cwd: './release/KeySAVe-darwin-x64/KeySAVe.app/Contents/Resources/app', stdio: 'inherit' }).on('close', cb);
+                  '--zlibCompressionLevel', '9', 'app.asar',
+                  `../../../../KeySAVe-${pkg.version}-update-darwin-x64.zip`
+                 ], { cwd: './release/KeySAVe-darwin-x64/KeySAVe.app/Contents/Resources/', stdio: 'inherit' }).on('close', cb);
 } : process.platform === 'linux' ? function zipUpdateLinux(cb) {
-  exec('zip -9yrq ../../../KeySAVe-' + pkg.version + '-update-linux-' + process.arch + '.zip .',
-       { cwd: './release/KeySAVe-linux-' + process.arch + '/resources/app/' }, cb);
+  exec(`zip -9yrq ../../KeySAVe-${pkg.version}-update-linux-${process.arch}.zip app.asar`,
+       { cwd: `./release/KeySAVe-linux-${process.arch}/resources/` }, cb);
 } : function zipUpdateWindows(cb) {
   spawn('powershell.exe', ['[Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem"); ' +
-                           '[System.IO.Compression.ZipFile]::CreateFromDirectory(' +
-                           '"release\\KeySAVe-win32-' + process.arch + '\\resources\\app", ' +
-                           '"release\\KeySAVe-' + pkg.version + '-update-win32-' + process.arch + '.zip", ' +
-                           '[System.IO.Compression.CompressionLevel]::Optimal, $FALSE)'],
+                           `$zipfile = [System.IO.Compression.ZipFile]::Open("release\\KeySAVe-${pkg.version}-update-win32-${process.arch}.zip", "Update"); ` +
+                           '[System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile(' +
+                               '$zipfile, ' +
+                               `"release\\KeySAVe-win32-${process.arch}\\resources\\app.asar", ` +
+                               '"app.asar", ' +
+                               '[System.IO.Compression.CompressionLevel]::Optimal); ' +
+                           '$zipfile.Dispose();'],
                            { stdio: 'ignore' }).on('close', cb);
 };
 
@@ -157,10 +159,23 @@ function pruneNodeModules(callback) {
   });
 }
 
+function buildServer(callback) {
+  console.log('Building server files...');
+  exec('npm run build-server', (err) => {
+    if (err) {
+      console.log('Error building server.');
+      callback(err);
+      return;
+    }
+
+    callback(null);
+  });
+}
+
 function startPack() {
   console.log('start pack...');
   webpack(cfg, (err, stats) => {
-    if (err) return console.error(err);
+    if (err) console.error(err);
     del('release')
     .then(paths => {
       // build for current platform only
@@ -180,7 +195,7 @@ function pack(plat, arch, cb) {
     platform: plat,
     arch,
     prune: true,
-    out: `release/`
+    out: 'release/'
   });
 
   packager(opts, (err) => {
@@ -188,7 +203,7 @@ function pack(plat, arch, cb) {
       cb(err);
       return;
     }
-    del(['version', 'LICENSE', 'LICENSES.chromium.html'], { cwd: 'release/KeySAVe-' + process.platform + '-' + process.arch }).then(() => {
+    del(['version', 'LICENSE', 'LICENSES.chromium.html'], { cwd: `release/KeySAVe-${process.platform}-${process.arch}` }).then(() => {
       console.log('Packaging your Electron app now.');
       pruneNodeModules((err) => {
         zipElectron((err) => {
@@ -207,7 +222,7 @@ function pack(plat, arch, cb) {
 
 function log(plat, arch) {
   return (err, filepath) => {
-    if (err) return console.error(err);
+    if (err) console.error(err);
     console.log(`${plat}-${arch} finished!`);
   };
 }

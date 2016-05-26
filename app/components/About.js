@@ -1,5 +1,5 @@
 import React from 'react';
-import Paper from 'material-ui/lib/paper';
+import Paper from 'material-ui/Paper';
 import ExternalLink from './ExternalLink';
 import styles from './About.module.scss';
 import { version } from '../../package.json';
