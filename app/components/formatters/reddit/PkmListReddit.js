@@ -35,7 +35,7 @@ export default class PkmListReddit extends React.Component {
     const header = '| Box | Slot | Species (Gender) | Nature | Ability | HP.ATK.DEF.SPA.SPD.SPE | Hidden Power | ESV |\n|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|\n';
     return header + (ghosts === 'hide' ? pkm.filter(e => !e.isGhost) : pkm).map(e =>
       `| ${ghosts === 'mark' && e.isGhost ? '~' : ''}` +
-      `Box ${('0' + (e.box + 1)).slice(-2)} | ${Math.floor(e.slot / 6) + 1},${e.slot % 6 + 1} | ` +
+      `B${('0' + (e.box + 1)).slice(-2)} | ${Math.floor(e.slot / 6) + 1},${e.slot % 6 + 1} | ` +
       `${getSpecies(e.species, e.form, local)} (${genderString(e.gender)}) | ` +
       `${local.natures[e.nature]} | ${local.abilities[e.ability]} | ` +
       (this.props.format.boldPerfectIVs ?
@@ -98,7 +98,7 @@ export default class PkmListReddit extends React.Component {
     const local = Localization[this.props.language];
     return (
       <table className={`${styles.table} ${this.getBoxClass(box)}`}><tbody>
-        <tr><th>Box</th><th>Slot</th><th>Species (Gender)</th><th>Nature</th><th>Ability</th><th>HP.ATK.DEF.SPATK.SPDEF.SPE</th><th>HP</th><th>ESV</th></tr>
+        <tr><th>Box</th><th>Slot</th><th>Species (Gender)</th><th>Nature</th><th>Ability</th><th>HP.ATK.DEF.SPATK.SPDEF.SPE</th><th>Hidden Power</th><th>ESV</th></tr>
         {pkm.map(e => this.props.format.ghosts === 'hide' && e.isGhost ?
           null :
           <tr key={e.box * 30 + e.slot} className={this.props.format.ghosts === 'mark' && e.isGhost ? styles.ghost : ''}>
