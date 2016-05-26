@@ -8,6 +8,7 @@
       "transform-object-rest-spread",
       "transform-async-to-generator",
       "transform-decorators-legacy",
+      "transform-runtime",
   ],
   "env": {
     "development": {

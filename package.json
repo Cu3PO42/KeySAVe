@@ -36,6 +36,7 @@
     "babel-plugin-transform-es2015-unicode-regex": "^6.8.0",
     "babel-plugin-transform-exponentiation-operator": "^6.8.0",
     "babel-plugin-transform-object-rest-spread": "^6.8.0",
+    "babel-plugin-transform-runtime": "^6.9.0",
     "babel-polyfill": "^6.9.0",
     "babel-preset-react": "^6.5.0",
     "babel-preset-react-hmre": "^1.1.1",
@@ -79,6 +80,7 @@
   },
   "dependencies": {
     "app-module-path": "^1.0.6",
+    "babel-runtime": "^6.9.0",
     "bluebird": "^3.4.0",
     "dashbars": "github:cu3po42/dashbars",
     "electron-gh-releases-updater": "^0.7.3",
@@ -112,6 +114,7 @@
     "sanitize-filename": "^1.6.0"
   },
   "serverOnlyDependencies": [
+    "babel-runtime",
     "bluebird",
     "electron-debug",
     "electron-gh-releases-updater",
