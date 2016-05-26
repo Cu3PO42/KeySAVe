@@ -6,7 +6,6 @@ before_install:
 install:
     - npm install
 script:
-    - npm run build-server
     - npm run package
 sudo: false
 deploy:
@@ -36,11 +35,11 @@ matrix:
           osx_image: xcode7.2
           compiler: clang
           env:
-              - NODE_VERSION="5.4"
+              - NODE_VERSION="6"
         - os: linux
           compiler: clang-3.8
           env:
-              - NODE_VERSION="5.4"
+              - NODE_VERSION="6"
                 CXX=clang++-3.8
           addons:
               apt:
