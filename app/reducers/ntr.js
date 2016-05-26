@@ -1,8 +1,6 @@
 import { handleActions } from '../utils/handleAction';
 import {
   OPEN_NTR_MENU,
-  SET_NTR_GAME,
-  SET_NTR_REGION,
   SET_NTR_IP,
   NTR_CONNECT,
   NTR_DISCONNECT,
@@ -13,8 +11,6 @@ import {
 const initialState = {
   menuOpen: false,
   ip: '',
-  game: 'oras',
-  region: 'pal',
   client: null,
   intervalId: null,
   inProgress: ''
@@ -25,18 +21,6 @@ export default handleActions({
     return {
       ...state,
       menuOpen: payload
-    };
-  },
-  [SET_NTR_GAME](state, { payload }) {
-    return {
-      ...state,
-      game: payload
-    };
-  },
-  [SET_NTR_REGION](state, { payload }) {
-    return {
-      ...state,
-      region: payload
     };
   },
   [SET_NTR_IP](state, { payload }) {
