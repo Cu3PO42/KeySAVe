@@ -10,13 +10,16 @@ export default class NtrMenu extends React.Component {
     menuOpen: React.PropTypes.bool.isRequired,
     ip: React.PropTypes.string.isRequired,
     client: React.PropTypes.object,
+    inProgress: React.PropTypes.string.isRequired,
 
     openNtrMenu: React.PropTypes.func.isRequired,
     setNtrIp: React.PropTypes.func.isRequired,
     ntrConnect: React.PropTypes.func.isRequired,
     ntrDisconnect: React.PropTypes.func.isRequired,
     ntrDumpBoxes: React.PropTypes.func.isRequired,
-    ntrDumpTrade: React.PropTypes.func.isRequired
+    ntrDumpBattleBox: React.PropTypes.func.isRequired,
+    ntrDumpTrade: React.PropTypes.func.isRequired,
+    ntrCancelInProgress: React.PropTypes.func.isRequired
   };
 
   openMenu = () => this.props.openNtrMenu(true)
@@ -25,7 +28,9 @@ export default class NtrMenu extends React.Component {
   connect = () => this.props.client === null ? this.props.ntrConnect(this.props.ip) : this.props.ntrDisconnect()
 
   dumpBoxes = () => this.props.ntrDumpBoxes(this.props.client);
+  dumpBattleBox = () => this.props.ntrDumpBattleBox(this.props.client);
   dumpTrade = () => this.props.ntrDumpTrade(this.props.client);
+  cancelTradeDump = () => this.props.ntrCancelInProgress();
 
   render() {
     return (
@@ -44,7 +49,9 @@ export default class NtrMenu extends React.Component {
             <RaisedButton primary label={this.props.client === null ? 'Connect' : 'Disconnect'} onClick={this.connect} />
           </div>
           <FlatButton label="Dump Boxes" onClick={this.dumpBoxes} />
+          <FlatButton label="Dump Battle Box" onClick={this.dumpBattleBox} />
           <FlatButton label="Dump Trade" onClick={this.dumpTrade} />
+          <FlatButton label="Cancel Trade Dump" disabled={this.props.inProgress !== 'trade'} onClick={this.cancelTradeDump} />
         </Dialog>
       </div>
     );

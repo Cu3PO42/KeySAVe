@@ -4,8 +4,8 @@ import {
   SET_NTR_IP,
   NTR_CONNECT,
   NTR_DISCONNECT,
-  NTR_SAVE_INTERVAL,
-  NTR_SET_PROGRESS
+  NTR_SET_IN_PROGRESS,
+  NTR_CANCEL_IN_PROGRESS
 } from '../actions/ntr';
 
 const initialState = {
@@ -35,19 +35,23 @@ export default handleActions({
       client: payload
     };
   },
-  [NTR_SAVE_INTERVAL](state, { payload }) {
+  [NTR_SET_IN_PROGRESS](state, { payload }) {
     if (state.intervalId !== null) {
       clearInterval(state.intervalId);
     }
     return {
       ...state,
-      intervalId: payload
+      ...payload
     };
   },
-  [NTR_SET_PROGRESS](state, { payload }) {
+  [NTR_CANCEL_IN_PROGRESS](state) {
+    if (state.intervalId !== null) {
+      clearInterval(state.intervalId);
+    }
     return {
       ...state,
-      inProgress: payload
+      intervalId: null,
+      inProgress: ''
     };
   },
   [NTR_DISCONNECT](state) {

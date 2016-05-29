@@ -2,27 +2,51 @@ import { OPEN_FILE, addPokemon } from './file';
 import createAction from '../utils/createAction';
 import NtrClient from 'ntrclient';
 import { loadSav, Pkx } from 'keysavcore';
+import { copy } from 'keysavcore/util';
 
 export const OPEN_NTR_MENU = 'OPEN_NTR_MENU';
 export const SET_NTR_IP = 'SET_NTR_IP';
 export const NTR_CONNECT = 'NTR_CONNECT';
 export const NTR_DISCONNECT = 'NTR_DISCONNECT';
-export const NTR_SAVE_INTERVAL = 'NTR_SAVE_INTERVAL';
-export const NTR_SET_PROGRESS = 'NTR_SET_PROGRESS';
+export const NTR_SET_IN_PROGRESS = 'NTR_SET_IN_PROGRESS';
+export const NTR_CANCEL_IN_PROGRESS = 'NTR_CANCEL_IN_PROGRESS';
+
+const gameNames = ['kujira-1' /* X */, 'kujira-2' /* Y */, 'sango-1' /* OR */, 'sango-2' /* AS */];
+const gameOffsets = {
+  xy: {
+    boxes: 0x8C861C8,
+    battleBox: 0x8C6AC2C,
+    trade: 0x8509DD4,
+  },
+  oras: {
+    boxes: 0x8C9E134,
+    battleBox: 0x8C72330,
+    trade: 0x8523C48,
+  }
+};
+
+async function getOffsets(client) {
+  const processes = await client.listProcesses();
+  const proc = processes.find(({ name }) => gameNames.includes(name));
+  if (proc === undefined) {
+    throw new Error('Game not running.');
+  }
+  const { pid, name } = proc;
+  return {
+    pid,
+    offsets: name.startsWith('kujira') ? gameOffsets.xy : gameOffsets.oras
+  };
+}
 
 export const openNtrMenu = createAction(OPEN_NTR_MENU);
 export const setNtrIp = createAction(SET_NTR_IP);
 const ntrConnect_ = createAction(NTR_CONNECT, NtrClient.connectNTR);
 export const ntrDisconnect = createAction(NTR_DISCONNECT);
 export const ntrConnect = ip => dispatch => dispatch(ntrConnect_(ip, () => dispatch(ntrDisconnect)));
+
 export const ntrDumpBoxes = createAction(OPEN_FILE, async (client) => {
-  const offset = 0x8C9E134; // TODO need more offsets
-  const processes = await client.listProcesses();
-  const proc = processes.find(({ name }) => name === 'sango-1');
-  if (proc === undefined) {
-    throw new Error('Game not running.');
-  }
-  const { pid } = proc;
+  const { offsets: { boxes: offset }, pid } = await getOffsets(client);
+
   const boxes = await client.readMemory(offset, 930 * 232, pid);
   const boxesUi8 = new Uint8Array(boxes.buffer, boxes.byteOffset, boxes.byteLength);
   const reader = await loadSav(boxesUi8);
@@ -34,21 +58,28 @@ export const ntrDumpBoxes = createAction(OPEN_FILE, async (client) => {
   };
 });
 
+export const ntrDumpBattleBox = createAction(OPEN_FILE, async (client) => {
+  const { offsets: { battleBox: offset }, pid } = await getOffsets(client);
+
+  const battleBox = await client.readMemory(offset, 6 * 232, pid);
+  const battleBoxUi8 = new Uint8Array(battleBox.buffer, battleBox.byteOffset, battleBox.byteLength);
+  const boxes = new Uint8Array(930 * 232);
+  copy(battleBoxUi8, 0, boxes, 0, 6 * 232);
+  const reader = await loadSav(boxes);
+  return {
+    pokemon: reader.getAllPkx(),
+    goodKey: true,
+    type: 'SAV',
+    name: 'NTR Battle Box Dump'
+  };
+});
+
 const ntrInitializeTradeDump = createAction(OPEN_FILE, () => ({ pokemon: [], goodKey: true, type: 'SAV', name: 'NTR Trade Dump' }));
-const ntrSaveInterval = createAction(NTR_SAVE_INTERVAL);
-const ntrSetProgress = createAction(NTR_SET_PROGRESS);
+const ntrSetInProgress = createAction(NTR_SET_IN_PROGRESS, (inProgress, intervalId) => ({ inProgress, intervalId }));
 export const ntrDumpTrade = (client) => async dispatch => {
   dispatch(ntrInitializeTradeDump());
-  dispatch(ntrSetProgress('trade'));
 
-  const offset = 0x8523c48;
-  //const offset = 0x8C9E134; // TODO need more offsets
-  const processes = await client.listProcesses();
-  const proc = processes.find(({ name }) => name === 'sango-1');
-  if (proc === undefined) {
-    throw new Error('Game not running.');
-  }
-  const { pid } = proc;
+  const { offsets: { trade: offset }, pid } = await getOffsets(client);
   const knownPokemon = new Set();
   let count = 0;
 
@@ -69,5 +100,6 @@ export const ntrDumpTrade = (client) => async dispatch => {
     ++count;
     dispatch(addPokemon([pkx]));
   }, 250);
-  dispatch(ntrSaveInterval(intervalId));
+  dispatch(ntrSetInProgress('trade', intervalId));
 };
+export const ntrCancelInProgress = createAction(NTR_CANCEL_IN_PROGRESS);
