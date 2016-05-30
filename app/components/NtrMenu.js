@@ -53,17 +53,17 @@ export default class NtrMenu extends React.Component {
           <div className={styles.buttons}>
             <div>
               <div>
-                <FlatButton label="Dump Boxes" disabled={this.props.client === null} onClick={this.dumpBoxes} />
+                <FlatButton label="Dump Boxes" disabled={this.props.client === null || this.props.inProgress !== ''} onClick={this.dumpBoxes} />
               </div>
             </div>
             <div>
               <div>
-                <FlatButton label="Dump Battle Box" disabled={this.props.client === null} onClick={this.dumpBattleBox} />
+                <FlatButton label="Dump Battle Box" disabled={this.props.client === null || this.props.inProgress !== ''} onClick={this.dumpBattleBox} />
               </div>
             </div>
             <div>
               <div>
-                <FlatButton label="Dump Trade" disabled={this.props.client === null} onClick={this.dumpTrade} />
+                <FlatButton label="Dump Trade" disabled={this.props.client === null || this.props.inProgress !== ''} onClick={this.dumpTrade} />
               </div>
               <div>
                 <FlatButton label="Cancel Trade Dump" disabled={this.props.client === null || this.props.inProgress !== 'trade'} onClick={this.cancelTradeDump} />
