@@ -39,19 +39,37 @@ export default class NtrMenu extends React.Component {
         <Dialog open={this.props.menuOpen} onRequestClose={this.closeMenu}>
           <h2>NTR Configuration</h2>
           <div className={styles.connectLine}>
-            <TextField
-              value={this.props.ip}
-              onChange={this.ipChanged}
-              floatingLabelText="3DS IP"
-              errorText={this.props.ip !== '' && !/^(?:[01]?\d{1,2}\.|2(?:[0-4]\d|5[0-5])\.){3}(?:[01]?\d{1,2}|2(?:[0-4]\d|5[0-5]))$/.test(this.props.ip) ? 'This is not a valid IPv4 address.' : undefined}
-              disabled={this.props.client !== null}
-            />
+            <div className={styles.textFieldWrapper}>
+              <TextField
+                value={this.props.ip}
+                onChange={this.ipChanged}
+                floatingLabelText="3DS IP"
+                errorText={this.props.ip !== '' && !/^(?:[01]?\d{1,2}\.|2(?:[0-4]\d|5[0-5])\.){3}(?:[01]?\d{1,2}|2(?:[0-4]\d|5[0-5]))$/.test(this.props.ip) ? 'This is not a valid IPv4 address.' : undefined}
+                disabled={this.props.client !== null}
+              />
+            </div>
             <RaisedButton primary label={this.props.client === null ? 'Connect' : 'Disconnect'} onClick={this.connect} />
           </div>
-          <FlatButton label="Dump Boxes" onClick={this.dumpBoxes} />
-          <FlatButton label="Dump Battle Box" onClick={this.dumpBattleBox} />
-          <FlatButton label="Dump Trade" onClick={this.dumpTrade} />
-          <FlatButton label="Cancel Trade Dump" disabled={this.props.inProgress !== 'trade'} onClick={this.cancelTradeDump} />
+          <div className={styles.buttons}>
+            <div>
+              <div>
+                <FlatButton label="Dump Boxes" disabled={this.props.client === null} onClick={this.dumpBoxes} />
+              </div>
+            </div>
+            <div>
+              <div>
+                <FlatButton label="Dump Battle Box" disabled={this.props.client === null} onClick={this.dumpBattleBox} />
+              </div>
+            </div>
+            <div>
+              <div>
+                <FlatButton label="Dump Trade" disabled={this.props.client === null} onClick={this.dumpTrade} />
+              </div>
+              <div>
+                <FlatButton label="Cancel Trade Dump" disabled={this.props.client === null || this.props.inProgress !== 'trade'} onClick={this.cancelTradeDump} />
+              </div>
+            </div>
+          </div>
         </Dialog>
       </div>
     );

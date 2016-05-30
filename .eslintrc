@@ -22,7 +22,8 @@
     "no-use-before-define": 0,
     "no-nested-ternary": 0,
     "no-shadow": 0,
-    "max-len": 0
+    "max-len": 0,
+    "no-confusing-arrow": 0
   },
   "plugins": [
     "react"

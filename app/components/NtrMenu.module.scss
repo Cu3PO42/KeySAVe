@@ -1,9 +1,26 @@
 .connectLine {
   display: flex;
   flex-direction: row;
-  align-items: baseline;
+  align-items: center;
 
   & > div {
     display: block;
+  }
+}
+
+.textFieldWrapper {
+  margin-right: 50px;
+  height: 100px;
+}
+
+.buttons {
+  display: table;
+
+  & > div {
+    display: table-row;
+
+    & > div {
+      display: table-cell;
+    }
   }
 }
