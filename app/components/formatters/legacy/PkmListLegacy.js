@@ -5,7 +5,7 @@ import { Localization, Calculator as StatCalculator } from 'keysavcore';
 import { createSelector } from 'reselect';
 import styles from './PkmListLegacy.module.scss';
 
-const replaceDatabaseMaker = format => ({
+const replaceDatabaseFactory = format => ({
   0: '"B"+("0"+(pkm.box+1)).slice(-2)',
   1: 'Math.floor(pkm.slot/6)+1+","+(pkm.slot%6+1)',
   2: 'getSpecies(pkm.species, pkm.form, local)',
@@ -95,17 +95,16 @@ function genderString(gender) {
   }
 }
 function getSpecies(id, form, local) {
-  if (id >= 664 && id <= 666) {
-    return `${local.species[id]}-${local.forms[666][form]}`;
-  } else if (id === 201) {
-    return `${local.species[201]}-${local.forms[201][form]}`;
+  const forms = local.forms[id];
+  if (forms && forms[form]) {
+    return `${local.species[id]} (${forms[form]})`;
   }
   return local.species[id];
 }
 
 function compile(format) {
   const react = React;
-  const replaceDatabase = replaceDatabaseMaker(format);
+  const replaceDatabase = replaceDatabaseFactory(format);
   /* eslint-enable no-unused-vars */
   /* eslint-disable no-eval */
   const fn =
