@@ -97,6 +97,12 @@ class PkmListHandlebars extends Component {
       tsv() {
         return ('0000' + this.tsv).slice(-4);
       },
+      tid() {
+        return ('00000' + this.tid).slice(-5);
+      },
+      sid() {
+        return ('00000' + this.sid).slice(-5);
+      },
       language() {
         return Localization[self.props.language].languageTags[this.otLang];
       },
