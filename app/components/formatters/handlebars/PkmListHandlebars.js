@@ -89,7 +89,7 @@ class PkmListHandlebars extends Component {
         return Localization[self.props.language].getEggLocation(this);
       },
       ballImage() {
-        return '[](/' + Localization[self.props.language].items[this.ball].replace(' ', '').replace('é', 'e').toLowerCase() + ')';
+        return '[](/' + Localization[self.props.language].getBallName(this.ball).replace(' ', '').replace('é', 'e').toLowerCase() + ')';
       },
       esv() {
         return ('0000' + this.esv).slice(-4);
