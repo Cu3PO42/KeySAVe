@@ -32,6 +32,10 @@ app.on('ready', () => {
     mainWindow.loadURL(`file://${__dirname}/../app/app.html`);
   }
 
+  if (process.env.NODE_ENV === 'development') {
+    BrowserWindow.addDevToolsExtension('./react-devtools');
+  }
+
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
