@@ -222,7 +222,7 @@ export default class Breaking extends React.Component {
                 <div className={styles.fileType}><span className={styles.fileTypeType}>Type:</span> {nameMap[this.props.file2Type]}</div>
               </div>
             </div>
-            <div className={`${styles.flexRow} ${styles.flexStretch} ${styles.buttonWrapper}`}>
+            <div className={`${styles.flexRow} ${styles.buttonWrapper}`}>
               <FlatButton label="Break" disabled={this.props.file1Type !== this.props.file2Type || this.props.file1Type !== 'sav' && this.props.file2Type !== 'bv'} onTouchTap={this.break} />
             </div>
           </div>
