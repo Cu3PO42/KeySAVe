@@ -7,6 +7,7 @@ import helperMoment from 'handlebars-helper-moment';
 import pureRender from 'pure-render-decorator';
 import { createSelector } from 'reselect';
 import { Localization, Calculator as StatCalculator } from 'keysavcore';
+import { knownHelpersBox, knownHelpersPokemon } from './knownHelpers';
 import styles from './PkmListHandlebars.module.scss';
 
 dashbars.help(handlebars);
@@ -186,32 +187,34 @@ class PkmListHandlebars extends Component {
 
   getFormatTemplate = createSelector(
     () => this.props.format.format || '',
-    handlebars.compile
+    t => handlebars.compile(t, { knownHelpers: knownHelpersPokemon, knownHelpersOnly: true })
   );
 
   getBoxHeaderTemplate = createSelector(
     () => this.props.format.boxHeader || '',
-    handlebars.compile
+    t => handlebars.compile(t, { knownHelpers: knownHelpersBox, knownHelpersOnly: true })
   );
 
   renderBox(pkm) {
     const template = this.getFormatTemplate();
-
     return (
       <Paper className={styles.paper}>
         <div className={styles.box}>
           <div dangerouslySetInnerHTML={{ __html: this.props.format.header }} />
-          {pkm.map(e => <div key={e.box * 30 + e.slot} dangerouslySetInnerHTML={{ __html: template(e, { helpers: this.handlebarsHelpers }) }}></div>)}
+            {pkm.map(e => <div key={e.box * 30 + e.slot} dangerouslySetInnerHTML={{ __html: template(e, { helpers: this.handlebarsHelpers }) }}></div>)}
         </div>
       </Paper>
     );
   }
 
   render() {
+    const first = this.props.pokemon.first();
     try {
-      if (!this.props.pokemon.first()) {
+      if (!first) {
         return <div></div>;
       }
+
+      template(first, { helpers: this.handlebarsHelpers }); // Do this to catch errors early on
 
       if (this.props.format.splitBoxes) {
         const grouped = this.props.pokemon.groupBy(e => e.box);
@@ -231,7 +234,6 @@ class PkmListHandlebars extends Component {
 
       return this.renderBox(this.props.pokemon);
     } catch (e) {
-      console.log(e);
       return (
         <Paper className={styles.paper}>
           Template error! Please check your format string!
