@@ -214,7 +214,7 @@ class PkmListHandlebars extends Component {
         return <div></div>;
       }
 
-      template(first, { helpers: this.handlebarsHelpers }); // Do this to catch errors early on
+      this.getFormatTemplate()(first, { helpers: this.handlebarsHelpers }); // Do this to catch errors early on
 
       if (this.props.format.splitBoxes) {
         const grouped = this.props.pokemon.groupBy(e => e.box);
