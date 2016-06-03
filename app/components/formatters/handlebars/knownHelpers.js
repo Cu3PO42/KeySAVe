@@ -143,7 +143,7 @@ export const knownHelpersPokemon = {
   countryName: true,
   ribbons: true,
   characteristic: true,
-  espace: true,
+  escape: true,
   toJson: true,
   eval: true,
 
