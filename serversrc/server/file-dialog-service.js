@@ -1,5 +1,5 @@
 import { dialog } from 'electron';
-import registerIpc from 'electron-ipc-tunnel/server';
+import { registerIpc } from '../logger';
 import Promise from 'bluebird';
 
 export default function (window) {

@@ -33,19 +33,20 @@ async function breakFolder(args) {
         try {
           var file = path.join(args.folder, fileName);
           var stat = await fs.statAsync(file);
-          if (stat.isDirectory()) return;
+          if (stat.isDirectory()) return null;
           switch (stat.size) {
             case 0x100000:
             case 0x10009C:
             case 0x10019A:
               break;
             default:
-              return;
+              return null;
           }
           var buf = await fs.readFileAsync(file);
           var arr = bufToArr(buf);
           var reader = await KeySAV.loadSav(arr);
           reader.scanSlots();
+          return null;
         } catch (e) { /* ignore */ }
       });
     process.send({ id: args.id });

@@ -1,9 +1,9 @@
 import { app } from 'electron';
 import { fork } from 'child_process';
-import registerIpc from 'electron-ipc-tunnel/server';
 import Promise from 'bluebird';
 import { mergeKeyFolder } from './dumper';
 import * as fs from 'fs-extra';
+import logger, { registerIpc } from '../logger';
 
 registerIpc('import-keysav2-folder', async function importKeySAV2Folder(reply, folder) {
   const files = await fs.readdirAsync(folder);
@@ -22,7 +22,12 @@ registerIpc('search-keysav2', function searchKeySAV2() {
   return new Promise((resolve) => {
     const searcher = fork(__dirname + '/../workers/bootstrap.js', [__dirname + '/../workers/search-keysav']);
     searcher.send({ path: app.getPath('home'), depth: 5 });
-    searcher.on('message', async (path) => {
+    searcher.on('message', async (res) => {
+      if (res.log !== undefined) {
+        logger.log(res.log, ...res.args);
+        return;
+      }
+      const { path } = res;
       promises.push(mergeKeyFolder(path + '/data').catch(() => {}));
       folders.push(path);
     });

@@ -5,6 +5,8 @@ import dumper, { mergeKeyFolder } from './server/dumper';
 import updater from './server/updater';
 import './server/import-keysav2';
 import * as fs from 'fs-extra';
+import logger from './logger';
+import { version } from '../package.json';
 
 let menu;
 let template;
@@ -24,6 +26,8 @@ if (fs.existsSync(oldPath)) {
 }
 
 app.on('ready', () => {
+  logger.info(`KeySAVe - Version ${version} started`);
+
   mainWindow = new BrowserWindow({ width: 1024, height: 728 });
 
   if (process.env.HOT) {

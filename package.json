@@ -111,7 +111,8 @@
     "redux-promise": "^0.5.3",
     "redux-thunk": "^2.1.0",
     "reselect": "^2.5.1",
-    "sanitize-filename": "^1.6.0"
+    "sanitize-filename": "^1.6.0",
+    "winston": "^2.2.0"
   },
   "serverOnlyDependencies": [
     "babel-runtime",

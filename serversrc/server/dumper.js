@@ -1,6 +1,6 @@
 import { app } from 'electron';
 import Promise from 'bluebird';
-import registerIpc from 'electron-ipc-tunnel/server';
+import logger, { registerIpc } from '../logger';
 import { fork } from 'child_process';
 
 function deserializeError(e) {
@@ -56,7 +56,9 @@ export async function mergeKeyFolder(folder) {
 registerIpc('merge-key-folder', skipArg1(mergeKeyFolder));
 
 worker.on('message', function onMessage(res) {
-  if (res.err === undefined) {
+  if (res.log) {
+    logger.log(res.log, ...res.args);
+  } else if (res.err === undefined) {
     promises[res.id].resolve(res.res);
   } else {
     promises[res.id].reject(deserializeError(res.err));

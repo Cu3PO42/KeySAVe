@@ -1,5 +1,5 @@
 import updater from 'electron-gh-releases-updater';
-import registerIpc from 'electron-ipc-tunnel/server';
+import { registerIpc } from '../logger';
 import pkgJson from '../../package.json';
 
 var update;

@@ -8,7 +8,7 @@ async function search(path, depth, callback) {
       if (depth > 0 && (await fs.statAsync(compoundPath)).isDirectory()) {
         await search(compoundPath, depth - 1, callback);
       } else if (path2 === 'KeySAV2.exe') {
-        callback(path);
+        callback({ path });
       }
     });
   } catch (e) { /* ignore */ }
