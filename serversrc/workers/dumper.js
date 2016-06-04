@@ -78,8 +78,11 @@ async function dumpSaveOrBv(args) {
       process.send({ res: { pokemon: reader.getAllPkx(), goodKey: reader.dumpsOpponent, type: 'BV', name: args.file }, id: args.id });
     }
   } catch (e) {
-    // TODO Differentiate no key error and filesystem errors
-    logger.error('An error occured trying to open ', args.file, ': ', e);
+    if (e.name === 'NotASaveOrBattleVideoError' || e.name === 'NoKeyAvailableError') {
+      logger.verbose('An error occured trying to open ', args.file, ': ', e);
+    } else {
+      logger.error('An error occured trying to open ', args.file, ': ', e);
+    }
     process.send({ err: serializeError(e), id: args.id });
   }
 }
@@ -92,8 +95,11 @@ async function breakKey(args) {
     logger.verbose(`Key creation returned ${res}`);
     process.send({ res, id: args.id });
   } catch (e) {
-    // TODO differentiate KeySAVCore errors from native errors
-    logger.error('An error occured trying to create a key: ', e);
+    if (e.name === 'NotSameFileTypeError' || e.name === 'NotSameBattleVideoSlotError' || e.name === 'BattleVideoKeyAlreadyExistsError' || e.name === 'BattleVideoBreakError' || e.name === 'NotSameGameError' || e.name === 'SaveIdenticalError' || e.name === 'SaveKeyAlreadyExistsError' || e.name === 'NoBoxesError' || e.name === 'PokemonNotSuitableError') {
+      logger.verbose('An error occured trying to create a key: ', e);
+    } else {
+      logger.error('An error occured trying to create a key: ', e);
+    }
     process.send({ err: serializeError(e), id: args.id });
   }
 }
