@@ -7,6 +7,7 @@ import { registerFormattingPlugin,
 import options from './components/formatters';
 import * as fs from 'fs-extra';
 import { version } from '../package.json';
+import logger from './logger';
 import { remote } from 'electron';
 const { getPath } = remote.require('electron').app;
 
@@ -53,17 +54,22 @@ export default async function loadConfig(store) {
     store.dispatch(registerFormattingPlugin(option));
   }
   try {
-    const file = await fs.readFileAsync(getPath('userData') + '/config.json', 'utf-8');
+    const path = getPath('userData') + '/config.json';
+    const file = await fs.readFileAsync(path, 'utf-8');
+    logger.info(`Loading config from ${path}`);
     parseConfig(store, JSON.parse(file));
   } catch (e) {
     try {
-      const file = await fs.readFileAsync(getPath('documents') + '/KeySAVe/config.json', 'utf-8');
+      const path = getPath('documents') + '/KeySAVe/config.json';
+      const file = await fs.readFileAsync(path, 'utf-8');
+      logger.info(`Loading config from ${path}`);
       parseConfig(store, JSON.parse(file));
     } catch (e) { /* ignore */ }
   }
   window.addEventListener('beforeunload', async () => {
     const config = serializeConfig(store);
     await fs.writeFileAsync(getPath('userData') + '/config.json', JSON.stringify(config, null, '    '), 'utf-8');
+    logger.info('Saved config');
   }, false);
 }
 

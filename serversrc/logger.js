@@ -1,8 +1,8 @@
 import { Logger, transports } from 'winston';
-import { getPath } from 'electron';
-import registerIpc from 'electron-ipc-tunnel/server';
+import { app } from 'electron';
+import registerIpcOrg from 'electron-ipc-tunnel/server';
 
-const file = process.env.NODE_ENV === 'development' ? './keysave.log' : `${getPath('appData')}/keysave.log`;
+const file = process.env.NODE_ENV === 'development' ? './keysave.log' : `${app.getPath('appData')}/keysave.log`;
 
 const logger = new Logger({
   transports: [
@@ -15,5 +15,5 @@ export default logger;
 
 export function registerIpc(name, handler) {
   logger.debug(`IPC Handler for ${name} registered`);
-  registerIpc(name, handler);
+  registerIpcOrg(name, handler);
 }

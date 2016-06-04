@@ -22,7 +22,9 @@ app.on('window-all-closed', () => {
 
 var oldPath = app.getPath('documents') + '/KeySAVe/data';
 if (fs.existsSync(oldPath)) {
+  logger.info(`Found an old key folder at ${oldPath}, merging now...`);
   mergeKeyFolder(oldPath);
+  // TODO remove old folder
 }
 
 app.on('ready', () => {
