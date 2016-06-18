@@ -5,3 +5,4 @@ release/
 npm-debug.log
 serverlib/
 app/resources/sprites.*
+keysave.log

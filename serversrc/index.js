@@ -5,6 +5,8 @@ import dumper, { mergeKeyFolder } from './server/dumper';
 import updater from './server/updater';
 import './server/import-keysav2';
 import * as fs from 'fs-extra';
+import logger from './logger';
+import { version } from '../package.json';
 
 let menu;
 let template;
@@ -18,18 +20,30 @@ app.on('window-all-closed', () => {
   app.quit();
 });
 
-var oldPath = app.getPath('documents') + '/KeySAVe/data';
-if (fs.existsSync(oldPath)) {
-  mergeKeyFolder(oldPath);
-}
+(async () => {
+  const oldPath = app.getPath('documents') + '/KeySAVe/data';
+  if (await fs.existsAsync(oldPath)) {
+    logger.info(`Found an old key folder at ${oldPath}, merging now...`);
+    await mergeKeyFolder(oldPath);
+    await fs.removeAsync(oldPath);
+    logger.info('Merged and deleted old key folder!')
+  }
+})();
 
 app.on('ready', () => {
+  logger.info(`KeySAVe - Version ${version} started`);
+  logger.info(`OS: ${process.platform}-${process.arch}`);
+
   mainWindow = new BrowserWindow({ width: 1024, height: 728 });
 
   if (process.env.HOT) {
     mainWindow.loadURL(`file://${__dirname}/../app/hot-dev-app.html`);
   } else {
     mainWindow.loadURL(`file://${__dirname}/../app/app.html`);
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    BrowserWindow.addDevToolsExtension('./react-devtools');
   }
 
   mainWindow.on('closed', () => {

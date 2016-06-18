@@ -10,7 +10,7 @@ import ErrorIcon from 'material-ui/svg-icons/alert/error';
 import CircularProgress from 'material-ui/CircularProgress';
 import DocumentationLink from './DocumentationLink';
 import styles from './Breaking.module.scss';
-import colors from 'material-ui/styles/colors';
+import * as colors from 'material-ui/styles/colors';
 import Promise from 'bluebird';
 
 function stringOrObjOrUndefined(props, propName, componentName) {
@@ -39,7 +39,7 @@ const successMessages = {
       <p>A key for this battle video slot was successfully created.</p>
       <p>You can dump opponent data with this key, too!</p>
     </div>,
-  CREADTED_WITHOUT_OPPONENT:
+  CREATED_WITHOUT_OPPONENT:
     <div>
       <p>A key for this battle video slot was successfully created.</p>
       <p>You can not dump opponent data with this key, but you can upgrade it later!</p>
@@ -137,7 +137,14 @@ const errorMessages = {
       <p>The six Pokémon you used for the breaking process are not suitable.</p>
       <p>There is a one in 4096 chance for this to happen.</p>
       <p>Please use six different Pokémon and start over!</p>
-    </div>
+    </div>,
+
+    KeySavingError: () =>
+      <div>
+        <ErrorSign />
+        <p>Unfortunately there was an error saving your key.</p>
+        <p>Please check if your hard drive is working correctly and you have proper permissions.</p>
+      </div>
 };
 
 export default class Breaking extends React.Component {
@@ -222,7 +229,7 @@ export default class Breaking extends React.Component {
                 <div className={styles.fileType}><span className={styles.fileTypeType}>Type:</span> {nameMap[this.props.file2Type]}</div>
               </div>
             </div>
-            <div className={`${styles.flexRow} ${styles.flexStretch} ${styles.buttonWrapper}`}>
+            <div className={`${styles.flexRow} ${styles.buttonWrapper}`}>
               <FlatButton label="Break" disabled={this.props.file1Type !== this.props.file2Type || this.props.file1Type !== 'sav' && this.props.file2Type !== 'bv'} onTouchTap={this.break} />
             </div>
           </div>
