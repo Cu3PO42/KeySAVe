@@ -32,6 +32,7 @@ app.on('window-all-closed', () => {
 
 app.on('ready', () => {
   logger.info(`KeySAVe - Version ${version} started`);
+  logger.info(`OS: ${process.platform}-${process.arch}`);
 
   mainWindow = new BrowserWindow({ width: 1024, height: 728 });
 

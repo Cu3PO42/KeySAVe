@@ -108,10 +108,12 @@ async function mergeKeyFolder(args) {
   try {
     logger.verbose(`Merging all keys from ${args.folder} with own keys`);
     const files = await fs.readdirAsync(args.folder);
+    let counter = 0;
     for (const file of files) {
       const filePath = args.folder + '/' + file;
       const stats = await fs.statAsync(filePath);
       if (stats.isFile() && (stats.size === 0xB4AD4 || stats.size === 0x80000)) {
+        ++counter;
         logger.silly(`Merging save key from ${file}`);
         const buf = new Buffer(0xB4AD4);
         const fd = await fs.openAsync(filePath, 'r');
@@ -121,6 +123,7 @@ async function mergeKeyFolder(args) {
         const key = new SaveKey(ui8);
         store.setOrMergeSaveKey(key);
       } else if (stats.isFile() && stats.size === 0x1000) {
+        ++counter;
         logger.silly(`Merging battle video key from ${file}`);
         const buf = await fs.readFileAsync(filePath);
         const ui8 = new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength);
@@ -128,6 +131,7 @@ async function mergeKeyFolder(args) {
         store.setOrMergeBvKey(key);
       }
     }
+    logger.info(`Merged ${counter} files`);
     process.send({ id: args.id });
   } catch (e) {
     logger.error('An error occured trying to merge keys: ', e);
