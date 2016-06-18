@@ -6,8 +6,8 @@ const file = process.env.NODE_ENV === 'development' ? './keysave.log' : `${app.g
 
 const logger = new Logger({
   transports: [
-    new transports.File({ filename: file }),
-    new transports.Console()
+    new transports.File({ filename: file, level: 'debug' }),
+    new transports.Console({ level: process.env.NODE_ENV === 'development' ? 'debug' : 'info' })
   ]
 });
 

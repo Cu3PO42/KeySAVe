@@ -64,12 +64,14 @@ export default async function loadConfig(store) {
       const file = await fs.readFileAsync(path, 'utf-8');
       logger.info(`Loading config from ${path}`);
       parseConfig(store, JSON.parse(file));
-    } catch (e) { /* ignore */ }
+    } catch (e) {
+      logger.info('No config file found');
+    }
   }
   window.addEventListener('beforeunload', async () => {
+    logger.info('Saving config');
     const config = serializeConfig(store);
     await fs.writeFileAsync(getPath('userData') + '/config.json', JSON.stringify(config, null, '    '), 'utf-8');
-    logger.info('Saved config');
   }, false);
 }
 
@@ -89,5 +91,6 @@ export async function importKeySAV2Config(folder, store) {
   for (const format of formats) {
     store.dispatch(addFormattingOption(`Imported (${++i})`, 'Legacy (KeySAV2)', { format }));
   }
+  logger.info(`Imported ${i} formatting options from ${configFile}`);
   store.dispatch(selectFormattingOption(curOption));
 }
