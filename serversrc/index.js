@@ -20,12 +20,15 @@ app.on('window-all-closed', () => {
   app.quit();
 });
 
-var oldPath = app.getPath('documents') + '/KeySAVe/data';
-if (fs.existsSync(oldPath)) {
-  logger.info(`Found an old key folder at ${oldPath}, merging now...`);
-  mergeKeyFolder(oldPath);
-  // TODO remove old folder
-}
+(async () => {
+  const oldPath = app.getPath('documents') + '/KeySAVe/data';
+  if (await fs.existsAsync(oldPath)) {
+    logger.info(`Found an old key folder at ${oldPath}, merging now...`);
+    await mergeKeyFolder(oldPath);
+    await fs.removeAsync(oldPath);
+    logger.info('Merged and deleted old key folder!')
+  }
+})();
 
 app.on('ready', () => {
   logger.info(`KeySAVe - Version ${version} started`);
