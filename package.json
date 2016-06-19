@@ -85,6 +85,7 @@
     "dashbars": "github:cu3po42/dashbars",
     "electron-gh-releases-updater": "^0.7.3",
     "electron-ipc-tunnel": "^3.1.0",
+    "electron-packager": "github:cu3po42/electron-packager",
     "fbjs-scripts": "^0.7.0",
     "fs-extra": "^0.30.0",
     "handlebars": "^4.0.5",
@@ -114,7 +115,7 @@
     "sanitize-filename": "^1.6.0",
     "winston": "^2.2.0"
   },
-  "serverOnlyDependencies": [
+  "serverDependencies": [
     "babel-runtime",
     "bluebird",
     "electron-debug",

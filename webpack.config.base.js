@@ -57,5 +57,5 @@ module.exports = {
   externals: [
       "chokidar"
     // put your node 3rd party libraries which can't be built with webpack here (mysql, mongodb, and so on..)
-  ].concat(pkg.serverOnlyDependencies)
+  ].concat(pkg.serverDependencies)
 };
