@@ -31,10 +31,16 @@ app.on('window-all-closed', () => {
 })();
 
 app.on('ready', () => {
+  mainWindow = new BrowserWindow({ width: 1024, height: 728,
+     show: false, autoHideMenuBar:true
+  });
+  mainWindow.setMenuBarVisibility(false);
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show()
+  });
+
   logger.info(`KeySAVe - Version ${version} started`);
   logger.info(`OS: ${process.platform}-${process.arch}`);
-
-  mainWindow = new BrowserWindow({ width: 1024, height: 728 });
 
   if (process.env.HOT) {
     mainWindow.loadURL(`file://${__dirname}/../app/hot-dev-app.html`);
