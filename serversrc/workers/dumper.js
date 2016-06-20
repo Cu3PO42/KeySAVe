@@ -29,7 +29,8 @@ logger.verbose(`Loading keys from ${dataDirectory}`);
 
 async function close() {
   logger.info('Shutting down dumper process');
-  store.close();
+  await store.close();
+  process.exit();
 }
 
 async function breakFolder(args) {

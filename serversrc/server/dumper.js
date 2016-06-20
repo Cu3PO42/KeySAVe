@@ -13,7 +13,7 @@ function deserializeError(e) {
 var worker = fork(__dirname + '/../workers/bootstrap.js', [__dirname + '/../workers/dumper', app.getPath('userData') + '/keys']);
 
 export default () => {
-  app.on('window-all-closed', () => {
+  app.on('will-quit', () => {
     worker.send({ cmd: 'close' });
   });
 };
