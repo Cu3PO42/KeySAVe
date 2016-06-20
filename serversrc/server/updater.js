@@ -20,8 +20,12 @@ export default function () {
     if (!update || !update.updateAvailable) {
       throw new Error('No update avaiable.');
     }
+    let updateStarted = false;
     update.update((progress) => {
-      logger.info('Update started');
+      if (!updateStarted) {
+        logger.info('Update started');
+        updateStarted = true;
+      }
       reply('update-progress', progress);
     });
   });
