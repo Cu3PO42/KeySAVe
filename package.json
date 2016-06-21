@@ -83,7 +83,7 @@
     "babel-runtime": "^6.9.0",
     "bluebird": "^3.4.0",
     "dashbars": "github:cu3po42/dashbars",
-    "electron-gh-releases-updater": "^0.7.3",
+    "electron-gh-releases-updater": "^0.8.0",
     "electron-ipc-tunnel": "^3.1.0",
     "electron-packager": "github:cu3po42/electron-packager",
     "fbjs-scripts": "^0.7.0",
