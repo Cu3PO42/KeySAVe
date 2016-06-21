@@ -3,6 +3,7 @@ import createAction from '../utils/createAction';
 import NtrClient from 'ntrclient';
 import { loadSav, Pkx } from 'keysavcore';
 import { copy } from 'keysavcore/util';
+import logger from '../logger';
 
 export const OPEN_NTR_MENU = 'OPEN_NTR_MENU';
 export const SET_NTR_IP = 'SET_NTR_IP';
@@ -32,6 +33,7 @@ async function getOffsets(client) {
     throw new Error('Game not running.');
   }
   const { pid, name } = proc;
+  logger.info(`Game running: ${name}`);
   return {
     pid,
     offsets: name.startsWith('kujira') ? gameOffsets.xy : gameOffsets.oras
@@ -40,9 +42,16 @@ async function getOffsets(client) {
 
 export const openNtrMenu = createAction(OPEN_NTR_MENU);
 export const setNtrIp = createAction(SET_NTR_IP);
-const ntrConnect_ = createAction(NTR_CONNECT, NtrClient.connectNTR);
+const ntrConnect_ = createAction(NTR_CONNECT, async (ip, ...args) => {
+  const client = await NtrClient.connectNTR(ip, ...args);
+  logger.info(`Connected to 3DS at ${ip}`);
+  return client;
+});
 export const ntrDisconnect = createAction(NTR_DISCONNECT);
-export const ntrConnect = ip => dispatch => dispatch(ntrConnect_(ip, () => dispatch(ntrDisconnect)));
+export const ntrConnect = ip => dispatch => dispatch(ntrConnect_(ip, () => {
+  logger.info('3DS disconnected');
+  dispatch(ntrDisconnect);
+}));
 
 export const ntrDumpBoxes = createAction(OPEN_FILE, async (client) => {
   const { offsets: { boxes: offset }, pid } = await getOffsets(client);
@@ -50,6 +59,7 @@ export const ntrDumpBoxes = createAction(OPEN_FILE, async (client) => {
   const boxes = await client.readMemory(offset, 930 * 232, pid);
   const boxesUi8 = new Uint8Array(boxes.buffer, boxes.byteOffset, boxes.byteLength);
   const reader = await loadSav(boxesUi8);
+  logger.info('Dumped boxes from game');
   return {
     pokemon: reader.getAllPkx(),
     goodKey: true,
@@ -66,6 +76,7 @@ export const ntrDumpBattleBox = createAction(OPEN_FILE, async (client) => {
   const boxes = new Uint8Array(930 * 232);
   copy(battleBoxUi8, 0, boxes, 0, 6 * 232);
   const reader = await loadSav(boxes);
+  logger.info('Dumped battle box from game');
   return {
     pokemon: reader.getAllPkx(),
     goodKey: true,
@@ -78,6 +89,7 @@ const ntrInitializeTradeDump = createAction(OPEN_FILE, () => ({ pokemon: [], goo
 const ntrSetInProgress = createAction(NTR_SET_IN_PROGRESS, (inProgress, intervalId) => ({ inProgress, intervalId }));
 export const ntrDumpTrade = (client) => async dispatch => {
   dispatch(ntrInitializeTradeDump());
+  logger.info('Starting trade dump');
 
   const { offsets: { trade: offset }, pid } = await getOffsets(client);
   const knownPokemon = new Set();
@@ -102,4 +114,4 @@ export const ntrDumpTrade = (client) => async dispatch => {
   }, 250);
   dispatch(ntrSetInProgress('trade', intervalId));
 };
-export const ntrCancelInProgress = createAction(NTR_CANCEL_IN_PROGRESS);
+export const ntrCancelInProgress = createAction(NTR_CANCEL_IN_PROGRESS, () => logger.info('Cancelled trade dump'));
