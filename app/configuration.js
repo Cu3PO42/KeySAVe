@@ -5,6 +5,7 @@ import { registerFormattingPlugin,
   changeFormatLanguage
 } from './actions/format';
 import options from './components/formatters';
+import { ntrAddKnownTradeOffset } from './actions/ntr';
 import * as fs from 'fs-extra';
 import { version } from '../package.json';
 import logger from './logger';
@@ -30,10 +31,17 @@ function parseConfig(store, config) {
   }
   if (config.selectedFormatIndex !== undefined) store.dispatch(selectFormattingOption(config.selectedFormatIndex));
   if (config.language !== undefined) store.dispatch(changeFormatLanguage(config.language));
+  if (config.knownTradeOffsets !== undefined) {
+    for (const game of ['xy', 'oras']) {
+      for (const offset of config.knownTradeOffsets[game]) {
+        store.dispatch(ntrAddKnownTradeOffset(offset, game));
+      }
+    }
+  }
 }
 
 function serializeConfig(store) {
-  const { format } = store.getState();
+  const { format, ntr: { knownTradeOffsets } } = store.getState();
   const formattingOptions = format.formattingOptions
     .valueSeq()
     .filter(e => !e.default)
@@ -45,7 +53,8 @@ function serializeConfig(store) {
     formattingOptions,
     language: format.language,
     selectedFormatIndex: format.currentIndex,
-    version
+    version,
+    knownTradeOffsets
   };
 }
 
