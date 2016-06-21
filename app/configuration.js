@@ -5,6 +5,7 @@ import { registerFormattingPlugin,
   changeFormatLanguage
 } from './actions/format';
 import options from './components/formatters';
+import { setEggsHaveSvs } from './actions/filter';
 import * as fs from 'fs-extra';
 import { version } from '../package.json';
 import logger from './logger';
@@ -30,10 +31,11 @@ function parseConfig(store, config) {
   }
   if (config.selectedFormatIndex !== undefined) store.dispatch(selectFormattingOption(config.selectedFormatIndex));
   if (config.language !== undefined) store.dispatch(changeFormatLanguage(config.language));
+  if (config.svs !== undefined) store.dispatch(setEggsHaveSvs(config.svs));
 }
 
 function serializeConfig(store) {
-  const { format } = store.getState();
+  const { format, filter: { svs } } = store.getState();
   const formattingOptions = format.formattingOptions
     .valueSeq()
     .filter(e => !e.default)
@@ -45,7 +47,8 @@ function serializeConfig(store) {
     formattingOptions,
     language: format.language,
     selectedFormatIndex: format.currentIndex,
-    version
+    version,
+    svs
   };
 }
 
