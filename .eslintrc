@@ -23,6 +23,7 @@
     "no-nested-ternary": 0,
     "no-shadow": 0,
     "max-len": 0,
+    "no-confusing-arrow": 0,
     "global-require": 0,
     "prefer-template": 0,
     "import/no-unresolved": [2, { ignore: ['^electron$'] }]

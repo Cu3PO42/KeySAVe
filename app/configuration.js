@@ -6,6 +6,7 @@ import { registerFormattingPlugin,
 } from './actions/format';
 import options from './components/formatters';
 import { setEggsHaveSvs } from './actions/filter';
+import { ntrAddKnownTradeOffset } from './actions/ntr';
 import * as fs from 'fs-extra';
 import { version } from '../package.json';
 import logger from './logger';
@@ -32,10 +33,17 @@ function parseConfig(store, config) {
   if (config.selectedFormatIndex !== undefined) store.dispatch(selectFormattingOption(config.selectedFormatIndex));
   if (config.language !== undefined) store.dispatch(changeFormatLanguage(config.language));
   if (config.svs !== undefined) store.dispatch(setEggsHaveSvs(config.svs));
+  if (config.knownTradeOffsets !== undefined) {
+    for (const game of ['xy', 'oras']) {
+      for (const offset of config.knownTradeOffsets[game]) {
+        store.dispatch(ntrAddKnownTradeOffset(offset, game));
+      }
+    }
+  }
 }
 
 function serializeConfig(store) {
-  const { format, filter: { svs } } = store.getState();
+  const { format, ntr: { knownTradeOffsets }, filter: svs } = store.getState();
   const formattingOptions = format.formattingOptions
     .valueSeq()
     .filter(e => !e.default)
@@ -48,7 +56,8 @@ function serializeConfig(store) {
     language: format.language,
     selectedFormatIndex: format.currentIndex,
     version,
-    svs
+    svs,
+    knownTradeOffsets
   };
 }
 

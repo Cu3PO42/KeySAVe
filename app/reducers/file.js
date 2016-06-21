@@ -1,5 +1,5 @@
 import { handleActions } from '../utils/handleAction';
-import { OPEN_FILE, OPEN_FILE_DISMISS_ERROR } from '../actions/file';
+import { OPEN_FILE, OPEN_FILE_DISMISS_ERROR, ADD_POKEMON } from '../actions/file';
 
 const defaultState = {
   name: '',
@@ -24,6 +24,16 @@ export default handleActions({
         error: action.payload
       };
     }
+  },
+  [ADD_POKEMON](state, { payload }) {
+    if (state.type !== '' && !state.isError) {
+      return {
+        ...state,
+        pokemon: [...state.pokemon, ...payload]
+      };
+    }
+
+    return state;
   },
   [OPEN_FILE_DISMISS_ERROR]() {
     return defaultState;
