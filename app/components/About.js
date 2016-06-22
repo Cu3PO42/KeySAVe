@@ -31,6 +31,9 @@ const About = () => (
       providind feedback, giving me ideas for features I could implement and by helping me collect
       localization data.
     </p>
+    <p>
+      The Cup Icon used in the Dumping page is 'coffee-cup by jon trillana from the Noun Project'.
+    </p>
     <h2>Documentation</h2>
     <p>
       The documentation can be found <ExternalLink href="https://cu3po42.gitbooks.io/keysave/content/">here</ExternalLink>.

@@ -4,6 +4,8 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import styles from './NtrMenu.module.scss';
+import CupIcon from './CupIcon';
+import IconButton from 'material-ui/IconButton';
 
 export default class NtrMenu extends React.Component {
   static propTypes = {
@@ -35,7 +37,9 @@ export default class NtrMenu extends React.Component {
   render() {
     return (
       <div>
-        <FlatButton label="ntr" onClick={this.openMenu} />
+        <IconButton onClick={this.openMenu}>
+          <CupIcon />
+        </IconButton>
         <Dialog open={this.props.menuOpen} onRequestClose={this.closeMenu}>
           <h2>NTR Configuration</h2>
           <div className={styles.connectLine}>
