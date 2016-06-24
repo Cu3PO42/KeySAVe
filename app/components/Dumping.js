@@ -13,6 +13,7 @@ import { send as ipcSend } from 'electron-ipc-tunnel/client';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import * as _ from 'lodash';
+import { Pkx } from 'keysavcore';
 import sanitize from 'sanitize-filename';
 import Promise from 'bluebird';
 import styles from './Dumping.module.scss';
@@ -22,7 +23,6 @@ export default class Dumping extends React.Component {
   static propTypes = {
     name: React.PropTypes.string.isRequired,
     openFileWatch: React.PropTypes.func.isRequired,
-    backup: React.PropTypes.func.isRequired,
     type: React.PropTypes.string.isRequired,
     goodKey: React.PropTypes.bool.isRequired,
     filter: React.PropTypes.object.isRequired,
@@ -104,14 +104,54 @@ export default class Dumping extends React.Component {
     }
   };
 
+  backupFile = async () => {
+    if (this.props.name.startsWith('NTR')) {
+      const buf = new Buffer(232 * 930);
+      let i = 0;
+      for (const pkm of this.props.pokemon) {
+        const pkxUi8 = new Uint8Array(pkm.data);
+        const ekxUi8 = Pkx.encrypt(pkxUi8);
+        const ekxBuf = new Buffer(ekxUi8.buffer, ekxUi8.byteOffset, ekxUi8.byteLength);
+        ekxBuf.copy(buf, i, 0, 232);
+        i += 232;
+      }
+      const dest = await ipcSend('file-dialog-save',
+                               { options: { filters: [{ name: this.props.name,
+                                            extensions: ['bin'] }] } });
+      if (dest === undefined) {
+        return;
+      }
+      try {
+        await fs.writeFileAsync(dest, buf);
+        this.props.openDialog(`${this.props.name} saved!`);
+      } catch (e) {
+        this.props.openDialog(`Couldn't save ${this.props.name}.`);
+      }
+      return;
+    }
+    try {
+      const name = this.props.type === 'SAV' ? 'Save' : 'Battle Video';
+      const dest = await ipcSend('file-dialog-save',
+                               { options: { filters: [{ name: this.props.name,
+                                            extensions: [path.extname(this.props.name).slice(1)] }] } });
+      if (dest === undefined) {
+        return;
+      }
+      await fs.copyAsync(this.props.name, dest);
+      this.props.openDialog(`${name} backupped!`);
+    } catch (e) {
+      this.props.openDialog(`Couldn't backup ${name}.`);
+    }
+  }
+
   render() {
-    const { name, openFileWatch, backup, type, goodKey, filter, setFilterBv, setFilterSav, pokemon, error, format, dismissError } = this.props;
+    const { name, openFileWatch, type, goodKey, filter, setFilterBv, setFilterSav, pokemon, error, format, dismissError } = this.props;
     return (
       <div>
         <DumpingFileOpener
           file={name}
           fileOpened={openFileWatch}
-          backup={backup}
+          backup={this.backupFile}
           type={type}
           goodKey={goodKey}
           lowerBox={filter.lower}

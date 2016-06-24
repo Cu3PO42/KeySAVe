@@ -96,31 +96,8 @@ const mapStateToProps = createSelector(
   (pokemon, name, goodKey, error, type, filter, format) => ({ pokemon, name, goodKey, error, type, filter, format })
 );
 
-function mapDispatchToProps() {
-  let res = undefined;
-  let fileType = 'SAV';
-
-  return (dispatch, { type }) => {
-    fileType = type;
-    // TODO move this to component
-    if (!res) {
-      res = bindActionCreators({ openFile, openFileWatch, dismissError, setFilterSav, setFilterBv, openDialog }, dispatch);
-      res.backup = async (file) => {
-        try {
-          const name = fileType === 'SAV' ? 'Save' : 'Battle Video';
-          var dest = await send('file-dialog-save',
-                                { options: { filters: [{ name,
-                                             extensions: [path.extname(file).slice(1)] }] } });
-          await fse.copyAsync(file, dest);
-          dispatch(openDialog(`${name} backupped!`));
-        } catch (e) {
-          dispatch(openDialog(`Couldn't backup ${name}.`));
-        }
-      };
-    }
-
-    return res;
-  };
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ openFile, openFileWatch, dismissError, setFilterSav, setFilterBv, openDialog }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dumping);
