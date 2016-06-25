@@ -74,7 +74,7 @@
     "selenium-webdriver": "^2.53.2",
     "sinon": "^1.17.4",
     "style-loader": "^0.13.1",
-    "webpack": "^2.1.0-beta.7",
+    "webpack": "2.1.0-beta.13",
     "webpack-dev-server": "^2.1.0-beta.0",
     "webpack-spritesmith": "^0.2.0"
   },
