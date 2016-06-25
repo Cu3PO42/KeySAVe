@@ -13,6 +13,7 @@ export default class NtrMenu extends React.Component {
     ip: React.PropTypes.string.isRequired,
     client: React.PropTypes.object,
     inProgress: React.PropTypes.string.isRequired,
+    error: React.PropTypes.bool.isRequired,
 
     openNtrMenu: React.PropTypes.func.isRequired,
     setNtrIp: React.PropTypes.func.isRequired,
@@ -41,14 +42,14 @@ export default class NtrMenu extends React.Component {
           <CupIcon />
         </IconButton>
         <Dialog open={this.props.menuOpen} onRequestClose={this.closeMenu}>
-          <h2>NTR Configuration</h2>
+          <h2>TEA Configuration</h2>
           <div className={styles.connectLine}>
             <div className={styles.textFieldWrapper}>
               <TextField
                 value={this.props.ip}
                 onChange={this.ipChanged}
                 floatingLabelText="3DS IP"
-                errorText={this.props.ip !== '' && !/^(?:[01]?\d{1,2}\.|2(?:[0-4]\d|5[0-5])\.){3}(?:[01]?\d{1,2}|2(?:[0-4]\d|5[0-5]))$/.test(this.props.ip) ? 'This is not a valid IPv4 address.' : undefined}
+                errorText={this.props.ip !== '' && !/^(?:[01]?\d{1,2}\.|2(?:[0-4]\d|5[0-5])\.){3}(?:[01]?\d{1,2}|2(?:[0-4]\d|5[0-5]))$/.test(this.props.ip) ? 'This is not a valid IPv4 address.' : (this.props.error ? 'There was an error connecting.' : undefined)}
                 disabled={this.props.client !== null}
               />
             </div>

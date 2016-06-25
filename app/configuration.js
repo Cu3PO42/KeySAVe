@@ -6,7 +6,7 @@ import { registerFormattingPlugin,
 } from './actions/format';
 import options from './components/formatters';
 import { setEggsHaveSvs } from './actions/filter';
-import { ntrAddKnownTradeOffset } from './actions/ntr';
+import { setNtrIp, ntrAddKnownTradeOffset } from './actions/ntr';
 import * as fs from 'fs-extra';
 import { version } from '../package.json';
 import logger from './logger';
@@ -40,10 +40,11 @@ function parseConfig(store, config) {
       }
     }
   }
+  if (config.teaIp !== undefined) store.dispatch(setNtrIp(config.teaIp));
 }
 
 function serializeConfig(store) {
-  const { format, ntr: { knownTradeOffsets }, filter: svs } = store.getState();
+  const { format, ntr: { knownTradeOffsets, ip: teaIp }, filter: { svs } } = store.getState();
   const formattingOptions = format.formattingOptions
     .valueSeq()
     .filter(e => !e.default)
@@ -57,7 +58,8 @@ function serializeConfig(store) {
     selectedFormatIndex: format.currentIndex,
     version,
     svs,
-    knownTradeOffsets
+    knownTradeOffsets,
+    teaIp
   };
 }
 

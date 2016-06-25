@@ -34,11 +34,21 @@ export default handleActions({
       ip: payload
     };
   },
-  [NTR_CONNECT](state, { payload }) {
-    return {
-      ...state,
-      client: payload
-    };
+  [NTR_CONNECT]: {
+    success(state, { payload }) {
+      return {
+        ...state,
+        client: payload,
+        error: false
+      };
+    },
+
+    error(state) {
+      return {
+        ...state,
+        error: true
+      };
+    }
   },
   [NTR_SET_IN_PROGRESS](state, { payload }) {
     if (state.intervalId !== null) {
