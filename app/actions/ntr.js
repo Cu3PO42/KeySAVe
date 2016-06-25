@@ -91,7 +91,7 @@ export const ntrDumpBoxes = createAction(OPEN_FILE, async (client) => {
     pokemon: reader.getAllPkx(),
     goodKey: true,
     type: 'SAV',
-    name: 'NTR Box Dump'
+    name: 'TEA Box Dump'
   };
 });
 
@@ -108,11 +108,11 @@ export const ntrDumpBattleBox = createAction(OPEN_FILE, async (client) => {
     pokemon: reader.getAllPkx(),
     goodKey: true,
     type: 'SAV',
-    name: 'NTR Battle Box Dump'
+    name: 'TEA Battle Box Dump'
   };
 });
 
-const ntrInitializeTradeDump = createAction(OPEN_FILE, () => ({ pokemon: [], goodKey: true, type: 'SAV', name: 'NTR Trade Dump' }));
+const ntrInitializeTradeDump = createAction(OPEN_FILE, () => ({ pokemon: [], goodKey: true, type: 'SAV', name: 'TEA Trade Dump' }));
 const ntrSetInProgress = createAction(NTR_SET_IN_PROGRESS, (inProgress, intervalId) => ({ inProgress, intervalId }));
 export const ntrAddKnownTradeOffset = createAction(NTR_ADD_KNOWN_TRADE_OFFSET, (offset, game) => ({ offset, game }));
 export const ntrDumpTrade = client => async (dispatch, getState) => {

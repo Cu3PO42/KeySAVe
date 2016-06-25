@@ -105,7 +105,7 @@ export default class Dumping extends React.Component {
   };
 
   backupFile = async () => {
-    if (this.props.name.startsWith('NTR')) {
+    if (this.props.name.startsWith('TEA')) {
       const buf = new Buffer(232 * 930);
       let i = 0;
       for (const pkm of this.props.pokemon) {
