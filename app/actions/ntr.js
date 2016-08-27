@@ -12,6 +12,7 @@ export const NTR_DISCONNECT = 'NTR_DISCONNECT';
 export const NTR_SET_IN_PROGRESS = 'NTR_SET_IN_PROGRESS';
 export const NTR_CANCEL_IN_PROGRESS = 'NTR_CANCEL_IN_PROGRESS';
 export const NTR_ADD_KNOWN_TRADE_OFFSET = 'NTR_ADD_KNOWN_TRADE_OFFSET';
+export const NTR_SET_TRADE_OFFSET_ERROR = 'NTR_SET_TRADE_OFFSET_ERROR';
 
 const gameNames = ['kujira-1' /* X */, 'kujira-2' /* Y */, 'sango-1' /* OR */, 'sango-2' /* AS */];
 const gameOffsets = {
@@ -114,6 +115,7 @@ export const ntrDumpBattleBox = createAction(OPEN_FILE, async (client) => {
 
 const ntrInitializeTradeDump = createAction(OPEN_FILE, () => ({ pokemon: [], goodKey: true, type: 'SAV', name: 'TEA Trade Dump' }));
 const ntrSetInProgress = createAction(NTR_SET_IN_PROGRESS, (inProgress, intervalId) => ({ inProgress, intervalId }));
+const ntrSetTradeOffsetError = createAction(NTR_SET_TRADE_OFFSET_ERROR);
 export const ntrAddKnownTradeOffset = createAction(NTR_ADD_KNOWN_TRADE_OFFSET, (offset, game) => ({ offset, game }));
 export const ntrDumpTrade = client => async (dispatch, getState) => {
   logger.info('Starting trade dump');
@@ -122,6 +124,9 @@ export const ntrDumpTrade = client => async (dispatch, getState) => {
   const { ntr: { knownTradeOffsets: { [game]: possibleOffsets } } } = getState();
   let tradeOffset = undefined;
   for (const offset of possibleOffsets) {
+    if (!Number.isInteger(offset)) {
+      continue;
+    }
     logger.debug(`Checking possible trade offset 0x${offset.toString(16)}`);
     const mem = await client.readMemory(offset - relativeDataOffset, 17, pid);
     if (checkRelativeData(mem)) {
@@ -133,13 +138,16 @@ export const ntrDumpTrade = client => async (dispatch, getState) => {
     const mem = await client.readMemory(0x8500000, 0x100000, pid);
     try {
       tradeOffset = findRelativeData(mem) + relativeDataOffset + 0x8500000;
+      dispatch(ntrAddKnownTradeOffset(tradeOffset, game));
     } catch (e) {
       logger.info('Could not locate trade offset!');
+      dispatch(ntrSetTradeOffsetError(true));
+      return;
     }
-    dispatch(ntrAddKnownTradeOffset(tradeOffset, game));
   }
 
   logger.info(`Found trade offset at 0x${tradeOffset.toString(16)}`);
+  dispatch(ntrSetTradeOffsetError(false));
 
   const knownPokemon = new Set();
   let count = 0;

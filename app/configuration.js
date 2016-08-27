@@ -36,7 +36,9 @@ function parseConfig(store, config) {
   if (config.knownTradeOffsets !== undefined) {
     for (const game of ['xy', 'oras']) {
       for (const offset of config.knownTradeOffsets[game]) {
-        store.dispatch(ntrAddKnownTradeOffset(offset, game));
+        if (Number.isInteger(offset)) {
+          store.dispatch(ntrAddKnownTradeOffset(offset, game));
+        }
       }
     }
   }

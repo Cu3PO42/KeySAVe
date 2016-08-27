@@ -13,7 +13,8 @@ export default class NtrMenu extends React.Component {
     ip: React.PropTypes.string.isRequired,
     client: React.PropTypes.object,
     inProgress: React.PropTypes.string.isRequired,
-    error: React.PropTypes.bool.isRequired,
+    connectionError: React.PropTypes.bool.isRequired,
+    tradeOffsetError: React.PropTypes.bool.isRequired,
 
     openNtrMenu: React.PropTypes.func.isRequired,
     setNtrIp: React.PropTypes.func.isRequired,
@@ -49,7 +50,7 @@ export default class NtrMenu extends React.Component {
                 value={this.props.ip}
                 onChange={this.ipChanged}
                 floatingLabelText="3DS IP"
-                errorText={this.props.ip !== '' && !/^(?:[01]?\d{1,2}\.|2(?:[0-4]\d|5[0-5])\.){3}(?:[01]?\d{1,2}|2(?:[0-4]\d|5[0-5]))$/.test(this.props.ip) ? 'This is not a valid IPv4 address.' : (this.props.error ? 'There was an error connecting.' : undefined)}
+                errorText={this.props.ip !== '' && !/^(?:[01]?\d{1,2}\.|2(?:[0-4]\d|5[0-5])\.){3}(?:[01]?\d{1,2}|2(?:[0-4]\d|5[0-5]))$/.test(this.props.ip) ? 'This is not a valid IPv4 address.' : (this.props.connectionError ? 'There was an error connecting.' : undefined)}
                 disabled={this.props.client !== null}
               />
             </div>
@@ -69,6 +70,7 @@ export default class NtrMenu extends React.Component {
             <div>
               <div>
                 <FlatButton label="Dump Trade" disabled={this.props.client === null || this.props.inProgress !== ''} onClick={this.dumpTrade} />
+                {this.props.tradeOffsetError ? <span styles={{ color: 'red' }}>Could not locate trade offset.</span> : null}
               </div>
               <div>
                 <FlatButton label="Cancel Trade Dump" disabled={this.props.client === null || this.props.inProgress !== 'trade'} onClick={this.cancelTradeDump} />

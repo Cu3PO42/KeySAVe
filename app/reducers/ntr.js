@@ -6,7 +6,8 @@ import {
   NTR_DISCONNECT,
   NTR_SET_IN_PROGRESS,
   NTR_CANCEL_IN_PROGRESS,
-  NTR_ADD_KNOWN_TRADE_OFFSET
+  NTR_ADD_KNOWN_TRADE_OFFSET,
+  NTR_SET_TRADE_OFFSET_ERROR
 } from '../actions/ntr';
 
 const initialState = {
@@ -15,6 +16,8 @@ const initialState = {
   client: null,
   intervalId: null,
   inProgress: '',
+  connectionError: false,
+  tradeOffsetError: false,
   knownTradeOffsets: {
     xy: [],
     oras: []
@@ -39,14 +42,14 @@ export default handleActions({
       return {
         ...state,
         client: payload,
-        error: false
+        connectionError: false
       };
     },
 
     error(state) {
       return {
         ...state,
-        error: true
+        connectionError: true
       };
     }
   },
@@ -80,7 +83,9 @@ export default handleActions({
       ...state,
       client: null,
       intervalId: null,
-      inProgress: ''
+      inProgress: '',
+      connectionError: false,
+      tradeOffsetError: false
     };
   },
   [NTR_ADD_KNOWN_TRADE_OFFSET](state, { payload: { game, offset } }) {
@@ -90,6 +95,12 @@ export default handleActions({
         ...state.knownTradeOffsets,
         [game]: [...state.knownTradeOffsets[game], offset]
       }
+    };
+  },
+  [NTR_SET_TRADE_OFFSET_ERROR](state, { payload }) {
+    return {
+      ...state,
+      tradeOffsetError: payload
     };
   }
 }, initialState);
