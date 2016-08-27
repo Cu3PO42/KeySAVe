@@ -213,7 +213,9 @@ export default class Breaking extends React.Component {
           actions={[<FlatButton onClick={this.closeDialog} label="OK" primary />]}
         >
           {this.props.breakState === 'ERROR' ?
-            errorMessages[this.props.reply.name](this.props.reply)
+            (errorMessages.hasOwnProperty(this.props.reply.name) ?
+             errorMessages[this.props.reply.name](this.props.reply) :
+             `An unknown error occured: ${this.props.reply}`)
           : successMessages[this.props.reply]
           }
         </Dialog>
