@@ -46,7 +46,7 @@ function pad4(n) {
 }
 
 function getSprite(pkm) {
-  const sprite = ('' + pkm.species) + pkm.form + (pkm.tsv === pkm.esv ? '-s' : '');
+  const sprite = ('' + pkm.species) + '-' + pkm.form + (pkm.tsv === pkm.esv ? '-s' : '');
   if (backgroundColors[sprite]) {
     return sprite;
   }
