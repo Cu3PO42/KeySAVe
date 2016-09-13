@@ -44,7 +44,7 @@ const FormattingOptions = ({ language, changeFormatLanguage, formattingOptions, 
       >
         {formattingOptions
           .entrySeq()
-          .groupBy(([, e]) => e.plugin)
+          .groupBy(([_, e]) => e.plugin)
           .map((options, { name }) => new Seq([
             <MenuItem primaryText={name} key={name} disabled className={styles.formatPluginName} />,
             options.map(([i, option]) =>

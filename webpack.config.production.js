@@ -16,34 +16,34 @@ config.output.publicPath = '../dist/';
 
 config.module.loaders.push({
   test: /^((?!\.module).)*\.css$/,
-  loader: ExtractTextPlugin.extract(
-    'style-loader',
-    'css-loader'
-  )
+  loader: ExtractTextPlugin.extract({
+    fallbackLoader: 'style-loader',
+    loader: 'css-loader'
+  })
 }, {
   test: /\.module\.css$/,
-  loader: ExtractTextPlugin.extract(
-    'style-loader',
-    'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
-  )
+  loader: ExtractTextPlugin.extract({
+    fallbackLoader: 'style-loader',
+    loader: 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
+  })
 }, {
   test: /^((?!\.module).)*\.scss$/,
-  loader: ExtractTextPlugin.extract(
-    'style-loader',
-    [
+  loader: ExtractTextPlugin.extract({
+    fallbackLoader: 'style-loader',
+    loader: [
       'css-loader',
       'sass-loader'
     ]
-  )
+  })
 }, {
   test: /\.module\.scss$/,
-  loader: ExtractTextPlugin.extract(
-    'style-loader',
-    [
+  loader: ExtractTextPlugin.extract({
+    fallbackLoader: 'style-loader',
+    loader: [
       'css-loader?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
       'sass-loader?sourceMap'
     ]
-  )
+  })
 });
 
 config.plugins.push(
@@ -60,7 +60,7 @@ config.plugins.push(
       warnings: false
     }
   }),*/
-  new ExtractTextPlugin('style.css', { allChunks: true })
+  new ExtractTextPlugin({ filename: 'style.css', allChunks: true })
 );
 
 config.target = 'electron-renderer';
