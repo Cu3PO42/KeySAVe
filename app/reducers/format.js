@@ -2,7 +2,6 @@ import { handleActions } from '../utils/handleAction';
 import {
   FORMAT_LANGUAGE_CHANGED,
   ADD_FORMATTING_OPTION,
-  CHANGE_CURRENT_FORMATTING_OPTION,
   DELETE_CURRENT_FORMATTING_OPTION,
   CLONE_CURRENT_FORMATTING_OPTION,
   REGISTER_FORMATTING_PLUGIN,
@@ -56,25 +55,6 @@ export default handleActions({
       language,
       plugins,
       currentIndex
-    };
-  },
-
-  [CHANGE_CURRENT_FORMATTING_OPTION](options, action) {
-    const { formattingOptions, language, current, plugins, currentIndex } = options;
-    if (current.default || currentIndex === -1) {
-      return options;
-    }
-    const newOption = {
-      ...current,
-      format: action.payload
-    };
-    const ret = formattingOptions.set(currentIndex, newOption);
-    return {
-      formattingOptions: ret,
-      current: newOption,
-      currentIndex,
-      language,
-      plugins
     };
   },
 
