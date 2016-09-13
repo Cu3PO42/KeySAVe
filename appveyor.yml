@@ -11,6 +11,8 @@ install:
     # install modules
     - node --version
     - npm --version
+    - npm install -g npm@latest
+    - npm --version
     - npm install
 
 build_script:
