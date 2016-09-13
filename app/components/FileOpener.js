@@ -5,8 +5,6 @@ import TextField from 'material-ui/TextField';
 import IpcClient from 'electron-ipc-tunnel/client';
 import styles from './FileOpener.module.scss';
 
-const options = {};
-
 const inputStyle = {
   color: 'black'
 };
@@ -16,7 +14,8 @@ export default class FileOpener extends Component {
     file: PropTypes.string.isRequired,
     fileOpened: PropTypes.func.isRequired,
     buttonText: PropTypes.string,
-    inputText: PropTypes.string
+    inputText: PropTypes.string,
+    options: PropTypes.object
   };
 
   ipcClient = new IpcClient();
@@ -24,11 +23,11 @@ export default class FileOpener extends Component {
   handleClick = () => {
     setTimeout(async () => {
       try {
-        const reply = await this.ipcClient.send('file-dialog-open', { options });
+        const reply = await this.ipcClient.send('file-dialog-open', { options: this.props.options });
         if (reply !== undefined && reply[0] !== undefined) {
           this.props.fileOpened(reply[0]);
         }
-      } catch (e) {/* ignore */}
+      } catch (e) { /* ignore */ }
     }, 500);
   };
 

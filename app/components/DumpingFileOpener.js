@@ -13,6 +13,12 @@ import styles from './DumpingFileOpener.module.scss';
 import { range } from 'lodash';
 
 const menuItems1To31 = range(1, 32).map(i => <MenuItem key={i} value={i} primaryText={`${i}`} />);
+const noExtExt = process.platform === 'darwin' ? '' : '*';
+const fileOptions = {
+  filters: [{ name: 'SAV (1MB)', extensions: ['bin', 'sav'] },
+            { name: 'Main File', extensions: [noExtExt] },
+            { name: 'Battle Video', extensions: [noExtExt] }]
+};
 
 @pureRender
 class DumpingFileOpener extends Component {
@@ -44,7 +50,7 @@ class DumpingFileOpener extends Component {
   render() {
     return (
       <Paper className={styles.paper}>
-        <FileOpener fileOpened={this.props.fileOpened} file={this.props.file} />
+        <FileOpener fileOpened={this.props.fileOpened} file={this.props.file} options={fileOptions} />
         <div className={styles.flexFromRight}>
           <IconButton onClick={() => this.props.backup(this.props.file)} disabled={this.props.file === ''}>
             <FileCloudDownload />

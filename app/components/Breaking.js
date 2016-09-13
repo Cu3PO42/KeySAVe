@@ -22,6 +22,11 @@ function stringOrObjOrUndefined(props, propName, componentName) {
   return Error(`${propName} in ${componentName || 'ANONYMOUS'} should be either a string or an Error object.`);
 }
 
+const fileOptions = {
+  filters: [{ name: 'SAV (1MB)', extensions: ['bin', 'sav'] },
+            { name: 'Battle Video', extensions: [process.platform === 'darwin' ? '' : '*'] }]
+};
+
 const nameMap = {
   'sav': 'Save',
   'bv': 'Battle Video',
@@ -223,11 +228,11 @@ export default class Breaking extends React.Component {
           <div className={`${styles.flexRow} ${styles.flexStretch}`}>
             <div className={styles.flexFill}>
               <div className={styles.flexRow}>
-                <div className={styles.flexFill}><FileOpener file={this.props.file1} fileOpened={this.props.openFile1} inputText="File 1" /></div>
+                <div className={styles.flexFill}><FileOpener file={this.props.file1} fileOpened={this.props.openFile1} inputText="File 1" options={fileOptions} /></div>
                 <div className={styles.fileType}><span className={styles.fileTypeType}>Type:</span> {nameMap[this.props.file1Type]}</div>
               </div>
               <div className={styles.flexRow}>
-                <div className={styles.flexFill}><FileOpener file={this.props.file2} fileOpened={this.props.openFile2} inputText="File 2" /></div>
+                <div className={styles.flexFill}><FileOpener file={this.props.file2} fileOpened={this.props.openFile2} inputText="File 2" options={fileOptions} /></div>
                 <div className={styles.fileType}><span className={styles.fileTypeType}>Type:</span> {nameMap[this.props.file2Type]}</div>
               </div>
             </div>
