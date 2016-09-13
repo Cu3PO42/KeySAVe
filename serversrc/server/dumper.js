@@ -10,11 +10,19 @@ function deserializeError(e) {
   return res;
 }
 
-var worker = fork(__dirname + '/../workers/bootstrap.js', [__dirname + '/../workers/dumper', app.getPath('userData') + '/keys']);
+const worker = fork(__dirname + '/../workers/bootstrap.js', [__dirname + '/../workers/dumper', app.getPath('userData') + '/keys']);
+let workerIsAlive = true;
+worker.on('exit', () => {
+  workerIsAlive = false;
+  app.quit();
+});
 
 export default () => {
-  app.on('will-quit', () => {
-    worker.send({ cmd: 'close' });
+  app.on('will-quit', (e) => {
+    if (workerIsAlive) {
+      worker.send({ cmd: 'close' });
+      e.preventDefault();
+    }
   });
 };
 

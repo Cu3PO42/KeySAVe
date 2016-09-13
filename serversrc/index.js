@@ -26,7 +26,7 @@ app.on('window-all-closed', () => {
     logger.info(`Found an old key folder at ${oldPath}, merging now...`);
     await mergeKeyFolder(oldPath);
     await fs.removeAsync(oldPath);
-    logger.info('Merged and deleted old key folder!')
+    logger.info('Merged and deleted old key folder!');
   }
 })();
 
@@ -133,7 +133,7 @@ app.on('ready', () => {
         label: 'Reload',
         accelerator: 'Command+R',
         click() {
-          mainWindow.restart();
+          mainWindow.reload();
         }
       }, {
         label: 'Toggle Full Screen',

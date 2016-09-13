@@ -30,6 +30,7 @@ logger.verbose(`Loading keys from ${dataDirectory}`);
 async function close() {
   logger.info('Shutting down dumper process');
   await store.close();
+  logger.info('Saved keys');
   process.exit();
 }
 

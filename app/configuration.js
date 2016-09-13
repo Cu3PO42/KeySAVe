@@ -84,10 +84,12 @@ export default async function loadConfig(store) {
       logger.info('No config file found');
     }
   }
-  window.addEventListener('beforeunload', async () => {
+
+  window.addEventListener('beforeunload', async (e) => {
     logger.info('Saving config');
     const config = serializeConfig(store);
-    await fs.writeFileAsync(getPath('userData') + '/config.json', JSON.stringify(config, null, '    '), 'utf-8');
+    fs.writeFileSync(getPath('userData') + '/config.json', JSON.stringify(config, null, '    '), 'utf-8');
+    logger.info('Saved config');
   }, false);
 }
 
