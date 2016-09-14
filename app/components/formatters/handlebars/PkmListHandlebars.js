@@ -8,15 +8,19 @@ import pureRender from 'pure-render-decorator';
 import { createSelector } from 'reselect';
 import { Localization, Calculator as StatCalculator } from 'keysavcore';
 import { knownHelpersBox, knownHelpersPokemon } from './knownHelpers';
+import makeCached from '../../../utils/makeCachedFunction';
 import styles from './PkmListHandlebars.module.scss';
 
 dashbars.help(handlebars);
 handlebars.registerHelper(helperMoment());
 
+const emptyString = '';
+
 @pureRender
 class PkmListHandlebars extends Component {
   static propTypes = {
     pokemon: React.PropTypes.object,
+    filterFunction: React.PropTypes.func.isRequired,
     language: React.PropTypes.string,
     format: React.PropTypes.object
   };
@@ -186,14 +190,28 @@ class PkmListHandlebars extends Component {
   }
 
   getFormatTemplate = createSelector(
-    () => this.props.format.format || '',
-    t => handlebars.compile(t, { knownHelpers: knownHelpersPokemon, knownHelpersOnly: true })
+    () => this.props.format.format || emptyString,
+    t => {
+      const templ = handlebars.compile(t, { knownHelpers: knownHelpersPokemon, knownHelpersOnly: true });
+      return makeCached((pkm) => templ(pkm, { helpers: this.handlebarsHelpers }));
+    }
   );
 
   getBoxHeaderTemplate = createSelector(
-    () => this.props.format.boxHeader || '',
+    () => this.props.format.boxHeader || emptyString,
     t => handlebars.compile(t, { knownHelpers: knownHelpersBox, knownHelpersOnly: true })
   );
+
+  getPokemonGroupedByBox = createSelector(
+    () => this.props.pokemon,
+    () => this.props.pokemon.groupBy(e => e.box)
+  );
+
+  getShowBoxMap = createSelector(
+    this.getPokemonGroupedByBox,
+    () => this.props.filterFunction,
+    (pokemon, filter) => pokemon.map((pkm) => pkm.some(filter)).valueSeq().cacheResult()
+  )
 
   renderBox(pkm) {
     const template = this.getFormatTemplate();
@@ -201,7 +219,7 @@ class PkmListHandlebars extends Component {
       <Paper className={styles.paper}>
         <div className={styles.box}>
           <div dangerouslySetInnerHTML={{ __html: this.props.format.header }} />
-            {pkm.map(e => <div key={e.box * 30 + e.slot} dangerouslySetInnerHTML={{ __html: template(e, { helpers: this.handlebarsHelpers }) }}></div>)}
+          {pkm.map(e => <div key={e.box * 30 + e.slot} dangerouslySetInnerHTML={{ __html: template(e) }} style={{ display: this.props.filterFunction(e) ? 'block' : 'none' }}></div>).cacheResult()}
         </div>
       </Paper>
     );
@@ -214,20 +232,21 @@ class PkmListHandlebars extends Component {
         return <div></div>;
       }
 
-      this.getFormatTemplate()(first, { helpers: this.handlebarsHelpers }); // Do this to catch errors early on
+      this.getFormatTemplate()(first); // Do this to catch errors early on
 
       if (this.props.format.splitBoxes) {
-        const grouped = this.props.pokemon.groupBy(e => e.box);
+        const grouped = this.getPokemonGroupedByBox();
         const boxHeaderTemplate = this.getBoxHeaderTemplate();
+        const showBoxMap = this.getShowBoxMap();
 
         return (
           <div>
             {grouped.map((pkm, box) => (
-              <div key={box}>
+              <div key={box} style={{ display: showBoxMap.get(box) ? 'block' : 'none' }}>
                 <div dangerouslySetInnerHTML={{ __html: boxHeaderTemplate({ box: box + 1 }) }}></div>
                 {this.renderBox(pkm, box)}
               </div>
-            )).valueSeq()}
+            )).valueSeq().cacheResult()}
           </div>
         );
       }

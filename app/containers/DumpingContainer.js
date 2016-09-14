@@ -8,6 +8,7 @@ import { openDialog } from '../actions/dialog';
 import { send } from 'electron-ipc-tunnel/client';
 import * as fse from 'fs-extra';
 import * as path from 'path';
+import makeCached from '../utils/makeCachedFunction';
 import Dumping from '../components/Dumping';
 
 const getPokemonSeq = createSelector(
@@ -32,7 +33,7 @@ const getFilter = createSelector(
   state => state.file.type,
   getSvList,
   (filter, type, svList) => {
-    return pkm => {
+    return makeCached(pkm => {
       if (type === 'SAV' &&
         (filter.lower !== undefined && filter.lower > pkm.box + 1 ||
          filter.upper !== undefined && filter.upper < pkm.box + 1)) return false;
@@ -75,25 +76,20 @@ const getFilter = createSelector(
         }
       }
       return true;
-    };
+    });
   }
 );
 
-const getPokemon = createSelector(
+const mapStateToProps = createSelector(
   getPokemonSeq,
   getFilter,
-  (pokemon, filter) => pokemon.filter(filter)
-);
-
-const mapStateToProps = createSelector(
-  getPokemon,
   state => state.file.name,
   state => state.file.goodKey,
   state => state.file.error,
   state => state.file.type,
   state => state.filter,
   state => state.format,
-  (pokemon, name, goodKey, error, type, filter, format) => ({ pokemon, name, goodKey, error, type, filter, format })
+  (pokemon, filterFunction, name, goodKey, error, type, filter, format) => ({ pokemon, filterFunction, name, goodKey, error, type, filter, format })
 );
 
 function mapDispatchToProps(dispatch) {

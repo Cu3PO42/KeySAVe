@@ -1,9 +1,9 @@
 import React from 'react';
 import Paper from 'material-ui/Paper';
-import { createSelector } from 'reselect';
 import { Localization } from 'keysavcore';
 import backgroundColors from './background-colors.json';
 import sprites from '../../../resources/sprites.json';
+import pureRender from 'pure-render-decorator';
 import spritesheetPath from 'file!../../../resources/sprites.png';
 import styles from './PkmListPretty.module.scss';
 
@@ -71,9 +71,103 @@ function genderString(gender) {
   }
 }
 
+@pureRender
+class PkmData extends React.Component {
+  static propTypes= {
+    pkm: React.PropTypes.object,
+    language: React.PropTypes.string
+  };
+
+  render() {
+    const local = Localization[this.props.language];
+    const { pkm } = this.props;
+    return (
+      <div className={styles.infoSide}>
+        <div className={styles.nameLine}>
+          <div>
+            <div className={styles.box}><span className={styles.boxName}>Box </span>{pad2(pkm.box + 1)} - {Math.floor(pkm.slot / 6) + 1},{pkm.slot % 6 + 1}</div>
+            <div>
+              <span className={styles.dexNo}><span className={styles.dexHash}>#</span>{pad3(pkm.species)}</span>&nbsp;
+              <span className={genderStyles[pkm.gender]}>{getSpecies(pkm, local)}</span>
+            </div>
+          </div>
+          <div className={styles.nameColumn}>
+            <div>
+              <div>OT</div><div className={genderStyles[pkm.otGender]}>{pkm.ot}</div>
+            </div>
+            <div>
+              <div>Nickname</div><div>{pkm.nickname}</div>
+            </div>
+          </div>
+          <div className={styles.nameColumn}>
+            <div>
+              <div>Nature</div><div>{local.natures[pkm.nature]}</div>
+            </div>
+            <div>
+              <div>Ability</div><div>{local.abilities[pkm.ability]}</div>
+            </div>
+          </div>
+
+          <span className={styles.langTag}>{local.languageTags[pkm.otLang]}</span>
+        </div>
+        <div className={styles.ivLine}>
+          {ivNames.map((iv, i) =>
+            <div className={`${styles.ivBox} ${getIvClass(pkm, iv)}`} key={i}>
+              <span className={styles.ivName}>{iv}</span>
+              <span className={styles.ivValue}>{pkm['iv' + iv]}</span>
+            </div>
+          )}
+          <div className={styles.esvBox}>
+            <span className={styles.esvName}>ESV</span>
+            <span className={styles.esvValue}>{pad4(pkm.esv)}</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+@pureRender
+class Pkm extends React.Component {
+  static propTypes = {
+    pkm: React.PropTypes.object,
+    filterFunction: React.PropTypes.func.isRequired,
+    language: React.PropTypes.string,
+    format: React.PropTypes.object
+  };
+
+  render() {
+    const { pkm } = this.props;
+    const sprite = getSprite(pkm);
+    const spriteClass = sprites.sprites[sprite];
+    return (
+      <Paper
+        className={`${styles.paper} ${pkm.isGhost && this.props.format.ghosts === 'mark' ? styles.ghost : ''}`}
+        style={{ display: this.props.filterFunction(pkm) && (this.props.format.ghosts !== 'hide' || !pkm.isGhost) ? undefined : 'none' }}
+      >
+        <div
+          className={styles.sprite}
+          style={{ backgroundColor: backgroundColors[sprite] }}
+        ><div
+          style={{
+            width: '80px',
+            height: '80px',
+            backgroundPosition: `${spriteClass.x * 0.8}px ${spriteClass.y * 0.8}px`,
+            backgroundImage: spritesheetUrl,
+            backgroundSize: spritesheetSize
+          }}
+        /></div>
+        <PkmData pkm={pkm} language={this.props.language} />
+      </Paper>
+    );
+  }
+}
+
+@pureRender
 export default class PkmListPretty extends React.Component {
   static propTypes = {
     pokemon: React.PropTypes.object,
+    filterFunction: React.PropTypes.func.isRequired,
     language: React.PropTypes.string,
     format: React.PropTypes.object
   };
@@ -91,76 +185,6 @@ export default class PkmListPretty extends React.Component {
     ).join('\n');
   }
 
-  getPokemon = createSelector(
-    () => this.props.format.ghosts === 'hide',
-    () => this.props.pokemon,
-    (hideGhosts, pokemon) => {
-      const pkm = hideGhosts ? pokemon.filter(e => !e.isGhost) : pokemon;
-      return pkm.map(this.renderPokemon);
-    }
-  )
-
-  renderPokemon = (pkm) => {
-    const local = Localization[this.props.language];
-    const sprite = getSprite(pkm);
-    const spriteClass = sprites.sprites[sprite];
-    return (
-      <Paper key={pkm.box * 30 + pkm.slot} className={`${styles.paper} ${pkm.isGhost && this.props.format.ghosts === 'mark' ? styles.ghost : ''}`}>
-        <div className={styles.sprite}
-          style={{ backgroundColor: backgroundColors[sprite] }}
-        ><div style={{
-          width: '80px',
-          height: '80px',
-          backgroundPosition: `${spriteClass.x * 0.8}px ${spriteClass.y * 0.8}px`,
-          backgroundImage: spritesheetUrl,
-          backgroundSize: spritesheetSize
-        }}
-        /></div>
-        <div className={styles.infoSide}>
-          <div className={styles.nameLine}>
-            <div>
-              <div className={styles.box}><span className={styles.boxName}>Box </span>{pad2(pkm.box + 1)} - {Math.floor(pkm.slot / 6) + 1},{pkm.slot % 6 + 1}</div>
-              <div>
-                <span className={styles.dexNo}><span className={styles.dexHash}>#</span>{pad3(pkm.species)}</span>&nbsp;
-                <span className={genderStyles[pkm.gender]}>{getSpecies(pkm, local)}</span>
-              </div>
-            </div>
-            <div className={styles.nameColumn}>
-              <div>
-                <div>OT</div><div className={genderStyles[pkm.otGender]}>{pkm.ot}</div>
-              </div>
-              <div>
-                <div>Nickname</div><div>{pkm.nickname}</div>
-              </div>
-            </div>
-            <div className={styles.nameColumn}>
-              <div>
-                <div>Nature</div><div>{local.natures[pkm.nature]}</div>
-              </div>
-              <div>
-                <div>Ability</div><div>{local.abilities[pkm.ability]}</div>
-              </div>
-            </div>
-
-            <span className={styles.langTag}>{local.languageTags[pkm.otLang]}</span>
-          </div>
-          <div className={styles.ivLine}>
-            {ivNames.map((iv, i) =>
-              <div className={`${styles.ivBox} ${getIvClass(pkm, iv)}`} key={i}>
-                <span className={styles.ivName}>{iv}</span>
-                <span className={styles.ivValue}>{pkm['iv' + iv]}</span>
-              </div>
-            )}
-            <div className={styles.esvBox}>
-              <span className={styles.esvName}>ESV</span>
-              <span className={styles.esvValue}>{pad4(pkm.esv)}</span>
-            </div>
-          </div>
-        </div>
-      </Paper>
-    );
-  }
-
   /*
   Include:
   - Ball?
@@ -169,7 +193,15 @@ export default class PkmListPretty extends React.Component {
   render() {
     return (
       <div>
-        {this.getPokemon()}
+        {this.props.pokemon.map(pkm =>
+          <Pkm
+            key={pkm.box * 30 + pkm.slot}
+            pkm={pkm}
+            language={this.props.language}
+            filterFunction={this.props.filterFunction}
+            format={this.props.format}
+          />
+        ).cacheResult()}
       </div>
     );
   }

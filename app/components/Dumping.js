@@ -26,6 +26,7 @@ export default class Dumping extends React.Component {
     type: React.PropTypes.string.isRequired,
     goodKey: React.PropTypes.bool.isRequired,
     filter: React.PropTypes.object.isRequired,
+    filterFunction: React.PropTypes.func.isRequired,
     setFilterBv: React.PropTypes.func.isRequired,
     setFilterSav: React.PropTypes.func.isRequired,
     pokemon: React.PropTypes.object.isRequired,
@@ -145,7 +146,7 @@ export default class Dumping extends React.Component {
   }
 
   render() {
-    const { name, openFileWatch, type, goodKey, filter, setFilterBv, setFilterSav, pokemon, error, format, dismissError } = this.props;
+    const { name, openFileWatch, type, goodKey, filter, setFilterBv, setFilterSav, pokemon, error, format, dismissError, filterFunction } = this.props;
     return (
       <div>
         <DumpingFileOpener
@@ -172,6 +173,7 @@ export default class Dumping extends React.Component {
             language={format.language}
             format={format.current.format}
             pokemon={pokemon}
+            filterFunction={filterFunction}
             ref="dumper"
           />
         </div>

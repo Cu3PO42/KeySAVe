@@ -1,5 +1,7 @@
 import React from 'react';
 import { Localization } from 'keysavcore';
+import { createSelector } from 'reselect';
+import pureRender from 'pure-render-decorator';
 import styles from './PkmListReddit.module.scss';
 
 function genderString(gender) {
@@ -22,9 +24,53 @@ function getSpecies(id, form, local) {
   return local.species[id];
 }
 
+@pureRender
+class Pkm extends React.Component {
+  static propTypes= {
+    pkm: React.PropTypes.object,
+    language: React.PropTypes.string,
+    format: React.PropTypes.object,
+    hidden: React.PropTypes.bool,
+    isEven: React.PropTypes.bool
+  };
+
+  render() {
+    const local = Localization[this.props.language];
+    const { pkm } = this.props;
+
+    return (
+      <tr
+        className={`${this.props.format.ghosts === 'mark' && pkm.isGhost ? styles.ghost : ''} ${this.props.isEven ? styles.even : styles.odd}`}
+        style={{ display: this.props.hidden ? 'none' : undefined }}
+      >
+        <td>{this.props.format.ghosts === 'mark' && pkm.isGhost ? '~' : ''}B{('00' + (pkm.box + 1)).slice(-2)}</td>
+        <td>{Math.floor(pkm.slot / 6) + 1},{pkm.slot % 6 + 1}</td>
+        <td>{getSpecies(pkm.species, pkm.form, local)} ({genderString(pkm.gender)})</td>
+        <td>{local.natures[pkm.nature]}</td>
+        <td>{local.abilities[pkm.ability]} </td>
+        {this.props.format.boldPerfectIVs ?
+          <td>
+             {pkm.ivHp === 31 ? <span className={styles.boldIV}>31</span> : pkm.ivHp}
+            .{pkm.ivAtk === 31 ? <span className={styles.boldIV}>31</span> : pkm.ivAtk}
+            .{pkm.ivDef === 31 ? <span className={styles.boldIV}>31</span> : pkm.ivDef}
+            .{pkm.ivSpAtk === 31 ? <span className={styles.boldIV}>31</span> : pkm.ivSpAtk}
+            .{pkm.ivSpDef === 31 ? <span className={styles.boldIV}>31</span> : pkm.ivSpDef}
+            .{pkm.ivSpe === 31 ? <span className={styles.boldIV}>31</span> : pkm.ivSpe}
+          </td> :
+          <td>{pkm.ivHp}.{pkm.ivAtk}.{pkm.ivDef}.{pkm.ivSpAtk}.{pkm.ivSpDef}.{pkm.ivSpe}</td>
+        }
+        <td>{local.types[pkm.hpType]}</td>
+        <td>{('0000' + pkm.esv).slice(-4)}</td>
+      </tr>
+    );
+  }
+}
+
+@pureRender
 export default class PkmListReddit extends React.Component {
   static propTypes = {
     pokemon: React.PropTypes.object,
+    filterFunction: React.PropTypes.func.isRequired,
     language: React.PropTypes.string,
     format: React.PropTypes.object
   };
@@ -94,52 +140,58 @@ export default class PkmListReddit extends React.Component {
     }
   }
 
+  getPokemonGroupedByBox = createSelector(
+    () => this.props.pokemon,
+    () => this.props.pokemon.groupBy(e => e.box)
+  );
+
+  getShowBoxMap = createSelector(
+    this.getPokemonGroupedByBox,
+    () => this.props.filterFunction,
+    (pokemon, filter) => pokemon.map((pkm) => pkm.some(filter)).valueSeq().cacheResult()
+  )
+
   renderBox(pkm, box) {
-    const local = Localization[this.props.language];
+    const hideGhosts = this.props.format.ghosts === 'hide';
+    let isEven = false;
     return (
       <table className={`${styles.table} ${this.getBoxClass(box)}`}><tbody>
         <tr><th>Box</th><th>Slot</th><th>Species (Gender)</th><th>Nature</th><th>Ability</th><th>HP.ATK.DEF.SPATK.SPDEF.SPE</th><th>Hidden Power</th><th>ESV</th></tr>
-        {pkm.map(e => this.props.format.ghosts === 'hide' && e.isGhost ?
-          null :
-          <tr key={e.box * 30 + e.slot} className={this.props.format.ghosts === 'mark' && e.isGhost ? styles.ghost : ''}>
-            <td>{this.props.format.ghosts === 'mark' && e.isGhost ? '~' : ''}B{('00' + (e.box + 1)).slice(-2)}</td>
-            <td>{Math.floor(e.slot / 6) + 1},{e.slot % 6 + 1}</td>
-            <td>{getSpecies(e.species, e.form, local)} ({genderString(e.gender)})</td>
-            <td>{local.natures[e.nature]}</td>
-            <td>{local.abilities[e.ability]} </td>
-            {this.props.format.boldPerfectIVs ?
-              <td>
-                 {e.ivHp === 31 ? <span className={styles.boldIV}>31</span> : e.ivHp}
-                .{e.ivAtk === 31 ? <span className={styles.boldIV}>31</span> : e.ivAtk}
-                .{e.ivDef === 31 ? <span className={styles.boldIV}>31</span> : e.ivDef}
-                .{e.ivSpAtk === 31 ? <span className={styles.boldIV}>31</span> : e.ivSpAtk}
-                .{e.ivSpDef === 31 ? <span className={styles.boldIV}>31</span> : e.ivSpDef}
-                .{e.ivSpe === 31 ? <span className={styles.boldIV}>31</span> : e.ivSpe}
-              </td> :
-              <td>{e.ivHp}.{e.ivAtk}.{e.ivDef}.{e.ivSpAtk}.{e.ivSpDef}.{e.ivSpe}</td>
-            }
-            <td>{local.types[e.hpType]}</td>
-            <td>{('0000' + e.esv).slice(-4)}</td>
-          </tr>
-        )}
+        {pkm.map(e => {
+          const hidden = !this.props.filterFunction(e) || hideGhosts && e.isGhost;
+          isEven = isEven === hidden;
+          return (
+            <Pkm
+              key={e.box * 30 + e.slot}
+              pkm={e}
+              format={this.props.format}
+              language={this.props.language}
+              filterFunction={this.props.filterFunction}
+              hidden={hidden}
+              isEven={isEven}
+            />
+          );
+        }).cacheResult()}
       </tbody></table>
     );
   }
 
   render() {
+    // TODO fix highlighting of alternate rows
     if (!this.props.pokemon.first()) {
       return <div></div>;
     }
     if (this.props.format.splitBoxes) {
-      const grouped = this.props.pokemon.groupBy(e => e.box);
+      const grouped = this.getPokemonGroupedByBox();
+      const showBoxMap = this.getShowBoxMap();
       return (
         <div>
           {grouped.map((pkm, box) => (
-            <div key={box}>
+            <div key={box} style={{ display: showBoxMap.get(box) ? 'block' : 'none' }}>
               <h2 className={styles.boxNumber}><span className={styles.hide}>{this.getBoxHeader(box)} </span>Box {box + 1}</h2>
               {this.renderBox(pkm, box)}
             </div>
-          )).valueSeq()}
+          )).valueSeq().cacheResult()}
         </div>
       );
     }

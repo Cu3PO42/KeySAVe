@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import Paper from 'material-ui/Paper';
 import { Localization, Calculator as StatCalculator } from 'keysavcore';
 import { createSelector } from 'reselect';
+import makeCached from '../../../utils/makeCachedFunction';
 import styles from './PkmListLegacy.module.scss';
 
 const replaceDatabaseFactory = format => ({
@@ -109,9 +110,10 @@ function compile(format) {
   /* eslint-disable no-eval */
   const fn =
     '(function(props) { var pkm = props.pkm, local = props.local; return ' +
-    'react.createElement("div", null, ' + (format.ghost === 'mark' ? 'pkm.isGhost ? "~" : "", ' : '') + '"' +
+    'react.createElement("div", { style: { display: props.hidden ? "none" : "block" } }, ' + (format.ghost === 'mark' ? 'pkm.isGhost ? "~" : "", ' : '') + '"' +
     format.format.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/{(\d+)}/g, (string, count) => `", ${replaceDatabase[count]}, "`) +
     '"); })';
+  // TODO make this a pure component
   return eval(fn);
   /* eslint-enable no-eval */
 }
@@ -119,6 +121,7 @@ function compile(format) {
 export default class PkmListLegacy extends React.Component {
   static propTypes = {
     pokemon: React.PropTypes.object,
+    filterFunction: React.PropTypes.func.isRequired,
     language: React.PropTypes.string,
     format: React.PropTypes.object
   };
@@ -133,34 +136,49 @@ export default class PkmListLegacy extends React.Component {
     compile
   )
 
+  getPokemonGroupedByBox = createSelector(
+    () => this.props.pokemon,
+    (pokemon) => pokemon.groupBy(e => e.box)
+  );
+
+  getShowBoxMap = createSelector(
+    this.getPokemonGroupedByBox,
+    () => this.props.filterFunction,
+    (pokemon, filter) => pokemon.map((pkm) => pkm.some(filter)).valueSeq().cacheResult()
+  )
+
   renderBox(pkm) {
     const local = Localization[this.props.language];
     const Template = this.getTemplate();
+    const hideGhosts = this.props.format.ghost === 'hide';
     return (
       <Paper className={styles.paper}>
         <div className={styles.box}>
           {this.props.format.header}
-          {pkm.map((e, i) => <Template key={e.box * 30 + e.slot} pkm={e} index={i} local={local} />)}
+          {pkm.map((e, i) => <Template key={e.box * 30 + e.slot} pkm={e} index={i} local={local} hidden={!this.props.filterFunction(e) || hideGhosts && e.isGhost} />).cacheResult()}
         </div>
       </Paper>
     );
   }
 
   render() {
+    // TODO how are ghosts hidden here?
     if (!this.props.pokemon.first()) {
       return <div></div>;
     }
 
     if (this.props.format.splitBoxes) {
-      const grouped = this.props.pokemon.groupBy(e => e.box);
+      const grouped = this.getPokemonGroupedByBox();
+      const showBoxMap = this.getShowBoxMap();
+
       return (
         <div>
           {grouped.map((pkm, box) => (
-            <div key={box}>
+            <div key={box} style={{ display: showBoxMap.get(box) ? 'block' : 'none' }}>
               <h3 className={styles.boxHeader}>Box {box + 1}</h3>
               {this.renderBox(pkm)}
             </div>
-          )).valueSeq()}
+          )).valueSeq().cacheResult()}
         </div>
       );
     }
