@@ -4,6 +4,7 @@ import { Localization } from 'keysavcore';
 import backgroundColors from './background-colors.json';
 import sprites from '../../../resources/sprites.json';
 import pureRender from 'pure-render-decorator';
+import { createSelector } from 'reselect';
 import spritesheetPath from 'file!../../../resources/sprites.png';
 import styles from './PkmListPretty.module.scss';
 
@@ -45,8 +46,14 @@ function pad4(n) {
   return ('0000' + n).slice(-4);
 }
 
-function getSprite(pkm) {
-  const sprite = ('' + pkm.species) + '-' + pkm.form + (pkm.tsv === pkm.esv ? '-s' : '');
+const getIsShiny = createSelector(
+  state => state.filter.eggsHaveMySv,
+  state => (state.filter.svs.match(/\b\d{1,4}\b/g) || []).map(sv => parseInt(sv, 10)),
+  (eggsHaveMySv, svs) => pkm => pkm.isEgg && (eggsHaveMySv && pkm.esv === pkm.tsv || svs.includes(pkm.esv)) || !pkm.isEgg && pkm.esv === pkm.tsv
+);
+
+function getSprite(pkm, state) {
+  const sprite = ('' + pkm.species) + '-' + pkm.form + (getIsShiny(state)(pkm) ? '-s' : '');
   if (backgroundColors[sprite]) {
     return sprite;
   }
@@ -73,7 +80,7 @@ function genderString(gender) {
 
 @pureRender
 class PkmData extends React.Component {
-  static propTypes= {
+  static propTypes = {
     pkm: React.PropTypes.object,
     language: React.PropTypes.string
   };
@@ -136,9 +143,13 @@ class Pkm extends React.Component {
     format: React.PropTypes.object
   };
 
+  static contextTypes = {
+    store: React.PropTypes.object
+  };
+
   render() {
     const { pkm } = this.props;
-    const sprite = getSprite(pkm);
+    const sprite = getSprite(pkm, this.context.store.getState());
     const spriteClass = sprites.sprites[sprite];
     return (
       <Paper
