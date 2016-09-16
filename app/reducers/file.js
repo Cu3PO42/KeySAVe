@@ -6,7 +6,8 @@ const defaultState = {
   isError: false,
   goodKey: true,
   type: '',
-  error: undefined
+  error: undefined,
+  pokemon: undefined
 };
 
 export default handleActions({

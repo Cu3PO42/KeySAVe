@@ -10,6 +10,7 @@ import { setNtrIp, ntrAddKnownTradeOffset } from './actions/ntr';
 import * as fs from 'fs-extra';
 import { version } from '../package.json';
 import logger from './logger';
+import semver from 'semver';
 import { remote } from 'electron';
 const { getPath } = remote.require('electron').app;
 
@@ -21,7 +22,7 @@ function parseConfig(store, config) {
         format: option.format,
       }));
     }
-  } else {
+  } else if (semver.lt(config.version, '1.2.4')) {
     for (const option of config.formattingOptions) {
       if (option.singleInstance) {
         store.dispatch(overwriteSinglePluginOption(option));
@@ -29,40 +30,60 @@ function parseConfig(store, config) {
         store.dispatch(addFormattingOption(option.name, option.plugin, option.format));
       }
     }
-  }
-  if (config.selectedFormatIndex !== undefined) store.dispatch(selectFormattingOption(config.selectedFormatIndex));
-  if (config.language !== undefined) store.dispatch(changeFormatLanguage(config.language));
-  if (config.svs !== undefined) store.dispatch(setEggsHaveSvs(config.svs));
-  if (config.knownTradeOffsets !== undefined) {
-    for (const game of ['xy', 'oras']) {
-      for (const offset of config.knownTradeOffsets[game]) {
-        if (Number.isInteger(offset)) {
-          store.dispatch(ntrAddKnownTradeOffset(offset, game));
+    if (config.selectedFormatIndex !== undefined) store.dispatch(selectFormattingOption(config.selectedFormatIndex));
+    if (config.language !== undefined) store.dispatch(changeFormatLanguage(config.language));
+    if (config.svs !== undefined) store.dispatch(setEggsHaveSvs(config.svs));
+    if (config.knownTradeOffsets !== undefined) {
+      for (const game of ['xy', 'oras']) {
+        for (const offset of config.knownTradeOffsets[game]) {
+          if (Number.isInteger(offset)) {
+            store.dispatch(ntrAddKnownTradeOffset(offset, game));
+          }
         }
       }
     }
+    if (config.teaIp !== undefined) store.dispatch(setNtrIp(config.teaIp));
+  } else {
+    console.log('REHYDRATING...');
+    const { state } = config;
+    for (const key of Object.keys(state)) {
+      store.dispatch({
+        type: 'REHYDRATE',
+        error: false,
+        payload: { reducer: key, state: state[key], version }
+      });
+    }
   }
-  if (config.teaIp !== undefined) store.dispatch(setNtrIp(config.teaIp));
 }
 
-function serializeConfig(store) {
-  const { format, ntr: { knownTradeOffsets, ip: teaIp }, filter: { svs } } = store.getState();
-  const formattingOptions = format.formattingOptions
-    .valueSeq()
-    .filter(e => !e.default)
-    .map(({ name, plugin: { name: plugin, multipleInstances }, format }) => ({
-      name, plugin, format, singleInstance: !multipleInstances
-    }))
-    .toArray();
-  return {
-    formattingOptions,
-    language: format.language,
-    selectedFormatIndex: format.currentIndex,
-    version,
-    svs,
-    knownTradeOffsets,
-    teaIp
-  };
+function serializeConfig(store, { blacklist, serializers }) {
+  const ret = Object.create(null);
+  const state = store.getState();
+  for (const key of Object.keys(state)) {
+    const serializer = serializers[key];
+    if (serializer !== undefined) {
+      const serialized = serializer(state[key]);
+      if (serialized !== undefined) {
+        ret[key] = serialized;
+      }
+      continue;
+    }
+
+    const reducerBlacklist = blacklist[key];
+    if (reducerBlacklist === undefined) {
+      ret[key] = state[key];
+    } else if (Array.isArray(reducerBlacklist)) {
+      const reducerState = state[key];
+      const serializedState = Object.create(null);
+      for (const key of Object.keys(reducerState)) {
+        if (!reducerBlacklist.includes(key)) {
+          serializedState[key] = reducerState[key];
+        }
+      }
+      ret[key] = serializedState;
+    }
+  }
+  return { version, state: ret };
 }
 
 export default async function loadConfig(store) {
@@ -87,7 +108,26 @@ export default async function loadConfig(store) {
 
   window.addEventListener('beforeunload', async (e) => {
     logger.info('Saving config');
-    const config = serializeConfig(store);
+    const config = serializeConfig(store, {
+      blacklist: {
+        filter: ['customFilter'],
+        ntr: ['intervalId', 'inProgress', 'connectionError', 'tradeOffsetError'],
+        updater: null
+      },
+      serializers: {
+        format: format => ({
+          formattingOptions: format.formattingOptions
+            .valueSeq()
+            .filter(e => !e.default)
+            .map(({ name, plugin: { name: plugin, multipleInstances }, format }) => ({
+              name, plugin, format, singleInstance: !multipleInstances
+            }))
+            .toArray(),
+          currentIndex: format.currentIndex,
+          language: format.language
+        })
+      }
+    });
     fs.writeFileSync(getPath('userData') + '/config.json', JSON.stringify(config, null, '    '), 'utf-8');
     logger.info('Saved config');
   }, false);

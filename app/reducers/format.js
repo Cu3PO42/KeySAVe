@@ -213,5 +213,36 @@ export default handleActions({
       ...options,
       formattingOptions
     };
+  },
+
+  REHYDRATE(state, { payload }) {
+    if (payload.reducer !== 'format') return state;
+
+    const { language, formattingOptions, currentIndex } = payload.state;
+    let formattingOptionsState = state.formattingOptions;
+    for (const option of formattingOptions) {
+      if (option.singleInstance) {
+        const [index, oldOption] = formattingOptionsState.findEntry(e => e.name === option.name);
+        const newOption = { ...oldOption, format: option.format };
+        formattingOptionsState = formattingOptionsState.set(index, newOption);
+      } else {
+        const plugin = state.plugins.get(option.plugin);
+        if (!plugin.multipleInstances) continue;
+        const newOption = {
+          name: option.name,
+          format: plugin.fixFormattingOption(option.format),
+          default: false,
+          plugin
+        };
+        formattingOptionsState = formattingOptionsState.push(newOption);
+      }
+    }
+    return {
+      ...state,
+      language,
+      currentIndex,
+      formattingOptions: formattingOptionsState,
+      current: formattingOptionsState.get(currentIndex)
+    };
   }
 }, defaultFormat);

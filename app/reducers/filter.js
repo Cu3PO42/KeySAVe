@@ -28,6 +28,20 @@ function fixSelectedOptions(options, lookup) {
   return options.map(({ value }) => ({ value, label: lookup[value] }));
 }
 
+function compileCustomFilter(filter) {
+  if (filter === '') {
+    return undefined;
+  } else {
+    try {
+      /* eslint-disable no-eval */
+      return eval(`(function(pkm) { return !!(${filter});})`);
+      /* eslint-enable no-eval */
+    } catch (e) {
+      return null;
+    }
+  }
+}
+
 const initialFilter = {
   enabled: false,
   isOpponent: false,
@@ -186,21 +200,9 @@ export default handleActions({
     };
   },
   [SET_CUSTOM_FILTER](state, { payload }) {
-    let fn;
-    if (payload === '') {
-      fn = undefined;
-    } else {
-      try {
-        /* eslint-disable no-eval */
-        fn = eval(`(function(pkm) { return !!(${payload});})`);
-        /* eslint-enable no-eval */
-      } catch (e) {
-        fn = null;
-      }
-    }
     return {
       ...state,
-      customFilter: fn,
+      customFilter: compileCustomFilter(payload),
       customFilterRaw: payload
     };
   },
@@ -213,6 +215,16 @@ export default handleActions({
       hpTypes: fixSelectedOptions(state.hpTypes, local.types),
       natures: fixSelectedOptions(state.natures, local.natures),
       abilities: fixSelectedOptions(state.abilities, local.abilities)
+    };
+  },
+
+  REHYDRATE(state, { payload }) {
+    if (payload.reducer !== 'filter') return state;
+
+    return {
+      ...state,
+      ...payload.state,
+      customFilter: compileCustomFilter(payload.state.customFilterRaw)
     };
   }
 }, initialFilter);
