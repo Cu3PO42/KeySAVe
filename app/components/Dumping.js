@@ -83,7 +83,7 @@ export default class Dumping extends React.Component {
       if (dbDirectory === undefined || dbDirectory[0] === undefined) return;
       dbDirectory = dbDirectory[0];
       var files = await fs.readdirAsync(dbDirectory);
-      const count = (await Promise.all(this.props.pokemon.map(async (pkm) => {
+      const count = (await Promise.all(this.props.pokemon.filter(this.props.filterFunction).map(async (pkm) => {
         if (pkm.isGhost) {
           ++ghosts;
           return;
