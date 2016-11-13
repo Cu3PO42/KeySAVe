@@ -16,10 +16,9 @@ function genderString(gender) {
 }
 
 function getSpecies(id, form, local) {
-  if (id >= 664 && id <= 666) {
-    return `${local.species[id]}-${local.forms[666][form]}`;
-  } else if (id === 201) {
-    return `${local.species[201]}-${local.forms[201][form]}`;
+  const formNames = local.forms[id];
+  if (formNames && formNames[form]) {
+    return `${local.species[id]} (${formNames[form]})`;
   }
   return local.species[id];
 }

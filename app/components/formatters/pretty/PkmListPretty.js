@@ -61,7 +61,7 @@ function getSprite(pkm, state) {
 }
 
 function getSpecies(pkm, local) {
-  if (pkm.form && local.forms[pkm.species] && local.forms[pkm.species][pkm.form]) {
+  if (local.forms[pkm.species] && local.forms[pkm.species][pkm.form]) {
     return local.species[pkm.species] + ' (' + local.forms[pkm.species][pkm.form] + ')';
   }
   return local.species[pkm.species];
