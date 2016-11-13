@@ -1,0 +1,17 @@
+{
+  "name": "generate-backgrounds",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^1.5.2",
+    "color": "^0.11.1",
+    "color-ops": "^2.0.0",
+    "dominant-color": "0.0.1"
+  }
+}
