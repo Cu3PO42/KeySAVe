@@ -5,7 +5,7 @@ import backgroundColors from './background-colors.json';
 import sprites from '../../../resources/sprites.json';
 import pureRender from 'pure-render-decorator';
 import { createSelector } from 'reselect';
-import spritesheetPath from 'file!../../../resources/sprites.png';
+import spritesheetPath from 'file-loader!../../../resources/sprites.png';
 import styles from './PkmListPretty.module.scss';
 
 const spritesheetUrl = `url(${spritesheetPath})`;
