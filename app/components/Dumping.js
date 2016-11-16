@@ -94,7 +94,7 @@ export default class Dumping extends React.Component {
           ++counter;
           while (_.includes(files, fileName + ' (' + counter + ').pk6')) ++counter;
         }
-        fileName += (counter ? ' (' + counter + ')' : '') + '.pk6';
+        fileName += (counter ? ' (' + counter + ')' : '') + (pkm.version === 6 ? '.pk6' : '.pk7');
         files.push(fileName);
         await fs.writeFileAsync(path.join(dbDirectory, fileName), new Buffer(pkm.data));
         return;

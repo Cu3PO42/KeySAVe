@@ -67,7 +67,9 @@ class PkmListHandlebars extends Component {
         return !!(forms && forms[this.form]);
       },
       formName() {
-        return Localization[self.props.language].forms[this.species] ? Localization[self.props.language].forms[this.species][this.form] : '';
+        const local = Localization[self.props.language];
+        const forms = this.version === 6 ? local.forms6 : local.forms7;
+        return forms[this.species] ? forms[this.species][this.form] : '';
       },
       natureName() {
         return Localization[self.props.language].natures[this.nature];

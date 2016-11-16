@@ -9,7 +9,7 @@ import styles from './PkmListLegacy.module.scss';
 const replaceDatabaseFactory = format => ({
   0: '"B"+("0"+(pkm.box+1)).slice(-2)',
   1: 'Math.floor(pkm.slot/6)+1+","+(pkm.slot%6+1)',
-  2: 'getSpecies(pkm.species, pkm.form, local)',
+  2: 'getSpecies(pkm.species, pkm.form, pkm.version, local)',
   3: 'genderString(pkm.gender)',
   4: 'local.natures[pkm.nature]',
   5: 'local.abilities[pkm.ability]',
@@ -95,8 +95,8 @@ function genderString(gender) {
       return '-';
   }
 }
-function getSpecies(id, form, local) {
-  const forms = local.forms[id];
+function getSpecies(id, form, version, local) {
+  const forms = (version === 6 ? local.forms6 : local.forms7)[id];
   if (forms && forms[form]) {
     return `${local.species[id]} (${forms[form]})`;
   }
