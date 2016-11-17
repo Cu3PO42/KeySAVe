@@ -61,8 +61,7 @@ function getSprite(pkm, state) {
   if (backgroundColors[sprite]) {
     return sprite;
   }
-  // TODO add questionmark sprite or something
-  return '3-0';
+  return '';
 }
 
 function getSpecies(pkm, local) {
@@ -166,7 +165,7 @@ class Pkm extends React.Component {
           className={styles.sprite}
           style={{ backgroundColor: backgroundColors[sprite] }}
         ><div
-          style={{
+          style={sprite === '' ? { width: '80px', height: '80px' } : {
             width: '80px',
             height: '80px',
             backgroundPosition: `${spriteClass.x * 0.8}px ${spriteClass.y * 0.8}px`,
