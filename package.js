@@ -67,11 +67,11 @@ if (DEFAULT_OPTS.version) {
   buildServer(startPack);
 } else {
   // use the same version as the currently-installed electron-prebuilt
-  exec('npm list electron-prebuilt', (err, stdout) => {
+  exec('npm list electron', (err, stdout) => {
     if (err) {
       DEFAULT_OPTS.version = '1.4.7';
     } else {
-      DEFAULT_OPTS.version = stdout.split('electron-prebuilt@')[1].replace(/\s/g, '');
+      DEFAULT_OPTS.version = stdout.split('electron@')[1].replace(/\s/g, '');
     }
 
     buildServer(startPack);
