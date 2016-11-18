@@ -5,7 +5,7 @@ import backgroundColors from './background-colors.json';
 import sprites from '../../../resources/sprites.json';
 import pureRender from 'pure-render-decorator';
 import { createSelector } from 'reselect';
-import spritesheetPath from 'file!../../../resources/sprites.png';
+import spritesheetPath from 'file-loader!../../../resources/sprites.png';
 import styles from './PkmListPretty.module.scss';
 
 const spritesheetUrl = `url(${spritesheetPath})`;
@@ -53,16 +53,21 @@ const getIsShiny = createSelector(
 );
 
 function getSprite(pkm, state) {
-  const sprite = ('' + pkm.species) + '-' + pkm.form + (getIsShiny(state)(pkm) ? '-s' : '');
+  let sprite = ('' + pkm.species) + '-' + pkm.form + (getIsShiny(state)(pkm) ? '-s' : '');
   if (backgroundColors[sprite]) {
     return sprite;
   }
-  return '' + pkm.species + '-0' + (pkm.tsv === pkm.esv ? '-s' : '');
+  sprite = '' + pkm.species + '-0' + (pkm.tsv === pkm.esv ? '-s' : '');
+  if (backgroundColors[sprite]) {
+    return sprite;
+  }
+  return '';
 }
 
 function getSpecies(pkm, local) {
-  if (local.forms[pkm.species] && local.forms[pkm.species][pkm.form]) {
-    return local.species[pkm.species] + ' (' + local.forms[pkm.species][pkm.form] + ')';
+  const forms = pkm.version === 6 ? local.forms6 : local.forms7;
+  if (forms[pkm.species] && forms[pkm.species][pkm.form]) {
+    return local.species[pkm.species] + ' (' + forms[pkm.species][pkm.form] + ')';
   }
   return local.species[pkm.species];
 }
@@ -160,7 +165,7 @@ class Pkm extends React.Component {
           className={styles.sprite}
           style={{ backgroundColor: backgroundColors[sprite] }}
         ><div
-          style={{
+          style={sprite === '' ? { width: '80px', height: '80px' } : {
             width: '80px',
             height: '80px',
             backgroundPosition: `${spriteClass.x * 0.8}px ${spriteClass.y * 0.8}px`,

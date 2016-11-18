@@ -11,15 +11,29 @@ import * as path from 'path';
 import makeCached from '../utils/makeCachedFunction';
 import Dumping from '../components/Dumping';
 
+const getActiveTeamSelector = createSelector(
+  state => state.file.type,
+  state => state.filter.teamSelected,
+  state => state.file.keyProperties,
+  (type, teamSelected, keyProperties) => {
+    if (type !== 'BV') return -1;
+    if (keyProperties[teamSelected]) return teamSelected;
+    for (let i = 0; i < keyProperties.length; ++i) {
+      if (keyProperties[i]) return i;
+    }
+    return -1;
+  }
+);
+
 const getPokemonSeq = createSelector(
   state => state.file.pokemon,
   state => state.file.type,
-  state => state.filter.isOpponent,
-  (pokemon, type, isOpponent) =>
+  getActiveTeamSelector,
+  (pokemon, type, activeTeam) =>
     type === 'SAV' ?
       new Seq(pokemon) :
     type === 'BV' ?
-      isOpponent ? new Seq(pokemon.opponentTeam) : new Seq(pokemon.myTeam) :
+      new Seq(pokemon[activeTeam]) :
       new Seq()
 );
 
@@ -84,12 +98,13 @@ const mapStateToProps = createSelector(
   getPokemonSeq,
   getFilter,
   state => state.file.name,
-  state => state.file.goodKey,
+  state => state.file.keyProperties,
+  state => state.file.generation,
   state => state.file.error,
   state => state.file.type,
   state => state.filter,
   state => state.format,
-  (pokemon, filterFunction, name, goodKey, error, type, filter, format) => ({ pokemon, filterFunction, name, goodKey, error, type, filter, format })
+  (pokemon, filterFunction, name, keyProperties, generation, error, type, filter, format) => ({ pokemon, filterFunction, name, keyProperties, generation, error, type, filter, format })
 );
 
 function mapDispatchToProps(dispatch) {

@@ -4,8 +4,9 @@ import { OPEN_FILE, OPEN_FILE_DISMISS_ERROR, ADD_POKEMON } from '../actions/file
 const defaultState = {
   name: '',
   isError: false,
-  goodKey: true,
+  keyProperties: undefined,
   type: '',
+  generation: undefined,
   error: undefined,
   pokemon: undefined
 };

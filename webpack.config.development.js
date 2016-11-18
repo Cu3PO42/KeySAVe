@@ -7,8 +7,6 @@ const baseConfig = require('./webpack.config.base');
 
 const config = Object.create(baseConfig);
 
-config.debug = true;
-
 config.devtool = 'cheap-module-eval-source-map';
 
 config.entry = [

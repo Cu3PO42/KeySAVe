@@ -15,8 +15,8 @@ function genderString(gender) {
   }
 }
 
-function getSpecies(id, form, local) {
-  const formNames = local.forms[id];
+function getSpecies(id, form, version, local) {
+  const formNames = (version === 6 ? local.forms6 : local.forms7)[id];
   if (formNames && formNames[form]) {
     return `${local.species[id]} (${formNames[form]})`;
   }
@@ -44,7 +44,7 @@ class Pkm extends React.Component {
       >
         <td>{this.props.format.ghosts === 'mark' && pkm.isGhost ? '~' : ''}B{('00' + (pkm.box + 1)).slice(-2)}</td>
         <td>{Math.floor(pkm.slot / 6) + 1},{pkm.slot % 6 + 1}</td>
-        <td>{getSpecies(pkm.species, pkm.form, local)} ({genderString(pkm.gender)})</td>
+        <td>{getSpecies(pkm.species, pkm.form, pkm.version, local)} ({genderString(pkm.gender)})</td>
         <td>{local.natures[pkm.nature]}</td>
         <td>{local.abilities[pkm.ability]} </td>
         {this.props.format.boldPerfectIVs ?

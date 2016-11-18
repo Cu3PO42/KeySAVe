@@ -24,7 +24,8 @@ export default class Dumping extends React.Component {
     name: React.PropTypes.string.isRequired,
     openFileWatch: React.PropTypes.func.isRequired,
     type: React.PropTypes.string.isRequired,
-    goodKey: React.PropTypes.bool.isRequired,
+    keyProperties: React.PropTypes.oneOfType([React.PropTypes.boolean, React.PropTypes.object]),
+    generation: React.PropTypes.number,
     filter: React.PropTypes.object.isRequired,
     filterFunction: React.PropTypes.func.isRequired,
     setFilterBv: React.PropTypes.func.isRequired,
@@ -94,7 +95,7 @@ export default class Dumping extends React.Component {
           ++counter;
           while (_.includes(files, fileName + ' (' + counter + ').pk6')) ++counter;
         }
-        fileName += (counter ? ' (' + counter + ')' : '') + '.pk6';
+        fileName += (counter ? ' (' + counter + ')' : '') + (pkm.version === 6 ? '.pk6' : '.pk7');
         files.push(fileName);
         await fs.writeFileAsync(path.join(dbDirectory, fileName), new Buffer(pkm.data));
         return;
@@ -146,7 +147,7 @@ export default class Dumping extends React.Component {
   }
 
   render() {
-    const { name, openFileWatch, type, goodKey, filter, setFilterBv, setFilterSav, pokemon, error, format, dismissError, filterFunction } = this.props;
+    const { name, openFileWatch, type, keyProperties, generation, filter, setFilterBv, setFilterSav, pokemon, error, format, dismissError, filterFunction } = this.props;
     return (
       <div>
         <DumpingFileOpener
@@ -154,10 +155,11 @@ export default class Dumping extends React.Component {
           fileOpened={openFileWatch}
           backup={this.backupFile}
           type={type}
-          goodKey={goodKey}
+          keyProperties={keyProperties}
+          generation={generation}
           lowerBox={filter.lower}
           upperBox={filter.upper}
-          isOpponent={filter.isOpponent}
+          teamSelected={filter.teamSelected}
           bvFilterChanged={setFilterBv}
           savFilterChanged={setFilterSav}
         />
@@ -166,7 +168,7 @@ export default class Dumping extends React.Component {
           <div className={styles.flexFill} />
           <IconButton onClick={this.copyClipboard} tooltip="Copy output to clibboard"><CopyIcon /></IconButton>
           <IconButton onClick={this.saveOutput} tooltip="Save output as file"><SaveIcon /></IconButton>
-          <IconButton onClick={this.exportPk6} tooltip="Export .pk6 files"><ArchiveIcon /></IconButton>
+          <IconButton onClick={this.exportPk6} tooltip={`Export .pk${generation} files`}><ArchiveIcon /></IconButton>
         </div>
         <div className={styles.pkmContainer} ref="dumperContainer">
           <format.current.plugin.PkmList
@@ -180,7 +182,7 @@ export default class Dumping extends React.Component {
         <Dialog
           modal
           open={error !== undefined}
-          actions={[<FlatButton label="Ok" primary onTouchTap={dismissError}/>]}
+          actions={[<FlatButton label="Ok" primary onTouchTap={dismissError} />]}
         >
           {((e) => {
             switch (e.name) {

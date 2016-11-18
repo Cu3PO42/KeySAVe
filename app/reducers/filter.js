@@ -44,9 +44,9 @@ function compileCustomFilter(filter) {
 
 const initialFilter = {
   enabled: false,
-  isOpponent: false,
+  teamSelected: 0,
   lower: 1,
-  upper: 31,
+  upper: 32,
   eggsOnly: false,
   species: [],
   gender: '3',
@@ -77,7 +77,7 @@ export default handleActions({
   [SET_FILTER_BV](state, { payload }) {
     return {
       ...state,
-      isOpponent: payload
+      teamSelected: payload
     };
   },
   [SET_FILTER_SAV](state, { payload: { lower, upper } }) {

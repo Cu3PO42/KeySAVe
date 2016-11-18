@@ -1,5 +1,5 @@
 import * as KeySAV from 'keysavcore';
-import SaveKey from 'keysavcore/save-key';
+import SaveKey, { getStampAndKindFromKey } from 'keysavcore/save-key';
 import BattleVideoKey from 'keysavcore/battle-video-key';
 import * as path from 'path';
 import * as fs from 'fs-extra';
@@ -47,6 +47,9 @@ async function breakFolder(args) {
             case 0x100000:
             case 0x10009C:
             case 0x10019A:
+            case 0x0fe000:
+            case 0x0fe09c:
+            case 0x0fe19a:
               break;
             default:
               return null;
@@ -74,10 +77,10 @@ async function dumpSaveOrBv(args) {
     var reader = res.reader;
     if (res.type === 'SAV') {
       logger.verbose(`File ${args.file} is a save file`);
-      process.send({ res: { pokemon: reader.getAllPkx(), goodKey: reader.isNewKey, type: 'SAV', name: args.file }, id: args.id });
+      process.send({ res: { pokemon: reader.getAllPkx(), keyProperties: reader.isNewKey, type: 'SAV', name: args.file, generation: reader.generation }, id: args.id });
     } else {
       logger.verbose(`File ${args.file} is a battle video`);
-      process.send({ res: { pokemon: reader.getAllPkx(), goodKey: reader.dumpsOpponent, type: 'BV', name: args.file }, id: args.id });
+      process.send({ res: { pokemon: reader.getAllPkx(), keyProperties: reader.workingKeys, type: 'BV', name: args.file, generation: reader.generation }, id: args.id });
     }
   } catch (e) {
     if (e.name === 'NotASaveOrBattleVideoError' || e.name === 'NoKeyAvailableError') {
@@ -97,7 +100,7 @@ async function breakKey(args) {
     logger.verbose(`Key creation returned ${res}`);
     process.send({ res, id: args.id });
   } catch (e) {
-    if (e.name === 'NotSameFileTypeError' || e.name === 'NotSameBattleVideoSlotError' || e.name === 'BattleVideoKeyAlreadyExistsError' || e.name === 'BattleVideoBreakError' || e.name === 'NotSameGameError' || e.name === 'SaveIdenticalError' || e.name === 'SaveKeyAlreadyExistsError' || e.name === 'NoBoxesError' || e.name === 'PokemonNotSuitableError') {
+    if (e.name === 'NotSameFileTypeError' || e.name === 'NotSameBattleVideoSlotError' || e.name === 'BattleVideoKeyAlreadyExistsError' || e.name === 'BattleVideoBreakError' || e.name === 'NotSameGameError' || e.name === 'SaveIdenticalError' || e.name === 'SaveKeyAlreadyExistsError' || e.name === 'NoBoxesError' || e.name === 'PokemonNotSuitableError' || e.name === 'BattleVideosNotSameGenerationError' || e.name === 'SavesNotSameGenerationError') {
       logger.verbose('An error occured trying to create a key: ', e);
     } else {
       logger.error('An error occured trying to create a key: ', e);
@@ -114,23 +117,25 @@ async function mergeKeyFolder(args) {
     for (const file of files) {
       const filePath = args.folder + '/' + file;
       const stats = await fs.statAsync(filePath);
-      if (stats.isFile() && (stats.size === 0xB4AD4 || stats.size === 0x80000)) {
+      if (stats.isDirectory()) {
+        continue;
+      }
+      const keyData = bufToArr(await fs.readFileAsync(filePath));
+      const { kind } = getStampAndKindFromKey(keyData);
+      try {
+        switch (kind) {
+          case 0:
+            await store.setOrMergeSaveKey(new SaveKey(keyData));
+            break;
+          case 1:
+            await store.setOrMergeBvKey(new BattleVideoKey(keyData));
+            break;
+          default:
+            break;
+        }
         ++counter;
-        logger.silly(`Merging save key from ${file}`);
-        const buf = new Buffer(0xB4AD4);
-        const fd = await fs.openAsync(filePath, 'r');
-        await fs.readAsync(fd, buf, 0, stats.size, 0);
-        await fs.closeAsync(fd);
-        const ui8 = new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength);
-        const key = new SaveKey(ui8);
-        store.setOrMergeSaveKey(key);
-      } else if (stats.isFile() && stats.size === 0x1000) {
-        ++counter;
-        logger.silly(`Merging battle video key from ${file}`);
-        const buf = await fs.readFileAsync(filePath);
-        const ui8 = new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength);
-        const key = new BattleVideoKey(ui8);
-        store.setOrMergeBvKey(key);
+      } catch (e) {
+        logger.info(`${file} is not a valid key.`);
       }
     }
     logger.info(`Merged ${counter} files`);

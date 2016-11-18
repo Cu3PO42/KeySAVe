@@ -16,11 +16,15 @@ async function checkType(file) {
       case 0x100000:
       case 0x10009C:
       case 0x10019A:
+      case 0x0fe000:
+      case 0x0fe09c:
+      case 0x0fe19a:
         return {
           file,
           type: 'sav'
         };
       case 0x6E60:
+      case 0x6bc0:
         return {
           file,
           type: 'bv'
