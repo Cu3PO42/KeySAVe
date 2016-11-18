@@ -13,15 +13,6 @@ import styles from './Breaking.module.scss';
 import * as colors from 'material-ui/styles/colors';
 import Promise from 'bluebird';
 
-function stringOrObjOrUndefined(props, propName, componentName) {
-  const val = props[propName];
-  if (val === undefined || typeof val === 'string' || val instanceof String || val instanceof Error) {
-    return null;
-  }
-
-  return Error(`${propName} in ${componentName || 'ANONYMOUS'} should be either a string or an Error object.`);
-}
-
 const fileOptions = {
   filters: [{ name: 'SAV (1MB)', extensions: ['bin', 'sav'] },
             { name: 'Battle Video', extensions: [process.platform === 'darwin' ? '' : '*'] }]
@@ -65,12 +56,27 @@ const saveSuccessMessages = {
 };
 
 function getSuccessMessage(reply) {
-  if (reply instanceof String) {
-    return saveSuccessMessages[reply];
+  if (reply === undefined) {
+    return null;
   }
 
-  const availableKeys = ['Your team', 'Opponent team 1', 'Opponent team 2', 'Opponent team 3'].filter((e, i) => reply.workingKeys[i]).join(', ');
-  if (reply.upgraded === undefined) {
+  const { type, result } = reply;
+
+  if (type === 'SAV') {
+    return saveSuccessMessages[result];
+  }
+
+  if (type !== 'BV') {
+    return (
+      <div>
+        <ErrorSign />
+        <p>An unknown error occured.</p>
+      </div>
+    );
+  }
+
+  const availableKeys = ['Your team', 'Opponent team 1', 'Opponent team 2', 'Opponent team 3'].filter((e, i) => result.workingKeys[i]).join(', ');
+  if (result.upgraded === undefined) {
     return (
       <div>
         <p>A key for this battle video slot was successfully created.</p>
@@ -78,7 +84,7 @@ function getSuccessMessage(reply) {
       </div>
     );
   }
-  if (reply.upgraded === false) {
+  if (result.upgraded === false) {
     return (
       <div>
         <WarningSign />
@@ -87,7 +93,7 @@ function getSuccessMessage(reply) {
       </div>
     );
   }
-  if (reply.upgraded === true) {
+  if (result.upgraded === true) {
     return (
       <div>
         <p>Your key for this battle video could be upgraded with new teams!</p>
@@ -191,7 +197,7 @@ export default class Breaking extends React.Component {
     file2Type: React.PropTypes.string.isRequired,
     breakState: React.PropTypes.string.isRequired,
     scanning: React.PropTypes.bool.isRequired,
-    reply: stringOrObjOrUndefined,
+    reply: React.PropTypes.object,
     openFile1: React.PropTypes.func.isRequired,
     openFile2: React.PropTypes.func.isRequired,
     breakKey: React.PropTypes.func.isRequired,
