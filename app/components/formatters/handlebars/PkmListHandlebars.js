@@ -139,6 +139,9 @@ class PkmListHandlebars extends Component {
       pentagon() {
         return this.gameVersion >= 24 && this.gameVersion <= 27 ? '⬟' : '';
       },
+      cross() {
+        return this.gameVersion > 27 ? '+' : '';
+      },
       shinyMark() {
         return this.isShiny ? '★' : '';
       },

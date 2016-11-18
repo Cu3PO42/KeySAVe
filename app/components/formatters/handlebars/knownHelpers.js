@@ -137,6 +137,7 @@ export const knownHelpersPokemon = {
   hasHa: true,
   checkmark: true,
   pentagon: true,
+  cross: true,
   shinyMark: true,
   markings: true,
   regionName: true,

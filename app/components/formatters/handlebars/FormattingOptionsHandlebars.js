@@ -185,6 +185,7 @@ export default class FormattingOptionsHandlebars extends React.Component {
       gameVersionString() { return 'Game Version'; },
       stepsToHatch() { return 'Steps To Hatch'; },
       pentagon() { return 'Pentagon'; },
+      cross() { return 'Cross'; },
       shinyMark() { return 'Shiny'; },
       markings() { return 'Markings'; },
       regionName() { return 'Region'; },
