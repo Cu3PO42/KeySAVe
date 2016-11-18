@@ -25,7 +25,7 @@ const replaceDatabaseFactory = format => ({
   15: 'pkm.nickname',
   16: 'pkm.ot',
   17: 'local.getBallName(pkm.ball)',
-  18: '("00000" + pkm.tid).slice(-5)',
+  18: 'pkm.version ==== 6 ? ("00000" + pkm.tid).slice(-5) : ("000000" + pkm.tid7).slice(-6)',
   19: '("00000" + pkm.sid).slice(-5)',
   20: 'pkm.evHp',
   21: 'pkm.evAtk',

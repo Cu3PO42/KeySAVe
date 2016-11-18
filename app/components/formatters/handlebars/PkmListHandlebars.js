@@ -110,6 +110,9 @@ class PkmListHandlebars extends Component {
       sid() {
         return ('00000' + this.sid).slice(-5);
       },
+      tid7() {
+        return ('000000' + this.tid7).slice(-6);
+      },
       language() {
         return Localization[self.props.language].languageTags[this.otLang];
       },

@@ -130,6 +130,7 @@ export const knownHelpersPokemon = {
   tsv: true,
   tid: true,
   sid: true,
+  tid7: true,
   language: true,
   genderString: true,
   gameVersionString: true,

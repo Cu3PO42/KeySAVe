@@ -125,8 +125,6 @@ export default class FormattingOptionsHandlebars extends React.Component {
       nature: 'Nature',
       species: 'Species',
       heldItem: 'Held Item',
-      tid: 'Trainer ID',
-      sid: 'Secret ID',
       move1: 'Move 1',
       move2: 'Move 2',
       move3: 'Move 3',
@@ -152,7 +150,8 @@ export default class FormattingOptionsHandlebars extends React.Component {
       form: 'Form',
       gender: 'Gender',
       metDate: 'Date Met',
-      eggDate: 'Date Hatched'
+      eggDate: 'Date Hatched',
+      version: 'Generation'
     }, { helpers: {
       typeName(e) { return e; },
       moveName(e) { return e; },
@@ -180,6 +179,9 @@ export default class FormattingOptionsHandlebars extends React.Component {
       spDef() { return 'SPDEF'; },
       spe() { return 'SPE'; },
       esv() { return 'ESV'; },
+      tid() { return 'Trainer ID'; },
+      sid() { return 'Secret ID'; },
+      tid7() { return 'Trainer ID'; },
       tsv() { return 'TSV'; },
       language() { return 'Language'; },
       gameVersionString() { return 'Game Version'; },
