@@ -37,30 +37,7 @@ const nameMap = {
 const WarningSign = () => <div className={styles.iconContainer}><WarningIcon color={colors.yellow600} /></div>;
 const ErrorSign = () => <div className={styles.iconContainer}><ErrorIcon color={colors.red800} /></div>;
 
-const successMessages = {
-  // Battle Video Breaking success messages
-  // TODO battle video results are now a different format
-  CREATED_WITH_OPPONENT:
-    <div>
-      <p>A key for this battle video slot was successfully created.</p>
-      <p>You can dump opponent data with this key, too!</p>
-    </div>,
-  CREATED_WITHOUT_OPPONENT:
-    <div>
-      <p>A key for this battle video slot was successfully created.</p>
-      <p>You can not dump opponent data with this key, but you can upgrade it later!</p>
-    </div>,
-  UPGRADED_WITH_OPPONENT:
-    <div>
-      <p>Your key for this battle video slot was just upgraded to decrypt opponent data, too!</p>
-    </div>,
-  NOT_UPGRADED_WITH_OPPONENT:
-    <div>
-      <WarningSign />
-      <p>You already have a key for this battle video slot, but it can't decrypt opponent data!</p>
-      <p>Unfortunately these videos can't be used to generate the key for opponent data, either, please follow the instructions.</p>
-    </div>,
-
+const saveSuccessMessages = {
   // Save breaking success messages
   CREATED_NEW:
     <div>
@@ -87,7 +64,46 @@ const successMessages = {
     </div>
 };
 
-// TODO handle additional error messages
+function getSuccessMessage(reply) {
+  if (reply instanceof String) {
+    return saveSuccessMessages[reply];
+  }
+
+  const availableKeys = ['Your team', 'Opponent team 1', 'Opponent team 2', 'Opponent team 3'].filter((e, i) => reply.workingKeys[i]).join(', ');
+  if (reply.upgraded === undefined) {
+    return (
+      <div>
+        <p>A key for this battle video slot was successfully created.</p>
+        <p>You can dump these teams with it: {availableKeys}.</p>
+      </div>
+    );
+  }
+  if (reply.upgraded === false) {
+    return (
+      <div>
+        <WarningSign />
+        <p>Your key for this battle video could not be upgraded with any new teams.</p>
+        <p>You can dump these teams with it: {availableKeys}.</p>
+      </div>
+    );
+  }
+  if (reply.upgraded === true) {
+    return (
+      <div>
+        <p>Your key for this battle video could be upgraded with new teams!</p>
+        <p>You can dump these teams with it: {availableKeys}.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <ErrorSign />
+      <p>An unknown error occured.</p>
+    </div>
+  );
+}
+
 const errorMessages = {
   // Battle video breaking failure messages
   NotABattleVideoError: e =>
@@ -106,6 +122,12 @@ const errorMessages = {
       <WarningSign />
       <p>You already have a key for this batte video slot!</p>
       <p>Decryption of opponent data is supported on this slot!</p>
+    </div>,
+  BattleVideosNotSameGenerationError: () =>
+    <div>
+      <ErrorSign />
+      <p>The two battle videos you selected are not from the same generation!</p>
+      <p>Please follow the instructions.</p>
     </div>,
 
   // Save breaking error messages
@@ -146,12 +168,19 @@ const errorMessages = {
       <p>Please use six different Pokémon and start over!</p>
     </div>,
 
-    KeySavingError: () =>
-      <div>
-        <ErrorSign />
-        <p>Unfortunately there was an error saving your key.</p>
-        <p>Please check if your hard drive is working correctly and you have proper permissions.</p>
-      </div>
+  SavesNotSameGenerationError: () =>
+    <div>
+      <ErrorSign />
+      <p>The two saves you selected are not from the same generation!</p>
+      <p>Please follow the instructions.</p>
+    </div>,
+
+  KeySavingError: () =>
+    <div>
+      <ErrorSign />
+      <p>Unfortunately there was an error saving your key.</p>
+      <p>Please check if your hard drive is working correctly and you have proper permissions.</p>
+    </div>
 };
 
 export default class Breaking extends React.Component {
@@ -223,7 +252,7 @@ export default class Breaking extends React.Component {
             (errorMessages.hasOwnProperty(this.props.reply.name) ?
              errorMessages[this.props.reply.name](this.props.reply) :
              `An unknown error occured: ${this.props.reply}`)
-          : successMessages[this.props.reply]
+          : getSuccessMessage(this.props.reply)
           }
         </Dialog>
         <Paper className={styles.paper}>
