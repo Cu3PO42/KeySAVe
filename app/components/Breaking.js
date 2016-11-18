@@ -39,6 +39,7 @@ const ErrorSign = () => <div className={styles.iconContainer}><ErrorIcon color={
 
 const successMessages = {
   // Battle Video Breaking success messages
+  // TODO battle video results are now a different format
   CREATED_WITH_OPPONENT:
     <div>
       <p>A key for this battle video slot was successfully created.</p>
@@ -86,6 +87,7 @@ const successMessages = {
     </div>
 };
 
+// TODO handle additional error messages
 const errorMessages = {
   // Battle video breaking failure messages
   NotABattleVideoError: e =>
