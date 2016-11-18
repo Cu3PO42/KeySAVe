@@ -169,7 +169,7 @@ class PkmListHandlebars extends Component {
             res += markers[i][1];
           } else {
             const color = colors[markVal - 1];
-            res += `<span styles="color: ${color}">${markers[i][0]}</span>`
+            res += `<span styles="color: ${color}">${markers[i][0]}</span>`;
           }
         }
         return res;
