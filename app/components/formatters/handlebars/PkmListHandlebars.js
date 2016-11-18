@@ -143,12 +143,30 @@ class PkmListHandlebars extends Component {
         return this.isShiny ? '★' : '';
       },
       markings() {
-        return ((this.markings & 0x01 ? '●' : '◯')
-              + (this.markings & 0x02 ? '▲' : '△')
-              + (this.markings & 0x04 ? '■' : '□')
-              + (this.markings & 0x08 ? '♥' : '♡')
-              + (this.markings & 0x10 ? '★' : '☆')
-              + (this.markings & 0x20 ? '◆' : '◇'));
+        if (this.version === 6) {
+          return ((this.markings & 0x01 ? '●' : '◯')
+                + (this.markings & 0x02 ? '▲' : '△')
+                + (this.markings & 0x04 ? '■' : '□')
+                + (this.markings & 0x08 ? '♥' : '♡')
+                + (this.markings & 0x10 ? '★' : '☆')
+                + (this.markings & 0x20 ? '◆' : '◇'));
+        }
+
+        const markers = [['●', '◯'], ['▲', '△'], ['■', '□'], ['♥', '♡'], ['★', '☆'], ['◆', '◇']];
+        const pink = '#e546b9';
+        const blue = '#549dc7';
+        const colors = [pink, blue];
+        let res = 0;
+        for (let i = 0; i < markers.length; ++i) {
+          const markVal = (this.markings >>> (i << 1)) & 3;
+          if (markVal === 0) {
+            res += markers[i][1];
+          } else {
+            const color = colors[markVal - 1];
+            res += `<span styles="color: ${color}">${markers[i][0]}</span>`
+          }
+        }
+        return res;
       },
       regionName() {
         return Localization[self.props.language].regions[this.gameVersion];
