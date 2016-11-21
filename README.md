@@ -1,6 +1,6 @@
 # KeySAVe
 
-KeySAVe is an application to decrypt and dump Generation 6 Pokémon save files.
+KeySAVe is an application to decrypt and dump Generation 6&7 Pokémon save files.
 If you are reading this, I assume you want to run KeySAVe from the source:
 
 1. `npm install`
