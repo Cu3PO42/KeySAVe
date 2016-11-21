@@ -81,7 +81,7 @@ export default class PkmListReddit extends React.Component {
     return header + (ghosts === 'hide' ? pkm.filter(e => !e.isGhost) : pkm).map(e =>
       `| ${ghosts === 'mark' && e.isGhost ? '~' : ''}` +
       `B${('0' + (e.box + 1)).slice(-2)} | ${Math.floor(e.slot / 6) + 1},${e.slot % 6 + 1} | ` +
-      `${getSpecies(e.species, e.form, local)} (${genderString(e.gender)}) | ` +
+      `${getSpecies(e.species, e.form, e.version, local)} (${genderString(e.gender)}) | ` +
       `${local.natures[e.nature]} | ${local.abilities[e.ability]} | ` +
       (this.props.format.boldPerfectIVs ?
         ['Hp', 'Atk', 'Def', 'SpAtk', 'SpDef', 'Spe'].map(iv => e['iv' + iv] === 31 ? '**31**' : '' + e['iv' + iv]).join('.') :
