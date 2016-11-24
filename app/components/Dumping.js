@@ -166,7 +166,7 @@ export default class Dumping extends React.Component {
         <FilterContainer />
         <div className={`${styles.buttonRow} ${pokemon.first() ? '' : styles.hide}`}>
           <div className={styles.flexFill} />
-          <IconButton onClick={this.copyClipboard} tooltip="Copy output to clibboard"><CopyIcon /></IconButton>
+          <IconButton onClick={this.copyClipboard} tooltip="Copy output to clipboard"><CopyIcon /></IconButton>
           <IconButton onClick={this.saveOutput} tooltip="Save output as file"><SaveIcon /></IconButton>
           <IconButton onClick={this.exportPk6} tooltip={`Export .pk${generation} files`}><ArchiveIcon /></IconButton>
         </div>
