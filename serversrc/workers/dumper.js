@@ -124,18 +124,19 @@ async function mergeKeyFolder(args) {
       }
       try {
         const keyData = bufToArr(await fs.readFileAsync(filePath));
-        const { kind } = getStampAndKindFromKey(keyData, keyData.size);
+        const { kind } = getStampAndKindFromKey(keyData, keyData.length);
         switch (kind) {
           case 0:
             await store.setOrMergeSaveKey(new SaveKey(keyData));
+            ++counter;
             break;
           case 1:
             await store.setOrMergeBvKey(new BattleVideoKey(keyData));
+            ++counter;
             break;
           default:
             break;
         }
-        ++counter;
       } catch (e) {
         logger.info(`${file} is not a valid key.`);
       }
