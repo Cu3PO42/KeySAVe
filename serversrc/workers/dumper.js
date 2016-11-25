@@ -1,8 +1,10 @@
 import * as KeySAV from 'keysavcore';
-import SaveKey, { getStampAndKindFromKey } from 'keysavcore/save-key';
+import SaveKey from 'keysavcore/save-key';
 import BattleVideoKey from 'keysavcore/battle-video-key';
+import { getStampAndKindFromKey } from 'keysavcore/key-store';
 import * as path from 'path';
 import * as fs from 'fs-extra';
+import * as util from 'util';
 import Promise from 'bluebird';
 import logger from './logger';
 
@@ -64,7 +66,7 @@ async function breakFolder(args) {
       });
     process.send({ id: args.id });
   } catch (e) {
-    logger.error('An error occured trying to scan saves: ', e);
+    logger.error('An error occured trying to scan saves: ', util.inspect(e));
     process.send({ err: serializeError(e), id: args.id });
   }
 }
@@ -84,9 +86,9 @@ async function dumpSaveOrBv(args) {
     }
   } catch (e) {
     if (e.name === 'NotASaveOrBattleVideoError' || e.name === 'NoKeyAvailableError') {
-      logger.verbose('An error occured trying to open ', args.file, ': ', e);
+      logger.verbose('An error occured trying to open ', args.file, ': ', util.inspect(e));
     } else {
-      logger.error('An error occured trying to open ', args.file, ': ', e);
+      logger.error('An error occured trying to open ', args.file, ': ', util.inspect(e));
     }
     process.send({ err: serializeError(e), id: args.id });
   }
@@ -101,9 +103,9 @@ async function breakKey(args) {
     process.send({ res, id: args.id });
   } catch (e) {
     if (e.name === 'NotSameFileTypeError' || e.name === 'NotSameBattleVideoSlotError' || e.name === 'BattleVideoKeyAlreadyExistsError' || e.name === 'BattleVideoBreakError' || e.name === 'NotSameGameError' || e.name === 'SaveIdenticalError' || e.name === 'SaveKeyAlreadyExistsError' || e.name === 'NoBoxesError' || e.name === 'PokemonNotSuitableError' || e.name === 'BattleVideosNotSameGenerationError' || e.name === 'SavesNotSameGenerationError') {
-      logger.verbose('An error occured trying to create a key: ', e);
+      logger.verbose('An error occured trying to create a key: ', util.inspect(e));
     } else {
-      logger.error('An error occured trying to create a key: ', e);
+      logger.error('An error occured trying to create a key: ', util.inspect(e));
     }
     process.send({ err: serializeError(e), id: args.id });
   }
@@ -120,9 +122,9 @@ async function mergeKeyFolder(args) {
       if (stats.isDirectory()) {
         continue;
       }
-      const keyData = bufToArr(await fs.readFileAsync(filePath));
-      const { kind } = getStampAndKindFromKey(keyData);
       try {
+        const keyData = bufToArr(await fs.readFileAsync(filePath));
+        const { kind } = getStampAndKindFromKey(keyData, keyData.size);
         switch (kind) {
           case 0:
             await store.setOrMergeSaveKey(new SaveKey(keyData));
@@ -141,7 +143,7 @@ async function mergeKeyFolder(args) {
     logger.info(`Merged ${counter} files`);
     process.send({ id: args.id });
   } catch (e) {
-    logger.error('An error occured trying to merge keys: ', e);
+    logger.error('An error occured trying to merge keys: ', util.inspect(e));
     process.send({ err: serializeError(e), id: args.id });
   }
 }
