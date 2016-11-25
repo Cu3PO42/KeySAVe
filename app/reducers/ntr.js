@@ -102,5 +102,18 @@ export default handleActions({
       ...state,
       tradeOffsetError: payload
     };
+  },
+  REHYDRATE(state, payload) {
+    if (payload.reducer !== 'ntr') return state;
+
+    return {
+      ...state,
+      ...payload.state,
+      client: null,
+      intervalId: null,
+      inProgress: '',
+      connectionError: false,
+      tradeOffsetError: false
+    };
   }
 }, initialState);

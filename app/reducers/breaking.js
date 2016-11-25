@@ -62,5 +62,14 @@ export default handleActions({
       ...state,
       scanning: false
     };
+  },
+  REHYDRATE(state, payload) {
+    if (payload.reducer !== 'breaking') return state;
+
+    return {
+      ...state,
+      ...payload.state,
+      scanning: false
+    };
   }
 }, initialState);
