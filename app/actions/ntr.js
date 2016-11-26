@@ -1,7 +1,7 @@
 import { OPEN_FILE, addPokemon } from './file';
 import createAction from '../utils/createAction';
 import NtrClient from 'ntrclient';
-import { loadSav, Pkx } from 'keysavcore';
+import { loadSav, Pk6, PkBase } from 'keysavcore';
 import { copy } from 'keysavcore/util';
 import logger from '../logger';
 
@@ -90,9 +90,10 @@ export const ntrDumpBoxes = createAction(OPEN_FILE, async (client) => {
   logger.info('Dumped boxes from game');
   return {
     pokemon: reader.getAllPkx(),
-    goodKey: true,
+    keyProperties: true,
     type: 'SAV',
-    name: 'TEA Box Dump'
+    name: 'TEA Box Dump',
+    generation: 6
   };
 });
 
@@ -107,13 +108,14 @@ export const ntrDumpBattleBox = createAction(OPEN_FILE, async (client) => {
   logger.info('Dumped battle box from game');
   return {
     pokemon: reader.getAllPkx(),
-    goodKey: true,
+    keyProperties: true,
     type: 'SAV',
-    name: 'TEA Battle Box Dump'
+    name: 'TEA Battle Box Dump',
+    generation: 6
   };
 });
 
-const ntrInitializeTradeDump = createAction(OPEN_FILE, () => ({ pokemon: [], goodKey: true, type: 'SAV', name: 'TEA Trade Dump' }));
+const ntrInitializeTradeDump = createAction(OPEN_FILE, () => ({ pokemon: [], keyProperties: true, type: 'SAV', name: 'TEA Trade Dump', generation: 6 }));
 const ntrSetInProgress = createAction(NTR_SET_IN_PROGRESS, (inProgress, intervalId) => ({ inProgress, intervalId }));
 const ntrSetTradeOffsetError = createAction(NTR_SET_TRADE_OFFSET_ERROR);
 export const ntrAddKnownTradeOffset = createAction(NTR_ADD_KNOWN_TRADE_OFFSET, (offset, game) => ({ offset, game }));
@@ -159,9 +161,9 @@ export const ntrDumpTrade = client => async (dispatch, getState) => {
       return;
     }
     const ekxUi8 = new Uint8Array(ekxBuf.buffer, ekxBuf.byteOffset, ekxBuf.byteLength);
-    const pkxUi8 = Pkx.decrypt(ekxUi8);
+    const pkxUi8 = PkBase.decrypt(ekxUi8);
     const pkxDv = new DataView(pkxUi8.buffer, pkxUi8.byteOffset, pkxUi8.byteLength);
-    if (!Pkx.verifyChk(pkxUi8)) {
+    if (!PkBase.verifyChk(pkxUi8)) {
       return;
     }
     const key = pkxDv.getUint32(0) * 0x10000 + pkxDv.getUint16(6);
@@ -169,7 +171,7 @@ export const ntrDumpTrade = client => async (dispatch, getState) => {
       return;
     }
     knownPokemon.add(key);
-    const pkx = new Pkx(pkxUi8, Math.floor(count / 30), count % 30, false);
+    const pkx = new Pk6(pkxUi8, Math.floor(count / 30), count % 30, false);
     ++count;
     dispatch(addPokemon([pkx]));
   }, 250);
