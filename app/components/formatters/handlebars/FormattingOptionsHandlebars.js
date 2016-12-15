@@ -181,6 +181,7 @@ export default class FormattingOptionsHandlebars extends React.Component {
       esv() { return 'ESV'; },
       tid() { return 'Trainer ID'; },
       sid() { return 'Secret ID'; },
+      tid6() { return 'Trainer ID'; },
       tid7() { return 'Trainer ID'; },
       tsv() { return 'TSV'; },
       language() { return 'Language'; },

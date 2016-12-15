@@ -105,13 +105,16 @@ class PkmListHandlebars extends Component {
         return ('0000' + this.tsv).slice(-4);
       },
       tid() {
-        return ('00000' + this.tid).slice(-5);
+        return this.gameVersion <= 27 ? ('00000' + this.tid).slice(-5) : ('000000' + this.tid7).slice(-6);
       },
       sid() {
         return ('00000' + this.sid).slice(-5);
       },
       tid7() {
-        return ('000000' + this.tid7).slice(-6);
+        return this.gameVersion <= 27 ? 'N/A' : ('000000' + this.tid7).slice(-6);
+      },
+      tid6() {
+        return ('00000' + this.tid).slice(-5);
       },
       language() {
         return Localization[self.props.language].languageTags[this.otLang];
