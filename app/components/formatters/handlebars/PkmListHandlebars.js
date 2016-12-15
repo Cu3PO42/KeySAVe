@@ -196,9 +196,10 @@ class PkmListHandlebars extends Component {
         /* eslint-disable no-unused-vars */
         const local = Localization[self.props.language];
         const pkm = this;
+        const hbs = handlebars;
         /* eslint-enable no-unused-vars */
         /* eslint-disable no-eval */
-        return eval(expr);
+        return new handlebars.SafeString(eval(expr));
         /* eslint-enable no-eval */
       }
     };
