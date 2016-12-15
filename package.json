@@ -91,7 +91,7 @@
     "handlebars": "^4.0.5",
     "handlebars-helper-moment": "^0.2.0",
     "immutable": "^3.8.1",
-    "keysavcore": "^0.18.1",
+    "keysavcore": "^0.19.0",
     "lodash": "^4.13.1",
     "lodash.debounce": "^4.0.6",
     "material-ui": "^0.16.0",
