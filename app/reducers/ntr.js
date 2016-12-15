@@ -103,7 +103,7 @@ export default handleActions({
       tradeOffsetError: payload
     };
   },
-  REHYDRATE(state, payload) {
+  REHYDRATE(state, { payload }) {
     if (payload.reducer !== 'ntr') return state;
 
     return {
