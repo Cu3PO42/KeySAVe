@@ -24,7 +24,7 @@ const About = () => (
       Without them, this wouldn't have happened. Thank you for your hard work!
     </p>
     <p>
-      The included sprites were originally ripped by <ExternalLink href="http://www.pkparaiso.com">pkparaiso.com</ExternalLink> and only modified by me.
+      The included sprites were originally ripped by <ExternalLink href="http://www.pkparaiso.com">pkparaiso.com</ExternalLink> and <ExternalLink href="http://serebii.net">serebii.net</ExternalLink> and only modified by me.
     </p>
     <p>
       I would also like to thank everyone who helped me in the development of KeySAV<sup>e</sup> by testing,
