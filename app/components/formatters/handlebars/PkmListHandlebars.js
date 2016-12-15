@@ -165,7 +165,7 @@ class PkmListHandlebars extends Component {
         const pink = '#e546b9';
         const blue = '#549dc7';
         const colors = [blue, pink, pink];
-        let res = 0;
+        let res = '';
         for (let i = 0; i < markers.length; ++i) {
           const markVal = (this.markings >>> (i << 1)) & 3;
           if (markVal === 0) {
