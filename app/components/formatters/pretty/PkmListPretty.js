@@ -191,7 +191,8 @@ export default class PkmListPretty extends React.Component {
   getPlainText() {
     const local = Localization[this.props.language];
     const header = 'Box - Slot - Species (Gender) - Nature - Ability - HP.ATK.DEF.SPA.SPD.SPE - Hidden Power [ESV]';
-    return header + this.props.pokemon.map(e =>
+    const hideGhosts = this.props.format.ghosts === 'hide';
+    return header + this.props.pokemon.filter(e => this.props.filterFunction(e) && (!hideGhosts || !e.isGhost)).map(e =>
       `${e.isGhost ? '~' : ''}` +
       `Box ${pad2(e.box + 1)} - ${Math.floor(e.slot / 6) + 1},${e.slot % 6 + 1} - ` +
       `${getSpecies(e, local)} (${genderString(e.gender)}) - ` +

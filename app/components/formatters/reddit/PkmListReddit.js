@@ -78,7 +78,8 @@ export default class PkmListReddit extends React.Component {
     const local = Localization[this.props.language];
     const { ghosts } = this.props.format;
     const header = '| Box | Slot | Species (Gender) | Nature | Ability | HP.ATK.DEF.SPA.SPD.SPE | Hidden Power | ESV |\n|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|\n';
-    return header + (ghosts === 'hide' ? pkm.filter(e => !e.isGhost) : pkm).map(e =>
+    const hideGhosts = this.props.format.ghosts === 'hide';
+    return header + pkm.filter(e => this.props.filterFunction(e) && (!hideGhosts || !e.isGhost)).map(e =>
       `| ${ghosts === 'mark' && e.isGhost ? '~' : ''}` +
       `B${('0' + (e.box + 1)).slice(-2)} | ${Math.floor(e.slot / 6) + 1},${e.slot % 6 + 1} | ` +
       `${getSpecies(e.species, e.form, e.version, local)} (${genderString(e.gender)}) | ` +
@@ -176,7 +177,6 @@ export default class PkmListReddit extends React.Component {
   }
 
   render() {
-    // TODO fix highlighting of alternate rows
     if (!this.props.pokemon.first()) {
       return <div></div>;
     }
