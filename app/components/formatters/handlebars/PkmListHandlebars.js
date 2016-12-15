@@ -161,7 +161,7 @@ class PkmListHandlebars extends Component {
         const markers = [['●', '◯'], ['▲', '△'], ['■', '□'], ['♥', '♡'], ['★', '☆'], ['◆', '◇']];
         const pink = '#e546b9';
         const blue = '#549dc7';
-        const colors = [pink, blue];
+        const colors = [blue, pink, pink];
         let res = 0;
         for (let i = 0; i < markers.length; ++i) {
           const markVal = (this.markings >>> (i << 1)) & 3;
@@ -169,10 +169,10 @@ class PkmListHandlebars extends Component {
             res += markers[i][1];
           } else {
             const color = colors[markVal - 1];
-            res += `<span styles="color: ${color}">${markers[i][0]}</span>`;
+            res += `<span style="color: ${color};">${markers[i][0]}</span>`;
           }
         }
-        return res;
+        return new handlebars.SafeString(res);
       },
       regionName() {
         return Localization[self.props.language].regions[this.gameVersion];
