@@ -186,7 +186,7 @@ export const ntrDumpTrade = client => async (dispatch, getState) => {
     const pkx = PkBase.makePkm(pkxUi8, generation, Math.floor(count / 30), count % 30, false);
     ++count;
     dispatch(addPokemon([pkx]));
-  }, 250);
+  }, 100);
   dispatch(ntrSetInProgress('trade', intervalId));
 };
 export const ntrCancelInProgress = createAction(NTR_CANCEL_IN_PROGRESS, () => logger.info('Cancelled trade dump'));
