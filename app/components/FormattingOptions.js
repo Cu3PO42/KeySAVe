@@ -19,7 +19,8 @@ const languages = [
   <MenuItem key={4} value="fr" primaryText="French"/>,
   <MenuItem key={5} value="it" primaryText="Italian"/>,
   <MenuItem key={6} value="es" primaryText="Spanish"/>,
-  <MenuItem key={7} value="ko" primaryText="Korean"/>
+  <MenuItem key={7} value="ko" primaryText="Korean"/>,
+  <MenuItem key={8} value="zh" primaryText="Chinese"/>
 ];
 
 const FormattingOptions = ({ language, changeFormatLanguage, formattingOptions, current, currentIndex, plugins, addFormattingOption, cloneCurrentFormattingOption, updateCurrentFormattingOption, updateFormattingOption, selectFormattingOption, deleteCurrentFormattingOption, changeCurrentFormattingOptionName }) => (
