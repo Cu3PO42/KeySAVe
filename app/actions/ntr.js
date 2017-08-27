@@ -169,9 +169,6 @@ export const ntrDumpTrade = client => async (dispatch, getState) => {
   dispatch(ntrInitializeTradeDump(generation));
   const intervalId = setInterval(async () => {
     const ekxBuf = await client.readMemory(tradeOffset, 232, pid);
-    if (ekxBuf.readUInt32LE(0) === 0) {
-      return;
-    }
     const ekxUi8 = new Uint8Array(ekxBuf.buffer, ekxBuf.byteOffset, ekxBuf.byteLength);
     const pkxUi8 = PkBase.decrypt(ekxUi8);
     const pkxDv = new DataView(pkxUi8.buffer, pkxUi8.byteOffset, pkxUi8.byteLength);
