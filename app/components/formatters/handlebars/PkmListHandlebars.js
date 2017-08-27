@@ -120,7 +120,7 @@ class PkmListHandlebars extends Component {
         return Localization[self.props.language].languageTags[this.otLang];
       },
       genderString(gender) {
-        switch (gender) {
+        switch (0 + gender) {
           case 0:
             return '♂';
           case 1:
