@@ -47,9 +47,9 @@
     "cross-env": "^1.0.8",
     "css-loader": "^0.23.1",
     "del": "^2.2.0",
+    "electron": "^1.7.5",
     "electron-debug": "^1.0.0",
-    "electron-packager": "^7.0.2",
-    "electron": "^1.4.7",
+    "electron-packager": "github:cu3po42/electron-packager",
     "electron-rebuild": "^1.1.4",
     "eslint": "^2.10.2",
     "eslint-config-airbnb": "^9.0.1",
@@ -65,7 +65,7 @@
     "minimist": "^1.2.0",
     "mocha": "^2.5.3",
     "node-sass": "^3.7.0",
-    "react-addons-test-utils": "^15.1.0",
+    "react-addons-test-utils": "^15.4.0",
     "redux-devtools": "^3.3.1",
     "redux-devtools-dock-monitor": "^1.1.1",
     "redux-devtools-log-monitor": "^1.0.11",
@@ -85,7 +85,6 @@
     "dashbars": "github:cu3po42/dashbars",
     "electron-gh-releases-updater": "^0.8.0",
     "electron-ipc-tunnel": "^3.1.0",
-    "electron-packager": "github:cu3po42/electron-packager",
     "fbjs-scripts": "^0.7.0",
     "fs-extra": "^0.30.0",
     "handlebars": "^4.0.5",
@@ -99,7 +98,6 @@
     "ntrclient": "github:cu3po42/NTRClientJS",
     "pure-render-decorator": "^1.1.1",
     "react": "^15.4.0",
-    "react-addons-test-utils": "^15.4.0",
     "react-dom": "^15.4.0",
     "react-height": "^2.1.0",
     "react-markdown": "^2.2.0",
@@ -128,7 +126,7 @@
     "winston"
   ],
   "devEngines": {
-    "node": "4.x || 5.x || 6.x || 7.x",
+    "node": "4.x || 5.x || 6.x || 7.x || 8.x",
     "npm": "2.x || 3.x"
   }
 }
