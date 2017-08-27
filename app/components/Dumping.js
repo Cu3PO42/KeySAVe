@@ -91,11 +91,12 @@ export default class Dumping extends React.Component {
         }
         var fileName = sanitize(`${('000' + pkm.species).slice(-3)} - ${pkm.nickname} - ${pkm.pid.toString(16)} - ${pkm.ec.toString(16)}`);
         let counter = 0;
-        if (_.includes(files, fileName + '.pk6')) {
+        const extension = pkm.version === 6 ? '.pk6' : '.pk7';
+        if (_.includes(files, fileName + extension)) {
           ++counter;
-          while (_.includes(files, fileName + ' (' + counter + ').pk6')) ++counter;
+          while (_.includes(files, fileName + ' (' + counter + ')' + extension)) ++counter;
         }
-        fileName += (counter ? ' (' + counter + ')' : '') + (pkm.version === 6 ? '.pk6' : '.pk7');
+        fileName += (counter ? ' (' + counter + ')' : '') + extension;
         files.push(fileName);
         await fs.writeFileAsync(path.join(dbDirectory, fileName), new Buffer(pkm.data));
         return;
