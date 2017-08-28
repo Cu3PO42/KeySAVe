@@ -240,7 +240,7 @@ class PkmListHandlebars extends Component {
   getShowBoxMap = createSelector(
     this.getPokemonGroupedByBox,
     () => this.props.filterFunction,
-    (pokemon, filter) => pokemon.map((pkm) => pkm.some(filter)).valueSeq().cacheResult()
+    (pokemon, filter) => pokemon.map((pkm) => pkm.some(filter))
   )
 
   renderBox(pkm) {
