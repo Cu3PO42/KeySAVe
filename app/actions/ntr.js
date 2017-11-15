@@ -15,7 +15,7 @@ export const NTR_CANCEL_IN_PROGRESS = 'NTR_CANCEL_IN_PROGRESS';
 export const NTR_ADD_KNOWN_TRADE_OFFSET = 'NTR_ADD_KNOWN_TRADE_OFFSET';
 export const NTR_SET_TRADE_OFFSET_ERROR = 'NTR_SET_TRADE_OFFSET_ERROR';
 
-const gameNames = ['kujira-1' /* X */, 'kujira-2' /* Y */, 'sango-1' /* OR */, 'sango-2' /* AS */, 'niji_loc' /* SuMo */];
+const gameNames = ['kujira-1' /* X */, 'kujira-2' /* Y */, 'sango-1' /* OR */, 'sango-2' /* AS */, 'niji_loc' /* SuMo */, 'momiji' /* USUM */];
 const gameOffsets = {
   xy: {
     boxes: 0x8C861C8,
@@ -30,6 +30,11 @@ const gameOffsets = {
   sm: {
     boxes: 0x330D9838,
     trade: 0x32A870C8,
+    generation: 7
+  },
+  usum: {
+    boxes: 0x33015AB0,
+    trade: 0x32993E6C,
     generation: 7
   }
 };
@@ -71,8 +76,8 @@ async function getOffsets(client) {
   logger.info(`Game running: ${name}`);
   return {
     pid,
-    game: name.startsWith('kujira') ? 'xy' : name.startsWith('sango') ? 'oras' : 'niji_loc',
-    offsets: name.startsWith('kujira') ? gameOffsets.xy : name.startsWith('sango') ? gameOffsets.oras : gameOffsets.sm
+    game: name.startsWith('kujira') ? 'xy' : name.startsWith('sango') ? 'oras' : name === 'niji_loc' ? 'sm' : 'usum',
+    offsets: name.startsWith('kujira') ? gameOffsets.xy : name.startsWith('sango') ? gameOffsets.oras : name === 'niji_loc' ? gameOffsets.sm : gameOffsets.usum
   };
 }
 
