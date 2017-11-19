@@ -1,6 +1,7 @@
 import React from 'react';
 import { Localization } from 'keysavcore';
 import { createSelector } from 'reselect';
+import PropTypes from 'prop-types';
 import pureRender from 'pure-render-decorator';
 import styles from './PkmListReddit.module.scss';
 
@@ -26,11 +27,11 @@ function getSpecies(id, form, version, local) {
 @pureRender
 class Pkm extends React.Component {
   static propTypes= {
-    pkm: React.PropTypes.object,
-    language: React.PropTypes.string,
-    format: React.PropTypes.object,
-    hidden: React.PropTypes.bool,
-    isEven: React.PropTypes.bool
+    pkm: PropTypes.object,
+    language: PropTypes.string,
+    format: PropTypes.object,
+    hidden: PropTypes.bool,
+    isEven: PropTypes.bool
   };
 
   render() {
@@ -68,10 +69,10 @@ class Pkm extends React.Component {
 @pureRender
 export default class PkmListReddit extends React.Component {
   static propTypes = {
-    pokemon: React.PropTypes.object,
-    filterFunction: React.PropTypes.func.isRequired,
-    language: React.PropTypes.string,
-    format: React.PropTypes.object
+    pokemon: PropTypes.object,
+    filterFunction: PropTypes.func.isRequired,
+    language: PropTypes.string,
+    format: PropTypes.object
   };
 
   getPlainTextBox(pkm) {

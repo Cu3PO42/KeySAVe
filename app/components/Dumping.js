@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import DumpingFileOpener from '../components/DumpingFileOpener';
 import FilterContainer from '../containers/FilterContainer';
@@ -21,20 +22,20 @@ import styles from './Dumping.module.scss';
 
 export default class Dumping extends React.Component {
   static propTypes = {
-    name: React.PropTypes.string.isRequired,
-    openFileWatch: React.PropTypes.func.isRequired,
-    type: React.PropTypes.string.isRequired,
-    keyProperties: React.PropTypes.oneOfType([React.PropTypes.boolean, React.PropTypes.object]),
-    generation: React.PropTypes.number,
-    filter: React.PropTypes.object.isRequired,
-    filterFunction: React.PropTypes.func.isRequired,
-    setFilterBv: React.PropTypes.func.isRequired,
-    setFilterSav: React.PropTypes.func.isRequired,
-    pokemon: React.PropTypes.object.isRequired,
-    error: React.PropTypes.object,
-    format: React.PropTypes.object.isRequired,
-    openDialog: React.PropTypes.func.isRequired,
-    dismissError: React.PropTypes.func.isRequired
+    name: PropTypes.string.isRequired,
+    openFile: PropTypes.func.isRequired,
+    type: PropTypes.string.isRequired,
+    keyProperties: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
+    generation: PropTypes.number,
+    filter: PropTypes.object.isRequired,
+    filterFunction: PropTypes.func.isRequired,
+    setFilterBv: PropTypes.func.isRequired,
+    setFilterSav: PropTypes.func.isRequired,
+    pokemon: PropTypes.object.isRequired,
+    error: PropTypes.object,
+    format: PropTypes.object.isRequired,
+    openDialog: PropTypes.func.isRequired,
+    dismissError: PropTypes.func.isRequired
   };
 
   getText() {
@@ -148,12 +149,12 @@ export default class Dumping extends React.Component {
   }
 
   render() {
-    const { name, openFileWatch, type, keyProperties, generation, filter, setFilterBv, setFilterSav, pokemon, error, format, dismissError, filterFunction } = this.props;
+    const { name, openFile, type, keyProperties, generation, filter, setFilterBv, setFilterSav, pokemon, error, format, dismissError, filterFunction } = this.props;
     return (
       <div>
         <DumpingFileOpener
           file={name}
-          fileOpened={openFileWatch}
+          fileOpened={openFile}
           backup={this.backupFile}
           type={type}
           keyProperties={keyProperties}

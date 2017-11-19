@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Paper from 'material-ui/Paper';
@@ -120,10 +121,10 @@ function compile(format) {
 
 export default class PkmListLegacy extends React.Component {
   static propTypes = {
-    pokemon: React.PropTypes.object,
-    filterFunction: React.PropTypes.func.isRequired,
-    language: React.PropTypes.string,
-    format: React.PropTypes.object
+    pokemon: PropTypes.object,
+    filterFunction: PropTypes.func.isRequired,
+    language: PropTypes.string,
+    format: PropTypes.object
   };
 
   getPlainText() {

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Component } from 'react';
 import { Tabs, Tab } from 'material-ui';
@@ -14,11 +15,11 @@ const tabs = ['dumping', 'options', 'breaking', 'about'];
 
 export default class Home extends Component {
   static propTypes = {
-    params: React.PropTypes.object
+    params: PropTypes.object
   }
 
   static contextTypes = {
-    router: React.PropTypes.object.isRequired
+    router: PropTypes.object.isRequired
   }
 
   tabChanged = (tab) => {

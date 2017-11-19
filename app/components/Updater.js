@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -8,11 +9,11 @@ import styles from './Updater.module.scss';
 
 export default class Updater extends React.Component {
   static propTypes = {
-    setUpdateAvailable: React.PropTypes.func.isRequired,
-    setProgress: React.PropTypes.func.isRequired,
-    dismissUpdate: React.PropTypes.func.isRequired,
-    update: React.PropTypes.object,
-    progress: React.PropTypes.number
+    setUpdateAvailable: PropTypes.func.isRequired,
+    setProgress: PropTypes.func.isRequired,
+    dismissUpdate: PropTypes.func.isRequired,
+    update: PropTypes.object,
+    progress: PropTypes.number
   };
 
   ipcClient = new IpcClient();

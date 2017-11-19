@@ -3,6 +3,7 @@ import Paper from 'material-ui/Paper';
 import { Localization } from 'keysavcore';
 import backgroundColors from './background-colors.json';
 import sprites from '../../../resources/sprites.json';
+import PropTypes from 'prop-types';
 import pureRender from 'pure-render-decorator';
 import { createSelector } from 'reselect';
 import spritesheetPath from 'file-loader!../../../resources/sprites.png';
@@ -86,8 +87,8 @@ function genderString(gender) {
 @pureRender
 class PkmData extends React.Component {
   static propTypes = {
-    pkm: React.PropTypes.object,
-    language: React.PropTypes.string
+    pkm: PropTypes.object,
+    language: PropTypes.string
   };
 
   render() {
@@ -142,14 +143,14 @@ class PkmData extends React.Component {
 @pureRender
 class Pkm extends React.Component {
   static propTypes = {
-    pkm: React.PropTypes.object,
-    filterFunction: React.PropTypes.func.isRequired,
-    language: React.PropTypes.string,
-    format: React.PropTypes.object
+    pkm: PropTypes.object,
+    filterFunction: PropTypes.func.isRequired,
+    language: PropTypes.string,
+    format: PropTypes.object
   };
 
   static contextTypes = {
-    store: React.PropTypes.object
+    store: PropTypes.object
   };
 
   render() {
@@ -182,10 +183,10 @@ class Pkm extends React.Component {
 @pureRender
 export default class PkmListPretty extends React.Component {
   static propTypes = {
-    pokemon: React.PropTypes.object,
-    filterFunction: React.PropTypes.func.isRequired,
-    language: React.PropTypes.string,
-    format: React.PropTypes.object
+    pokemon: PropTypes.object,
+    filterFunction: PropTypes.func.isRequired,
+    language: PropTypes.string,
+    format: PropTypes.object
   };
 
   getPlainText() {

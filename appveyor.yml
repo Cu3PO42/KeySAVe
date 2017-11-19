@@ -1,5 +1,5 @@
 environment:
-    nodejs_version: 6
+    nodejs_version: 8
     GYP_MSVS_VERSION: 2015
 
 os: Visual Studio 2015
@@ -10,20 +10,18 @@ install:
     - ps: Install-Product node $env:nodejs_version
     # install modules
     - node --version
-    - npm --version
-    - npm install -g npm@3
-    - npm --version
-    - npm install
+    - yarn --version
+    - yarn install
 
 build_script:
-    - npm run package
+    - yarn run package
 
 platform: x86
 
 cache:
     - node_modules
-    - nativedeps/node_modules
     - cache
+    - "%LOCALAPPDATA%\\Yarn"
 
 artifacts:
     - path: release\*.zip

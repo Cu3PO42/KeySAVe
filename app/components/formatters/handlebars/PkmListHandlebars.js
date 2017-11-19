@@ -4,6 +4,7 @@ import Paper from 'material-ui/Paper';
 import handlebars from 'handlebars';
 import dashbars from 'dashbars';
 import helperMoment from 'handlebars-helper-moment';
+import PropTypes from 'prop-types';
 import pureRender from 'pure-render-decorator';
 import { createSelector } from 'reselect';
 import { Localization, Calculator as StatCalculator } from 'keysavcore';
@@ -19,10 +20,10 @@ const emptyString = '';
 @pureRender
 class PkmListHandlebars extends Component {
   static propTypes = {
-    pokemon: React.PropTypes.object,
-    filterFunction: React.PropTypes.func.isRequired,
-    language: React.PropTypes.string,
-    format: React.PropTypes.object
+    pokemon: PropTypes.object,
+    filterFunction: PropTypes.func.isRequired,
+    language: PropTypes.string,
+    format: PropTypes.object
   };
 
   constructor(...args) {

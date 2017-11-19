@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Paper from 'material-ui/Paper';
 import MenuItem from 'material-ui/MenuItem';
@@ -99,7 +100,7 @@ const FormattingOptions = ({ language, changeFormatLanguage, formattingOptions, 
 );
 
 FormattingOptions.propTypes = {
-  language: React.PropTypes.string.isRequired,
-  changeFormatLanguage: React.PropTypes.func.isRequired
+  language: PropTypes.string.isRequired,
+  changeFormatLanguage: PropTypes.func.isRequired
 };
 export default FormattingOptions;

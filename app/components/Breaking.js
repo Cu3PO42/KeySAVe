@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import FileOpener from './FileOpener';
 import { send as ipcSend } from 'electron-ipc-tunnel/client';
@@ -191,23 +192,23 @@ const errorMessages = {
 
 export default class Breaking extends React.Component {
   static propTypes = {
-    file1: React.PropTypes.string.isRequired,
-    file1Type: React.PropTypes.string.isRequired,
-    file2: React.PropTypes.string.isRequired,
-    file2Type: React.PropTypes.string.isRequired,
-    breakState: React.PropTypes.string.isRequired,
-    scanning: React.PropTypes.bool.isRequired,
-    reply: React.PropTypes.object,
-    openFile1: React.PropTypes.func.isRequired,
-    openFile2: React.PropTypes.func.isRequired,
-    breakKey: React.PropTypes.func.isRequired,
-    dismissBreakState: React.PropTypes.func.isRequired,
-    scanFolder: React.PropTypes.func.isRequired,
-    scanFolderFinish: React.PropTypes.func.isRequired
+    file1: PropTypes.string.isRequired,
+    file1Type: PropTypes.string.isRequired,
+    file2: PropTypes.string.isRequired,
+    file2Type: PropTypes.string.isRequired,
+    breakState: PropTypes.string.isRequired,
+    scanning: PropTypes.bool.isRequired,
+    reply: PropTypes.object,
+    openFile1: PropTypes.func.isRequired,
+    openFile2: PropTypes.func.isRequired,
+    breakKey: PropTypes.func.isRequired,
+    dismissBreakState: PropTypes.func.isRequired,
+    scanFolder: PropTypes.func.isRequired,
+    scanFolderFinish: PropTypes.func.isRequired
   }
 
   static contextTypes = {
-    store: React.PropTypes.object
+    store: PropTypes.object
   };
 
   break = () => this.props.breakKey(this.props.file1, this.props.file2);

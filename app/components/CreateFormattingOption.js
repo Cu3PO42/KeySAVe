@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import IconButton from 'material-ui/IconButton';
 import AddIcon from 'material-ui/svg-icons/content/add';
@@ -9,8 +10,8 @@ import FlatButton from 'material-ui/FlatButton';
 
 export default class CreateFormattingOption extends React.Component {
   static propTypes = {
-    optionCreated: React.PropTypes.func,
-    plugins: React.PropTypes.object
+    optionCreated: PropTypes.func,
+    plugins: PropTypes.object
   };
 
   state = {

@@ -6,6 +6,7 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import FileCloudDownload from 'material-ui/svg-icons/file/cloud-download';
 import NtrContainer from '../containers/NtrContainer';
+import PropTypes from 'prop-types';
 import pureRender from 'pure-render-decorator';
 import styles from './DumpingFileOpener.module.scss';
 import { createSelector } from 'reselect';
@@ -30,17 +31,17 @@ const fileOptions = {
 @pureRender
 class DumpingFileOpener extends Component {
   static propTypes = {
-    file: React.PropTypes.string,
-    fileOpened: React.PropTypes.func,
-    backup: React.PropTypes.func,
-    type: React.PropTypes.string,
-    keyProperties: React.PropTypes.oneOfType([React.PropTypes.boolean, React.PropTypes.object]),
-    generation: React.PropTypes.number,
-    bvFilterChanged: React.PropTypes.func,
-    savFilterChanged: React.PropTypes.func,
-    lowerBox: React.PropTypes.number,
-    upperBox: React.PropTypes.number,
-    teamSelected: React.PropTypes.number
+    file: PropTypes.string,
+    fileOpened: PropTypes.func,
+    backup: PropTypes.func,
+    type: PropTypes.string,
+    keyProperties: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
+    generation: PropTypes.number,
+    bvFilterChanged: PropTypes.func,
+    savFilterChanged: PropTypes.func,
+    lowerBox: PropTypes.number,
+    upperBox: PropTypes.number,
+    teamSelected: PropTypes.number
   };
 
   lowerBoxChanged = (e, i, value) => {

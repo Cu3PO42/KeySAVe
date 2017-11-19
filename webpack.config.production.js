@@ -17,20 +17,20 @@ config.output.publicPath = '../dist/';
 config.module.loaders.push({
   test: /^((?!\.module).)*\.css$/,
   loader: ExtractTextPlugin.extract({
-    fallbackLoader: 'style-loader',
-    loader: 'css-loader'
+    fallback: 'style-loader',
+    use: 'css-loader'
   })
 }, {
   test: /\.module\.css$/,
   loader: ExtractTextPlugin.extract({
-    fallbackLoader: 'style-loader',
-    loader: 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
+    fallback: 'style-loader',
+    use: 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
   })
 }, {
   test: /^((?!\.module).)*\.scss$/,
   loader: ExtractTextPlugin.extract({
-    fallbackLoader: 'style-loader',
-    loader: [
+    fallback: 'style-loader',
+    use: [
       'css-loader',
       'sass-loader'
     ]
@@ -38,8 +38,8 @@ config.module.loaders.push({
 }, {
   test: /\.module\.scss$/,
   loader: ExtractTextPlugin.extract({
-    fallbackLoader: 'style-loader',
-    loader: [
+    fallback: 'style-loader',
+    use: [
       'css-loader?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
       'sass-loader?sourceMap'
     ]

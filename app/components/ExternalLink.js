@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { remote } from 'electron';
 const { openExternal } = remote.require('electron').shell;
@@ -11,6 +12,6 @@ const ExternalLink = (props) => (
   <a {...props} onClick={openLink}>{props.children}</a>
 );
 ExternalLink.propTypes = {
-  children: React.PropTypes.node.isRequired
+  children: PropTypes.node.isRequired
 };
 export default ExternalLink;

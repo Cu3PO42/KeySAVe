@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
@@ -10,11 +11,11 @@ import styles from './FormattingOptionsHandlebars.module.scss';
 
 export default class FormattingOptionsHandlebars extends React.Component {
   static propTypes = {
-    updateFormat: React.PropTypes.func.isRequired,
-    updateCurrentFormat: React.PropTypes.func.isRequired,
-    format: React.PropTypes.object.isRequired,
-    index: React.PropTypes.number.isRequired,
-    isDefault: React.PropTypes.bool
+    updateFormat: PropTypes.func.isRequired,
+    updateCurrentFormat: PropTypes.func.isRequired,
+    format: PropTypes.object.isRequired,
+    index: PropTypes.number.isRequired,
+    isDefault: PropTypes.bool
   }
 
   state = {
@@ -210,7 +211,7 @@ export default class FormattingOptionsHandlebars extends React.Component {
             className={styles.input}
             hintText="Header"
             fullWidth
-            multiline
+            multiLine
             disabled={this.props.isDefault}
           />
           <IconButton disabled={this.props.isDefault} onClick={this.generateHeader}><ReloadIcon /></IconButton>
@@ -235,7 +236,7 @@ export default class FormattingOptionsHandlebars extends React.Component {
             hintText="Box Header"
             errorText={this.getBoxHeaderErrorText()}
             fullWidth
-            multiline
+            multiLine
             disabled={this.props.isDefault}
           />
         </div>
