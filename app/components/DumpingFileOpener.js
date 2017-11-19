@@ -35,7 +35,7 @@ class DumpingFileOpener extends Component {
     fileOpened: PropTypes.func,
     backup: PropTypes.func,
     type: PropTypes.string,
-    keyProperties: PropTypes.oneOfType([PropTypes.boolean, PropTypes.object]),
+    keyProperties: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
     generation: PropTypes.number,
     bvFilterChanged: PropTypes.func,
     savFilterChanged: PropTypes.func,

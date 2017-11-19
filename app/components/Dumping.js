@@ -25,7 +25,7 @@ export default class Dumping extends React.Component {
     name: PropTypes.string.isRequired,
     openFile: PropTypes.func.isRequired,
     type: PropTypes.string.isRequired,
-    keyProperties: PropTypes.oneOfType([PropTypes.boolean, PropTypes.object]),
+    keyProperties: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
     generation: PropTypes.number,
     filter: PropTypes.object.isRequired,
     filterFunction: PropTypes.func.isRequired,
