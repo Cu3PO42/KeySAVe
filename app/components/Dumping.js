@@ -22,7 +22,7 @@ import styles from './Dumping.module.scss';
 export default class Dumping extends React.Component {
   static propTypes = {
     name: React.PropTypes.string.isRequired,
-    openFileWatch: React.PropTypes.func.isRequired,
+    openFile: React.PropTypes.func.isRequired,
     type: React.PropTypes.string.isRequired,
     keyProperties: React.PropTypes.oneOfType([React.PropTypes.boolean, React.PropTypes.object]),
     generation: React.PropTypes.number,
@@ -148,12 +148,12 @@ export default class Dumping extends React.Component {
   }
 
   render() {
-    const { name, openFileWatch, type, keyProperties, generation, filter, setFilterBv, setFilterSav, pokemon, error, format, dismissError, filterFunction } = this.props;
+    const { name, openFile, type, keyProperties, generation, filter, setFilterBv, setFilterSav, pokemon, error, format, dismissError, filterFunction } = this.props;
     return (
       <div>
         <DumpingFileOpener
           file={name}
-          fileOpened={openFileWatch}
+          fileOpened={openFile}
           backup={this.backupFile}
           type={type}
           keyProperties={keyProperties}

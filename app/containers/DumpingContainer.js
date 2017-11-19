@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Seq } from 'immutable';
-import { openFile, openFileWatch, dismissError } from '../actions/file';
+import { openFile, dismissError } from '../actions/file';
 import { setFilterBv, setFilterSav } from '../actions/filter';
 import { openDialog } from '../actions/dialog';
 import { send } from 'electron-ipc-tunnel/client';
@@ -108,7 +108,7 @@ const mapStateToProps = createSelector(
 );
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ openFile, openFileWatch, dismissError, setFilterSav, setFilterBv, openDialog }, dispatch);
+  return bindActionCreators({ openFile, dismissError, setFilterSav, setFilterBv, openDialog }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dumping);
