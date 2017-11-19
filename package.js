@@ -20,8 +20,9 @@ const shouldBuildAll = argv.all || false;
 const DEFAULT_OPTS = {
   dir: './',
   name: appName,
-  asar: true,
+  asar: false,
   prune: true,
+  packageManager: 'yarn',
   'app-bundle-id': 'com.cu3po42.keysave',
   'app-category-type': 'public.app-category.productivity',
   'app-version': pkg.version,
@@ -156,8 +157,8 @@ function pack(plat, arch, cb) {
           cb(err);
           return;
         }
-        console.log('Packaging update file.');
-        zipUpdate(cb);
+        //console.log('Packaging update file.');
+        //zipUpdate(cb);
       });
     }).catch(cb);
   });
