@@ -3,10 +3,12 @@ before_install:
     - source /tmp/.nvm/nvm.sh;
     - nvm install $NODE_VERSION;
     - nvm use --delete-prefix $NODE_VERSION;
+    - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.3.2
+    - export PATH=$HOME/.yarn/bin:$PATH
 install:
-    - npm install
+    - yarn install
 script:
-    - npm run package
+    - yarn run package
 sudo: false
 deploy:
     provider: releases
@@ -21,9 +23,9 @@ deploy:
         tags: true
 
 cache:
+    yarn: true
     directories:
         - node_modules
-        - nativedeps/node_modules
         - cache
 
 notifications:
@@ -32,14 +34,14 @@ notifications:
 matrix:
     include:
         - os: osx
-          osx_image: xcode7.2
+          osx_image: xcode7.3
           compiler: clang
           env:
-              - NODE_VERSION="6"
+              - NODE_VERSION="8"
         - os: linux
 #          compiler: clang-3.8
           env:
-              - NODE_VERSION="6"
+              - NODE_VERSION="8"
                 CXX=g++-4.8
           addons:
               apt:
