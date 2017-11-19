@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
@@ -9,21 +10,21 @@ import IconButton from 'material-ui/IconButton';
 
 export default class NtrMenu extends React.Component {
   static propTypes = {
-    menuOpen: React.PropTypes.bool.isRequired,
-    ip: React.PropTypes.string.isRequired,
-    client: React.PropTypes.object,
-    inProgress: React.PropTypes.string.isRequired,
-    connectionError: React.PropTypes.bool.isRequired,
-    tradeOffsetError: React.PropTypes.bool.isRequired,
+    menuOpen: PropTypes.bool.isRequired,
+    ip: PropTypes.string.isRequired,
+    client: PropTypes.object,
+    inProgress: PropTypes.string.isRequired,
+    connectionError: PropTypes.bool.isRequired,
+    tradeOffsetError: PropTypes.bool.isRequired,
 
-    openNtrMenu: React.PropTypes.func.isRequired,
-    setNtrIp: React.PropTypes.func.isRequired,
-    ntrConnect: React.PropTypes.func.isRequired,
-    ntrDisconnect: React.PropTypes.func.isRequired,
-    ntrDumpBoxes: React.PropTypes.func.isRequired,
-    ntrDumpBattleBox: React.PropTypes.func.isRequired,
-    ntrDumpTrade: React.PropTypes.func.isRequired,
-    ntrCancelInProgress: React.PropTypes.func.isRequired
+    openNtrMenu: PropTypes.func.isRequired,
+    setNtrIp: PropTypes.func.isRequired,
+    ntrConnect: PropTypes.func.isRequired,
+    ntrDisconnect: PropTypes.func.isRequired,
+    ntrDumpBoxes: PropTypes.func.isRequired,
+    ntrDumpBattleBox: PropTypes.func.isRequired,
+    ntrDumpTrade: PropTypes.func.isRequired,
+    ntrCancelInProgress: PropTypes.func.isRequired
   };
 
   openMenu = () => this.props.openNtrMenu(true)
