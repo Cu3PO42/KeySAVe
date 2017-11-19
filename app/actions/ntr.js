@@ -180,6 +180,9 @@ export const ntrDumpTrade = client => async (dispatch, getState) => {
     if (!PkBase.verifyChk(pkxUi8)) {
       return;
     }
+    if (pkxDv.getUint16(0x8, true) === 0) {
+      return;
+    }
     const key = pkxDv.getUint32(0) * 0x10000 + pkxDv.getUint16(6);
     if (knownPokemon.has(key)) {
       return;
