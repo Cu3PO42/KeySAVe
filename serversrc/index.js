@@ -7,6 +7,7 @@ import './server/import-keysav2';
 import * as fs from 'fs-extra';
 import logger from './logger';
 import { version } from '../package.json';
+import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 
 let menu;
 let template;
@@ -46,7 +47,9 @@ app.on('ready', () => {
   }
 
   if (process.env.NODE_ENV === 'development') {
-    BrowserWindow.addDevToolsExtension('./react-devtools');
+    installExtension(REACT_DEVELOPER_TOOLS)
+      .then(name => console.log(`Added Extension: ${name}`))
+      .catch(err => console.log(`An error occured: `, err));
   }
 
   mainWindow.on('closed', () => {
