@@ -150,7 +150,7 @@ export default class FormattingOptionsLegacy extends React.Component {
             className={styles.input}
             hintText="Header"
             fullWidth
-            multiline
+            multiLine
             disabled={this.props.isDefault}
           />
           <IconButton disabled={this.props.isDefault} onClick={this.generateHeader}><ReloadIcon /></IconButton>

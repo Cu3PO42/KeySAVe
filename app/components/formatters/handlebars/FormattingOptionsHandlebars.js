@@ -211,7 +211,7 @@ export default class FormattingOptionsHandlebars extends React.Component {
             className={styles.input}
             hintText="Header"
             fullWidth
-            multiline
+            multiLine
             disabled={this.props.isDefault}
           />
           <IconButton disabled={this.props.isDefault} onClick={this.generateHeader}><ReloadIcon /></IconButton>
@@ -236,7 +236,7 @@ export default class FormattingOptionsHandlebars extends React.Component {
             hintText="Box Header"
             errorText={this.getBoxHeaderErrorText()}
             fullWidth
-            multiline
+            multiLine
             disabled={this.props.isDefault}
           />
         </div>
