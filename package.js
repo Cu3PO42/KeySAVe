@@ -63,20 +63,10 @@ const DEFAULT_OPTS = {
   ].concat(devDeps.map(name => `/node_modules/${name}($|/)`))
 };
 
-if (DEFAULT_OPTS.version) {
-  buildServer(startPack);
-} else {
-  // use the same version as the currently-installed electron-prebuilt
-  exec('npm list electron', (err, stdout) => {
-    if (err) {
-      DEFAULT_OPTS.version = '1.4.7';
-    } else {
-      DEFAULT_OPTS.version = stdout.split('electron@')[1].replace(/\s/g, '');
-    }
-
-    buildServer(startPack);
-  });
+if (!DEFAULT_OPTS.version) {
+  DEFAULT_OPTS.version = pkg.devDependencies.electron.replace(/[\^\~]/g, '');
 }
+buildServer(startPack);
 
 const zipElectron = process.platform === 'darwin' ? function zipElectronDarwin(cb) {
   spawn('ditto', ['-ck', '--sequesterRsrc', '--keepParent',
