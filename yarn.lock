@@ -58,7 +58,7 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@types/node@*":
+"@types/node@*", "@types/node@^8.0.26":
   version "8.0.53"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.53.tgz#396b35af826fa66aad472c8cb7b8d5e277f4e6d8"
 
@@ -1035,7 +1035,7 @@ block-stream@*:
   dependencies:
     inherits "~2.0.0"
 
-bluebird@^3.1.1, bluebird@^3.3.5, bluebird@^3.4.0, bluebird@^3.5.0, bluebird@^3.5.1:
+bluebird@^3.1.1, bluebird@^3.4.0, bluebird@^3.5.0, bluebird@^3.5.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.1.tgz#d9551f9de98f1fcda1e683d17ee91a0602ee2eb9"
 
@@ -4844,9 +4844,9 @@ npm-run-path@^2.0.0:
 
 "ntrclient@github:cu3po42/NTRClientJS":
   version "0.1.0"
-  resolved "https://codeload.github.com/cu3po42/NTRClientJS/tar.gz/ccc443a9c16fb3655a22f1b2be6eccc674b25cd0"
+  resolved "https://codeload.github.com/cu3po42/NTRClientJS/tar.gz/9aa727f1476b8f7f910ee09a708ca64684f110c9"
   dependencies:
-    bluebird "^3.3.5"
+    "@types/node" "^8.0.26"
     pullstream "^1.0.0"
 
 nugget@^2.0.0:
