@@ -93,7 +93,7 @@
     "lodash.debounce": "^4.0.6",
     "material-ui": "^0.19.4",
     "node-libs-browser": "^2.1.0",
-    "ntrclient": "github:cu3po42/NTRClientJS",
+    "ntrclient": "github:Cu3PO42/NTRClientJS#321edc0f788e97859107717c2af1b0653cee362c",
     "prop-types": "^15.6.0",
     "pure-render-decorator": "^1.1.1",
     "react": "^16.1.1",
