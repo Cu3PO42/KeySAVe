@@ -34,7 +34,7 @@ const gameOffsets = {
   },
   usum: {
     boxes: 0x33015AB0,
-    trade: 0x32993E6C,
+    trade: 0x329AEB36,
     generation: 7
   }
 };
