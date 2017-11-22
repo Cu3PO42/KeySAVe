@@ -20,7 +20,7 @@ const shouldBuildAll = argv.all || false;
 const DEFAULT_OPTS = {
   dir: './',
   name: appName,
-  asar: false,
+  asar: true,
   prune: true,
   packageManager: 'yarn',
   'app-bundle-id': 'com.cu3po42.keysave',
