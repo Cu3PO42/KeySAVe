@@ -9,17 +9,12 @@
   },
   "main": "./serverlib",
   "scripts": {
-    "start": "cross-env NODE_ENV=production electron ./",
-    "build-server": "cross-env NODE_ENV=production babel serversrc -d serverlib",
     "hot-server": "webpack-dev-server --hot --port 3000 --config webpack.config.development.js",
-    "build-client": "cross-env NODE_ENV=production webpack --config webpack.config.production.js",
-    "start-hot": "cross-env HOT=1 NODE_ENV=development electron ./",
-    "package": "cross-env NODE_ENV=production node package.js"
+    "build": "cross-env NODE_ENV=production webpack --config webpack.config.production.js",
   },
   "author": "Cu3PO42",
   "license": "MIT",
   "devDependencies": {
-    "asar": "^0.14.0",
     "babel-cli": "^6.9.0",
     "babel-core": "^6.9.0",
     "babel-eslint": "^8.0.2",
@@ -44,11 +39,6 @@
     "cross-env": "^5.1.1",
     "css-loader": "^0.28.7",
     "del": "^3.0.0",
-    "electron": "^1.7.9",
-    "electron-debug": "^1.0.0",
-    "electron-devtools-installer": "^2.2.1",
-    "electron-packager": "github:Cu3PO42/electron-packager",
-    "electron-rebuild": "^1.1.4",
     "eslint": "^4.11.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",
@@ -70,7 +60,6 @@
     "redux-devtools-log-monitor": "^1.4.0",
     "redux-logger": "^3.0.6",
     "sass-loader": "^6.0.6",
-    "selenium-webdriver": "^3.6.0",
     "sinon": "^4.1.2",
     "style-loader": "^0.19.0",
     "webpack": "^3.8.1",
@@ -82,8 +71,6 @@
     "babel-runtime": "^6.9.0",
     "bluebird": "^3.5.1",
     "dashbars": "github:cu3po42/dashbars",
-    "electron-gh-releases-updater": "^0.8.0",
-    "electron-ipc-tunnel": "^3.1.0",
     "fs-extra": "^4.0.2",
     "handlebars": "^4.0.11",
     "handlebars-helper-moment": "^0.2.0",
@@ -114,16 +101,6 @@
     "semver": "^5.3.0",
     "winston": "^2.4.0"
   },
-  "serverDependencies": [
-    "babel-runtime",
-    "bluebird",
-    "electron-debug",
-    "electron-gh-releases-updater",
-    "electron-ipc-tunnel",
-    "fs-extra",
-    "keysavcore",
-    "winston"
-  ],
   "devEngines": {
     "node": "4.x || 5.x || 6.x || 7.x || 8.x",
     "npm": "2.x || 3.x || 4.x || 5.x"
