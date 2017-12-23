@@ -5,7 +5,6 @@ import format from './format';
 import dialog from './dialog';
 import breaking from './breaking';
 import updater from './updater';
-import ntr from './ntr';
 
 const rootReducer = combineReducers({
   file,
@@ -13,7 +12,6 @@ const rootReducer = combineReducers({
   format,
   dialog,
   breaking,
-  updater,
-  ntr
+  updater
 });
 export default rootReducer;

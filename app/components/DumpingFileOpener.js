@@ -5,7 +5,6 @@ import IconButton from 'material-ui/IconButton';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import FileCloudDownload from 'material-ui/svg-icons/file/cloud-download';
-import NtrContainer from '../containers/NtrContainer';
 import PropTypes from 'prop-types';
 import pureRender from 'pure-render-decorator';
 import styles from './DumpingFileOpener.module.scss';
@@ -83,7 +82,6 @@ class DumpingFileOpener extends Component {
           <IconButton onClick={() => this.props.backup(this.props.file)} disabled={this.props.file === ''}>
             <FileCloudDownload />
           </IconButton>
-          <NtrContainer />
           {this.props.type === 'SAV' ?
             <div className={styles.boxSelectorWrapper}>
               <DropDownMenu value={Math.min(this.props.lowerBox, this.props.generation === 6 ? 31 : 32)} onChange={this.lowerBoxChanged}>
