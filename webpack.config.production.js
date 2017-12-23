@@ -63,6 +63,6 @@ config.plugins.push(
   new ExtractTextPlugin({ filename: 'style.css', allChunks: true })
 );
 
-config.target = 'electron-renderer';
+config.target = 'web';
 
 module.exports = config;

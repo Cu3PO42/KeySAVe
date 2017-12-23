@@ -54,6 +54,6 @@ config.plugins.push(
   })
 );
 
-config.target = 'electron-renderer';
+config.target = 'web';
 
 module.exports = config;
