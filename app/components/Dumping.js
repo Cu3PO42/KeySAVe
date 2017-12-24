@@ -14,6 +14,7 @@ import sanitize from 'sanitize-filename';
 import Promise from 'bluebird';
 import downloadFile from '../utils/downloadFile';
 import styles from './Dumping.module.scss';
+import copyToClipboard from 'copy-to-clipboard';
 
 
 export default class Dumping extends React.Component {
@@ -44,7 +45,7 @@ export default class Dumping extends React.Component {
   }
 
   copyClipboard = () => {
-    document.dispatchEvent(new ClipboardEvent('copy', { type: 'text/plain', data: this.getText() }));
+    copyToClipboard(this.getText());
   };
 
   saveOutput = async () => {
