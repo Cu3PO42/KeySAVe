@@ -1,5 +1,6 @@
 import createAction from '../utils/createAction';
-import { breakKeyCore } from 'keysavcore';
+import { breakSavOrBv } from 'keysavcore';
+import readFile from '../utils/readFile';
 
 export const BREAKING_OPEN_FILE_1 = 'BREAKING_OPEN_FILE_1';
 export const BREAKING_OPEN_FILE_2 = 'BREAKING_OPEN_FILE_2';
@@ -10,8 +11,7 @@ export const SCAN_FOLDER_FINISH = 'SCAN_FOLDER_FINISH';
 
 async function checkType(file) {
   try {
-    // TODO
-    const size = 0;
+    const size = file[0].size;
     switch (size) {
       case 0x100000:
       case 0x10009C:
@@ -40,7 +40,11 @@ async function checkType(file) {
 
 export const openFile1 = createAction(BREAKING_OPEN_FILE_1, checkType);
 export const openFile2 = createAction(BREAKING_OPEN_FILE_2, checkType);
-export const breakKey = createAction(BREAK_KEY, breakKeyCore);
+export const breakKey = createAction(BREAK_KEY, async (file1, file2) => {
+  const arr1 = await readFile(file1[0]);
+  const arr2 = await readFile(file2[0]);
+  return await breakSavOrBv(arr1, arr2);
+});
 export const dismissBreakState = createAction(DISMISS_BREAK_STATE);
 export const scanFolder = createAction(SCAN_FOLDER);
 export const scanFolderFinish = createAction(SCAN_FOLDER_FINISH);
