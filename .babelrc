@@ -1,21 +1,24 @@
 {
-  "presets": ["react"],
+  "presets": ["react", ["env", {
+    "targets": {
+      "chrome": 63,
+      "firefox": 57,
+      "safari": 11,
+      "edge": 41,
+    },
+    "modules": false,
+    "debug": true,
+  }]],
   "plugins": [
-      "transform-es2015-modules-commonjs",
-      "transform-es2015-unicode-regex",
-      "transform-es2015-function-name",
-      "transform-exponentiation-operator",
-      "transform-object-rest-spread",
-      "transform-async-to-generator",
-      "transform-decorators-legacy",
-      "transform-runtime",
+    "transform-object-rest-spread",
+    "transform-decorators-legacy",
   ],
   "env": {
     "development": {
       "presets": ["react-hmre"],
       "plugins": [
         "transform-class-properties",
-        "transform-es2015-classes"
+        "transform-es2015-classes",
       ]
     },
     "production": {
