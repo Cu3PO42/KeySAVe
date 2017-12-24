@@ -11,32 +11,30 @@ const inputStyle = {
 
 export default class FileOpener extends Component {
   static propTypes = {
-    file: PropTypes.string.isRequired,
+    file: PropTypes.object,
     fileOpened: PropTypes.func.isRequired,
     buttonText: PropTypes.string,
     inputText: PropTypes.string,
     options: PropTypes.object
   };
 
-  // handleClick = () => {
-  //   setTimeout(async () => {
-  //     try {
-  //       const reply = await this.ipcClient.send('file-dialog-open', { options: this.props.options });
-  //       if (reply !== undefined && reply[0] !== undefined) {
-  //         this.props.fileOpened(reply[0]);
-  //       }
-  //     } catch (e) { /* ignore */ }
-  //   }, 500);
-  // };
+  handleFileSelected = () => {
+    const input = this.refs.selector;
+    this.props.fileOpened(input.files);
+  }
+
+  handleClick = () => {
+    setTimeout(() => this.refs.selector.click(), 500);
+  }
 
   render() {
     return (
       <div className={styles.flexHorizontal}>
+        <input type='file' ref='selector' id={this.inputId} onChange={this.handleFileSelected} className={styles.selector} />
         <div className={styles.padRight}>
-          <input type='file' />
-          {/*<FlatButton label={this.props.buttonText || 'Open File'} onClick={this.handleClick} className={styles.button}/>*/}
+          <FlatButton label={this.props.buttonText || 'Open File'} onClick={this.handleClick} className={styles.button}/>
         </div>
-        <TextField floatingLabelText={this.props.inputText || 'File'} value={this.props.file} disabled inputStyle={inputStyle} fullWidth />
+        <TextField floatingLabelText={this.props.inputText || 'File'} value={this.props.file && this.props.file[0] ? this.props.file[0].name : ''} disabled inputStyle={inputStyle} fullWidth />
       </div>
     );
   }
