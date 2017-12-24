@@ -4,11 +4,12 @@
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const baseConfig = require('./webpack.config.base');
+const BabelMinifyPlugin = require('babel-minify-webpack-plugin');
 
 
 const config = Object.create(baseConfig);
 
-config.devtool = 'source-map';
+//config.devtool = 'source-map';
 
 config.entry = './app/index';
 
@@ -54,12 +55,7 @@ config.plugins.push(
       'NODE_ENV': JSON.stringify('production')
     }
   }),
-  /*new webpack.optimize.UglifyJsPlugin({
-    compressor: {
-      screw_ie8: true,
-      warnings: false
-    }
-  }),*/
+  new BabelMinifyPlugin(),
   new ExtractTextPlugin({ filename: 'style.css', allChunks: true })
 );
 
