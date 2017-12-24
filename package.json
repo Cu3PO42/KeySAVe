@@ -61,12 +61,10 @@
     "webpack-spritesmith": "^0.3.3"
   },
   "dependencies": {
-    "app-module-path": "^2.2.0",
     "babel-runtime": "^6.9.0",
     "bluebird": "^3.5.1",
     "copy-to-clipboard": "^3.0.8",
     "dashbars": "github:cu3po42/dashbars",
-    "fs-extra": "^4.0.2",
     "handlebars": "^4.0.11",
     "handlebars-helper-moment": "^0.2.0",
     "immutable": "^3.8.2",
@@ -75,13 +73,11 @@
     "lodash": "^4.13.1",
     "lodash.debounce": "^4.0.6",
     "material-ui": "^0.19.4",
-    "node-libs-browser": "^2.1.0",
     "prop-types": "^15.6.0",
     "pure-render-decorator": "^1.1.1",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
     "react-height": "^3.0.0",
-    "react-markdown": "^2.5.1",
     "react-motion": "^0.5.2",
     "react-redux": "^5.0.6",
     "react-router": "^3",
@@ -92,9 +88,7 @@
     "redux-promise": "^0.5.3",
     "redux-thunk": "^2.1.0",
     "reselect": "^2",
-    "sanitize-filename": "^1.6.0",
-    "semver": "^5.3.0",
-    "winston": "^2.4.0"
+    "sanitize-filename": "^1.6.0"
   },
   "devEngines": {
     "node": "4.x || 5.x || 6.x || 7.x || 8.x",
