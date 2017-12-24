@@ -5,9 +5,6 @@ import { Seq } from 'immutable';
 import { openFile, dismissError } from '../actions/file';
 import { setFilterBv, setFilterSav } from '../actions/filter';
 import { openDialog } from '../actions/dialog';
-import { send } from 'electron-ipc-tunnel/client';
-import * as fse from 'fs-extra';
-import * as path from 'path';
 import makeCached from '../utils/makeCachedFunction';
 import Dumping from '../components/Dumping';
 

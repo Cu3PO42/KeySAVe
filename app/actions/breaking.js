@@ -1,6 +1,5 @@
 import createAction from '../utils/createAction';
-import fs from 'fs-extra';
-import { send as ipcSend } from 'electron-ipc-tunnel/client';
+import { breakKeyCore } from 'keysavcore';
 
 export const BREAKING_OPEN_FILE_1 = 'BREAKING_OPEN_FILE_1';
 export const BREAKING_OPEN_FILE_2 = 'BREAKING_OPEN_FILE_2';
@@ -11,8 +10,9 @@ export const SCAN_FOLDER_FINISH = 'SCAN_FOLDER_FINISH';
 
 async function checkType(file) {
   try {
-    const stat = await fs.statAsync(file);
-    switch (stat.size) {
+    // TODO
+    const size = 0;
+    switch (size) {
       case 0x100000:
       case 0x10009C:
       case 0x10019A:
@@ -40,7 +40,7 @@ async function checkType(file) {
 
 export const openFile1 = createAction(BREAKING_OPEN_FILE_1, checkType);
 export const openFile2 = createAction(BREAKING_OPEN_FILE_2, checkType);
-export const breakKey = createAction(BREAK_KEY, (file1, file2) => ipcSend('break-key', { file1, file2 }));
+export const breakKey = createAction(BREAK_KEY, breakKeyCore);
 export const dismissBreakState = createAction(DISMISS_BREAK_STATE);
 export const scanFolder = createAction(SCAN_FOLDER);
 export const scanFolderFinish = createAction(SCAN_FOLDER_FINISH);

@@ -8,11 +8,6 @@ import IconButton from 'material-ui/IconButton';
 import CopyIcon from 'material-ui/svg-icons/content/content-copy';
 import SaveIcon from 'material-ui/svg-icons/content/save';
 import ArchiveIcon from 'material-ui/svg-icons/content/archive';
-import { remote } from 'electron';
-const { clipboard } = remote.require('electron');
-import { send as ipcSend } from 'electron-ipc-tunnel/client';
-import * as fs from 'fs-extra';
-import * as path from 'path';
 import * as _ from 'lodash';
 import { Pkx } from 'keysavcore';
 import sanitize from 'sanitize-filename';
@@ -48,7 +43,7 @@ export default class Dumping extends React.Component {
   }
 
   copyClipboard = () => {
-    clipboard.write({ text: this.getText() });
+    document.dispatchEvent(new ClipboardEvent('copy', { type: 'text/plain', data: this.getText() }));
   };
 
   saveOutput = async () => {
@@ -64,7 +59,7 @@ export default class Dumping extends React.Component {
       ext = '.txt';
       filters = [{ name: 'Text', extensions: ['txt'] }];
     }
-    var filename = await ipcSend('file-dialog-save', { options:
+    /*var filename = await ipcSend('file-dialog-save', { options:
       { defaultPath: path.basename(this.props.name, path.extname(this.props.name)) + ext, filters } });
     if (!filename) return;
     try {
@@ -72,11 +67,11 @@ export default class Dumping extends React.Component {
       this.props.openDialog('File saved successfully!');
     } catch (e) {
       this.props.openDialog('Couldn\'t save file. Please try again.');
-    }
+    }*/
   };
 
   exportPk6 = async () => {
-    let ghosts = 0;
+    /*let ghosts = 0;
     try {
       let dbDirectory = await ipcSend(
         'file-dialog-open',
@@ -105,11 +100,11 @@ export default class Dumping extends React.Component {
       this.props.openDialog('Saved ' + (count - ghosts) + ' Pokémon.');
     } catch (e) {
       this.props.openDialog('An error occured.');
-    }
+    }*/
   };
 
   backupFile = async () => {
-    if (this.props.name.startsWith('TEA')) {
+    /*if (this.props.name.startsWith('TEA')) {
       const buf = new Buffer(232 * 930);
       let i = 0;
       for (const pkm of this.props.pokemon) {
@@ -145,7 +140,7 @@ export default class Dumping extends React.Component {
       this.props.openDialog(`${name} backupped!`);
     } catch (e) {
       this.props.openDialog(`Couldn't backup ${name}.`);
-    }
+    }*/
   }
 
   render() {

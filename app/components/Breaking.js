@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import FileOpener from './FileOpener';
-import { send as ipcSend } from 'electron-ipc-tunnel/client';
 import { importKeySAV2Config } from '../configuration';
 import Paper from 'material-ui/Paper';
 import FlatButton from 'material-ui/FlatButton';
@@ -214,35 +213,36 @@ export default class Breaking extends React.Component {
   break = () => this.props.breakKey(this.props.file1, this.props.file2);
   closeDialog = () => this.props.dismissBreakState();
 
-  scanFolder = async () => {
-    const folder = await ipcSend('file-dialog-open', { options: { properties: ['openDirectory'] } });
-    if (folder === undefined || folder[0] === undefined) return;
-    this.props.scanFolder(folder[0]);
-    await ipcSend('break-folder', folder[0]);
-    this.props.scanFolderFinish();
-  }
+  
+  // scanFolder = async () => {
+  //   const folder = await ipcSend('file-dialog-open', { options: { properties: ['openDirectory'] } });
+  //   if (folder === undefined || folder[0] === undefined) return;
+  //   this.props.scanFolder(folder[0]);
+  //   await ipcSend('break-folder', folder[0]);
+  //   this.props.scanFolderFinish();
+  // }
 
-  importFromKeySAV2 = async () => {
-    let timeoutId = 0;
-    try {
-      const [folder] = await ipcSend('file-dialog-open', { options: { properties: ['openDirectory'] } });
-      timeoutId = setTimeout(this.props.scanFolder, 1000);
-      await Promise.all([importKeySAV2Config(folder, this.context.store), ipcSend('import-keysav2-folder', folder)]);
-    } catch (e) { /* ignore */ }
-    if (timeoutId) clearTimeout(timeoutId);
-    this.props.scanFolderFinish();
-  }
+  // importFromKeySAV2 = async () => {
+  //   let timeoutId = 0;
+  //   try {
+  //     const [folder] = await ipcSend('file-dialog-open', { options: { properties: ['openDirectory'] } });
+  //     timeoutId = setTimeout(this.props.scanFolder, 1000);
+  //     await Promise.all([importKeySAV2Config(folder, this.context.store), ipcSend('import-keysav2-folder', folder)]);
+  //   } catch (e) { /* ignore */ }
+  //   if (timeoutId) clearTimeout(timeoutId);
+  //   this.props.scanFolderFinish();
+  // }
 
-  scanKeySAV2 = async () => {
-    let timeoutId = 0;
-    try {
-      timeoutId = setTimeout(this.props.scanFolder, 1000);
-      const folders = await ipcSend('search-keysav2');
-      await Promise.map(folders, folder => importKeySAV2Config(folder).catch(() => {}));
-    } catch (e) { /* ignore */ }
-    if (timeoutId) clearTimeout(timeoutId);
-    this.props.scanFolderFinish();
-  }
+  // scanKeySAV2 = async () => {
+  //   let timeoutId = 0;
+  //   try {
+  //     timeoutId = setTimeout(this.props.scanFolder, 1000);
+  //     const folders = await ipcSend('search-keysav2');
+  //     await Promise.map(folders, folder => importKeySAV2Config(folder).catch(() => {}));
+  //   } catch (e) { /* ignore */ }
+  //   if (timeoutId) clearTimeout(timeoutId);
+  //   this.props.scanFolderFinish();
+  // }
 
   render() {
     return (

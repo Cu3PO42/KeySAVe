@@ -45,7 +45,7 @@ config.module.loaders.push({
 
 
 config.plugins.push(
-  new webpack.NoErrorsPlugin(),
+  new webpack.NoEmitOnErrorsPlugin(),
   new webpack.DefinePlugin({
     '__DEV__': true,
     'process.env': {

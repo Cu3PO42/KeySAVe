@@ -9,7 +9,7 @@ import { setEggsHaveSvs } from './actions/filter';
 import { version } from '../package.json';
 import semver from 'semver';
 
-/*
+
 function parseConfig(store, config) {
   if (!config.version) {
     for (const option of config.formattingOptions) {
@@ -42,7 +42,7 @@ function parseConfig(store, config) {
   }
 }
 
-function serializeConfig(store, { blacklist, serializers }) {
+/*function serializeConfig(store, { blacklist, serializers }) {
   const ret = Object.create(null);
   const state = store.getState();
   for (const key of Object.keys(state)) {
@@ -70,13 +70,13 @@ function serializeConfig(store, { blacklist, serializers }) {
     }
   }
   return { version, state: ret };
-}
+}*/
 
 export default async function loadConfig(store) {
   for (const option of options) {
     store.dispatch(registerFormattingPlugin(option));
   }
-  try {
+  /*try {
     const path = getPath('userData') + '/config.json';
     const file = await fs.readFileAsync(path, 'utf-8');
     console.log(`Loading config from ${path}`);
@@ -90,9 +90,9 @@ export default async function loadConfig(store) {
     } catch (e) {
       console.log('No config file found');
     }
-  }
+  }*/
 
-  window.addEventListener('beforeunload', async (e) => {
+  /*window.addEventListener('beforeunload', async (e) => {
     console.log('Saving config');
     const config = serializeConfig(store, {
       blacklist: {
@@ -116,7 +116,5 @@ export default async function loadConfig(store) {
     });
     fs.writeFileSync(getPath('userData') + '/config.json', JSON.stringify(config, null, '    '), 'utf-8');
     console.log('Saved config');
-  }, false);
+  }, false);*/
 }
-
-*/

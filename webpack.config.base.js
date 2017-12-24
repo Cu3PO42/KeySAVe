@@ -32,15 +32,17 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: 'bundle.js',
-    libraryTarget: 'commonjs2'
+    filename: 'bundle.js'
   },
   resolve: {
     extensions: ['.js', '.jsx'],
-    mainFields: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main']
+    mainFields: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main'],
+    alias: {
+      handlebars: 'handlebars/dist/handlebars.min.js'
+    }
   },
   plugins: [
-    new SpritesmithPlugin({
+    /*new SpritesmithPlugin({
       src: {
         cwd: 'app/resources/sprites/',
         glob: '*.png'
@@ -52,6 +54,6 @@ module.exports = {
       apiOptions: {
         cssImageRef: 'resources/sprites.png'
       }
-    })
+    })*/
   ]
 };
