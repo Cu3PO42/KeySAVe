@@ -30,7 +30,7 @@ const fileOptions = {
 @pureRender
 class DumpingFileOpener extends Component {
   static propTypes = {
-    file: PropTypes.string,
+    file: PropTypes.object,
     fileOpened: PropTypes.func,
     backup: PropTypes.func,
     type: PropTypes.string,

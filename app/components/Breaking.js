@@ -191,9 +191,9 @@ const errorMessages = {
 
 export default class Breaking extends React.Component {
   static propTypes = {
-    file1: PropTypes.string.isRequired,
+    file1: PropTypes.object,
     file1Type: PropTypes.string.isRequired,
-    file2: PropTypes.string.isRequired,
+    file2: PropTypes.object,
     file2Type: PropTypes.string.isRequired,
     breakState: PropTypes.string.isRequired,
     scanning: PropTypes.bool.isRequired,

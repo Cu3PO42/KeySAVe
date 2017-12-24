@@ -17,7 +17,7 @@ import styles from './Dumping.module.scss';
 
 export default class Dumping extends React.Component {
   static propTypes = {
-    name: PropTypes.string.isRequired,
+    name: PropTypes.object,
     openFile: PropTypes.func.isRequired,
     type: PropTypes.string.isRequired,
     keyProperties: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
