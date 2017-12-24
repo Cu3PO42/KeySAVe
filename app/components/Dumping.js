@@ -15,6 +15,7 @@ import Promise from 'bluebird';
 import downloadFile from '../utils/downloadFile';
 import styles from './Dumping.module.scss';
 import copyToClipboard from 'copy-to-clipboard';
+import JSZip from 'jszip';
 
 
 export default class Dumping extends React.Component {
@@ -58,28 +59,14 @@ export default class Dumping extends React.Component {
       ext = '.txt';
     }
     downloadFile(this.getText(), 'dump' + ext, 'text/plain');
-    /*var filename = await ipcSend('file-dialog-save', { options:
-      { defaultPath: path.basename(this.props.name, path.extname(this.props.name)) + ext, filters } });
-    if (!filename) return;
-    try {
-      await fs.writeFileAsync(filename, '\ufeff' + this.getText(), { encoding: 'utf-8' }); // feff is the universal bom in node
-      this.props.openDialog('File saved successfully!');
-    } catch (e) {
-      this.props.openDialog('Couldn\'t save file. Please try again.');
-    }*/
   };
 
   exportPk6 = async () => {
-    /*let ghosts = 0;
+    let ghosts = 0;
+    const zip = new JSZip();
     try {
-      let dbDirectory = await ipcSend(
-        'file-dialog-open',
-        { options: { title: 'Select a folder to save .pk6 files to',
-                     properties: ['openDirectory', 'createDirectory'] } });
-      if (dbDirectory === undefined || dbDirectory[0] === undefined) return;
-      dbDirectory = dbDirectory[0];
-      var files = await fs.readdirAsync(dbDirectory);
-      const count = (await Promise.all(this.props.pokemon.filter(this.props.filterFunction).map(async (pkm) => {
+      const files = [];
+      const count = (this.props.pokemon.filter(this.props.filterFunction).map(async (pkm) => {
         if (pkm.isGhost) {
           ++ghosts;
           return;
@@ -93,54 +80,15 @@ export default class Dumping extends React.Component {
         }
         fileName += (counter ? ' (' + counter + ')' : '') + extension;
         files.push(fileName);
-        await fs.writeFileAsync(path.join(dbDirectory, fileName), new Buffer(pkm.data));
+        zip.file(fileName, new Uint8Array(pkm.data));
         return;
-      }).toArray())).length;
+      }).toArray()).length;
+      downloadFile(await zip.generateAsync({ type: 'uint8array' }), this.props.name[0].name + '-pokemon-export.zip', 'octet/stream');
       this.props.openDialog('Saved ' + (count - ghosts) + ' Pokémon.');
     } catch (e) {
       this.props.openDialog('An error occured.');
-    }*/
-  };
-
-  backupFile = async () => {
-    /*if (this.props.name.startsWith('TEA')) {
-      const buf = new Buffer(232 * 930);
-      let i = 0;
-      for (const pkm of this.props.pokemon) {
-        const pkxUi8 = new Uint8Array(pkm.data);
-        const ekxUi8 = Pkx.encrypt(pkxUi8);
-        const ekxBuf = new Buffer(ekxUi8.buffer, ekxUi8.byteOffset, ekxUi8.byteLength);
-        ekxBuf.copy(buf, i, 0, 232);
-        i += 232;
-      }
-      const dest = await ipcSend('file-dialog-save',
-                               { options: { filters: [{ name: this.props.name,
-                                            extensions: ['bin'] }] } });
-      if (dest === undefined) {
-        return;
-      }
-      try {
-        await fs.writeFileAsync(dest, buf);
-        this.props.openDialog(`${this.props.name} saved!`);
-      } catch (e) {
-        this.props.openDialog(`Couldn't save ${this.props.name}.`);
-      }
-      return;
     }
-    try {
-      const name = this.props.type === 'SAV' ? 'Save' : 'Battle Video';
-      const dest = await ipcSend('file-dialog-save',
-                               { options: { filters: [{ name: this.props.name,
-                                            extensions: [path.extname(this.props.name).slice(1)] }] } });
-      if (dest === undefined) {
-        return;
-      }
-      await fs.copyAsync(this.props.name, dest);
-      this.props.openDialog(`${name} backupped!`);
-    } catch (e) {
-      this.props.openDialog(`Couldn't backup ${name}.`);
-    }*/
-  }
+  };
 
   render() {
     const { name, openFile, type, keyProperties, generation, filter, setFilterBv, setFilterSav, pokemon, error, format, dismissError, filterFunction } = this.props;
