@@ -213,37 +213,6 @@ export default class Breaking extends React.Component {
   break = () => this.props.breakKey(this.props.file1, this.props.file2);
   closeDialog = () => this.props.dismissBreakState();
 
-  
-  // scanFolder = async () => {
-  //   const folder = await ipcSend('file-dialog-open', { options: { properties: ['openDirectory'] } });
-  //   if (folder === undefined || folder[0] === undefined) return;
-  //   this.props.scanFolder(folder[0]);
-  //   await ipcSend('break-folder', folder[0]);
-  //   this.props.scanFolderFinish();
-  // }
-
-  // importFromKeySAV2 = async () => {
-  //   let timeoutId = 0;
-  //   try {
-  //     const [folder] = await ipcSend('file-dialog-open', { options: { properties: ['openDirectory'] } });
-  //     timeoutId = setTimeout(this.props.scanFolder, 1000);
-  //     await Promise.all([importKeySAV2Config(folder, this.context.store), ipcSend('import-keysav2-folder', folder)]);
-  //   } catch (e) { /* ignore */ }
-  //   if (timeoutId) clearTimeout(timeoutId);
-  //   this.props.scanFolderFinish();
-  // }
-
-  // scanKeySAV2 = async () => {
-  //   let timeoutId = 0;
-  //   try {
-  //     timeoutId = setTimeout(this.props.scanFolder, 1000);
-  //     const folders = await ipcSend('search-keysav2');
-  //     await Promise.map(folders, folder => importKeySAV2Config(folder).catch(() => {}));
-  //   } catch (e) { /* ignore */ }
-  //   if (timeoutId) clearTimeout(timeoutId);
-  //   this.props.scanFolderFinish();
-  // }
-
   render() {
     return (
       <div>
@@ -277,23 +246,6 @@ export default class Breaking extends React.Component {
             <div className={`${styles.flexRow} ${styles.buttonWrapper}`}>
               <FlatButton label="Break" disabled={this.props.file1Type !== this.props.file2Type || this.props.file1Type !== 'sav' && this.props.file2Type !== 'bv'} onTouchTap={this.break} />
             </div>
-          </div>
-        </Paper>
-        <Paper className={styles.paper}>
-          <p>
-            Scan all saves in a folder to improve your save keys, i.e. unlock more slots.
-            Please <DocumentationLink link="dumping/saves#ghosts">read the documentation</DocumentationLink> for more info.
-          </p>
-          <p>
-            You can also import your keys (and custom formats) from any KeySAV2 installation.
-            All imported keys will be merged with the ones that are currently known. No keys will be overwritten.
-            You can either specify the folder of your KeySAV2 installation manually or let KeySAVe search for it
-            in your home directory. It will be found if it is nested 5 folder or less deep.
-          </p>
-          <div className={styles.flexFromRight}>
-            <FlatButton label="Scan Folder" onClick={this.scanFolder} />
-            <FlatButton label="Import from KeySAV2" onClick={this.importFromKeySAV2} />
-            <FlatButton label="Search for KeySAV2 installations" onClick={this.scanKeySAV2} />
           </div>
         </Paper>
       </div>
