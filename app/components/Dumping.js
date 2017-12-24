@@ -12,6 +12,7 @@ import * as _ from 'lodash';
 import { Pkx } from 'keysavcore';
 import sanitize from 'sanitize-filename';
 import Promise from 'bluebird';
+import downloadFile from '../utils/downloadFile';
 import styles from './Dumping.module.scss';
 
 
@@ -48,17 +49,14 @@ export default class Dumping extends React.Component {
 
   saveOutput = async () => {
     let ext;
-    let filters;
     if (this.props.format.current.name.toLowerCase().indexOf('csv') !== -1) {
       ext = '.csv';
-      filters = [{ name: 'CSV', extensions: ['csv'] }];
     } else if (this.props.format.current.name.toLowerCase().indexOf('json') !== -1) {
       ext = '.json';
-      filters = [{ name: 'JSON', extensions: ['json'] }];
     } else {
       ext = '.txt';
-      filters = [{ name: 'Text', extensions: ['txt'] }];
     }
+    downloadFile(this.getText(), 'dump' + ext, 'text/plain');
     /*var filename = await ipcSend('file-dialog-save', { options:
       { defaultPath: path.basename(this.props.name, path.extname(this.props.name)) + ext, filters } });
     if (!filename) return;
