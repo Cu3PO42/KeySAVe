@@ -2,7 +2,7 @@ import { handleActions } from '../utils/handleAction';
 import { OPEN_FILE, OPEN_FILE_DISMISS_ERROR, ADD_POKEMON } from '../actions/file';
 
 const defaultState = {
-  name: '',
+  name: undefined,
   isError: false,
   keyProperties: undefined,
   type: '',

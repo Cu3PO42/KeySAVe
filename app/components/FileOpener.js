@@ -20,7 +20,8 @@ export default class FileOpener extends Component {
 
   handleFileSelected = () => {
     const input = this.refs.selector;
-    this.props.fileOpened(input.files);
+    if (input.files && input.files[0])
+      this.props.fileOpened(input.files);
   }
 
   handleClick = () => {

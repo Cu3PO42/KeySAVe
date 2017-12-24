@@ -2,8 +2,8 @@ import { BREAKING_OPEN_FILE_1, BREAKING_OPEN_FILE_2, BREAK_KEY, DISMISS_BREAK_ST
 import { handleActions } from '../utils/handleAction';
 
 const initialState = {
-  file1: '',
-  file2: '',
+  file1: undefined, 
+  file2: undefined, 
   file1Type: 'none',
   file2Type: 'none',
   breakState: 'NONE',
