@@ -2,15 +2,14 @@ import React from 'react';
 import Paper from 'material-ui/Paper';
 import { Localization } from 'keysavcore';
 import backgroundColors from './background-colors.json';
-import sprites from '../../../resources/sprites.json';
 import PropTypes from 'prop-types';
 import pureRender from 'pure-render-decorator';
 import { createSelector } from 'reselect';
 import styles from './PkmListPretty.module.scss';
 
 const context = require.context('../../../resources/sprites', false, /\.png$/);
-const nsprites = {};
-context.keys().forEach(key => nsprites[key.split(/\.png/)[0].substr(2)] = context(key));
+const sprites = {};
+context.keys().forEach(key => sprites[key.split(/\.png/)[0].substr(2)] = context(key));
 
 const ivNames = ['Hp', 'Atk', 'Def', 'SpAtk', 'SpDef', 'Spe'];
 const genderStyles = [styles.genderMale, styles.genderFemale, styles.genderNeutral];
@@ -156,7 +155,6 @@ class Pkm extends React.Component {
   render() {
     const { pkm } = this.props;
     const sprite = getSprite(pkm, this.context.store.getState());
-    const spriteClass = sprites.sprites[sprite];
     return (
       <Paper
         className={`${styles.paper} ${pkm.isGhost && this.props.format.ghosts === 'mark' ? styles.ghost : ''}`}
@@ -169,7 +167,7 @@ class Pkm extends React.Component {
           style={sprite === '' ? { width: '80px', height: '80px' } : {
             width: '80px',
             height: '80px',
-            backgroundImage: `url(${nsprites[sprite]})`,
+            backgroundImage: `url(${sprites[sprite]})`,
             backgroundSize: '80px 80px' 
           }}
         /></div>
