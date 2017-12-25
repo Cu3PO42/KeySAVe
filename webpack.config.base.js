@@ -5,6 +5,7 @@ const path = require('path');
 const pkg = require('./package.json');
 const SpritesmithPlugin = require('webpack-spritesmith');
 const templater = require('spritesheet-templates');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 templater.addTemplate('minimal_json', function minimalJson(data) {
   const ret = {
@@ -42,6 +43,10 @@ module.exports = {
     }
   },
   plugins: [
+    new HtmlWebpackPlugin({
+      inject: 'body',
+      template: './app/index.ejs'
+    })
     /*new SpritesmithPlugin({
       src: {
         cwd: 'app/resources/sprites/',

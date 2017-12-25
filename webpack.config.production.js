@@ -13,7 +13,7 @@ const config = Object.create(baseConfig);
 
 config.entry = './app/index';
 
-config.output.publicPath = '../dist/';
+config.output.publicPath = './';
 
 config.module.loaders.push({
   test: /^((?!\.module).)*\.css$/,
