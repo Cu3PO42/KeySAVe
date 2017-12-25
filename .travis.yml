@@ -4,6 +4,14 @@ script:
     - yarn run build
 sudo: false
 
+deploy:
+    provider: pages
+    github_token: $GITHUB_TOKEN
+    skip_cleanup: true
+    on:
+        branch: web-deploy
+    local_dir: dist
+
 cache:
     yarn: true
     directories:
