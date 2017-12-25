@@ -6,11 +6,11 @@ import sprites from '../../../resources/sprites.json';
 import PropTypes from 'prop-types';
 import pureRender from 'pure-render-decorator';
 import { createSelector } from 'reselect';
-import spritesheetPath from 'file-loader!../../../resources/sprites.png';
 import styles from './PkmListPretty.module.scss';
 
-const spritesheetUrl = `url(${spritesheetPath})`;
-const spritesheetSize = `${sprites.width * 0.8}px ${sprites.height * 0.8}px`;
+const context = require.context('../../../resources/sprites', false, /\.png$/);
+const nsprites = {};
+context.keys().forEach(key => nsprites[key.split(/\.png/)[0].substr(2)] = context(key));
 
 const ivNames = ['Hp', 'Atk', 'Def', 'SpAtk', 'SpDef', 'Spe'];
 const genderStyles = [styles.genderMale, styles.genderFemale, styles.genderNeutral];
@@ -169,9 +169,8 @@ class Pkm extends React.Component {
           style={sprite === '' ? { width: '80px', height: '80px' } : {
             width: '80px',
             height: '80px',
-            backgroundPosition: `${spriteClass.x * 0.8}px ${spriteClass.y * 0.8}px`,
-            backgroundImage: spritesheetUrl,
-            backgroundSize: spritesheetSize
+            backgroundImage: `url(${nsprites[sprite]})`,
+            backgroundSize: '80px 80px' 
           }}
         /></div>
         <PkmData pkm={pkm} language={this.props.language} />
