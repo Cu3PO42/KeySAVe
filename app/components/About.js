@@ -7,7 +7,7 @@ import { version } from '../../package.json';
 const About = () => (
   <Paper className={styles.paper}>
     <h1>KeySAV<sup>e</sup></h1>
-    <h3>Version {version}</h3>
+    <h3>Online edition!</h3>
     <p>
       If you encounter any issues with KeySAV<sup>e</sup>, have any suggestions or wishes,
       please <ExternalLink href="https://github.com/Cu3PO42/KeySAVe/issues">create an issue on GitHub</ExternalLink>,
@@ -31,9 +31,6 @@ const About = () => (
       providind feedback, giving me ideas for features I could implement and by helping me collect
       localization data.
     </p>
-    <p>
-      The Cup Icon used in the Dumping page is 'coffee-cup by jon trillana from the Noun Project'.
-    </p>
     <h2>Documentation</h2>
     <p>
       The documentation can be found <ExternalLink href="https://cu3po42.gitbooks.io/keysave/content/">here</ExternalLink>.
@@ -41,7 +38,7 @@ const About = () => (
     <h2>Copyright</h2>
     <p>
       KeySAV<sup>e</sup> itself is written by Cu3PO42, other code is used under the terms of the respective licenses.
-      The Pokémon character names, stats, sprites and other data is Copyright 2002-2016 Pokémon, Copyright 1995-2016 Nintendo/Creatures Inc./GAME FREAK Inc.
+      The Pokémon character names, stats, sprites and other data is Copyright 2002-2017 Pokémon, Copyright 1995-2017 Nintendo/Creatures Inc./GAME FREAK Inc.
     </p>
     <h2>Libraries</h2>
     <p>
@@ -49,7 +46,6 @@ const About = () => (
     </p>
     <ul>
       <li><ExternalLink href="https://npmjs.com/package/KeySAVCoreJS">KeySAVCoreJS</ExternalLink> by Cu3PO42 - KeySAVCoreJS does the actual dumping and decryption. Created specifically for use in KeySAV<sup>e</sup>.</li>
-      <li><ExternalLink href="https://electron.atom.io">Electron</ExternalLink> by GitHub - The framework used to create a desktop application with web technologies.</li>
       <li><ExternalLink href="https://facebook.github.io/react">React</ExternalLink> by Facebook - The view library.</li>
       <li><ExternalLink href="https://redux.js.org">Redux</ExternalLink> by Dan Abramov - A great library to manage application state.</li>
       <li><ExternalLink href="https://material-ui.com">Material UI</ExternalLink> by Call-Em-All - The library providing the interface components.</li>
