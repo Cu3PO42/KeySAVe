@@ -8,7 +8,6 @@ import IconButton from 'material-ui/IconButton';
 import CopyIcon from 'material-ui/svg-icons/content/content-copy';
 import SaveIcon from 'material-ui/svg-icons/content/save';
 import ArchiveIcon from 'material-ui/svg-icons/content/archive';
-import * as _ from 'lodash';
 import { Pkx } from 'keysavcore';
 import sanitize from 'sanitize-filename';
 import downloadFile from '../utils/downloadFile';
@@ -73,9 +72,9 @@ export default class Dumping extends React.Component {
         var fileName = sanitize(`${('000' + pkm.species).slice(-3)} - ${pkm.nickname} - ${pkm.pid.toString(16)} - ${pkm.ec.toString(16)}`);
         let counter = 0;
         const extension = pkm.version === 6 ? '.pk6' : '.pk7';
-        if (_.includes(files, fileName + extension)) {
+        if (files.includes(fileName + extension)) {
           ++counter;
-          while (_.includes(files, fileName + ' (' + counter + ')' + extension)) ++counter;
+          while (files.includes(fileName + ' (' + counter + ')' + extension)) ++counter;
         }
         fileName += (counter ? ' (' + counter + ')' : '') + extension;
         files.push(fileName);

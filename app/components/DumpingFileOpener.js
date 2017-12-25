@@ -8,9 +8,8 @@ import PropTypes from 'prop-types';
 import pureRender from 'pure-render-decorator';
 import styles from './DumpingFileOpener.module.scss';
 import { createSelector } from 'reselect';
-import { range } from 'lodash';
 
-const menuItems1To31 = range(1, 32).map(i => <MenuItem key={i} value={i} primaryText={`${i}`} />);
+const menuItems1To31 = new Array(31).fill().map((_, i) => <MenuItem key={i+1} value={i+1} primaryText={`${i+1}`} />);
 const menuItems1To32 = [...menuItems1To31, <MenuItem key={32} value={32} primaryText="32" />];
 const teamSelectors = [
   <MenuItem key={0} value={0} primaryText="My team" />,

@@ -13,7 +13,7 @@ import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
 import { createSelector } from 'reselect';
 import { Localization } from 'keysavcore';
-import { debounce } from 'lodash';
+import debounce from 'lodash.debounce';
 import styles from './Filters.module.scss';
 
 export default class Filters extends React.Component {
