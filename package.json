@@ -54,6 +54,7 @@
     "immutable": "^3.8.2",
     "jszip": "^3.1.5",
     "keysavcore": "^0.21.0",
+    "localforage": "^1.5.5",
     "lodash.debounce": "^4.0.6",
     "material-ui": "^0.19.4",
     "prop-types": "^15.6.0",
