@@ -1,53 +1,13 @@
-before_install:
-    - git clone https://github.com/creationix/nvm.git /tmp/.nvm;
-    - source /tmp/.nvm/nvm.sh;
-    - nvm install $NODE_VERSION;
-    - nvm use --delete-prefix $NODE_VERSION;
-    - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.3.2
-    - export PATH=$HOME/.yarn/bin:$PATH
-install:
-    - yarn install
+language: node_js
+node_js: "8"
 script:
-    - yarn run package
+    - yarn run build
 sudo: false
-deploy:
-    provider: releases
-    skip_cleanup: true
-    api_key:
-        secure: I+GSJYSswagiie3yIf4rV5YTlYVRwmnBviKlNiyaenLg02XZeE1yIfcAvH2E7qovyCsHRG9pgH9NcHQGZX9SWAMYG/D5E8vHNK6yKgSeWPNefz8PY80JLdgFVSEAifQxKWAKPibReR/ncaMtfsfMmXdD1xc2TXjmL4v0wstArdRKcYDVj8O7S8YnxbkTTFJxwmV6OItxOTZ7l8LHI76Qm1O7OBnKDYm1x844ePtswfah5dE1mSpQSUjeGEGHrv0zUdfCdSFJdp9y80ASd5vsJSAmiMionnJI01jrhKk41/gO/tYVxGl5HMjtvZ7+MGp0yVBQgmx6mi4gCXWkEQjf81Es4DfiV8l85l85vfP+9Irf4soKLWyP64alzg07IUZQRohttFVZ9uA4BWuv1Gn2pKjRMsfWC/apEH5KlvCkkYDh9VWe7YXrFwzXHRJkzYAly/nSarS/PSbW0R4ZQdgG+W4HjReUMnOJIryt2+n6jRHfgXVmgxLJ9lkw1uCByVxPPUR51Hx6Auz5743seb/MF22AhSwAuBUErq89oONHOAysiUSHT1+Cbhg7bXUiCeLg1dOLtlhqiKJa/ALqwFrRzRAgncFVQ+cAgF2jH4ar7/9bH4hurgFcl3MyVKJRuF/s+mX9bvh1xoJw4dAOls/oiDsedh1i4LUzXkDESm1z+OY=
-    file_glob: true
-    file:
-    - release/KeySAVe-*.zip
-    on:
-        repo: Cu3PO42/KeySAVe
-        tags: true
 
 cache:
     yarn: true
     directories:
         - node_modules
-        - cache
 
 notifications:
     email: false
-
-matrix:
-    include:
-        - os: osx
-          osx_image: xcode7.3
-          compiler: clang
-          env:
-              - NODE_VERSION="8"
-        - os: linux
-#          compiler: clang-3.8
-          env:
-              - NODE_VERSION="8"
-                CXX=g++-4.8
-          addons:
-              apt:
-                  sources:
-#                      - llvm-toolchain-precise-3.8
-                      - ubuntu-toolchain-r-test
-                  packages:
-#                      - clang-3.8
-                      - g++-4.8
