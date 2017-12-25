@@ -8,6 +8,7 @@ import options from './components/formatters';
 import { setEggsHaveSvs } from './actions/filter';
 import { version } from '../package.json';
 import semver from 'semver';
+import * as localForage from 'localforage';
 
 
 function parseConfig(store, config) {
@@ -42,7 +43,7 @@ function parseConfig(store, config) {
   }
 }
 
-/*function serializeConfig(store, { blacklist, serializers }) {
+function serializeConfig(store, { blacklist, serializers }) {
   const ret = Object.create(null);
   const state = store.getState();
   for (const key of Object.keys(state)) {
@@ -70,29 +71,20 @@ function parseConfig(store, config) {
     }
   }
   return { version, state: ret };
-}*/
+}
 
 export default async function loadConfig(store) {
   for (const option of options) {
     store.dispatch(registerFormattingPlugin(option));
   }
-  /*try {
-    const path = getPath('userData') + '/config.json';
-    const file = await fs.readFileAsync(path, 'utf-8');
-    console.log(`Loading config from ${path}`);
-    parseConfig(store, JSON.parse(file));
+  try {
+    const config = await localForage.getItem('keysave-config');
+    parseConfig(store, config);
   } catch (e) {
-    try {
-      const path = getPath('documents') + '/KeySAVe/config.json';
-      const file = await fs.readFileAsync(path, 'utf-8');
-      console.log(`Loading config from ${path}`);
-      parseConfig(store, JSON.parse(file));
-    } catch (e) {
-      console.log('No config file found');
-    }
-  }*/
+    console.log('No config found');
+  }
 
-  /*window.addEventListener('beforeunload', async (e) => {
+  window.addEventListener('beforeunload', async (e) => {
     console.log('Saving config');
     const config = serializeConfig(store, {
       blacklist: {
@@ -114,7 +106,8 @@ export default async function loadConfig(store) {
         })
       }
     });
-    fs.writeFileSync(getPath('userData') + '/config.json', JSON.stringify(config, null, '    '), 'utf-8');
+    
+    localForage.setItem('keysave-config', config);
     console.log('Saved config');
-  }, false);*/
+  }, false);
 }
