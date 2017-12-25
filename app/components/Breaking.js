@@ -11,7 +11,6 @@ import CircularProgress from 'material-ui/CircularProgress';
 import DocumentationLink from './DocumentationLink';
 import styles from './Breaking.module.scss';
 import * as colors from 'material-ui/styles/colors';
-import Promise from 'bluebird';
 
 const fileOptions = {
   filters: [{ name: 'SAV (1MB)', extensions: ['bin', 'sav'] },

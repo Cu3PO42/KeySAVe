@@ -69,7 +69,7 @@
     "handlebars-helper-moment": "^0.2.0",
     "immutable": "^3.8.2",
     "jszip": "^3.1.5",
-    "keysavcore": "../KeySAVCoreJS",
+    "keysavcore": "^0.21.0",
     "lodash": "^4.13.1",
     "lodash.debounce": "^4.0.6",
     "material-ui": "^0.19.4",

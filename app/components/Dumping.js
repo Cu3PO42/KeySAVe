@@ -11,7 +11,6 @@ import ArchiveIcon from 'material-ui/svg-icons/content/archive';
 import * as _ from 'lodash';
 import { Pkx } from 'keysavcore';
 import sanitize from 'sanitize-filename';
-import Promise from 'bluebird';
 import downloadFile from '../utils/downloadFile';
 import styles from './Dumping.module.scss';
 import copyToClipboard from 'copy-to-clipboard';
