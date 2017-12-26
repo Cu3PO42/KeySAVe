@@ -10,11 +10,11 @@
 	// element forces the browser to repaint on scroll.  However, if these definitions are split into an
 	// outer and an inner element, the browser is able to optimize the scrolling behavior and does not
 	// have to repaint on scroll.
-	border-radius: $select-menu-border-radius;
+	@include border-bottom-radius( $select-input-border-radius );
 	background-color: $select-input-bg;
 	border: 1px solid $select-input-border-color;
 	border-top-color: mix($select-input-bg, $select-input-border-color, 50%);
-	box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px;
+	box-shadow: $select-menu-box-shadow;
 	box-sizing: border-box;
 	margin-top: -1px;
 	max-height: $select-menu-max-height;
@@ -29,7 +29,6 @@
 // wrapper
 
 .Select-menu {
-	padding: $select-menu-padding-vertical 0;
 	max-height: ($select-menu-max-height - 2px);
 	overflow-y: auto;
 }
@@ -43,7 +42,7 @@
 	color: $select-option-color;
 	cursor: pointer;
 	display: block;
-	padding: $select-padding-vertical $select-menu-padding-horizontal;
+	padding: $select-padding-vertical $select-padding-horizontal;
 
 	&:last-child {
 		@include border-bottom-radius( $select-input-border-radius );

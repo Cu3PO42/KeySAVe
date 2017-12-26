@@ -14,6 +14,10 @@
 		margin-left: $select-padding-horizontal;
 		padding: 0;
 	}
+	&.Select--rtl .Select-input {
+		margin-left: 0;
+		margin-right: $select-padding-horizontal;
+	}
 
 	// reduce margin once there is value
 	&.has-value .Select-input {
@@ -24,20 +28,13 @@
 	.Select-value {
 		background-color: $select-item-bg;
 		border-radius: $select-item-border-radius;
-		border: 0;
-		height: $select-item-height;
+		border: 1px solid $select-item-border-color;
 		color: $select-item-color;
-		display: inline-flex;
-		flex-direction: row-reverse;
-		align-items: center;
+		display: inline-block;
 		font-size: $select-item-font-size;
 		margin-left: $select-item-gutter;
 		margin-top: $select-item-gutter;
 		vertical-align: top;
-
-		&:hover, &:active, &:focus {
-			box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.30);
-		}
 	}
 
 	// common
@@ -49,6 +46,7 @@
 
 	// label
 	.Select-value-label {
+		@include border-right-radius( $select-item-border-radius );
 		cursor: default;
 		padding: $select-item-padding-vertical $select-item-padding-horizontal;
 	}
@@ -65,21 +63,32 @@
 	// icon
 	.Select-value-icon {
 		cursor: pointer;
-		border-radius: $select-item-border-radius;
+		@include border-left-radius( $select-item-border-radius );
+		border-right: 1px solid $select-item-border-color;
 
 		// move the baseline up by 1px
-		height: $select-item-icon-size;
-		width: $select-item-icon-size;
-		margin: 0 $select-item-icon-margin;
-		border-radius: 50%;
-		align-items: center;
-		justify-content: center;
-		display: inline-flex;
+		padding: ($select-item-padding-vertical - 1) $select-item-padding-horizontal ($select-item-padding-vertical + 1);
 
-		background-color: $select-item-icon-background-color;
-		color: $select-item-bg;
+		&:hover,
+		&:focus {
+			background-color: $select-item-hover-bg;
+			color: $select-item-hover-color;
+		}
+		&:active {
+			background-color: $select-item-border-color;
+		}
 	}
 
+	&.Select--rtl {
+		.Select-value {
+		  margin-left: 0;
+		  margin-right: $select-item-gutter;
+		}
+		.Select-value-icon {
+			border-right: none;
+			border-left: 1px solid $select-item-border-color;
+		}
+	}
 }
 
 .Select--multi.is-disabled {
