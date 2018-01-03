@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Component } from 'react';
-import { Tabs, Tab } from 'material-ui';
+import { Tabs, Tab } from 'material-ui/Tabs';
 import SwipeableViews from 'react-swipeable-views';
 import DumpingContainer from '../containers/DumpingContainer';
 import FormattingContainer from '../containers/FormattingContainer';
