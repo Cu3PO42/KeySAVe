@@ -112,6 +112,9 @@ module.exports = {
   ],
   devServer: {
     port: 3000,
-    hotOnly: true
+    contentBase: './dist',
+    publicPath: '/',
+    inline: true,
+    hot: true
   }
 };
