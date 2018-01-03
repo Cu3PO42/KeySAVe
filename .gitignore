@@ -7,3 +7,5 @@ serverlib/
 app/resources/sprites.*
 keysave.log
 yarn-error.log
+.DS_STORE
+stats.json
