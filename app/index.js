@@ -13,6 +13,9 @@ import KeyStoreBrowser from './KeyStoreBrowser';
 import { setKeyStore } from 'keysavcore';
 import './app.scss';
 
+if (process.env['NODE_ENV'] === 'production')
+  alert('This is very much alpha quality software. Expect things to break and your data to be lost.');
+
 tapEventPlugin();
 const store = configureStore();
 configure(store);
