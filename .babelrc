@@ -7,11 +7,12 @@
       "edge": 41,
     },
     "modules": false,
-    "debug": true,
+    "debug": false,
   }]],
   "plugins": [
     "transform-object-rest-spread",
     "transform-decorators-legacy",
+    "lodash",
   ],
   "env": {
     "development": {
