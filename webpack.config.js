@@ -14,13 +14,13 @@ if (NODE_ENV !== 'production' && NODE_ENV !== 'development') {
 
 const IS_PROD = process.env['NODE_ENV'] === 'production';
 
-const cssLoaders = (other) => ExtractTextPlugin.extract({
+const cssLoaders = (other, modules) => ExtractTextPlugin.extract({
   use: [{
     loader: 'css-loader',
     options: {
       sourceMap: true,
       // Enable CSS Modules to scope class names
-      modules: true,
+      modules,
       minimize: IS_PROD,
       importLoaders: 1 + other.length
     }
@@ -41,15 +41,23 @@ module.exports = {
   module: {
     rules: [{
       test: /\.css$/,
-      use: cssLoaders([])
+      use: cssLoaders([], false)
     }, {
-      test: /\.scss$/,
+      test: /\.module\.scss$/,
       use: cssLoaders([{
         loader: 'sass-loader',
         options: {
           sourceMap: true
         }
-      }])
+      }], true)
+    }, {
+      test: /^((?!\.module\.scss$).)+\.scss$/,
+      use: cssLoaders([{
+        loader: 'sass-loader',
+        options: {
+          sourceMap: true
+        }
+      }], false)
     }, {
       test: /\.jsx?$/,
       use: [{
@@ -62,7 +70,7 @@ module.exports = {
         loader: 'json-loader'
       }]
     }, {
-      test: /\.png$/,
+      test: /\.(woff2?|png|jpe?g)$/,
       use: [{
         loader: 'file-loader'
       }]
