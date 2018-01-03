@@ -5,6 +5,7 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const baseConfig = require('./webpack.config.base');
 const BabelMinifyPlugin = require('babel-minify-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 
 const config = Object.create(baseConfig);
@@ -55,7 +56,11 @@ config.plugins.push(
       'NODE_ENV': JSON.stringify('production')
     }
   }),
-  new BabelMinifyPlugin(),
+  new UglifyJSPlugin({
+    uglifyOptions: {
+      ecma: 8
+    }
+  }),
   new ExtractTextPlugin({ filename: 'style.css', allChunks: true })
 );
 
