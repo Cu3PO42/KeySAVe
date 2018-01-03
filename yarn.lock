@@ -1979,10 +1979,9 @@ damerau-levenshtein@^1.0.0:
 
 "dashbars@github:cu3po42/dashbars":
   version "0.1.8"
-  resolved "https://codeload.github.com/cu3po42/dashbars/tar.gz/b9d998425ede9d1901df2247853e49f7ff6efd62"
+  resolved "https://codeload.github.com/cu3po42/dashbars/tar.gz/c24ee4826c2db4f7381d7ea1800d17bf4795786b"
   dependencies:
-    lodash "^3.8.0"
-    moment "^2.10.2"
+    lodash "^4.17.4"
 
 dashdash@^1.12.0:
   version "1.14.1"
@@ -3057,12 +3056,12 @@ handle-thing@^1.2.5:
   version "1.2.5"
   resolved "https://registry.yarnpkg.com/handle-thing/-/handle-thing-1.2.5.tgz#fd7aad726bf1a5fd16dfc29b2f7a6601d27139c4"
 
-handlebars-helper-moment@^0.2.0:
+"handlebars-helper-moment@github:cu3po42/handlebars-helper-moment#fixed":
   version "0.2.0"
-  resolved "https://registry.yarnpkg.com/handlebars-helper-moment/-/handlebars-helper-moment-0.2.0.tgz#7f796876d6098fe054a92e83b0af691e17372b8a"
+  resolved "https://codeload.github.com/cu3po42/handlebars-helper-moment/tar.gz/05639d6c981fd51f9dee6dcc2c78db248843df2c"
   dependencies:
-    lodash "~2.2.1"
-    moment "~2.0.0"
+    lodash "^4.17.4"
+    moment "^2.0.0"
 
 handlebars@^4.0.11:
   version "4.0.11"
@@ -4062,17 +4061,9 @@ lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
 
-lodash@^3.8.0:
-  version "3.10.1"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
-
 lodash@^4.0.0, lodash@^4.14.0, lodash@^4.17.2, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.6.1, lodash@~4.17.4:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
-
-lodash@~2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-2.2.1.tgz#ca935fd14ab3c0c872abacf198b9cda501440867"
 
 loglevel@^1.4.1:
   version "1.6.0"
@@ -4294,13 +4285,9 @@ mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkd
   dependencies:
     minimist "0.0.8"
 
-moment@^2.10.2:
+moment@^2.0.0:
   version "2.20.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.20.1.tgz#d6eb1a46cbcc14a2b2f9434112c1ff8907f313fd"
-
-moment@~2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.0.0.tgz#2bbc5b44c321837693ab6efcadbd46ed946211fe"
 
 move-concurrently@^1.0.1:
   version "1.0.1"

@@ -13,7 +13,7 @@ import makeCached from '../../../utils/makeCachedFunction';
 import styles from './PkmListHandlebars.module.scss';
 
 dashbars.help(handlebars);
-handlebars.registerHelper(helperMoment());
+handlebars.registerHelper(helperMoment);
 
 const emptyString = '';
 

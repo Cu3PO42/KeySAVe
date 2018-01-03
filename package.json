@@ -54,7 +54,7 @@
     "copy-to-clipboard": "^3.0.8",
     "dashbars": "github:cu3po42/dashbars",
     "handlebars": "^4.0.11",
-    "handlebars-helper-moment": "^0.2.0",
+    "handlebars-helper-moment": "github:cu3po42/handlebars-helper-moment#fixed",
     "immutable": "^3.8.2",
     "jszip": "^3.1.5",
     "keysavcore": "^0.21.0",
