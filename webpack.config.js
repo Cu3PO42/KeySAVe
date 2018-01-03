@@ -111,7 +111,8 @@ module.exports = {
           ecma: 8,
           safari10: true
         }
-      })
+      }),
+      new webpack.optimize.ModuleConcatenationPlugin()
     ] : [
       new webpack.NoEmitOnErrorsPlugin(),
       new webpack.HotModuleReplacementPlugin(),
