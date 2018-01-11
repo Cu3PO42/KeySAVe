@@ -13,8 +13,6 @@ import sanitize from 'sanitize-filename';
 import downloadFile from '../utils/downloadFile';
 import styles from './Dumping.module.scss';
 import copyToClipboard from 'copy-to-clipboard';
-import JSZip from 'jszip';
-
 
 export default class Dumping extends React.Component {
   static propTypes = {
@@ -61,7 +59,7 @@ export default class Dumping extends React.Component {
 
   exportPk6 = async () => {
     let ghosts = 0;
-    const zip = new JSZip();
+    const zip = new (await import('jszip'))();
     try {
       const files = [];
       const count = (this.props.pokemon.filter(this.props.filterFunction).map(async (pkm) => {

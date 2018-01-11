@@ -117,7 +117,15 @@ module.exports = {
           safari10: true
         }
       }),
-      new webpack.optimize.ModuleConcatenationPlugin()
+      new webpack.optimize.ModuleConcatenationPlugin(),
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendor',
+        filename: 'vendor.js',
+        minChunks: function(module, count) {
+          var context = module.context;
+          return context && context.indexOf('node_modules') >= 0;
+        }
+      })
     ] : [
       new webpack.NoEmitOnErrorsPlugin(),
       new webpack.HotModuleReplacementPlugin(),
