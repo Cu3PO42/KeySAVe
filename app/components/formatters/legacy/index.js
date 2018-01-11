@@ -1,5 +1,14 @@
-export { default as PkmList } from './PkmListLegacy';
-export { default as FormattingOptions } from './FormattingOptionsLegacy';
+import Loadable from 'react-loadable';
+import Loading from '../../Loading';
+
+export const PkmList = Loadable({
+  loader: () => import('./components').then(e => e.PkmList),
+  loading: Loading
+});
+export const FormattingOptions = Loadable({
+  loader: () => import('./components').then(e => e.FormattingOptions),
+  loading: Loading
+});
 
 export const name = 'Legacy (KeySAV2)';
 export const multipleInstances = true;
