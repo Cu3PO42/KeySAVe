@@ -2014,8 +2014,7 @@ damerau-levenshtein@^1.0.0:
   version "0.1.8"
   resolved "https://codeload.github.com/cu3po42/dashbars/tar.gz/c24ee4826c2db4f7381d7ea1800d17bf4795786b"
   dependencies:
-    lodash "^3.8.0"
-    moment "^2.10.2"
+    lodash "^4.17.4"
 
 dashdash@^1.12.0:
   version "1.14.1"
