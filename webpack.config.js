@@ -6,6 +6,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const { NODE_ENV } = process.env;
 if (NODE_ENV !== 'production' && NODE_ENV !== 'development') {
@@ -93,6 +94,10 @@ module.exports = {
       inject: 'body',
       template: './app/index.ejs'
     }),
+    new CopyPlugin([{
+      from: './app/resources/sprites',
+      to: './sprites'
+    }]),
     new webpack.DefinePlugin({
       '__DEV__': !IS_PROD,
       'process.env': {

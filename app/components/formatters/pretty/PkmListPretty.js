@@ -7,10 +7,6 @@ import pureRender from 'pure-render-decorator';
 import { createSelector } from 'reselect';
 import styles from './PkmListPretty.module.scss';
 
-const context = require.context('../../../resources/sprites', false, /\.png$/);
-const sprites = {};
-context.keys().forEach(key => sprites[key.split(/\.png/)[0].substr(2)] = context(key));
-
 const ivNames = ['Hp', 'Atk', 'Def', 'SpAtk', 'SpDef', 'Spe'];
 const genderStyles = [styles.genderMale, styles.genderFemale, styles.genderNeutral];
 
@@ -167,7 +163,7 @@ class Pkm extends React.Component {
           style={sprite === '' ? { width: '80px', height: '80px' } : {
             width: '80px',
             height: '80px',
-            backgroundImage: `url(${sprites[sprite]})`,
+            backgroundImage: `url(sprites/${sprite}.png)`,
             backgroundSize: '80px 80px' 
           }}
         /></div>
