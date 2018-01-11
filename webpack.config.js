@@ -79,7 +79,7 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: 'bundle.js',
+    filename: '[name].[chunkhash].js',
     publicPath: './'
   },
   resolve: {
@@ -110,7 +110,6 @@ module.exports = {
       disable: !IS_PROD
     }),
     ...(IS_PROD ? [
-      new webpack.optimize.OccurrenceOrderPlugin(),
       new UglifyJSPlugin({
         uglifyOptions: {
           ecma: 8,
@@ -118,6 +117,7 @@ module.exports = {
         }
       }),
       new webpack.optimize.ModuleConcatenationPlugin(),
+      new webpack.HashedModuleIdsPlugin(),
       new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
         filename: 'vendor.js',
