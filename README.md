@@ -1,16 +1,20 @@
 # KeySAVe
 
 KeySAVe is an application to decrypt and dump Generation 6&7 Pokémon save files.
-If you are reading this, I assume you want to run KeySAVe from the source:
 
-1. `npm install`
-2. `npm run build-server`
-3. `npm run build-client`
-4. `npm start`
+This branch tracks the development of the new web version which will run directly in the browser.
+If you are interested in the old Electron-based version, please check out the [electron](https://github.com/Cu3PO42/KeySAVe/tree/electron) branch or grab a release from the [releases](https://github.com/Cu3PO42/KeySAVe/releases) page.
 
-If you want to use hot module reloading run the following in two seperate terminals after installation:
+## Getting started
 
-1. `npm run hot-server`
-2. `npm run start-hot`
+To get started on development, run these commands:
 
-That's all for now folks!
+1. `yarn install`
+2. `yarn start`
+
+This starts a server on [localhost:3000](http://localhost:3000/) that will serve the built website with support for hot reloading.
+You can also generate developent and production builds with `yarn run build:dev` and `yarn run build:start` respectively.
+
+## License
+
+The project is available under the terms of the MIT License.
