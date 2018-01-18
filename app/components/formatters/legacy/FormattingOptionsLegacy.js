@@ -87,7 +87,9 @@ export default class FormattingOptionsLegacy extends React.Component {
     updateCurrentFormat: PropTypes.func.isRequired,
     format: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
-    isDefault: PropTypes.bool
+    isDefault: PropTypes.bool,
+    local: PropTypes.object.isRequired,
+    calc: PropTypes.object.isRequired
   }
 
   state = {

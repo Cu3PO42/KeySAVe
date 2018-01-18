@@ -1,10 +1,10 @@
 import React from 'react';
 import Paper from 'material-ui/Paper';
-import { Localization } from 'keysavcore';
 import backgroundColors from './background-colors.json';
 import PropTypes from 'prop-types';
 import pureRender from 'pure-render-decorator';
 import { createSelector } from 'reselect';
+import loadData from '../../../containers/DataLoader';
 import styles from './PkmListPretty.module.scss';
 
 const ivNames = ['Hp', 'Atk', 'Def', 'SpAtk', 'SpDef', 'Spe'];
@@ -83,12 +83,12 @@ function genderString(gender) {
 class PkmData extends React.Component {
   static propTypes = {
     pkm: PropTypes.object,
-    language: PropTypes.string
+    language: PropTypes.string,
+    local: PropTypes.object,
   };
 
   render() {
-    const local = Localization[this.props.language];
-    const { pkm } = this.props;
+    const { pkm, local } = this.props;
     return (
       <div className={styles.infoSide}>
         <div className={styles.nameLine}>
@@ -149,7 +149,7 @@ class Pkm extends React.Component {
   };
 
   render() {
-    const { pkm } = this.props;
+    const { pkm, local } = this.props;
     const sprite = getSprite(pkm, this.context.store.getState());
     return (
       <Paper
@@ -167,19 +167,20 @@ class Pkm extends React.Component {
             backgroundSize: '80px 80px' 
           }}
         /></div>
-        <PkmData pkm={pkm} language={this.props.language} />
+        <PkmData pkm={pkm} language={this.props.language} local={local} />
       </Paper>
     );
   }
 }
 
 @pureRender
-export default class PkmListPretty extends React.Component {
+class PkmListPretty extends React.Component {
   static propTypes = {
     pokemon: PropTypes.object,
     filterFunction: PropTypes.func.isRequired,
     language: PropTypes.string,
-    format: PropTypes.object
+    format: PropTypes.object,
+    local: PropTypes.object
   };
 
   getPlainText() {
@@ -211,9 +212,12 @@ export default class PkmListPretty extends React.Component {
             language={this.props.language}
             filterFunction={this.props.filterFunction}
             format={this.props.format}
+            local={this.props.local}
           />
         ).cacheResult()}
       </div>
     );
   }
 }
+
+export default loadData({ loadLocal: true }, PkmListPretty);

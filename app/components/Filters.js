@@ -12,7 +12,6 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
 import { createSelector } from 'reselect';
-import { Localization } from 'keysavcore';
 import debounce from 'lodash.debounce';
 import styles from './Filters.module.scss';
 
@@ -20,6 +19,7 @@ export default class Filters extends React.Component {
   static propTypes = {
     enabled: PropTypes.bool.isRequired,
     language: PropTypes.string.isRequired,
+    local: PropTypes.object.isRequired,
     eggsOnly: PropTypes.bool.isRequired,
     gender: PropTypes.string.isRequired,
     species: PropTypes.array.isRequired,
@@ -95,23 +95,47 @@ export default class Filters extends React.Component {
   flushCustomFilter = debounce(() => this.props.setCustomFilter(this.state.customFilterRaw), 1000);
 
   getSpeciesOptions = createSelector(
-    () => this.props.language,
-    lang => Localization[lang].species.map((e, i) => ({ value: i, label: e })).slice(1)
+    () => this.props.local,
+    local => local.species.map((e, i) => ({ value: i, label: e })).slice(1)
   )
 
   getHpOptions = createSelector(
-    () => this.props.language,
-    lang => Localization[lang].types.map((e, i) => ({ value: i, label: e })).slice(1)
+    () => this.props.local,
+    local => local.types.map((e, i) => ({ value: i, label: e })).slice(1)
   )
 
   getNatureOptions = createSelector(
-    () => this.props.language,
-    lang => Localization[lang].natures.map((e, i) => ({ value: i, label: e }))
+    () => this.props.local,
+    local => local.natures.map((e, i) => ({ value: i, label: e }))
   )
 
   getAbilityOptions = createSelector(
-    () => this.props.language,
-    lang => Localization[lang].abilities.map((e, i) => ({ value: i, label: e })).slice(1)
+    () => this.props.local,
+    local => local.abilities.map((e, i) => ({ value: i, label: e })).slice(1)
+  )
+
+  getSelectedSpecies = createSelector(
+    () => this.props.local,
+    () => this.props.species,
+    (local, species) => species.map(s => ({ value: s, lable: local.species[s] }))
+  )
+
+  getSelectedHpTypes = createSelector(
+    () => this.props.local,
+    () => this.props.hpTypes,
+    (local, hpTypes) => hpTypes.map(t => ({ value: t, label: local.types[t] }))
+  )
+
+  getSelectedNatures = createSelector(
+    () => this.props.local,
+    () => this.props.natures,
+    (local, natures) =>  natures.map(n => ({ value: n, label: local.natures[n] }))
+  )
+
+  getSelectedAbilities = createSelector(
+    () => this.props.local,
+    () => this.props.abilities,
+    (local, abilities) => abilities.map(a => ({ value: a, label: local.abilities[a] }))
   )
 
   render() {
@@ -119,10 +143,6 @@ export default class Filters extends React.Component {
       enabled,
       eggsOnly,
       gender,
-      species,
-      hpTypes,
-      natures,
-      abilities,
       haOnly,
       numPerfectIvs,
       ivs,
@@ -171,7 +191,7 @@ export default class Filters extends React.Component {
               <Select
                 name="species"
                 placeholder="Species"
-                value={species}
+                value={this.getSelectedSpecies()}
                 onChange={setSpeciesFilter}
                 options={this.getSpeciesOptions()}
                 multi
@@ -179,7 +199,7 @@ export default class Filters extends React.Component {
               <Select
                 name="hp-types"
                 placeholder="HP Types"
-                value={hpTypes}
+                value={this.getSelectedHpTypes()}
                 onChange={setHpFilter}
                 options={this.getHpOptions()}
                 multi
@@ -187,7 +207,7 @@ export default class Filters extends React.Component {
               <Select
                 name="natures"
                 placeholder="Natures"
-                value={natures}
+                value={this.getSelectedNatures()}
                 onChange={setNatureFilter}
                 options={this.getNatureOptions()}
                 multi
@@ -195,7 +215,7 @@ export default class Filters extends React.Component {
               <Select
                 name="abilities"
                 placeholder="Abilities"
-                value={abilities}
+                value={this.getSelectedAbilities()}
                 onChange={setAbilityFilter}
                 options={this.getAbilityOptions()}
                 multi

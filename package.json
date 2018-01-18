@@ -59,7 +59,7 @@
     "handlebars-helper-moment": "github:cu3po42/handlebars-helper-moment#fixed",
     "immutable": "^3.8.2",
     "jszip": "^3.1.5",
-    "keysavcore": "^0.21.0",
+    "keysavcore": "0.22.0-alpha.0",
     "localforage": "^1.5.5",
     "lodash.debounce": "^4.0.6",
     "material-ui": "^0.19.4",

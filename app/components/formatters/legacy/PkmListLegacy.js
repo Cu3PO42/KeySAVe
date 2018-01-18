@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Paper from 'material-ui/Paper';
-import { Localization, Calculator as StatCalculator } from 'keysavcore';
 import { createSelector } from 'reselect';
 import makeCached from '../../../utils/makeCachedFunction';
+import loadData from '../../../containers/DataLoader';
 import styles from './PkmListLegacy.module.scss';
 
 const replaceDatabaseFactory = format => ({
@@ -44,7 +44,7 @@ const replaceDatabaseFactory = format => ({
   33: 'moveName(local, pkm.eggMove4)',
   34: 'pkm.isShiny ? " ★" : ""',
   35: 'pkm.isEgg ? "✓" : ""',
-  36: 'StatCalculator.level(pkm)',
+  36: 'calc.level(pkm)',
   37: 'local.regions[pkm.gameVersion]',
   38: 'local.countries[pkm.countryID]',
   39: 'pkm.heldItem ? local.items[pkm.heldItem] : ""',
@@ -110,7 +110,7 @@ function compile(format) {
   /* eslint-enable no-unused-vars */
   /* eslint-disable no-eval */
   const fn =
-    '(function(props) { var pkm = props.pkm, local = props.local; return ' +
+    '(function(props) { var pkm = props.pkm, local = props.local, calc = props.calc; return ' +
     'react.createElement("div", { style: { display: props.hidden ? "none" : "block" } }, ' + (format.ghost === 'mark' ? 'pkm.isGhost ? "~" : "", ' : '') + '"' +
     format.format.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/{(\d+)}/g, (string, count) => `", ${replaceDatabase[count]}, "`) +
     '"); })';
@@ -119,12 +119,14 @@ function compile(format) {
   /* eslint-enable no-eval */
 }
 
-export default class PkmListLegacy extends React.Component {
+class PkmListLegacy extends React.Component {
   static propTypes = {
     pokemon: PropTypes.object,
     filterFunction: PropTypes.func.isRequired,
     language: PropTypes.string,
-    format: PropTypes.object
+    format: PropTypes.object,
+    local: PropTypes.object.isRequired,
+    calc: PropTypes.object.isRequired
   };
 
   getPlainText() {
@@ -149,14 +151,14 @@ export default class PkmListLegacy extends React.Component {
   )
 
   renderBox(pkm) {
-    const local = Localization[this.props.language];
+    const { local, calc } = this.props;
     const Template = this.getTemplate();
     const hideGhosts = this.props.format.ghost === 'hide';
     return (
       <Paper className={styles.paper}>
         <div className={styles.box}>
           {this.props.format.header}
-          {pkm.map((e, i) => <Template key={e.box * 30 + e.slot} pkm={e} index={i} local={local} hidden={!this.props.filterFunction(e) || hideGhosts && e.isGhost} />).cacheResult()}
+          {pkm.map((e, i) => <Template key={e.box * 30 + e.slot} pkm={e} index={i} local={local} calc={calc} hidden={!this.props.filterFunction(e) || hideGhosts && e.isGhost} />).cacheResult()}
         </div>
       </Paper>
     );
@@ -187,3 +189,5 @@ export default class PkmListLegacy extends React.Component {
     return this.renderBox(this.props.pokemon);
   }
 }
+
+export default loadData({ loadLocal: true, loadCalc: true }, PkmListLegacy);

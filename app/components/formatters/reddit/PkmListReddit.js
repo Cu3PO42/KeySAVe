@@ -1,8 +1,8 @@
 import React from 'react';
-import { Localization } from 'keysavcore';
 import { createSelector } from 'reselect';
 import PropTypes from 'prop-types';
 import pureRender from 'pure-render-decorator';
+import loadData from '../../../containers/DataLoader';
 import styles from './PkmListReddit.module.scss';
 
 function genderString(gender) {
@@ -31,12 +31,12 @@ class Pkm extends React.Component {
     language: PropTypes.string,
     format: PropTypes.object,
     hidden: PropTypes.bool,
-    isEven: PropTypes.bool
+    isEven: PropTypes.bool,
+    local: PropTypes.object
   };
 
   render() {
-    const local = Localization[this.props.language];
-    const { pkm } = this.props;
+    const { pkm, local } = this.props;
 
     return (
       <tr
@@ -67,16 +67,17 @@ class Pkm extends React.Component {
 }
 
 @pureRender
-export default class PkmListReddit extends React.Component {
+class PkmListReddit extends React.Component {
   static propTypes = {
     pokemon: PropTypes.object,
     filterFunction: PropTypes.func.isRequired,
     language: PropTypes.string,
-    format: PropTypes.object
+    format: PropTypes.object,
+    local: PropTypes.object
   };
 
   getPlainTextBox(pkm) {
-    const local = Localization[this.props.language];
+    const { local } = this.props;
     const { ghosts } = this.props.format;
     const header = '| Box | Slot | Species (Gender) | Nature | Ability | HP.ATK.DEF.SPA.SPD.SPE | Hidden Power | ESV |\n|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|\n';
     const hideGhosts = this.props.format.ghosts === 'hide';
@@ -155,6 +156,7 @@ export default class PkmListReddit extends React.Component {
   renderBox(pkm, box) {
     const hideGhosts = this.props.format.ghosts === 'hide';
     let isEven = false;
+    const { local } = this.props;
     return (
       <table className={`${styles.table} ${this.getBoxClass(box)}`}><tbody>
         <tr><th>Box</th><th>Slot</th><th>Species (Gender)</th><th>Nature</th><th>Ability</th><th>HP.ATK.DEF.SPATK.SPDEF.SPE</th><th>Hidden Power</th><th>ESV</th></tr>
@@ -167,6 +169,7 @@ export default class PkmListReddit extends React.Component {
               pkm={e}
               format={this.props.format}
               language={this.props.language}
+              local={local}
               filterFunction={this.props.filterFunction}
               hidden={hidden}
               isEven={isEven}
@@ -199,3 +202,5 @@ export default class PkmListReddit extends React.Component {
     return this.renderBox(this.props.pokemon, 0);
   }
 }
+
+export default loadData({ loadLocal: true }, PkmListReddit);

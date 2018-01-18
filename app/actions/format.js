@@ -1,4 +1,5 @@
 import createAction from '../utils/createAction';
+import { loadLocalization } from 'keysavcore';
 
 export const FORMAT_LANGUAGE_CHANGED = 'FORMAT_LANGUAGE_CHANGED';
 export const ADD_FORMATTING_OPTION = 'ADD_FORMATTING_OPTION';
@@ -11,7 +12,7 @@ export const CHANGE_CURRENT_FORMATTING_OPTION_NAME = 'CHANGE_CURRENT_FORMATTING_
 export const OVERWRITE_SINGLE_PLUGIN_OPTION = 'OVERWRITE_SINGLE_PLUGIN_OPTION';
 export const REGISTER_FORMATTING_PLUGIN = 'REGISTER_FORMATTING_PLUGIN';
 
-export const changeFormatLanguage = createAction(FORMAT_LANGUAGE_CHANGED, language => language);
+export const changeFormatLanguage = createAction(FORMAT_LANGUAGE_CHANGED, async language => ({ language, local: await loadLocalization(language) }));
 export const addFormattingOption = createAction(ADD_FORMATTING_OPTION, (name, plugin, format) => ({ name, plugin, format: (format || {}) }));
 export const selectFormattingOption = createAction(SELECT_FORMATTING_OPTION, id => id);
 export const deleteCurrentFormattingOption = createAction(DELETE_CURRENT_FORMATTING_OPTION);

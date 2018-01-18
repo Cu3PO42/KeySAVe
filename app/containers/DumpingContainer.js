@@ -72,13 +72,13 @@ const getFilter = createSelector(
       else if (filter.ivs.spe) return false;
       if (needPerfects > 0) return false;
       if (filter.hpTypes.length &&
-          filter.hpTypes.find(({ value }) => value === pkm.hpType) === undefined) return false;
+          filter.hpTypes.find(value => value === pkm.hpType) === undefined) return false;
       if (filter.species.length &&
-          filter.species.find(({ value }) => value === pkm.species) === undefined) return false;
+          filter.species.find(value => value === pkm.species) === undefined) return false;
       if (filter.natures.length &&
-          filter.natures.find(({ value }) => value === pkm.nature) === undefined) return false;
+          filter.natures.find(value => value === pkm.nature) === undefined) return false;
       if (filter.abilities.length &&
-          filter.abilities.find(({ value }) => value === pkm.ability) === undefined) return false;
+          filter.abilities.find(value => value === pkm.ability) === undefined) return false;
       if (filter.customFilter) {
         try {
           return filter.customFilter(pkm);

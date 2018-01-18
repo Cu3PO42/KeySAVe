@@ -21,12 +21,7 @@ import {
   SET_EGGS_HAVE_SVS,
   SET_CUSTOM_FILTER
 } from '../actions/filter';
-import { FORMAT_LANGUAGE_CHANGED } from '../actions/format';
 import { Localization } from 'keysavcore';
-
-function fixSelectedOptions(options, lookup) {
-  return options.map(({ value }) => ({ value, label: lookup[value] }));
-}
 
 function compileCustomFilter(filter) {
   if (filter === '') {
@@ -204,17 +199,6 @@ export default handleActions({
       ...state,
       customFilter: compileCustomFilter(payload),
       customFilterRaw: payload
-    };
-  },
-
-  [FORMAT_LANGUAGE_CHANGED](state, { payload }) {
-    const local = Localization[payload];
-    return {
-      ...state,
-      species: fixSelectedOptions(state.species, local.species),
-      hpTypes: fixSelectedOptions(state.hpTypes, local.types),
-      natures: fixSelectedOptions(state.natures, local.natures),
-      abilities: fixSelectedOptions(state.abilities, local.abilities)
     };
   },
 

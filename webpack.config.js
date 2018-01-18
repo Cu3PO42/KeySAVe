@@ -84,7 +84,7 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx'],
-    mainFields: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main'],
+    mainFields: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'module', 'main'],
     alias: {
       handlebars: 'handlebars/dist/handlebars.min.js'
     }

@@ -13,6 +13,21 @@ import {
 } from '../actions/format';
 import { List, Map } from 'immutable';
 
+const dummyLocalization = new Proxy({}, {
+  get() {
+    return new Proxy([], {
+      apply() {
+        return '';
+      },
+      get(target, name) {
+        if (target.__proto__.hasOwnProperty(name))
+          return target[name];
+        return '';
+      }
+    });
+  }
+});
+
 const defaultFormat = {
   language: 'en',
   plugins: new Map(),
@@ -26,14 +41,15 @@ const defaultFormat = {
     format: {},
     default: false
   },
-  currentIndex: -1
+  currentIndex: -1,
+  local: dummyLocalization
 };
 
 export default handleActions({
   [FORMAT_LANGUAGE_CHANGED](formattingOptions, action) {
     return {
       ...formattingOptions,
-      language: action.payload
+      ...action.payload
     };
   },
 

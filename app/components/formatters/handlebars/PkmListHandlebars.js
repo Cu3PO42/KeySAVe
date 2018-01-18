@@ -7,9 +7,9 @@ import helperMoment from 'handlebars-helper-moment';
 import PropTypes from 'prop-types';
 import pureRender from 'pure-render-decorator';
 import { createSelector } from 'reselect';
-import { Localization, Calculator as StatCalculator } from 'keysavcore';
 import { knownHelpersBox, knownHelpersPokemon } from './knownHelpers';
 import makeCached from '../../../utils/makeCachedFunction';
+import loadData from '../../../containers/DataLoader';
 import styles from './PkmListHandlebars.module.scss';
 
 dashbars.help(handlebars);
@@ -29,6 +29,7 @@ class PkmListHandlebars extends Component {
   constructor(...args) {
     super(...args);
     const self = this;
+    const { local, calc } = this.props;
     this.handlebarsHelpers = {
       row() {
         return Math.floor(this.slot / 6) + 1;
@@ -40,64 +41,64 @@ class PkmListHandlebars extends Component {
         return this.box + 1;
       },
       level() {
-        return StatCalculator.level(this);
+        return calc.level(this);
       },
       hp() {
-        return StatCalculator.hp(this);
+        return calc.hp(this);
       },
       atk() {
-        return StatCalculator.atk(this);
+        return calc.atk(this);
       },
       def() {
-        return StatCalculator.def(this);
+        return calc.def(this);
       },
       spAtk() {
-        return StatCalculator.spAtk(this);
+        return calc.spAtk(this);
       },
       spDef() {
-        return StatCalculator.spDef(this);
+        return calc.spDef(this);
       },
       spe() {
-        return StatCalculator.spe(this);
+        return calc.spe(this);
       },
       speciesName() {
-        return Localization[self.props.language].species[this.species];
+        return local.species[this.species];
       },
       hasAlternateForm() {
-        const forms = Localization[self.props.language].forms[this.species];
+        const forms = local.forms[this.species];
         return !!(forms && forms[this.form]);
       },
       formName() {
-        const local = Localization[self.props.language];
+        const local = local;
         const forms = this.version === 6 ? local.forms6 : local.forms7;
         return forms[this.species] ? forms[this.species][this.form] : '';
       },
       natureName() {
-        return Localization[self.props.language].natures[this.nature];
+        return local.natures[this.nature];
       },
       abilityName() {
-        return Localization[self.props.language].abilities[this.ability];
+        return local.abilities[this.ability];
       },
       typeName(typeId) {
-        return Localization[self.props.language].types[typeId];
+        return local.types[typeId];
       },
       moveName(moveId) {
-        return moveId ? Localization[self.props.language].moves[moveId] : '';
+        return moveId ? local.moves[moveId] : '';
       },
       itemName(itemId) {
-        return itemId ? Localization[self.props.language].items[itemId] : '';
+        return itemId ? local.items[itemId] : '';
       },
       ballName() {
-        return Localization[self.props.language].getBallName(this.ball);
+        return local.getBallName(this.ball);
       },
       metLocationName() {
-        return Localization[self.props.language].getLocation(this);
+        return local.getLocation(this);
       },
       eggLocationName() {
-        return Localization[self.props.language].getEggLocation(this);
+        return local.getEggLocation(this);
       },
       ballImage() {
-        return '[](/' + Localization[self.props.language].getBallName(this.ball).replace(' ', '').replace('é', 'e').toLowerCase() + ')';
+        return '[](/' + local.getBallName(this.ball).replace(' ', '').replace('é', 'e').toLowerCase() + ')';
       },
       esv() {
         return ('0000' + this.esv).slice(-4);
@@ -118,7 +119,7 @@ class PkmListHandlebars extends Component {
         return ('00000' + this.tid).slice(-5);
       },
       language() {
-        return Localization[self.props.language].languageTags[this.otLang];
+        return local.languageTags[this.otLang];
       },
       genderString(gender) {
         switch (0 + gender) {
@@ -132,7 +133,7 @@ class PkmListHandlebars extends Component {
         }
       },
       gameVersionString() {
-        return Localization[self.props.language].games[this.gameVersion];
+        return local.games[this.gameVersion];
       },
       stepsToHatch() {
         return this.isEgg * (this.otFriendship - 1) * 256;
@@ -179,16 +180,16 @@ class PkmListHandlebars extends Component {
         return new handlebars.SafeString(res);
       },
       regionName() {
-        return Localization[self.props.language].regions[this.gameVersion];
+        return local.regions[this.gameVersion];
       },
       countryName() {
-        return Localization[self.props.language].countries[this.countryID];
+        return local.countries[this.countryID];
       },
       ribbons() {
-        return Localization[self.props.language].getRibbons(this);
+        return local.getRibbons(this);
       },
       characteristic() {
-        return Localization[self.props.language].getCharacteristic(this);
+        return local.getCharacteristic(this);
       },
       esacpe(str) {
         return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
@@ -198,7 +199,6 @@ class PkmListHandlebars extends Component {
       },
       eval(expr) {
         /* eslint-disable no-unused-vars */
-        const local = Localization[self.props.language];
         const pkm = this;
         const hbs = handlebars;
         /* eslint-enable no-unused-vars */
@@ -284,6 +284,7 @@ class PkmListHandlebars extends Component {
 
       return this.renderBox(this.props.pokemon);
     } catch (e) {
+      console.log(e);
       return (
         <Paper className={styles.paper}>
           Template error! Please check your format string!
@@ -293,4 +294,4 @@ class PkmListHandlebars extends Component {
   }
 }
 
-export default PkmListHandlebars;
+export default loadData({ loadLocal: true, loadCalc: true }, PkmListHandlebars);

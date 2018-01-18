@@ -9,8 +9,7 @@ import routes from './routes';
 import configureStore from './store/configureStore';
 import tapEventPlugin from 'react-tap-event-plugin';
 import configure from './configuration';
-import KeyStoreBrowser from './KeyStoreBrowser';
-import { setKeyStore } from 'keysavcore';
+import { setKeyStore, KeyStoreIndexedDB } from 'keysavcore';
 import './app.scss';
 
 if (process.env['NODE_ENV'] === 'production')
@@ -22,7 +21,7 @@ configure(store);
 
 const muiTheme = getMuiTheme(lightBaseTheme);
 
-setKeyStore(new KeyStoreBrowser());
+setKeyStore(new KeyStoreIndexedDB());
 
 render(
   <Provider store={store}>
