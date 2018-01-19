@@ -54,7 +54,7 @@
   "dependencies": {
     "babel-runtime": "^6.9.0",
     "copy-to-clipboard": "^3.0.8",
-    "dashbars": "github:cu3po42/dashbars",
+    "dashbars": "github:cu3po42/dashbars#35b6da8b85d5ed45805ad2b0c189220e644b6450",
     "handlebars": "^4.0.11",
     "handlebars-helper-moment": "github:cu3po42/handlebars-helper-moment#fixed",
     "immutable": "^3.8.2",
