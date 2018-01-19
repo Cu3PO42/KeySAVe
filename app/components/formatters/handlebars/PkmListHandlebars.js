@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import Paper from 'material-ui/Paper';
 import handlebars from 'handlebars';
 import dashbars from 'dashbars';
 import helperMoment from 'handlebars-helper-moment';
 import PropTypes from 'prop-types';
-import pureRender from 'pure-render-decorator';
 import { createSelector } from 'reselect';
 import { knownHelpersBox, knownHelpersPokemon } from './knownHelpers';
 import makeCached from '../../../utils/makeCachedFunction';
@@ -17,8 +16,7 @@ handlebars.registerHelper(helperMoment);
 
 const emptyString = '';
 
-@pureRender
-class PkmListHandlebars extends Component {
+class PkmListHandlebars extends PureComponent {
   static propTypes = {
     pokemon: PropTypes.object,
     filterFunction: PropTypes.func.isRequired,

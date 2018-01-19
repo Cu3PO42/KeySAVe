@@ -2,7 +2,6 @@ import React from 'react';
 import Paper from 'material-ui/Paper';
 import backgroundColors from './background-colors.json';
 import PropTypes from 'prop-types';
-import pureRender from 'pure-render-decorator';
 import { createSelector } from 'reselect';
 import loadData from '../../../containers/DataLoader';
 import styles from './PkmListPretty.module.scss';
@@ -79,8 +78,7 @@ function genderString(gender) {
   }
 }
 
-@pureRender
-class PkmData extends React.Component {
+class PkmData extends React.PureComponent {
   static propTypes = {
     pkm: PropTypes.object,
     language: PropTypes.string,

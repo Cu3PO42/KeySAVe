@@ -1,7 +1,6 @@
 import React from 'react';
 import { createSelector } from 'reselect';
 import PropTypes from 'prop-types';
-import pureRender from 'pure-render-decorator';
 import loadData from '../../../containers/DataLoader';
 import styles from './PkmListReddit.module.scss';
 
@@ -24,8 +23,7 @@ function getSpecies(id, form, version, local) {
   return local.species[id];
 }
 
-@pureRender
-class Pkm extends React.Component {
+class Pkm extends React.PureComponent {
   static propTypes= {
     pkm: PropTypes.object,
     language: PropTypes.string,

@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import FileOpener from '../components/FileOpener';
 import Paper from 'material-ui/Paper';
 import IconButton from 'material-ui/IconButton';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import PropTypes from 'prop-types';
-import pureRender from 'pure-render-decorator';
 import styles from './DumpingFileOpener.module.scss';
 import { createSelector } from 'reselect';
 
@@ -25,8 +24,7 @@ const fileOptions = {
             { name: 'Battle Video', extensions: [noExtExt] }]
 };
 
-@pureRender
-class DumpingFileOpener extends Component {
+class DumpingFileOpener extends PureComponent {
   static propTypes = {
     file: PropTypes.object,
     fileOpened: PropTypes.func,

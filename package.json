@@ -64,7 +64,6 @@
     "lodash.debounce": "^4.0.6",
     "material-ui": "^0.19.4",
     "prop-types": "^15.6.0",
-    "pure-render-decorator": "^1.1.1",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
     "react-loadable": "^5.3.1",
