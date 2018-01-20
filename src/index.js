@@ -11,9 +11,6 @@ import configure from './configuration';
 import { setKeyStore, KeyStoreIndexedDB } from 'keysavcore';
 import './app.scss';
 
-if (process.env['NODE_ENV'] === 'production')
-  alert('This is very much alpha quality software. Expect things to break and your data to be lost.');
-
 const store = configureStore();
 configure(store);
 
@@ -31,3 +28,6 @@ render(
   </Provider>,
   document.getElementById('root')
 );
+
+if (process.env['NODE_ENV'] === 'production')
+  alert('This is very much alpha quality software. Expect things to break and your data to be lost.');
