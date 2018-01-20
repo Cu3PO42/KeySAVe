@@ -14,7 +14,7 @@ const mapStateToProps = createSelector(
 function mapDispatchToProps(dispatch) {
   return {
     actions: [
-      <FlatButton primary label="Close" onTouchTap={() => dispatch(closeDialog())} />
+      <FlatButton primary label="Close" onClick={() => dispatch(closeDialog())} />
     ]
   };
 }

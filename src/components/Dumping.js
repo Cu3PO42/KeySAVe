@@ -122,7 +122,7 @@ export default class Dumping extends React.Component {
         <Dialog
           modal
           open={error !== undefined}
-          actions={[<FlatButton label="Ok" primary onTouchTap={dismissError} />]}
+          actions={[<FlatButton label="Ok" primary onClick={dismissError} />]}
         >
           {((e) => {
             switch (e.name) {

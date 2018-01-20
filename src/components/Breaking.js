@@ -243,7 +243,7 @@ export default class Breaking extends React.Component {
               </div>
             </div>
             <div className={`${styles.flexRow} ${styles.buttonWrapper}`}>
-              <FlatButton label="Break" disabled={this.props.file1Type !== this.props.file2Type || this.props.file1Type !== 'sav' && this.props.file2Type !== 'bv'} onTouchTap={this.break} />
+              <FlatButton label="Break" disabled={this.props.file1Type !== this.props.file2Type || this.props.file1Type !== 'sav' && this.props.file2Type !== 'bv'} onClick={this.break} />
             </div>
           </div>
         </Paper>
