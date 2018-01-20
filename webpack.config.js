@@ -111,7 +111,7 @@ module.exports = {
       }
     }),
     new ExtractTextPlugin({
-      filename: 'style.css',
+      filename: 'style.[hash].css',
       allChunks: true,
       disable: !IS_PROD
     }),
@@ -127,7 +127,7 @@ module.exports = {
       new webpack.HashedModuleIdsPlugin(),
       new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
-        filename: 'vendor.js',
+        filename: '[name].[hash].js',
         minChunks: function(module, count) {
           var context = module.context;
           return context && context.indexOf('node_modules') >= 0;

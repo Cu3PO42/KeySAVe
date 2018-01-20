@@ -2,11 +2,11 @@ import Loadable from 'react-loadable';
 import Loading from '../../Loading';
 
 export const PkmList = Loadable({
-  loader: () => import('./components').then(e => e.PkmList),
+  loader: () => import(/* webpackChunkName: "formatters/legacy" */ './components').then(e => e.PkmList),
   loading: Loading
 });
 export const FormattingOptions = Loadable({
-  loader: () => import('./components').then(e => e.FormattingOptions),
+  loader: () => import(/* webpackChunkName: "formatters/legacy" */ './components').then(e => e.FormattingOptions),
   loading: Loading
 });
 

@@ -59,7 +59,7 @@ export default class Dumping extends React.Component {
 
   exportPk6 = async () => {
     let ghosts = 0;
-    const zip = new (await import('jszip'))();
+    const zip = new (await import(/* webpackChunkName: "jszip" */ 'jszip'))();
     try {
       const files = [];
       const count = (this.props.pokemon.filter(this.props.filterFunction).map(async (pkm) => {
