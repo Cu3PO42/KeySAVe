@@ -120,6 +120,7 @@ module.exports = {
     }),
     new webpack.IgnorePlugin(/^(fs|crypto|path)$/),
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /(de|en|fr|en|zh-cn|ko|ja)$/),
+    new webpack.NamedModulesPlugin(),
     ...(IS_PROD ? [
       new UglifyJSPlugin({
         uglifyOptions: {
@@ -128,7 +129,7 @@ module.exports = {
         }
       }),
       new webpack.optimize.ModuleConcatenationPlugin(),
-      new webpack.HashedModuleIdsPlugin(),
+      new webpack.NamedChunksPlugin(),
       new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
         minChunks: function(module, count) {
@@ -146,7 +147,6 @@ module.exports = {
     ] : [
       new webpack.NoEmitOnErrorsPlugin(),
       new webpack.HotModuleReplacementPlugin(),
-      new webpack.NamedModulesPlugin()
     ])
   ],
   devServer: {
