@@ -117,6 +117,7 @@ module.exports = {
       disable: !IS_PROD
     }),
     new webpack.IgnorePlugin(/^(fs|crypto|path)$/),
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /(de|en|fr|en|zh-cn|ko|ja)$/),
     ...(IS_PROD ? [
       new UglifyJSPlugin({
         uglifyOptions: {
