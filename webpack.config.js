@@ -34,6 +34,8 @@ const cssLoaders = (other, modules) => ExtractTextPlugin.extract({
   fallback: 'style-loader'
 });
 
+const OUTPUT_NAME = '[name].[chunkhash].js';
+
 module.exports = {
   entry: [
     './app/index'
@@ -80,8 +82,8 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: '[name].[hash].js',
-    chunkFilename: '[name].[hash].js',
+    filename: OUTPUT_NAME,
+    chunkFilename: OUTPUT_NAME,
     publicPath: './'
   },
   resolve: {
@@ -112,7 +114,7 @@ module.exports = {
       }
     }),
     new ExtractTextPlugin({
-      filename: 'style.[hash].css',
+      filename: 'style.[chunkhash].css',
       allChunks: true,
       disable: !IS_PROD
     }),
@@ -129,7 +131,7 @@ module.exports = {
       new webpack.HashedModuleIdsPlugin(),
       new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
-        filename: '[name].[hash].js',
+        filename: OUTPUT_NAME,
         minChunks: function(module, count) {
           var context = module.context;
           return context && context.indexOf('node_modules') >= 0;
