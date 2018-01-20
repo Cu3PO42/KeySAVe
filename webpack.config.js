@@ -124,7 +124,8 @@ module.exports = {
         uglifyOptions: {
           ecma: 8,
           safari10: true
-        }
+        },
+        parallel: true
       }),
       new webpack.optimize.ModuleConcatenationPlugin(),
       new webpack.NamedChunksPlugin(),
