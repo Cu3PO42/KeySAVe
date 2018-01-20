@@ -36,7 +36,7 @@ const cssLoaders = (other, modules) => ExtractTextPlugin.extract({
 
 module.exports = {
   entry: [
-    './app/index'
+    './src/index'
   ],
   devtool: IS_PROD ? undefined : 'cheap-module-eval-source-map',
   target: 'web',
@@ -99,10 +99,10 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       inject: 'body',
-      template: './app/index.ejs'
+      template: './src/index.ejs'
     }),
     new CopyPlugin([{
-      from: './app/resources/sprites',
+      from: './src/resources/sprites',
       to: './sprites'
     }]),
     new webpack.DefinePlugin({
