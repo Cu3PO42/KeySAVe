@@ -8,7 +8,6 @@ import options from './components/formatters';
 import { setEggsHaveSvs } from './actions/filter';
 import { version } from '../package.json';
 import semver from 'semver';
-import * as localForage from 'localforage';
 
 
 function parseConfig(store, config) {
@@ -78,7 +77,7 @@ export default async function loadConfig(store) {
     store.dispatch(registerFormattingPlugin(option));
   }
   try {
-    const config = await localForage.getItem('keysave-config');
+    const config = JSON.parse(localStorage.getItem('keysave-config'));
     parseConfig(store, config);
   } catch (e) {
     console.log('No config found');
@@ -107,7 +106,7 @@ export default async function loadConfig(store) {
       }
     });
     
-    localForage.setItem('keysave-config', config);
+    localStorage.setItem('keysave-config', JSON.stringify(config));
     console.log('Saved config');
   }, false);
 }

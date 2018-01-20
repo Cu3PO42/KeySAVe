@@ -34,8 +34,6 @@ const cssLoaders = (other, modules) => ExtractTextPlugin.extract({
   fallback: 'style-loader'
 });
 
-const OUTPUT_NAME = '[name].[chunkhash].js';
-
 module.exports = {
   entry: [
     './app/index'
@@ -82,8 +80,8 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: OUTPUT_NAME,
-    chunkFilename: OUTPUT_NAME,
+    filename: '[name].[hash].js',
+    chunkFilename: '[name].[chunkhash].js',
     publicPath: './'
   },
   resolve: {
