@@ -9,3 +9,4 @@ keysave.log
 yarn-error.log
 .DS_STORE
 stats.json
+bundle-analysis.html
