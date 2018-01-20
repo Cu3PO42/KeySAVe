@@ -9,7 +9,7 @@ deploy:
     github_token: $GITHUB_TOKEN
     skip_cleanup: true
     on:
-        branch: web-deploy
+        branch: deploy
     local_dir: dist
 
 cache:
