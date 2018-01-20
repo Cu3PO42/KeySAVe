@@ -64,8 +64,7 @@ class Pkm extends React.PureComponent {
   }
 }
 
-@pureRender
-class PkmListReddit extends React.Component {
+class PkmListReddit extends React.PureComponent {
   static propTypes = {
     pokemon: PropTypes.object,
     filterFunction: PropTypes.func.isRequired,

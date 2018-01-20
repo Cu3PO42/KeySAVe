@@ -8,10 +8,10 @@
     },
     "modules": false,
     "debug": false,
+    "useBuiltins": true
   }]],
   "plugins": [
-    "transform-object-rest-spread",
-    "transform-decorators-legacy",
+    ["transform-object-rest-spread", { "useBuiltIns": true }],
     "lodash",
     "syntax-dynamic-import"
   ],

@@ -133,8 +133,7 @@ class PkmData extends React.PureComponent {
   }
 }
 
-@pureRender
-class Pkm extends React.Component {
+class Pkm extends React.PureComponent {
   static propTypes = {
     pkm: PropTypes.object,
     filterFunction: PropTypes.func.isRequired,
@@ -171,8 +170,7 @@ class Pkm extends React.Component {
   }
 }
 
-@pureRender
-class PkmListPretty extends React.Component {
+class PkmListPretty extends React.PureComponent {
   static propTypes = {
     pokemon: PropTypes.object,
     filterFunction: PropTypes.func.isRequired,
