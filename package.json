@@ -9,9 +9,10 @@
   },
   "main": "./serverlib",
   "scripts": {
+    "clean": "rimraf ./dist",
     "start": "cross-env NODE_ENV=development webpack-dev-server --progress --color",
-    "build:prod": "cross-env NODE_ENV=production webpack",
-    "build:dev": "cross-env NODE_ENV=development webpack"
+    "build:prod": "npm run clean && cross-env NODE_ENV=production webpack",
+    "build:dev": "npm run clean && cross-env NODE_ENV=development webpack"
   },
   "author": "Cu3PO42",
   "license": "MIT",
@@ -45,6 +46,7 @@
     "json-loader": "^0.5.4",
     "node-sass": "^4.7.1",
     "resolve-url-loader": "^2.2.1",
+    "rimraf": "^2.6.2",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.19.0",
     "uglifyjs-webpack-plugin": "^1.1.5",
