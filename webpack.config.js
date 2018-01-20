@@ -80,6 +80,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'dist'),
     filename: '[name].[hash].js',
+    chunkFilename: '[name].[hash].js',
     publicPath: './'
   },
   resolve: {
@@ -88,6 +89,11 @@ module.exports = {
     alias: {
       handlebars: 'handlebars/dist/handlebars.min.js'
     }
+  },
+  node: {
+    Buffer: false,
+    crypto: false,
+    path: false
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -109,6 +115,7 @@ module.exports = {
       allChunks: true,
       disable: !IS_PROD
     }),
+    new webpack.IgnorePlugin(/^(fs|crypto|path)$/),
     ...(IS_PROD ? [
       new UglifyJSPlugin({
         uglifyOptions: {

@@ -3862,9 +3862,9 @@ keycode@^2.1.7, keycode@^2.1.8:
   version "2.1.9"
   resolved "https://registry.yarnpkg.com/keycode/-/keycode-2.1.9.tgz#964a23c54e4889405b4861a5c9f0480d45141dfa"
 
-keysavcore@0.22.0-alpha.0:
-  version "0.22.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/keysavcore/-/keysavcore-0.22.0-alpha.0.tgz#d94eea0c87f0b895a031ec9ece7bae7dd4678adc"
+keysavcore@0.22.0-alpha.1:
+  version "0.22.0-alpha.1"
+  resolved "https://registry.yarnpkg.com/keysavcore/-/keysavcore-0.22.0-alpha.1.tgz#2d40d413c8fd209efccd5269033cf92145db9c89"
 
 killable@^1.0.0:
   version "1.0.0"
