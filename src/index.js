@@ -8,15 +8,16 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import routes from './routes';
 import configureStore from './store/configureStore';
 import configure from './configuration';
+import registerSW from './registerSW';
 import { setKeyStore, KeyStoreIndexedDB } from 'keysavcore';
 import './app.scss';
 
 const store = configureStore();
 configure(store);
+setKeyStore(new KeyStoreIndexedDB());
+registerSW().then(console.log.bind(console), console.error.bind(console));
 
 const muiTheme = getMuiTheme(lightBaseTheme);
-
-setKeyStore(new KeyStoreIndexedDB());
 
 render(
   <Provider store={store}>
