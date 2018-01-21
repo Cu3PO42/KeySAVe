@@ -1,6 +1,10 @@
 export default function registerSW() {
+  if (__DEV__) {
+    return Promise.resolve('DEVELOPMENT');
+  }
+
   if (!('serviceWorker' in navigator)) {
-    return;
+    return Promise.resolve('NOT_SUPPORTED');
   }
 
   return new Promise((resolve, reject) => {
