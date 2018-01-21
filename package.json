@@ -2,7 +2,8 @@
   "name": "keysave",
   "productName": "KeySAVe",
   "version": "1.5.3",
-  "description": "A cross platform KeySAV based on GitHub Electron for all your Generation VI Pokémon decryption needs.",
+  "description":
+    "A cross platform KeySAV based on GitHub Electron for all your Generation VI Pokémon decryption needs.",
   "repository": {
     "type": "git",
     "url": "https://github.com/Cu3PO42/KeySAVe.git"
@@ -12,7 +13,8 @@
     "clean": "rimraf ./dist",
     "start": "cross-env NODE_ENV=development webpack-dev-server --progress --color",
     "build:prod": "npm run clean && cross-env NODE_ENV=production webpack",
-    "build:dev": "npm run clean && cross-env NODE_ENV=development webpack"
+    "build:dev": "npm run clean && cross-env NODE_ENV=development webpack",
+    "precommit": "lint-staged"
   },
   "author": "Cu3PO42",
   "license": "MIT",
@@ -38,8 +40,11 @@
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.5",
     "html-webpack-plugin": "^2.30.1",
+    "husky": "^0.15.0-rc.2",
     "json-loader": "^0.5.4",
+    "lint-staged": "^6.0.1",
     "node-sass": "^4.7.1",
+    "prettier": "1.10.2",
     "resolve-url-loader": "^2.2.1",
     "rimraf": "^2.6.2",
     "sass-loader": "^6.0.6",
@@ -73,6 +78,9 @@
     "redux-thunk": "^2.1.0",
     "reselect": "^2",
     "sanitize-filename": "^1.6.0"
+  },
+  "lint-staged": {
+    "*.{js,scss}": ["prettier --write", "git add"]
   },
   "devEngines": {
     "node": "4.x || 5.x || 6.x || 7.x || 8.x",
