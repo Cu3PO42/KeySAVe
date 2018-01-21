@@ -295,8 +295,8 @@ module.exports = {
     hot: true,
 
     // Open / when the server started
-    open: true,
-    openPage: '/',
+    open: 'Google Chrome Canary',
+    openPage: '',
 
     // Show compilation errors fullscreen instead of the application
     overlay: true,
