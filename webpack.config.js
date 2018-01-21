@@ -34,6 +34,13 @@ const cssLoaders = (other, modules) => ExtractTextPlugin.extract({
   fallback: 'style-loader'
 });
 
+const stats = {
+  assets: true,
+  excludeAssets: [/sprites\/.*\.png$/],
+  children: false,
+  modules: false
+};
+
 module.exports = {
   entry: [
     './src/index'
@@ -91,6 +98,7 @@ module.exports = {
       handlebars: 'handlebars/dist/handlebars.min.js'
     }
   },
+  stats,
   node: {
     Buffer: false,
     crypto: false,
@@ -153,6 +161,7 @@ module.exports = {
     contentBase: './dist',
     publicPath: '/',
     inline: true,
-    hot: true
+    hot: true,
+    stats
   }
 };
