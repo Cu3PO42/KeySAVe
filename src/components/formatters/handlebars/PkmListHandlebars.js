@@ -21,7 +21,7 @@ class PkmListHandlebars extends PureComponent {
     pokemon: PropTypes.object,
     filterFunction: PropTypes.func.isRequired,
     language: PropTypes.string,
-    format: PropTypes.object
+    format: PropTypes.object,
   };
 
   constructor(...args) {
@@ -96,7 +96,15 @@ class PkmListHandlebars extends PureComponent {
         return local.getEggLocation(this);
       },
       ballImage() {
-        return '[](/' + local.getBallName(this.ball).replace(' ', '').replace('é', 'e').toLowerCase() + ')';
+        return (
+          '[](/' +
+          local
+            .getBallName(this.ball)
+            .replace(' ', '')
+            .replace('é', 'e')
+            .toLowerCase() +
+          ')'
+        );
       },
       esv() {
         return ('0000' + this.esv).slice(-4);
@@ -105,7 +113,9 @@ class PkmListHandlebars extends PureComponent {
         return ('0000' + this.tsv).slice(-4);
       },
       tid() {
-        return this.gameVersion <= 27 ? ('00000' + this.tid).slice(-5) : ('000000' + this.tid7).slice(-6);
+        return this.gameVersion <= 27
+          ? ('00000' + this.tid).slice(-5)
+          : ('000000' + this.tid7).slice(-6);
       },
       sid() {
         return ('00000' + this.sid).slice(-5);
@@ -153,12 +163,14 @@ class PkmListHandlebars extends PureComponent {
       },
       markings() {
         if (this.version === 6) {
-          return ((this.markings & 0x01 ? '●' : '◯')
-                + (this.markings & 0x02 ? '▲' : '△')
-                + (this.markings & 0x04 ? '■' : '□')
-                + (this.markings & 0x08 ? '♥' : '♡')
-                + (this.markings & 0x10 ? '★' : '☆')
-                + (this.markings & 0x20 ? '◆' : '◇'));
+          return (
+            (this.markings & 0x01 ? '●' : '◯') +
+            (this.markings & 0x02 ? '▲' : '△') +
+            (this.markings & 0x04 ? '■' : '□') +
+            (this.markings & 0x08 ? '♥' : '♡') +
+            (this.markings & 0x10 ? '★' : '☆') +
+            (this.markings & 0x20 ? '◆' : '◇')
+          );
         }
 
         const markers = [['●', '◯'], ['▲', '△'], ['■', '□'], ['♥', '♡'], ['★', '☆'], ['◆', '◇']];
@@ -203,16 +215,16 @@ class PkmListHandlebars extends PureComponent {
         /* eslint-disable no-eval */
         return new handlebars.SafeString(eval(expr));
         /* eslint-enable no-eval */
-      }
+      },
     };
   }
 
   getPlainText() {
     const node = ReactDOM.findDOMNode(this);
     if (this.props.format.splitBoxes) {
-      return Array.from(node.childNodes).map(child =>
-        child.firstChild.innerText + '\n' + child.lastChild.innerText
-      ).join('\n');
+      return Array.from(node.childNodes)
+        .map(child => child.firstChild.innerText + '\n' + child.lastChild.innerText)
+        .join('\n');
     }
 
     return node.innerText;
@@ -221,8 +233,11 @@ class PkmListHandlebars extends PureComponent {
   getFormatTemplate = createSelector(
     () => this.props.format.format || emptyString,
     t => {
-      const templ = handlebars.compile(t, { knownHelpers: knownHelpersPokemon, knownHelpersOnly: true });
-      return makeCached((pkm) => templ(pkm, { helpers: this.handlebarsHelpers }));
+      const templ = handlebars.compile(t, {
+        knownHelpers: knownHelpersPokemon,
+        knownHelpersOnly: true,
+      });
+      return makeCached(pkm => templ(pkm, { helpers: this.handlebarsHelpers }));
     }
   );
 
@@ -239,8 +254,8 @@ class PkmListHandlebars extends PureComponent {
   getShowBoxMap = createSelector(
     this.getPokemonGroupedByBox,
     () => this.props.filterFunction,
-    (pokemon, filter) => pokemon.map((pkm) => pkm.some(filter))
-  )
+    (pokemon, filter) => pokemon.map(pkm => pkm.some(filter))
+  );
 
   renderBox(pkm) {
     const template = this.getFormatTemplate();
@@ -248,7 +263,15 @@ class PkmListHandlebars extends PureComponent {
       <Paper className={styles.paper}>
         <div className={styles.box}>
           <div dangerouslySetInnerHTML={{ __html: this.props.format.header }} />
-          {pkm.map(e => <div key={e.box * 30 + e.slot} dangerouslySetInnerHTML={{ __html: template(e) }} style={{ display: this.props.filterFunction(e) ? 'block' : 'none' }}></div>).cacheResult()}
+          {pkm
+            .map(e => (
+              <div
+                key={e.box * 30 + e.slot}
+                dangerouslySetInnerHTML={{ __html: template(e) }}
+                style={{ display: this.props.filterFunction(e) ? 'block' : 'none' }}
+              />
+            ))
+            .cacheResult()}
         </div>
       </Paper>
     );
@@ -258,7 +281,7 @@ class PkmListHandlebars extends PureComponent {
     const first = this.props.pokemon.first();
     try {
       if (!first) {
-        return <div></div>;
+        return <div />;
       }
 
       this.getFormatTemplate()(first); // Do this to catch errors early on
@@ -270,12 +293,15 @@ class PkmListHandlebars extends PureComponent {
 
         return (
           <div>
-            {grouped.map((pkm, box) => (
-              <div key={box} style={{ display: showBoxMap.get(box) ? 'block' : 'none' }}>
-                <div dangerouslySetInnerHTML={{ __html: boxHeaderTemplate({ box: box + 1 }) }}></div>
-                {this.renderBox(pkm, box)}
-              </div>
-            )).valueSeq().cacheResult()}
+            {grouped
+              .map((pkm, box) => (
+                <div key={box} style={{ display: showBoxMap.get(box) ? 'block' : 'none' }}>
+                  <div dangerouslySetInnerHTML={{ __html: boxHeaderTemplate({ box: box + 1 }) }} />
+                  {this.renderBox(pkm, box)}
+                </div>
+              ))
+              .valueSeq()
+              .cacheResult()}
           </div>
         );
       }
@@ -284,9 +310,7 @@ class PkmListHandlebars extends PureComponent {
     } catch (e) {
       console.log(e);
       return (
-        <Paper className={styles.paper}>
-          Template error! Please check your format string!
-        </Paper>
+        <Paper className={styles.paper}>Template error! Please check your format string!</Paper>
       );
     }
   }

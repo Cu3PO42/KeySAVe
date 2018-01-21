@@ -14,29 +14,26 @@ const tabs = ['dumping', 'options', 'breaking', 'about'];
 
 export default class Home extends Component {
   static propTypes = {
-    params: PropTypes.object
-  }
+    params: PropTypes.object,
+  };
 
   static contextTypes = {
-    router: PropTypes.object.isRequired
-  }
+    router: PropTypes.object.isRequired,
+  };
 
-  tabChanged = (tab) => {
+  tabChanged = tab => {
     this.context.router.push(`/main/${tab}`);
-  }
+  };
 
-  tabIndexChanged = (tab) => {
+  tabIndexChanged = tab => {
     this.tabChanged(tabs[tab]);
-  }
+  };
 
   render() {
     return (
       <div className={styles.mainWrapper}>
         <DialogContainer />
-        <Tabs
-          value={this.props.params.tab}
-          onChange={this.tabChanged}
-        >
+        <Tabs value={this.props.params.tab} onChange={this.tabChanged}>
           <Tab label="Dumping" value="dumping" />
           <Tab label="Options" value="options" />
           <Tab label="Breaking" value="breaking" />

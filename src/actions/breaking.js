@@ -14,27 +14,29 @@ async function checkType(file) {
     const size = file[0].size;
     switch (size) {
       case 0x100000:
-      case 0x10009C:
-      case 0x10019A:
+      case 0x10009c:
+      case 0x10019a:
       case 0x0fe000:
       case 0x0fe09c:
       case 0x0fe19a:
         return {
           file,
-          type: 'sav'
+          type: 'sav',
         };
-      case 0x6E60:
+      case 0x6e60:
       case 0x6bc0:
         return {
           file,
-          type: 'bv'
+          type: 'bv',
         };
       default:
     }
-  } catch (e) { /* none */ }
+  } catch (e) {
+    /* none */
+  }
   return {
     file,
-    type: 'neither'
+    type: 'neither',
   };
 }
 

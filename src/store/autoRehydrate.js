@@ -11,11 +11,11 @@ function wrapReducer(reducer) {
       const reducerState = state[reducer];
       const nextReducerState = {
         ...reducerState,
-        ...hydrationState
+        ...hydrationState,
       };
       return {
         ...state,
-        [reducer]: nextReducerState
+        [reducer]: nextReducerState,
       };
     }
 
@@ -24,6 +24,6 @@ function wrapReducer(reducer) {
 }
 
 export default function autoRehydrate() {
-  return (createStore) => (reducer, preloadedState, enhancer) =>
+  return createStore => (reducer, preloadedState, enhancer) =>
     createStore(wrapReducer(reducer), preloadedState, enhancer);
 }

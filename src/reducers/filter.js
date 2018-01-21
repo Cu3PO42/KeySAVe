@@ -19,7 +19,7 @@ import {
   SET_SHINY_OVERRIDE,
   SET_EGGS_HAVE_MY_SV,
   SET_EGGS_HAVE_SVS,
-  SET_CUSTOM_FILTER
+  SET_CUSTOM_FILTER,
 } from '../actions/filter';
 import { Localization } from 'keysavcore';
 
@@ -57,7 +57,7 @@ const initialFilter = {
     def: false,
     spAtk: false,
     spDef: false,
-    spe: false
+    spe: false,
   },
   numPerfectIvs: 0,
   shiniesOnly: false,
@@ -65,150 +65,153 @@ const initialFilter = {
   eggsHaveMySv: false,
   svs: '',
   customFilter: undefined,
-  customFilterRaw: ''
+  customFilterRaw: '',
 };
 
-export default handleActions({
-  [SET_FILTER_BV](state, { payload }) {
-    return {
-      ...state,
-      teamSelected: payload
-    };
-  },
-  [SET_FILTER_SAV](state, { payload: { lower, upper } }) {
-    return {
-      ...state,
-      lower: Math.min(lower, state.upper),
-      upper: Math.max(upper, state.lower)
-    };
-  },
-  [TOGGLE_FILTERS](state) {
-    return {
-      ...state,
-      enabled: !state.enabled
-    };
-  },
-  [SET_EGGS_ONLY](state, { payload }) {
-    return {
-      ...state,
-      eggsOnly: payload
-    };
-  },
-  [SET_SPECIES_FILTER](state, { payload }) {
-    return {
-      ...state,
-      species: payload
-    };
-  },
-  [SET_GENDER_FILTER](state, { payload }) {
-    return {
-      ...state,
-      gender: payload
-    };
-  },
-  [SET_HP_FILTER](state, { payload }) {
-    return {
-      ...state,
-      hpTypes: payload
-    };
-  },
-  [SET_NATURE_FILTER](state, { payload }) {
-    return {
-      ...state,
-      natures: payload
-    };
-  },
-  [SET_ABILITY_FILTER](state, { payload }) {
-    return {
-      ...state,
-      abilities: payload
-    };
-  },
-  [SET_HA_ONLY](state, { payload }) {
-    return {
-      ...state,
-      haOnly: payload
-    };
-  },
-  [SET_SPECIAL_ATTACKER](state, { payload }) {
-    return {
-      ...state,
-      specialAttacker: payload
-    };
-  },
-  [SET_TRICK_ROOM](state, { payload }) {
-    return {
-      ...state,
-      trickroom: payload
-    };
-  },
-  [SET_PERFECT_IV](state, { payload: { iv, isPerfect } }) {
-    return {
-      ...state,
-      ivs: {
-        ...state.ivs,
-        [iv]: isPerfect
-      }
-    };
-  },
-  [SET_NUM_PERFECT_IVS](state, { payload }) {
-    return {
-      ...state,
-      numPerfectIvs: payload
-    };
-  },
-  [SET_ALL_PERFECT_IVS](state, { payload }) {
-    return {
-      ...state,
-      ivs: {
-        hp: payload,
-        atk: payload,
-        def: payload,
-        spAtk: payload,
-        spDef: payload,
-        spe: payload
-      }
-    };
-  },
-  [SET_SHINIES_ONLY](state, { payload }) {
-    return {
-      ...state,
-      shiniesOnly: payload
-    };
-  },
-  [SET_SHINY_OVERRIDE](state, { payload }) {
-    return {
-      ...state,
-      shinyOverride: payload
-    };
-  },
-  [SET_EGGS_HAVE_MY_SV](state, { payload }) {
-    return {
-      ...state,
-      eggsHaveMySv: payload
-    };
-  },
-  [SET_EGGS_HAVE_SVS](state, { payload }) {
-    return {
-      ...state,
-      svs: payload
-    };
-  },
-  [SET_CUSTOM_FILTER](state, { payload }) {
-    return {
-      ...state,
-      customFilter: compileCustomFilter(payload),
-      customFilterRaw: payload
-    };
-  },
+export default handleActions(
+  {
+    [SET_FILTER_BV](state, { payload }) {
+      return {
+        ...state,
+        teamSelected: payload,
+      };
+    },
+    [SET_FILTER_SAV](state, { payload: { lower, upper } }) {
+      return {
+        ...state,
+        lower: Math.min(lower, state.upper),
+        upper: Math.max(upper, state.lower),
+      };
+    },
+    [TOGGLE_FILTERS](state) {
+      return {
+        ...state,
+        enabled: !state.enabled,
+      };
+    },
+    [SET_EGGS_ONLY](state, { payload }) {
+      return {
+        ...state,
+        eggsOnly: payload,
+      };
+    },
+    [SET_SPECIES_FILTER](state, { payload }) {
+      return {
+        ...state,
+        species: payload,
+      };
+    },
+    [SET_GENDER_FILTER](state, { payload }) {
+      return {
+        ...state,
+        gender: payload,
+      };
+    },
+    [SET_HP_FILTER](state, { payload }) {
+      return {
+        ...state,
+        hpTypes: payload,
+      };
+    },
+    [SET_NATURE_FILTER](state, { payload }) {
+      return {
+        ...state,
+        natures: payload,
+      };
+    },
+    [SET_ABILITY_FILTER](state, { payload }) {
+      return {
+        ...state,
+        abilities: payload,
+      };
+    },
+    [SET_HA_ONLY](state, { payload }) {
+      return {
+        ...state,
+        haOnly: payload,
+      };
+    },
+    [SET_SPECIAL_ATTACKER](state, { payload }) {
+      return {
+        ...state,
+        specialAttacker: payload,
+      };
+    },
+    [SET_TRICK_ROOM](state, { payload }) {
+      return {
+        ...state,
+        trickroom: payload,
+      };
+    },
+    [SET_PERFECT_IV](state, { payload: { iv, isPerfect } }) {
+      return {
+        ...state,
+        ivs: {
+          ...state.ivs,
+          [iv]: isPerfect,
+        },
+      };
+    },
+    [SET_NUM_PERFECT_IVS](state, { payload }) {
+      return {
+        ...state,
+        numPerfectIvs: payload,
+      };
+    },
+    [SET_ALL_PERFECT_IVS](state, { payload }) {
+      return {
+        ...state,
+        ivs: {
+          hp: payload,
+          atk: payload,
+          def: payload,
+          spAtk: payload,
+          spDef: payload,
+          spe: payload,
+        },
+      };
+    },
+    [SET_SHINIES_ONLY](state, { payload }) {
+      return {
+        ...state,
+        shiniesOnly: payload,
+      };
+    },
+    [SET_SHINY_OVERRIDE](state, { payload }) {
+      return {
+        ...state,
+        shinyOverride: payload,
+      };
+    },
+    [SET_EGGS_HAVE_MY_SV](state, { payload }) {
+      return {
+        ...state,
+        eggsHaveMySv: payload,
+      };
+    },
+    [SET_EGGS_HAVE_SVS](state, { payload }) {
+      return {
+        ...state,
+        svs: payload,
+      };
+    },
+    [SET_CUSTOM_FILTER](state, { payload }) {
+      return {
+        ...state,
+        customFilter: compileCustomFilter(payload),
+        customFilterRaw: payload,
+      };
+    },
 
-  REHYDRATE(state, { payload }) {
-    if (payload.reducer !== 'filter') return state;
+    REHYDRATE(state, { payload }) {
+      if (payload.reducer !== 'filter') return state;
 
-    return {
-      ...state,
-      ...payload.state,
-      customFilter: compileCustomFilter(payload.state.customFilterRaw)
-    };
-  }
-}, initialFilter);
+      return {
+        ...state,
+        ...payload.state,
+        customFilter: compileCustomFilter(payload.state.customFilterRaw),
+      };
+    },
+  },
+  initialFilter
+);

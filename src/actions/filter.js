@@ -25,11 +25,19 @@ export const setFilterBv = createAction(SET_FILTER_BV);
 export const setFilterSav = createAction(SET_FILTER_SAV, (lower, upper) => ({ lower, upper }));
 export const toggleFilters = createAction(TOGGLE_FILTERS, () => undefined);
 export const setEggsOnly = createAction(SET_EGGS_ONLY);
-export const setSpeciesFilter = createAction(SET_SPECIES_FILTER, options => options.map(({ value }) => value));
+export const setSpeciesFilter = createAction(SET_SPECIES_FILTER, options =>
+  options.map(({ value }) => value)
+);
 export const setGenderFilter = createAction(SET_GENDER_FILTER);
-export const setHpFilter = createAction(SET_HP_FILTER, options => options.map(({ value }) => value));
-export const setNatureFilter = createAction(SET_NATURE_FILTER, options => options.map(({ value }) => value));
-export const setAbilityFilter = createAction(SET_ABILITY_FILTER, options => options.map(({ value }) => value));
+export const setHpFilter = createAction(SET_HP_FILTER, options =>
+  options.map(({ value }) => value)
+);
+export const setNatureFilter = createAction(SET_NATURE_FILTER, options =>
+  options.map(({ value }) => value)
+);
+export const setAbilityFilter = createAction(SET_ABILITY_FILTER, options =>
+  options.map(({ value }) => value)
+);
 export const setHaOnly = createAction(SET_HA_ONLY);
 export const setSpecialAttacker = createAction(SET_SPECIAL_ATTACKER);
 export const setTrickRoom = createAction(SET_TRICK_ROOM);

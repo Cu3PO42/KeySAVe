@@ -19,7 +19,7 @@
 .ghost {
   position: relative;
   &::before {
-    content: "";
+    content: '';
     display: block;
     position: absolute;
     height: 100%;
@@ -55,7 +55,7 @@
   flex-grow: 1;
   white-space: normal;
 
-  &>:not(.langTag) {
+  & > :not(.langTag) {
     width: 25%;
   }
 }
@@ -82,7 +82,7 @@
   color: #e546b9;
 
   &::after {
-    content: "(♀)";
+    content: '(♀)';
     padding-left: 0.6em;
   }
 }
@@ -91,7 +91,7 @@
   color: #549dc7;
 
   &::after {
-    content: "(♂)";
+    content: '(♂)';
     padding-left: 0.6em;
   }
 }
@@ -109,7 +109,7 @@
       &:first-child {
         font-weight: bold;
         &::after {
-          content: ":";
+          content: ':';
         }
       }
     }
@@ -127,7 +127,8 @@
   flex-direction: row;
 }
 
-.ivBox, .esvBox {
+.ivBox,
+.esvBox {
   align-items: stretch;
   vertical-align: middle;
   display: flex;
@@ -144,7 +145,8 @@
   margin-left: 30px;
 }
 
-.ivValue, .esvValue {
+.ivValue,
+.esvValue {
   display: box;
   font-size: 1.7em;
   align-self: flex-end;
@@ -152,7 +154,8 @@
   text-align: center;
 }
 
-.ivName, .esvName {
+.ivName,
+.esvName {
   display: box;
   text-transform: uppercase;
   align-self: flex-start;

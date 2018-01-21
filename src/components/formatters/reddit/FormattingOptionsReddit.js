@@ -7,14 +7,9 @@ import MenuItem from 'material-ui/MenuItem';
 import styles from './FormattingOptionsReddit.module.scss';
 
 const FormattingOptionReddit = ({
-  format: {
-    ghosts,
-    splitBoxes,
-    color,
-    boldPerfectIVs
-  },
+  format: { ghosts, splitBoxes, color, boldPerfectIVs },
   updateCurrentFormat,
-  isDefault
+  isDefault,
 }) => (
   <div className={styles.flexRow}>
     <div className={styles.column}>

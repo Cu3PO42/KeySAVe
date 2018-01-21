@@ -21,7 +21,9 @@ const replaceDatabaseFactory = format => ({
   10: 'pkm.ivSpDef',
   11: 'pkm.ivSpe',
   12: 'local.types[pkm.hpType]',
-  13: format.alwaysShowEsv ? '("0000" + pkm.esv).slice(-4)' : 'pkm.isEgg ? ("0000" + pkm.esv).slice(-4) : ""',
+  13: format.alwaysShowEsv
+    ? '("0000" + pkm.esv).slice(-4)'
+    : 'pkm.isEgg ? ("0000" + pkm.esv).slice(-4) : ""',
   14: '("0000" + pkm.tsv).slice(-4)',
   15: 'pkm.nickname',
   16: 'pkm.ot',
@@ -76,7 +78,7 @@ const replaceDatabaseFactory = format => ({
   65: 'pkm.otAffection',
   66: 'pkm.isEgg ? pkm.otFriendship * 255 : ""',
   67: '"[](/" + Localization[self.props.language].items[this.ball].replace(" ", "").replace("é", "e").toLowerCase() + ")"',
-  68: 'pkm.abilityNum === 4 ? "✓" : ""'
+  68: 'pkm.abilityNum === 4 ? "✓" : ""',
 });
 
 /* eslint-disable no-unused-vars */
@@ -111,8 +113,13 @@ function compile(format) {
   /* eslint-disable no-eval */
   const fn =
     '(function(props) { var pkm = props.pkm, local = props.local, calc = props.calc; return ' +
-    'react.createElement("div", { style: { display: props.hidden ? "none" : "block" } }, ' + (format.ghost === 'mark' ? 'pkm.isGhost ? "~" : "", ' : '') + '"' +
-    format.format.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/{(\d+)}/g, (string, count) => `", ${replaceDatabase[count]}, "`) +
+    'react.createElement("div", { style: { display: props.hidden ? "none" : "block" } }, ' +
+    (format.ghost === 'mark' ? 'pkm.isGhost ? "~" : "", ' : '') +
+    '"' +
+    format.format
+      .replace(/\\/g, '\\\\')
+      .replace(/"/g, '\\"')
+      .replace(/{(\d+)}/g, (string, count) => `", ${replaceDatabase[count]}, "`) +
     '"); })';
   // TODO make this a pure component
   return eval(fn);
@@ -126,7 +133,7 @@ class PkmListLegacy extends React.Component {
     language: PropTypes.string,
     format: PropTypes.object,
     local: PropTypes.object.isRequired,
-    calc: PropTypes.object.isRequired
+    calc: PropTypes.object.isRequired,
   };
 
   getPlainText() {
@@ -134,21 +141,18 @@ class PkmListLegacy extends React.Component {
     return node.innerText.replace(/^(Box \d+)$/gm, '\n$1\n').substring(1);
   }
 
-  getTemplate = createSelector(
-    () => this.props.format,
-    compile
-  )
+  getTemplate = createSelector(() => this.props.format, compile);
 
   getPokemonGroupedByBox = createSelector(
     () => this.props.pokemon,
-    (pokemon) => pokemon.groupBy(e => e.box)
+    pokemon => pokemon.groupBy(e => e.box)
   );
 
   getShowBoxMap = createSelector(
     this.getPokemonGroupedByBox,
     () => this.props.filterFunction,
-    (pokemon, filter) => pokemon.map((pkm) => pkm.some(filter))
-  )
+    (pokemon, filter) => pokemon.map(pkm => pkm.some(filter))
+  );
 
   renderBox(pkm) {
     const { local, calc } = this.props;
@@ -158,7 +162,18 @@ class PkmListLegacy extends React.Component {
       <Paper className={styles.paper}>
         <div className={styles.box}>
           {this.props.format.header}
-          {pkm.map((e, i) => <Template key={e.box * 30 + e.slot} pkm={e} index={i} local={local} calc={calc} hidden={!this.props.filterFunction(e) || hideGhosts && e.isGhost} />).cacheResult()}
+          {pkm
+            .map((e, i) => (
+              <Template
+                key={e.box * 30 + e.slot}
+                pkm={e}
+                index={i}
+                local={local}
+                calc={calc}
+                hidden={!this.props.filterFunction(e) || (hideGhosts && e.isGhost)}
+              />
+            ))
+            .cacheResult()}
         </div>
       </Paper>
     );
@@ -167,7 +182,7 @@ class PkmListLegacy extends React.Component {
   render() {
     // TODO how are ghosts hidden here?
     if (!this.props.pokemon.first()) {
-      return <div></div>;
+      return <div />;
     }
 
     if (this.props.format.splitBoxes) {
@@ -176,12 +191,15 @@ class PkmListLegacy extends React.Component {
 
       return (
         <div>
-          {grouped.map((pkm, box) => (
-            <div key={box} style={{ display: showBoxMap.get(box) ? 'block' : 'none' }}>
-              <h3 className={styles.boxHeader}>Box {box + 1}</h3>
-              {this.renderBox(pkm)}
-            </div>
-          )).valueSeq().cacheResult()}
+          {grouped
+            .map((pkm, box) => (
+              <div key={box} style={{ display: showBoxMap.get(box) ? 'block' : 'none' }}>
+                <h3 className={styles.boxHeader}>Box {box + 1}</h3>
+                {this.renderBox(pkm)}
+              </div>
+            ))
+            .valueSeq()
+            .cacheResult()}
         </div>
       );
     }

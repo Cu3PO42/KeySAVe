@@ -7,9 +7,10 @@ let calc = undefined;
 function makeCancelable(promise) {
   const cancelable = new Promise((resolve, reject) =>
     promise.then(
-      val => cancelable.__isCanceled ? reject({ isCanceled: true }) : resolve(val),
-      err => cancelable.__isCanceled ? reject({ isCanceled: true }) : reject(err)
-    ));
+      val => (cancelable.__isCanceled ? reject({ isCanceled: true }) : resolve(val)),
+      err => (cancelable.__isCanceled ? reject({ isCanceled: true }) : reject(err))
+    )
+  );
   cancelable.__isCanceled = false;
   cancelable.cancel = function() {
     this.__isCanceled = true;
@@ -28,9 +29,11 @@ export default function loadData({ loadLocal, loadCalc }, Comp) {
       if (loadLocal) {
         const { language } = props;
         if (localCache[language]) {
-          this.setState({ local: localCache[language] })
+          this.setState({ local: localCache[language] });
         } else {
-          const p = makeCancelable(loadLocalization(language).then(local => localCache[language] = local));
+          const p = makeCancelable(
+            loadLocalization(language).then(local => (localCache[language] = local))
+          );
           p.then(local => this.setState({ local }), noop);
           this.promises.push(p);
         }
@@ -39,7 +42,7 @@ export default function loadData({ loadLocal, loadCalc }, Comp) {
         if (calc) {
           this.setState({ calc });
         } else {
-          const p = makeCancelable(loadAllStats().then(c => calc = c))
+          const p = makeCancelable(loadAllStats().then(c => (calc = c)));
           p.then(c => this.setState({ calc: c }), noop);
           this.promises.push(p);
         }
@@ -59,10 +62,10 @@ export default function loadData({ loadLocal, loadCalc }, Comp) {
     }
 
     render() {
-      if (loadLocal && !this.state.local || loadCalc && !this.state.calc) {
+      if ((loadLocal && !this.state.local) || (loadCalc && !this.state.calc)) {
         return <div>Loading...</div>;
       }
-      return <Comp {...this.props} {...this.state} />
+      return <Comp {...this.props} {...this.state} />;
     }
   };
 }

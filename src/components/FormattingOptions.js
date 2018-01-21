@@ -14,17 +14,31 @@ import { Seq } from 'immutable';
 import styles from './FormattingOptions.module.scss';
 
 const languages = [
-  <MenuItem key={1} value="en" primaryText="English"/>,
-  <MenuItem key={2} value="ja" primaryText="Japanese"/>,
-  <MenuItem key={3} value="de" primaryText="German"/>,
-  <MenuItem key={4} value="fr" primaryText="French"/>,
-  <MenuItem key={5} value="it" primaryText="Italian"/>,
-  <MenuItem key={6} value="es" primaryText="Spanish"/>,
-  <MenuItem key={7} value="ko" primaryText="Korean"/>,
-  <MenuItem key={8} value="zh" primaryText="Chinese"/>
+  <MenuItem key={1} value="en" primaryText="English" />,
+  <MenuItem key={2} value="ja" primaryText="Japanese" />,
+  <MenuItem key={3} value="de" primaryText="German" />,
+  <MenuItem key={4} value="fr" primaryText="French" />,
+  <MenuItem key={5} value="it" primaryText="Italian" />,
+  <MenuItem key={6} value="es" primaryText="Spanish" />,
+  <MenuItem key={7} value="ko" primaryText="Korean" />,
+  <MenuItem key={8} value="zh" primaryText="Chinese" />,
 ];
 
-const FormattingOptions = ({ language, changeFormatLanguage, formattingOptions, current, currentIndex, plugins, addFormattingOption, cloneCurrentFormattingOption, updateCurrentFormattingOption, updateFormattingOption, selectFormattingOption, deleteCurrentFormattingOption, changeCurrentFormattingOptionName }) => (
+const FormattingOptions = ({
+  language,
+  changeFormatLanguage,
+  formattingOptions,
+  current,
+  currentIndex,
+  plugins,
+  addFormattingOption,
+  cloneCurrentFormattingOption,
+  updateCurrentFormattingOption,
+  updateFormattingOption,
+  selectFormattingOption,
+  deleteCurrentFormattingOption,
+  changeCurrentFormattingOptionName,
+}) => (
   <Paper className={styles.paper}>
     <h2>Formatting</h2>
     <div className={styles.topRow}>
@@ -47,20 +61,29 @@ const FormattingOptions = ({ language, changeFormatLanguage, formattingOptions, 
         {formattingOptions
           .entrySeq()
           .groupBy(([_, e]) => e.plugin)
-          .map((options, { name }) => new Seq([
-            <MenuItem primaryText={name} key={name} disabled className={styles.formatPluginName} />,
-            options.map(([i, option]) =>
-              <MenuItem
-                primaryText={option.name}
-                key={i}
-                value={i}
-                rightIcon={option.default ? <LockedIcon /> : undefined}
-              />),
-            <Divider key={'@DIVIDER:' + name} />]))
+          .map(
+            (options, { name }) =>
+              new Seq([
+                <MenuItem
+                  primaryText={name}
+                  key={name}
+                  disabled
+                  className={styles.formatPluginName}
+                />,
+                options.map(([i, option]) => (
+                  <MenuItem
+                    primaryText={option.name}
+                    key={i}
+                    value={i}
+                    rightIcon={option.default ? <LockedIcon /> : undefined}
+                  />
+                )),
+                <Divider key={'@DIVIDER:' + name} />,
+              ])
+          )
           .valueSeq()
           .flatten()
-          .skipLast(1)
-        }
+          .skipLast(1)}
       </SelectField>
       <TextField
         value={current.name}
@@ -82,12 +105,16 @@ const FormattingOptions = ({ language, changeFormatLanguage, formattingOptions, 
         onClick={cloneCurrentFormattingOption}
         disabled={!current.plugin.multipleInstances}
         tooltip="Clone formatting option"
-      ><CreateIcon /></IconButton>
+      >
+        <CreateIcon />
+      </IconButton>
       <IconButton
         onClick={deleteCurrentFormattingOption}
         disabled={current.default || !current.plugin.multipleInstances}
         tooltip="Delete formatting option"
-      ><DeleteIcon /></IconButton>
+      >
+        <DeleteIcon />
+      </IconButton>
     </div>
     <current.plugin.FormattingOptions
       updateCurrentFormat={updateCurrentFormattingOption}
@@ -101,6 +128,6 @@ const FormattingOptions = ({ language, changeFormatLanguage, formattingOptions, 
 
 FormattingOptions.propTypes = {
   language: PropTypes.string.isRequired,
-  changeFormatLanguage: PropTypes.func.isRequired
+  changeFormatLanguage: PropTypes.func.isRequired,
 };
 export default FormattingOptions;

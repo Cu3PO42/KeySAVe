@@ -76,7 +76,7 @@
   border-radius: 50px;
   background-color: rgba(200, 200, 200, 0.4);
   display: flex;
-  transition: all 600ms cubic-bezier(.35,.99,.37,1.3) ;
+  transition: all 600ms cubic-bezier(0.35, 0.99, 0.37, 1.3);
 
   &:hover {
     width: 200px;

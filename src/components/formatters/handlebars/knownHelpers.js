@@ -100,7 +100,7 @@ export const knownHelpersBox = {
   'f-basename': true,
   'f-extname': true,
   'f-drop-extname': true,
-  'f-relative': true
+  'f-relative': true,
 };
 
 export const knownHelpersPokemon = {
@@ -150,5 +150,5 @@ export const knownHelpersPokemon = {
   toJson: true,
   eval: true,
 
-  ...knownHelpersBox
-}
+  ...knownHelpersBox,
+};

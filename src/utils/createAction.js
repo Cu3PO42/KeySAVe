@@ -8,7 +8,7 @@ export default function createAction(type, payloadProvider = id) {
     return {
       type,
       payload,
-      error: payload instanceof Error
+      error: payload instanceof Error,
     };
   };
 }

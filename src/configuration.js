@@ -1,22 +1,24 @@
-import { registerFormattingPlugin,
+import {
+  registerFormattingPlugin,
   addFormattingOption,
   overwriteSinglePluginOption,
   selectFormattingOption,
-  changeFormatLanguage
+  changeFormatLanguage,
 } from './actions/format';
 import options from './components/formatters';
 import { setEggsHaveSvs } from './actions/filter';
 import { version } from '../package.json';
 import semver from 'semver';
 
-
 function parseConfig(store, config) {
   if (!config.version) {
     for (const option of config.formattingOptions) {
-      store.dispatch(addFormattingOption(option.name, 'Handlebars', {
-        header: option.header,
-        format: option.format,
-      }));
+      store.dispatch(
+        addFormattingOption(option.name, 'Handlebars', {
+          header: option.header,
+          format: option.format,
+        })
+      );
     }
   } else if (semver.lt(config.version, '1.2.4')) {
     for (const option of config.formattingOptions) {
@@ -26,7 +28,8 @@ function parseConfig(store, config) {
         store.dispatch(addFormattingOption(option.name, option.plugin, option.format));
       }
     }
-    if (config.selectedFormatIndex !== undefined) store.dispatch(selectFormattingOption(config.selectedFormatIndex));
+    if (config.selectedFormatIndex !== undefined)
+      store.dispatch(selectFormattingOption(config.selectedFormatIndex));
     if (config.language !== undefined) store.dispatch(changeFormatLanguage(config.language));
     if (config.svs !== undefined) store.dispatch(setEggsHaveSvs(config.svs));
   } else {
@@ -36,7 +39,7 @@ function parseConfig(store, config) {
       store.dispatch({
         type: 'REHYDRATE',
         error: false,
-        payload: { reducer: key, state: state[key], version }
+        payload: { reducer: key, state: state[key], version },
       });
     }
   }
@@ -83,30 +86,37 @@ export default async function loadConfig(store) {
     console.log('No config found');
   }
 
-  window.addEventListener('beforeunload', async (e) => {
-    console.log('Saving config');
-    const config = serializeConfig(store, {
-      blacklist: {
-        filter: ['customFilter'],
-        ntr: ['intervalId', 'inProgress', 'connectionError', 'tradeOffsetError'],
-        updater: null
-      },
-      serializers: {
-        format: format => ({
-          formattingOptions: format.formattingOptions
-            .valueSeq()
-            .filter(e => !e.default)
-            .map(({ name, plugin: { name: plugin, multipleInstances }, format }) => ({
-              name, plugin, format, singleInstance: !multipleInstances
-            }))
-            .toArray(),
-          currentIndex: format.currentIndex,
-          language: format.language
-        })
-      }
-    });
-    
-    localStorage.setItem('keysave-config', JSON.stringify(config));
-    console.log('Saved config');
-  }, false);
+  window.addEventListener(
+    'beforeunload',
+    async e => {
+      console.log('Saving config');
+      const config = serializeConfig(store, {
+        blacklist: {
+          filter: ['customFilter'],
+          ntr: ['intervalId', 'inProgress', 'connectionError', 'tradeOffsetError'],
+          updater: null,
+        },
+        serializers: {
+          format: format => ({
+            formattingOptions: format.formattingOptions
+              .valueSeq()
+              .filter(e => !e.default)
+              .map(({ name, plugin: { name: plugin, multipleInstances }, format }) => ({
+                name,
+                plugin,
+                format,
+                singleInstance: !multipleInstances,
+              }))
+              .toArray(),
+            currentIndex: format.currentIndex,
+            language: format.language,
+          }),
+        },
+      });
+
+      localStorage.setItem('keysave-config', JSON.stringify(config));
+      console.log('Saved config');
+    },
+    false
+  );
 }

@@ -22,13 +22,13 @@ const muiTheme = getMuiTheme(lightBaseTheme);
 render(
   <Provider store={store}>
     <MuiThemeProvider muiTheme={muiTheme}>
-      <Router history={hashHistory}>
-        {routes}
-      </Router>
+      <Router history={hashHistory}>{routes}</Router>
     </MuiThemeProvider>
   </Provider>,
   document.getElementById('root')
 );
 
 if (process.env['NODE_ENV'] === 'production')
-  alert('This is very much alpha quality software. Expect things to break and your data to be lost.');
+  alert(
+    'This is very much alpha quality software. Expect things to break and your data to be lost.'
+  );

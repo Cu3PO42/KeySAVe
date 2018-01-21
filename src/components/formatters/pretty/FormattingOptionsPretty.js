@@ -2,11 +2,7 @@ import React from 'react';
 import RadioButtonGroup from 'material-ui/RadioButton/RadioButtonGroup';
 import RadioButton from 'material-ui/RadioButton';
 
-const FormattingOptionsPretty = ({
-  format: { ghosts },
-  updateCurrentFormat,
-  isDefault
-}) => (
+const FormattingOptionsPretty = ({ format: { ghosts }, updateCurrentFormat, isDefault }) => (
   <div>
     <h4>Ghost data</h4>
     <RadioButtonGroup

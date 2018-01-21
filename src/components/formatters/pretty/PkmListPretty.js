@@ -44,11 +44,13 @@ function pad4(n) {
 const getIsShiny = createSelector(
   state => state.filter.eggsHaveMySv,
   state => (state.filter.svs.match(/\b\d{1,4}\b/g) || []).map(sv => parseInt(sv, 10)),
-  (eggsHaveMySv, svs) => pkm => pkm.isEgg && (eggsHaveMySv && pkm.esv === pkm.tsv || svs.includes(pkm.esv)) || !pkm.isEgg && pkm.esv === pkm.tsv
+  (eggsHaveMySv, svs) => pkm =>
+    (pkm.isEgg && ((eggsHaveMySv && pkm.esv === pkm.tsv) || svs.includes(pkm.esv))) ||
+    (!pkm.isEgg && pkm.esv === pkm.tsv)
 );
 
 function getSprite(pkm, state) {
-  let sprite = ('' + pkm.species) + '-' + pkm.form + (getIsShiny(state)(pkm) ? '-s' : '');
+  let sprite = '' + pkm.species + '-' + pkm.form + (getIsShiny(state)(pkm) ? '-s' : '');
   if (backgroundColors[sprite]) {
     return sprite;
   }
@@ -91,38 +93,48 @@ class PkmData extends React.PureComponent {
       <div className={styles.infoSide}>
         <div className={styles.nameLine}>
           <div>
-            <div className={styles.box}><span className={styles.boxName}>Box </span>{pad2(pkm.box + 1)} - {Math.floor(pkm.slot / 6) + 1},{pkm.slot % 6 + 1}</div>
+            <div className={styles.box}>
+              <span className={styles.boxName}>Box </span>
+              {pad2(pkm.box + 1)} - {Math.floor(pkm.slot / 6) + 1},{pkm.slot % 6 + 1}
+            </div>
             <div>
-              <span className={styles.dexNo}><span className={styles.dexHash}>#</span>{pad3(pkm.species)}</span>&nbsp;
+              <span className={styles.dexNo}>
+                <span className={styles.dexHash}>#</span>
+                {pad3(pkm.species)}
+              </span>&nbsp;
               <span className={genderStyles[pkm.gender]}>{getSpecies(pkm, local)}</span>
             </div>
           </div>
           <div className={styles.nameColumn}>
             <div>
-              <div>OT</div><div className={genderStyles[pkm.otGender]}>{pkm.ot}</div>
+              <div>OT</div>
+              <div className={genderStyles[pkm.otGender]}>{pkm.ot}</div>
             </div>
             <div>
-              <div>Nickname</div><div>{pkm.nickname}</div>
+              <div>Nickname</div>
+              <div>{pkm.nickname}</div>
             </div>
           </div>
           <div className={styles.nameColumn}>
             <div>
-              <div>Nature</div><div>{local.natures[pkm.nature]}</div>
+              <div>Nature</div>
+              <div>{local.natures[pkm.nature]}</div>
             </div>
             <div>
-              <div>Ability</div><div>{local.abilities[pkm.ability]}</div>
+              <div>Ability</div>
+              <div>{local.abilities[pkm.ability]}</div>
             </div>
           </div>
 
           <span className={styles.langTag}>{local.languageTags[pkm.otLang]}</span>
         </div>
         <div className={styles.ivLine}>
-          {ivNames.map((iv, i) =>
+          {ivNames.map((iv, i) => (
             <div className={`${styles.ivBox} ${getIvClass(pkm, iv)}`} key={i}>
               <span className={styles.ivName}>{iv}</span>
               <span className={styles.ivValue}>{pkm['iv' + iv]}</span>
             </div>
-          )}
+          ))}
           <div className={styles.esvBox}>
             <span className={styles.esvName}>ESV</span>
             <span className={styles.esvValue}>{pad4(pkm.esv)}</span>
@@ -138,11 +150,11 @@ class Pkm extends React.PureComponent {
     pkm: PropTypes.object,
     filterFunction: PropTypes.func.isRequired,
     language: PropTypes.string,
-    format: PropTypes.object
+    format: PropTypes.object,
   };
 
   static contextTypes = {
-    store: PropTypes.object
+    store: PropTypes.object,
   };
 
   render() {
@@ -150,20 +162,30 @@ class Pkm extends React.PureComponent {
     const sprite = getSprite(pkm, this.context.store.getState());
     return (
       <Paper
-        className={`${styles.paper} ${pkm.isGhost && this.props.format.ghosts === 'mark' ? styles.ghost : ''}`}
-        style={{ display: this.props.filterFunction(pkm) && (this.props.format.ghosts !== 'hide' || !pkm.isGhost) ? undefined : 'none' }}
+        className={`${styles.paper} ${
+          pkm.isGhost && this.props.format.ghosts === 'mark' ? styles.ghost : ''
+        }`}
+        style={{
+          display:
+            this.props.filterFunction(pkm) && (this.props.format.ghosts !== 'hide' || !pkm.isGhost)
+              ? undefined
+              : 'none',
+        }}
       >
-        <div
-          className={styles.sprite}
-          style={{ backgroundColor: backgroundColors[sprite] }}
-        ><div
-          style={sprite === '' ? { width: '80px', height: '80px' } : {
-            width: '80px',
-            height: '80px',
-            backgroundImage: `url(sprites/${sprite}.png)`,
-            backgroundSize: '80px 80px' 
-          }}
-        /></div>
+        <div className={styles.sprite} style={{ backgroundColor: backgroundColors[sprite] }}>
+          <div
+            style={
+              sprite === ''
+                ? { width: '80px', height: '80px' }
+                : {
+                    width: '80px',
+                    height: '80px',
+                    backgroundImage: `url(sprites/${sprite}.png)`,
+                    backgroundSize: '80px 80px',
+                  }
+            }
+          />
+        </div>
         <PkmData pkm={pkm} language={this.props.language} local={local} />
       </Paper>
     );
@@ -176,21 +198,29 @@ class PkmListPretty extends React.PureComponent {
     filterFunction: PropTypes.func.isRequired,
     language: PropTypes.string,
     format: PropTypes.object,
-    local: PropTypes.object
+    local: PropTypes.object,
   };
 
   getPlainText() {
     const local = Localization[this.props.language];
-    const header = 'Box - Slot - Species (Gender) - Nature - Ability - HP.ATK.DEF.SPA.SPD.SPE - Hidden Power [ESV]';
+    const header =
+      'Box - Slot - Species (Gender) - Nature - Ability - HP.ATK.DEF.SPA.SPD.SPE - Hidden Power [ESV]';
     const hideGhosts = this.props.format.ghosts === 'hide';
-    return header + this.props.pokemon.filter(e => this.props.filterFunction(e) && (!hideGhosts || !e.isGhost)).map(e =>
-      `${e.isGhost ? '~' : ''}` +
-      `Box ${pad2(e.box + 1)} - ${Math.floor(e.slot / 6) + 1},${e.slot % 6 + 1} - ` +
-      `${getSpecies(e, local)} (${genderString(e.gender)}) - ` +
-      `${local.natures[e.nature]} - ${local.abilities[e.ability]} - ` +
-      ['Hp', 'Atk', 'Def', 'SpAtk', 'SpDef', 'Spe'].map(iv => e['iv' + iv]).join('.') +
-      ` - ${local.types[e.hpType]} [${('0000' + e.esv).slice(-4)}]`
-    ).join('\n');
+    return (
+      header +
+      this.props.pokemon
+        .filter(e => this.props.filterFunction(e) && (!hideGhosts || !e.isGhost))
+        .map(
+          e =>
+            `${e.isGhost ? '~' : ''}` +
+            `Box ${pad2(e.box + 1)} - ${Math.floor(e.slot / 6) + 1},${e.slot % 6 + 1} - ` +
+            `${getSpecies(e, local)} (${genderString(e.gender)}) - ` +
+            `${local.natures[e.nature]} - ${local.abilities[e.ability]} - ` +
+            ['Hp', 'Atk', 'Def', 'SpAtk', 'SpDef', 'Spe'].map(iv => e['iv' + iv]).join('.') +
+            ` - ${local.types[e.hpType]} [${('0000' + e.esv).slice(-4)}]`
+        )
+        .join('\n')
+    );
   }
 
   /*
@@ -201,16 +231,18 @@ class PkmListPretty extends React.PureComponent {
   render() {
     return (
       <div>
-        {this.props.pokemon.map(pkm =>
-          <Pkm
-            key={pkm.box * 30 + pkm.slot}
-            pkm={pkm}
-            language={this.props.language}
-            filterFunction={this.props.filterFunction}
-            format={this.props.format}
-            local={this.props.local}
-          />
-        ).cacheResult()}
+        {this.props.pokemon
+          .map(pkm => (
+            <Pkm
+              key={pkm.box * 30 + pkm.slot}
+              pkm={pkm}
+              language={this.props.language}
+              filterFunction={this.props.filterFunction}
+              format={this.props.format}
+              local={this.props.local}
+            />
+          ))
+          .cacheResult()}
       </div>
     );
   }

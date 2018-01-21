@@ -8,36 +8,39 @@ const defaultState = {
   type: '',
   generation: undefined,
   error: undefined,
-  pokemon: undefined
+  pokemon: undefined,
 };
 
-export default handleActions({
-  [OPEN_FILE]: {
-    success(file, action) {
-      return {
-        ...action.payload,
-        isError: false
-      };
+export default handleActions(
+  {
+    [OPEN_FILE]: {
+      success(file, action) {
+        return {
+          ...action.payload,
+          isError: false,
+        };
+      },
+      error(file, action) {
+        return {
+          name: '',
+          isError: true,
+          error: action.payload,
+        };
+      },
     },
-    error(file, action) {
-      return {
-        name: '',
-        isError: true,
-        error: action.payload
-      };
-    }
-  },
-  [ADD_POKEMON](state, { payload }) {
-    if (state.type !== '' && !state.isError) {
-      return {
-        ...state,
-        pokemon: [...state.pokemon, ...payload]
-      };
-    }
+    [ADD_POKEMON](state, { payload }) {
+      if (state.type !== '' && !state.isError) {
+        return {
+          ...state,
+          pokemon: [...state.pokemon, ...payload],
+        };
+      }
 
-    return state;
+      return state;
+    },
+    [OPEN_FILE_DISMISS_ERROR]() {
+      return defaultState;
+    },
   },
-  [OPEN_FILE_DISMISS_ERROR]() {
-    return defaultState;
-  }
-}, defaultState);
+  defaultState
+);

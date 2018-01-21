@@ -17,23 +17,28 @@ if (NODE_ENV !== 'production' && NODE_ENV !== 'development') {
 
 const IS_PROD = process.env['NODE_ENV'] === 'production';
 
-const cssLoaders = (other, modules) => ExtractTextPlugin.extract({
-  use: [{
-    loader: 'css-loader',
-    options: {
-      sourceMap: true,
-      // Enable CSS Modules to scope class names
-      modules,
-      minimize: IS_PROD,
-      importLoaders: 1 + other.length
-    }
-  }, {
-    // Adjust URLs in CSS files so that they are relative to the source file rather than the output file
-    loader: 'resolve-url-loader'
-  }, ...other],
-  // Do not extract in development mode for hot reloading
-  fallback: 'style-loader'
-});
+const cssLoaders = (other, modules) =>
+  ExtractTextPlugin.extract({
+    use: [
+      {
+        loader: 'css-loader',
+        options: {
+          sourceMap: true,
+          // Enable CSS Modules to scope class names
+          modules,
+          minimize: IS_PROD,
+          importLoaders: 1 + other.length,
+        },
+      },
+      {
+        // Adjust URLs in CSS files so that they are relative to the source file rather than the output file
+        loader: 'resolve-url-loader',
+      },
+      ...other,
+    ],
+    // Do not extract in development mode for hot reloading
+    fallback: 'style-loader',
+  });
 
 const stats = {
   assets: true,
@@ -45,68 +50,86 @@ const stats = {
   children: true,
 
   // Do not show division of chunks into modules
-  modules: false
+  modules: false,
 };
 
 module.exports = {
   entry: [
     // Main entry point of the application
-    './src/index'
+    './src/index',
   ],
 
   devtool: IS_PROD ? undefined : 'cheap-module-eval-source-map',
   target: 'web',
 
   module: {
-    rules: [{
-      test: /\.css$/,
-      // No CSS modules for normal CSS files
-      use: cssLoaders([], false)
-    }, 
-    
-    {
-      test: /\.module\.scss$/,
-      // SCSS with CSS modules
-      use: cssLoaders([{
-        loader: 'sass-loader',
-        options: {
-          sourceMap: true
-        }
-      }], true)
-    },
-    
-    {
-      test: /^((?!\.module\.scss$).)+\.scss$/,
-      // SCSS without CSS modules
-      use: cssLoaders([{
-        loader: 'sass-loader',
-        options: {
-          sourceMap: true
-        }
-      }], false)
-    },
-    
-    {
-      test: /\.jsx?$/,
-      use: [{
-        loader: 'babel-loader'
-      }],
-      exclude: /node_modules/
-    },
-    
-    {
-      test: /\.json$/,
-      use: [{
-        loader: 'json-loader'
-      }]
-    },
-    
-    {
-      test: /\.(woff2?|png|jpe?g)$/,
-      use: [{
-        loader: 'file-loader'
-      }]
-    }]
+    rules: [
+      {
+        test: /\.css$/,
+        // No CSS modules for normal CSS files
+        use: cssLoaders([], false),
+      },
+
+      {
+        test: /\.module\.scss$/,
+        // SCSS with CSS modules
+        use: cssLoaders(
+          [
+            {
+              loader: 'sass-loader',
+              options: {
+                sourceMap: true,
+              },
+            },
+          ],
+          true
+        ),
+      },
+
+      {
+        test: /^((?!\.module\.scss$).)+\.scss$/,
+        // SCSS without CSS modules
+        use: cssLoaders(
+          [
+            {
+              loader: 'sass-loader',
+              options: {
+                sourceMap: true,
+              },
+            },
+          ],
+          false
+        ),
+      },
+
+      {
+        test: /\.jsx?$/,
+        use: [
+          {
+            loader: 'babel-loader',
+          },
+        ],
+        exclude: /node_modules/,
+      },
+
+      {
+        test: /\.json$/,
+        use: [
+          {
+            loader: 'json-loader',
+          },
+        ],
+      },
+
+      {
+        test: /\.(woff2?|png|jpe?g)$/,
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
+      },
+    ],
   },
 
   output: {
@@ -120,7 +143,7 @@ module.exports = {
     chunkFilename: '[name].[chunkhash].js',
 
     // Configure a relative path for deployment
-    publicPath: './'
+    publicPath: './',
   },
 
   resolve: {
@@ -128,8 +151,8 @@ module.exports = {
     mainFields: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'module', 'main'],
     alias: {
       // Use the production build of handlebars to avoid warning about require.resolve
-      handlebars: 'handlebars/dist/handlebars.min.js'
-    }
+      handlebars: 'handlebars/dist/handlebars.min.js',
+    },
   },
 
   // Apply modified stat output
@@ -139,28 +162,30 @@ module.exports = {
   node: {
     Buffer: false,
     crypto: false,
-    path: false
+    path: false,
   },
 
   plugins: [
     // Create an HTML file with all chunks injected
     new HtmlWebpackPlugin({
       inject: 'body',
-      template: './src/index.ejs'
+      template: './src/index.ejs',
     }),
 
     // Copy the sprites used by the pretty formatter
-    new CopyPlugin([{
-      from: './src/resources/sprites',
-      to: './sprites'
-    }]),
+    new CopyPlugin([
+      {
+        from: './src/resources/sprites',
+        to: './sprites',
+      },
+    ]),
 
     // Define environment variables for runtime specific behavior
     new webpack.DefinePlugin({
-      '__DEV__': !IS_PROD,
+      __DEV__: !IS_PROD,
       'process.env': {
-        'NODE_ENV': JSON.stringify(process.env['NODE_ENV'])
-      }
+        NODE_ENV: JSON.stringify(process.env['NODE_ENV']),
+      },
     }),
 
     // Write the style output to its own CSS file
@@ -168,7 +193,7 @@ module.exports = {
       filename: 'style.[chunkhash].css',
       allChunks: true,
       // Do not extract text in development mode to enable hot reloading
-      disable: !IS_PROD
+      disable: !IS_PROD,
     }),
 
     // Get rid of warnings for unused imports in KeySAVCore
@@ -194,7 +219,7 @@ module.exports = {
 
       // Minify the service worker code in production
       minify: IS_PROD,
-      
+
       // Include assets generated by Webpack
       mergeStaticsConfig: true,
 
@@ -205,78 +230,82 @@ module.exports = {
       handleFetch: IS_PROD,
 
       // Cache sprites when they are requested
-      runtimeCaching: [{
-        urlPattern: /sprites\/.*\.png/,
-        handler: 'cacheFirst',
-        options: {
-          cache: {
-            name: 'pretty-sprite-cache'
-          }
-        }
-      },
-      
-      // Cache localizations when they are requested
-      {
-        urlPattern: /pkm-local\/.*\.js/,
-        handler: 'cacheFirst',
-        options: {
-          cache: {
-            name: 'local-cache'
-          }
-        }
-      }]
+      runtimeCaching: [
+        {
+          urlPattern: /sprites\/.*\.png/,
+          handler: 'cacheFirst',
+          options: {
+            cache: {
+              name: 'pretty-sprite-cache',
+            },
+          },
+        },
+
+        // Cache localizations when they are requested
+        {
+          urlPattern: /pkm-local\/.*\.js/,
+          handler: 'cacheFirst',
+          options: {
+            cache: {
+              name: 'local-cache',
+            },
+          },
+        },
+      ],
     }),
 
     // Plugins specific to production mode
-    ...(IS_PROD ? [
-      // Minify JavaScript
-      new UglifyJSPlugin({
-        uglifyOptions: {
-          ecma: 8,
-          safari10: true
-        },
-        parallel: true
-      }),
+    ...(IS_PROD
+      ? [
+          // Minify JavaScript
+          new UglifyJSPlugin({
+            uglifyOptions: {
+              ecma: 8,
+              safari10: true,
+            },
+            parallel: true,
+          }),
 
-      // Concatenate modules where possible, i.e. hoist them together into one module
-      // This enables smaller builds and faster execution
-      new webpack.optimize.ModuleConcatenationPlugin(),
+          // Concatenate modules where possible, i.e. hoist them together into one module
+          // This enables smaller builds and faster execution
+          new webpack.optimize.ModuleConcatenationPlugin(),
 
-      // Use names for chunks instead of their IDs, this improves cachebility
-      new webpack.NamedChunksPlugin(),
+          // Use names for chunks instead of their IDs, this improves cachebility
+          new webpack.NamedChunksPlugin(),
 
-      // Extract all code in node_modules into a vendor chunk
-      new webpack.optimize.CommonsChunkPlugin({
-        name: 'vendor',
-        minChunks: function(module, count) {
-          var context = module.context;
-          return context && context.indexOf('node_modules') >= 0;
-        }
-      }),
+          // Extract all code in node_modules into a vendor chunk
+          new webpack.optimize.CommonsChunkPlugin({
+            name: 'vendor',
+            minChunks: function(module, count) {
+              var context = module.context;
+              return context && context.indexOf('node_modules') >= 0;
+            },
+          }),
 
-      // Extract webpack boilerplate and manifest (i.e. list of chunk names)
-      // This means that the vendor or app bundle isn't invalidated when other chunks change
-      new webpack.optimize.CommonsChunkPlugin({
-        name: 'manifest'
-      }),
+          // Extract webpack boilerplate and manifest (i.e. list of chunk names)
+          // This means that the vendor or app bundle isn't invalidated when other chunks change
+          new webpack.optimize.CommonsChunkPlugin({
+            name: 'manifest',
+          }),
 
-      // Output an analysis of the generated chunks
-      new BundleAnalyzerPlugin({
-        // Generate the output in form of a static file
-        analyzerMode: 'static',
-        reportFilename: '../bundle-analysis.html',
+          // Output an analysis of the generated chunks
+          new BundleAnalyzerPlugin({
+            // Generate the output in form of a static file
+            analyzerMode: 'static',
+            reportFilename: '../bundle-analysis.html',
 
-        // Do not open the generated output automatically
-        openAnalyzer: false
-      })
-    // These plugins are only used in development mode
-    ] : [
-      // Do not emit a bundle if any errors occur
-      new webpack.NoEmitOnErrorsPlugin(),
+            // Do not open the generated output automatically
+            openAnalyzer: false,
+          }),
+          // These plugins are only used in development mode
+        ]
+      : [
+          // Do not emit a bundle if any errors occur
+          new webpack.NoEmitOnErrorsPlugin(),
 
-      // Enable hot module replacement
-      new webpack.HotModuleReplacementPlugin(),
-    ])
+          // Enable hot module replacement
+          new webpack.HotModuleReplacementPlugin(),
+        ]),
   ],
 
   devServer: {
@@ -302,6 +331,6 @@ module.exports = {
     overlay: true,
 
     // Apply the different logging
-    stats
-  }
+    stats,
+  },
 };

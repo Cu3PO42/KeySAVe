@@ -21,7 +21,7 @@ export function handleActions(handlerMap, initialState) {
       const handleError = typeof handler.error === 'function' ? handler.error : handler;
       normalizedHandler[actionType] = {
         success: handleSuccess,
-        error: handleError
+        error: handleError,
       };
     }
   }

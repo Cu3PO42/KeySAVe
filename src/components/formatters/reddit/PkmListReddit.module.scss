@@ -1,7 +1,7 @@
 .paper {
   padding: 10px 0 10px 10px;
   font-size: 0.8em;
-  font-family: "Fira Mono", monospace !important;
+  font-family: 'Fira Mono', monospace !important;
   white-space: nowrap;
   overflow-x: auto;
 
@@ -60,7 +60,8 @@
     background-color: #ddd;
   }
 
-  & td, & th {
+  & td,
+  & th {
     padding: 4px 8px;
     border-right: 1px solid #ccc;
   }
@@ -69,11 +70,13 @@
 .colorBlue {
   border-color: #1d6abf;
 
-  & th, & td {
+  & th,
+  & td {
     border-right-color: #1d6abf;
   }
 
-  & thead, & tr.even {
+  & thead,
+  & tr.even {
     background-color: #c7daee;
   }
 }
@@ -81,11 +84,13 @@
 .colorGreen {
   border-color: #1c9c20;
 
-  & th, & td {
+  & th,
+  & td {
     border-right-color: #1c9c20;
   }
 
-  & thead, & tr.even {
+  & thead,
+  & tr.even {
     background-color: #c6e6c7;
   }
 }
@@ -93,11 +98,13 @@
 .colorYellow {
   border-color: #bc9128;
 
-  & th, & td {
+  & th,
+  & td {
     border-right-color: #bc9128;
   }
 
-  & thead, & tr.even {
+  & thead,
+  & tr.even {
     background-color: #eee3c9;
   }
 }
@@ -105,11 +112,13 @@
 .colorRed {
   border-color: #eb0032;
 
-  & th, & td {
+  & th,
+  & td {
     border-right-color: #eb0032;
   }
 
-  & thead, & tr.even {
+  & thead,
+  & tr.even {
     background-color: #f9bfcc;
   }
 }

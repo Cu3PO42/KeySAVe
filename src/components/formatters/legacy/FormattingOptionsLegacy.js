@@ -78,7 +78,7 @@ const replaceDatabase = {
   65: 'OT Affection',
   66: 'Minimum Steps to Hatch',
   67: 'Ball Image (for /r/SVExchange)',
-  68: 'Has Hiddem Ability'
+  68: 'Has Hiddem Ability',
 };
 
 export default class FormattingOptionsLegacy extends React.Component {
@@ -89,11 +89,11 @@ export default class FormattingOptionsLegacy extends React.Component {
     index: PropTypes.number.isRequired,
     isDefault: PropTypes.bool,
     local: PropTypes.object.isRequired,
-    calc: PropTypes.object.isRequired
-  }
+    calc: PropTypes.object.isRequired,
+  };
 
   state = {
-    ...this.props.format
+    ...this.props.format,
   };
 
   componentWillReceiveProps(nextProps) {
@@ -106,29 +106,29 @@ export default class FormattingOptionsLegacy extends React.Component {
     }
   }
 
-  updateFormat = (e) => {
+  updateFormat = e => {
     this.setState({ format: e.target.value });
     this.flushed = false;
     this.flush();
-  }
+  };
 
-  updateHeader = (e) => {
+  updateHeader = e => {
     this.setState({ header: e.target.value });
     this.flushed = false;
     this.flush();
-  }
+  };
 
   updateSplitBoxes = (e, splitBoxes) => {
     this.props.updateCurrentFormat({ splitBoxes });
-  }
+  };
 
   updateAlwaysShowEsv = (e, alwaysShowEsv) => {
     this.props.updateCurrentFormat({ alwaysShowEsv });
-  }
+  };
 
   updateGhosts = (e, ghosts) => {
     this.props.updateCurrentFormat({ ghosts });
-  }
+  };
 
   flush = debounce(() => {
     this.props.updateCurrentFormat(this.state);
@@ -138,9 +138,12 @@ export default class FormattingOptionsLegacy extends React.Component {
   flushed = true;
 
   generateHeader = () => {
-    const header = this.state.format.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/{(\d+)}/g, (string, count) => replaceDatabase[count]);
+    const header = this.state.format
+      .replace(/\\/g, '\\\\')
+      .replace(/"/g, '\\"')
+      .replace(/{(\d+)}/g, (string, count) => replaceDatabase[count]);
     this.updateHeader({ target: { value: header } });
-  }
+  };
 
   render() {
     return (
@@ -155,7 +158,9 @@ export default class FormattingOptionsLegacy extends React.Component {
             multiLine
             disabled={this.props.isDefault}
           />
-          <IconButton disabled={this.props.isDefault} onClick={this.generateHeader}><ReloadIcon /></IconButton>
+          <IconButton disabled={this.props.isDefault} onClick={this.generateHeader}>
+            <ReloadIcon />
+          </IconButton>
         </div>
         <div>
           <TextField

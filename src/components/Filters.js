@@ -55,21 +55,21 @@ export default class Filters extends React.Component {
     setShinyOverride: PropTypes.func.isRequired,
     setEggsHaveMySv: PropTypes.func.isRequired,
     setEggsHaveSvs: PropTypes.func.isRequired,
-    setCustomFilter: PropTypes.func.isRequired
+    setCustomFilter: PropTypes.func.isRequired,
   };
 
   state = {
-    customFilterRaw: this.props.customFilterRaw
-  }
+    customFilterRaw: this.props.customFilterRaw,
+  };
 
-  setEggsOnly = (e, v) => this.props.setEggsOnly(v)
+  setEggsOnly = (e, v) => this.props.setEggsOnly(v);
 
-  setGenderFilter = (e, v) => this.props.setGenderFilter(v)
+  setGenderFilter = (e, v) => this.props.setGenderFilter(v);
 
-  setHaOnly = (e, v) => this.props.setHaOnly(v)
+  setHaOnly = (e, v) => this.props.setHaOnly(v);
 
-  setNumPerfectIvs = (e, i, v) => this.props.setNumPerfectIvs(v - 1)
-  setAllPerfectIvs = (e, v) => this.props.setAllPerfectIvs(v)
+  setNumPerfectIvs = (e, i, v) => this.props.setNumPerfectIvs(v - 1);
+  setAllPerfectIvs = (e, v) => this.props.setAllPerfectIvs(v);
 
   toggleHp = (e, v) => this.props.setPerfectIv('hp', v);
   toggleAtk = (e, v) => this.props.setPerfectIv('atk', v);
@@ -78,65 +78,65 @@ export default class Filters extends React.Component {
   toggleSpDef = (e, v) => this.props.setPerfectIv('spDef', v);
   toggleSpe = (e, v) => this.props.setPerfectIv('spe', v);
 
-  setTrickRoom = (e, v) => this.props.setTrickRoom(v)
-  setSpecialAttacker = (e, v) => this.props.setSpecialAttacker(v)
+  setTrickRoom = (e, v) => this.props.setTrickRoom(v);
+  setSpecialAttacker = (e, v) => this.props.setSpecialAttacker(v);
 
-  setShiniesOnly = (e, v) => this.props.setShiniesOnly(v)
-  setShinyOverride = (e, v) => this.props.setShinyOverride(v)
+  setShiniesOnly = (e, v) => this.props.setShiniesOnly(v);
+  setShinyOverride = (e, v) => this.props.setShinyOverride(v);
 
-  setEggsHaveMySv = (e, v) => this.props.setEggsHaveMySv(v)
-  setEggsHaveSvs = e => this.props.setEggsHaveSvs(e.target.value)
+  setEggsHaveMySv = (e, v) => this.props.setEggsHaveMySv(v);
+  setEggsHaveSvs = e => this.props.setEggsHaveSvs(e.target.value);
 
   setCustomFilterRaw = e => {
     this.setState({ customFilterRaw: e.target.value });
     this.flushCustomFilter();
-  }
+  };
 
   flushCustomFilter = debounce(() => this.props.setCustomFilter(this.state.customFilterRaw), 1000);
 
   getSpeciesOptions = createSelector(
     () => this.props.local,
     local => local.species.map((e, i) => ({ value: i, label: e })).slice(1)
-  )
+  );
 
   getHpOptions = createSelector(
     () => this.props.local,
     local => local.types.map((e, i) => ({ value: i, label: e })).slice(1)
-  )
+  );
 
   getNatureOptions = createSelector(
     () => this.props.local,
     local => local.natures.map((e, i) => ({ value: i, label: e }))
-  )
+  );
 
   getAbilityOptions = createSelector(
     () => this.props.local,
     local => local.abilities.map((e, i) => ({ value: i, label: e })).slice(1)
-  )
+  );
 
   getSelectedSpecies = createSelector(
     () => this.props.local,
     () => this.props.species,
     (local, species) => species.map(s => ({ value: s, lable: local.species[s] }))
-  )
+  );
 
   getSelectedHpTypes = createSelector(
     () => this.props.local,
     () => this.props.hpTypes,
     (local, hpTypes) => hpTypes.map(t => ({ value: t, label: local.types[t] }))
-  )
+  );
 
   getSelectedNatures = createSelector(
     () => this.props.local,
     () => this.props.natures,
-    (local, natures) =>  natures.map(n => ({ value: n, label: local.natures[n] }))
-  )
+    (local, natures) => natures.map(n => ({ value: n, label: local.natures[n] }))
+  );
 
   getSelectedAbilities = createSelector(
     () => this.props.local,
     () => this.props.abilities,
     (local, abilities) => abilities.map(a => ({ value: a, label: local.abilities[a] }))
-  )
+  );
 
   render() {
     const {
@@ -172,11 +172,7 @@ export default class Filters extends React.Component {
         <div style={enabled ? {} : { display: 'none' }}>
           <div className={styles.paperWrapper}>
             <Paper className={styles.paper}>
-              <CheckBox
-                label="Eggs only"
-                checked={eggsOnly}
-                onCheck={this.setEggsOnly}
-              />
+              <CheckBox label="Eggs only" checked={eggsOnly} onCheck={this.setEggsOnly} />
               <RadioButtonGroup
                 name="Gender"
                 valueSelected={gender}
@@ -237,9 +233,17 @@ export default class Filters extends React.Component {
               <p>These perfect IVs:</p>
               <div className={styles.checkBoxCols}>
                 <div>
-                  <CheckBox label="All" checked={ivs.hp && ivs.atk && ivs.def && ivs.spAtk && ivs.spDef && ivs.spe} onCheck={this.setAllPerfectIvs} />
+                  <CheckBox
+                    label="All"
+                    checked={ivs.hp && ivs.atk && ivs.def && ivs.spAtk && ivs.spDef && ivs.spe}
+                    onCheck={this.setAllPerfectIvs}
+                  />
                   <CheckBox label="Trickroom" checked={trickroom} onCheck={this.setTrickRoom} />
-                  <CheckBox label="Special Attacker" checked={specialAttacker} onCheck={this.setSpecialAttacker} />
+                  <CheckBox
+                    label="Special Attacker"
+                    checked={specialAttacker}
+                    onCheck={this.setSpecialAttacker}
+                  />
                 </div>
                 <div>
                   <CheckBox label="HP" checked={ivs.hp} onCheck={this.toggleHp} />
@@ -254,7 +258,11 @@ export default class Filters extends React.Component {
               </div>
               <p>Shinyness:</p>
               <CheckBox label="Is Shiny" checked={shiniesOnly} onCheck={this.setShiniesOnly} />
-              <CheckBox label="Shiny override" checked={shinyOverride} onCheck={this.setShinyOverride} />
+              <CheckBox
+                label="Shiny override"
+                checked={shinyOverride}
+                onCheck={this.setShinyOverride}
+              />
               <p>Eggs have...</p>
               <CheckBox label="My SV" checked={eggsHaveMySv} onCheck={this.setEggsHaveMySv} />
               <TextField

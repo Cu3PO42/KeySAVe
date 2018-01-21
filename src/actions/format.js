@@ -12,13 +12,32 @@ export const CHANGE_CURRENT_FORMATTING_OPTION_NAME = 'CHANGE_CURRENT_FORMATTING_
 export const OVERWRITE_SINGLE_PLUGIN_OPTION = 'OVERWRITE_SINGLE_PLUGIN_OPTION';
 export const REGISTER_FORMATTING_PLUGIN = 'REGISTER_FORMATTING_PLUGIN';
 
-export const changeFormatLanguage = createAction(FORMAT_LANGUAGE_CHANGED, async language => ({ language, local: await loadLocalization(language) }));
-export const addFormattingOption = createAction(ADD_FORMATTING_OPTION, (name, plugin, format) => ({ name, plugin, format: (format || {}) }));
+export const changeFormatLanguage = createAction(FORMAT_LANGUAGE_CHANGED, async language => ({
+  language,
+  local: await loadLocalization(language),
+}));
+export const addFormattingOption = createAction(ADD_FORMATTING_OPTION, (name, plugin, format) => ({
+  name,
+  plugin,
+  format: format || {},
+}));
 export const selectFormattingOption = createAction(SELECT_FORMATTING_OPTION, id => id);
 export const deleteCurrentFormattingOption = createAction(DELETE_CURRENT_FORMATTING_OPTION);
 export const cloneCurrentFormattingOption = createAction(CLONE_CURRENT_FORMATTING_OPTION);
-export const updateCurrentFormattingOption = createAction(UPDATE_CURRENT_FORMATTING_OPTION, format => format);
-export const updateFormattingOption = createAction(UPDATE_FORMATTING_OPTION, (index, format) => ({ index, format }));
-export const changeCurrentFormattingOptionName = createAction(CHANGE_CURRENT_FORMATTING_OPTION_NAME, name => name);
-export const overwriteSinglePluginOption = createAction(OVERWRITE_SINGLE_PLUGIN_OPTION, option => option);
+export const updateCurrentFormattingOption = createAction(
+  UPDATE_CURRENT_FORMATTING_OPTION,
+  format => format
+);
+export const updateFormattingOption = createAction(UPDATE_FORMATTING_OPTION, (index, format) => ({
+  index,
+  format,
+}));
+export const changeCurrentFormattingOptionName = createAction(
+  CHANGE_CURRENT_FORMATTING_OPTION_NAME,
+  name => name
+);
+export const overwriteSinglePluginOption = createAction(
+  OVERWRITE_SINGLE_PLUGIN_OPTION,
+  option => option
+);
 export const registerFormattingPlugin = createAction(REGISTER_FORMATTING_PLUGIN, plugin => plugin);

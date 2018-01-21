@@ -11,39 +11,39 @@ import FlatButton from 'material-ui/FlatButton';
 export default class CreateFormattingOption extends React.Component {
   static propTypes = {
     optionCreated: PropTypes.func,
-    plugins: PropTypes.object
+    plugins: PropTypes.object,
   };
 
   state = {
-    currentPlugin: this.props.plugins.toList().get(0).name
-  }
+    currentPlugin: this.props.plugins.toList().get(0).name,
+  };
 
   state = {
     dialogOpen: false,
     name: '',
-    currentPlugin: undefined
+    currentPlugin: undefined,
   };
 
   openDialog = () => {
     this.setState({ dialogOpen: true });
-  }
+  };
 
   pluginSelected = (e, i, v) => {
     this.setState({ currentPlugin: v });
-  }
+  };
 
-  nameChanged = (e) => {
+  nameChanged = e => {
     this.setState({ name: e.target.value });
-  }
+  };
 
   createOption = () => {
     this.props.optionCreated(this.state.name, this.state.currentPlugin);
     this.closeDialog();
-  }
+  };
 
   closeDialog = () => {
     this.setState({ name: '', dialogOpen: false });
-  }
+  };
 
   render() {
     const plugins = this.props.plugins.valueSeq();
@@ -51,16 +51,29 @@ export default class CreateFormattingOption extends React.Component {
       <span>
         <Dialog
           open={this.state.dialogOpen}
-          actions={[<FlatButton onClick={this.closeDialog}>Cancel</FlatButton>, <FlatButton onClick={this.createOption} primary>Create</FlatButton>]}
+          actions={[
+            <FlatButton onClick={this.closeDialog}>Cancel</FlatButton>,
+            <FlatButton onClick={this.createOption} primary>
+              Create
+            </FlatButton>,
+          ]}
           onRequestClose={this.closeDialog}
         >
           <h3>Create a new formatting option</h3>
-          <DropDownMenu floatingLabelText="Plugin" value={this.state.currentPlugin} onChange={this.pluginSelected}>
-            {plugins.filter(({ multipleInstances: m }) => m).map(({ name }) => <MenuItem key={name} value={name} primaryText={name} />)}
+          <DropDownMenu
+            floatingLabelText="Plugin"
+            value={this.state.currentPlugin}
+            onChange={this.pluginSelected}
+          >
+            {plugins
+              .filter(({ multipleInstances: m }) => m)
+              .map(({ name }) => <MenuItem key={name} value={name} primaryText={name} />)}
           </DropDownMenu>
           <TextField floatingLabelText="Name" value={this.state.name} onChange={this.nameChanged} />
         </Dialog>
-        <IconButton tooltip="Create formatting option" onClick={this.openDialog}><AddIcon /></IconButton>
+        <IconButton tooltip="Create formatting option" onClick={this.openDialog}>
+          <AddIcon />
+        </IconButton>
       </span>
     );
   }

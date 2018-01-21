@@ -13,10 +13,12 @@ const mapStateToProps = createSelector(
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: [
-      <FlatButton primary label="Close" onClick={() => dispatch(closeDialog())} />
-    ]
+    actions: [<FlatButton primary label="Close" onClick={() => dispatch(closeDialog())} />],
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(({ open, content, actions }) => (<Dialog open={open} actions={actions} modal >{content}</Dialog>));
+export default connect(mapStateToProps, mapDispatchToProps)(({ open, content, actions }) => (
+  <Dialog open={open} actions={actions} modal>
+    {content}
+  </Dialog>
+));
