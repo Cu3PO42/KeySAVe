@@ -112,10 +112,13 @@ module.exports = {
   output: {
     // Output everything to dist
     path: path.join(__dirname, 'dist'),
+
     // Hash the entry module based on the version of the build
     filename: '[name].[hash].js',
+
     // Hash chunks based on their own hashes for better versioning
     chunkFilename: '[name].[chunkhash].js',
+
     // Configure a relative path for deployment
     publicPath: './'
   },
@@ -259,8 +262,12 @@ module.exports = {
 
       // Output an analysis of the generated chunks
       new BundleAnalyzerPlugin({
+        // Generate the output in form of a static file
         analyzerMode: 'static',
-        reportFilename: '../bundle-analysis.html'
+        reportFilename: '../bundle-analysis.html',
+
+        // Do not open the generated output automatically
+        openAnalyzer: false
       })
     // These plugins are only used in development mode
     ] : [
@@ -286,6 +293,13 @@ module.exports = {
 
     // Enable hot reloading
     hot: true,
+
+    // Open / when the server started
+    open: true,
+    openPage: '/',
+
+    // Show compilation errors fullscreen instead of the application
+    overlay: true,
 
     // Apply the different logging
     stats
