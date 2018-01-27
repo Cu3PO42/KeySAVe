@@ -9,6 +9,7 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const SWPrecachePlugin = require('sw-precache-webpack-plugin');
+const PreloadPlugin = require('preload-webpack-plugin');
 
 const { NODE_ENV } = process.env;
 if (NODE_ENV !== 'production' && NODE_ENV !== 'development') {
@@ -206,6 +207,11 @@ module.exports = {
     // This improves their cachebility because names do not change whereas IDs are just enumerated
     new webpack.NamedModulesPlugin(),
 
+    // Add preload tags for browsers without support for service workers
+    new PreloadPlugin({
+      fileBlacklist: [/sprites\/.*\.png$/, /pkm-local\/.*\.js$/],
+    }),
+
     // Generate a service worker to handle offline availability
     new SWPrecachePlugin({
       // Use a prefix to avoid collisions on localhost and GH pages
@@ -224,7 +230,7 @@ module.exports = {
       mergeStaticsConfig: true,
 
       // Do not precache sprites and localizations
-      staticFileGlobsIgnorePatterns: [/sprites\/.*\.png$/, /pkm-local\/.*\.js/],
+      staticFileGlobsIgnorePatterns: [/sprites\/.*\.png$/, /pkm-local\/.*\.js$/],
 
       // Do not cache in development
       handleFetch: IS_PROD,
