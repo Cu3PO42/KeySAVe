@@ -42,7 +42,7 @@
     "husky": "^0.15.0-rc.2",
     "json-loader": "^0.5.4",
     "lint-staged": "^6.0.1",
-    "node-sass": "^4.7.1",
+    "node-sass": "^4.14.1",
     "preload-webpack-plugin": "^2.2.0",
     "prettier": "1.10.2",
     "resolve-url-loader": "^2.2.1",
