@@ -3889,9 +3889,10 @@ keycode@^2.1.7, keycode@^2.1.8:
   version "2.1.9"
   resolved "https://registry.yarnpkg.com/keycode/-/keycode-2.1.9.tgz#964a23c54e4889405b4861a5c9f0480d45141dfa"
 
-keysavcore@0.22.0-alpha.2:
-  version "0.22.0-alpha.2"
-  resolved "https://registry.yarnpkg.com/keysavcore/-/keysavcore-0.22.0-alpha.2.tgz#5cb53b1223c2ab40455e87779dbd095b7dd96c93"
+keysavcore@0.23.0-alpha.0:
+  version "0.23.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/keysavcore/-/keysavcore-0.23.0-alpha.0.tgz#95fdbfdd073cb6b5c0eca6bf48bea31fb8a5f5e7"
+  integrity sha512-mZ4OdrwglTXK17ZtHHOCoTuLwS0Ll3GD2zdZaN0ShDcod+NfQg6bSlC9495K0vo++ksy2yX7E1o/F/FRg8kytA==
 
 killable@^1.0.0:
   version "1.0.0"
