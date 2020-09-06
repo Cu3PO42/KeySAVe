@@ -58,7 +58,7 @@
   "dependencies": {
     "copy-to-clipboard": "^3.0.8",
     "dashbars": "github:cu3po42/dashbars#35b6da8b85d5ed45805ad2b0c189220e644b6450",
-    "handlebars": "^4.0.11",
+    "handlebars": "^4.5.3",
     "handlebars-helper-moment": "github:cu3po42/handlebars-helper-moment#4a38922cbedfb34f8fee470488815f7ed8bfc00f",
     "immutable": "^3.8.2",
     "jszip": "^3.1.5",
