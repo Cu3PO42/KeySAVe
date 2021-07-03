@@ -15,3 +15,44 @@ jobs:
           node-version: 16.x
       - run: yarn install
       - run: yarn build:prod
+      - name: Upload production build
+        uses: actions/upload-artifact@v2
+        with:
+          name: production-build
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Download production build
+        uses: actions/download-artifact@v2
+        with:
+          name: production-build
+          path: dist
+
+      - name: Deploy to Netlify (Commit Hash)
+        uses: netlify/actions/cli@master
+        with:
+          args: deploy --dir=dist --alias="$GITHUB_SHA"
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
+
+      - name: Deploy to Netlify (Branch Name)
+        uses: netlify/actions/cli@master
+        with:
+          args: deploy --dir=dist --alias="${GITHUB_REF#refs/heads/}"
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
+
+      - name: Deploy to Netlify (Prod)
+        uses: netlify/actions/cli@master
+        if: ${{ github.ref == 'refs/heads/master' }}
+        with:
+          args: deploy --dir=dist --prod
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
