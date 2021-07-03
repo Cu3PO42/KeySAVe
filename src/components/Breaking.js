@@ -13,10 +13,6 @@ import styles from './Breaking.module.scss';
 import * as colors from 'material-ui/styles/colors';
 
 const fileOptions = {
-  filters: [
-    { name: 'SAV (1MB)', extensions: ['bin', 'sav'] },
-    { name: 'Battle Video', extensions: [process.platform === 'darwin' ? '' : '*'] },
-  ],
 };
 
 const nameMap = {

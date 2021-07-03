@@ -1,5 +1,5 @@
 export default function registerSW() {
-  if (__DEV__) {
+  if (process.env.NODE_ENV === 'development') {
     return Promise.resolve('DEVELOPMENT');
   }
 

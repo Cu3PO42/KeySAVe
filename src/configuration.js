@@ -7,8 +7,10 @@ import {
 } from './actions/format';
 import options from './components/formatters';
 import { setEggsHaveSvs } from './actions/filter';
-import { version } from '../package.json';
+import pkg from '../package.json';
 import semver from 'semver';
+
+const { version } = pkg;
 
 function parseConfig(store, config) {
   if (!config.version) {

@@ -4,12 +4,11 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const SWPrecachePlugin = require('sw-precache-webpack-plugin');
-const PreloadPlugin = require('preload-webpack-plugin');
+const { GenerateSW }= require('workbox-webpack-plugin');
+const PreloadPlugin = require('@vue/preload-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const { NODE_ENV } = process.env;
 if (NODE_ENV !== 'production' && NODE_ENV !== 'development') {
@@ -18,28 +17,25 @@ if (NODE_ENV !== 'production' && NODE_ENV !== 'development') {
 
 const IS_PROD = process.env['NODE_ENV'] === 'production';
 
-const cssLoaders = (other, modules) =>
-  ExtractTextPlugin.extract({
-    use: [
-      {
-        loader: 'css-loader',
-        options: {
-          sourceMap: true,
-          // Enable CSS Modules to scope class names
-          modules,
-          minimize: IS_PROD,
-          importLoaders: 1 + other.length,
-        },
-      },
-      {
-        // Adjust URLs in CSS files so that they are relative to the source file rather than the output file
-        loader: 'resolve-url-loader',
-      },
-      ...other,
-    ],
-    // Do not extract in development mode for hot reloading
-    fallback: 'style-loader',
-  });
+const cssLoaders = (other, modules) => [
+  // Do not extract in development mode for hot reloading
+  IS_PROD ? MiniCssExtractPlugin.loader : 'style-loader',
+  {
+    loader: require.resolve('css-loader'),
+    options: {
+      sourceMap: true,
+      // Enable CSS Modules to scope class names
+      modules,
+      minimize: IS_PROD,
+      importLoaders: 1 + other.length,
+    },
+  },
+  {
+    // Adjust URLs in CSS files so that they are relative to the source file rather than the output file
+    loader: require.resolve('resolve-url-loader'),
+  },
+  ...other,
+];
 
 const stats = {
   assets: true,
@@ -60,8 +56,19 @@ module.exports = {
     './src/index',
   ],
 
-  devtool: IS_PROD ? undefined : 'cheap-module-eval-source-map',
+  mode: NODE_ENV,
+  devtool: IS_PROD ? false : 'eval-cheap-module-source-map',
   target: 'web',
+
+  optimization: {
+    // Split the bundles into as many chunks as is sensible to improve cacheability.
+    splitChunks: {
+      chunks: "all",
+    },
+
+    // Use names for chunks instead of their IDs, this improves cachebility
+    moduleIds: "named",
+  },
 
   module: {
     rules: [
@@ -77,7 +84,7 @@ module.exports = {
         use: cssLoaders(
           [
             {
-              loader: 'sass-loader',
+              loader: require.resolve('sass-loader'),
               options: {
                 sourceMap: true,
               },
@@ -93,7 +100,7 @@ module.exports = {
         use: cssLoaders(
           [
             {
-              loader: 'sass-loader',
+              loader: require.resolve('sass-loader'),
               options: {
                 sourceMap: true,
               },
@@ -107,26 +114,17 @@ module.exports = {
         test: /\.jsx?$/,
         use: [
           {
-            loader: 'babel-loader',
+            loader: require.resolve('babel-loader'),
           },
         ],
         exclude: /node_modules/,
       },
 
       {
-        test: /\.json$/,
-        use: [
-          {
-            loader: 'json-loader',
-          },
-        ],
-      },
-
-      {
         test: /\.(woff2?|png|jpe?g)$/,
         use: [
           {
-            loader: 'file-loader',
+            loader: require.resolve('file-loader'),
           },
         ],
       },
@@ -138,7 +136,7 @@ module.exports = {
     path: path.join(__dirname, 'dist'),
 
     // Hash the entry module based on the version of the build
-    filename: '[name].[hash].js',
+    filename: '[name].[fullhash].js',
 
     // Hash chunks based on their own hashes for better versioning
     chunkFilename: '[name].[chunkhash].js',
@@ -152,19 +150,20 @@ module.exports = {
     mainFields: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'module', 'main'],
     alias: {
       // Use the production build of handlebars to avoid warning about require.resolve
-      handlebars: 'handlebars/dist/handlebars.min.js',
+      handlebars: require.resolve('handlebars/dist/handlebars.min.js'),
+      // Use production build because it bundles required dependencies
+      jszip: require.resolve('jszip/dist/jszip.min.js'),
     },
+    // Ignore Node modules imported by KeySAVCore
+    fallback: {
+      buffer: false,
+      crypto: false,
+      path: false,
+    }
   },
 
   // Apply modified stat output
   stats,
-
-  // Ignore Node modules imported by KeySAVCore
-  node: {
-    Buffer: false,
-    crypto: false,
-    path: false,
-  },
 
   plugins: [
     // Create an HTML file with all chunks injected
@@ -174,38 +173,20 @@ module.exports = {
     }),
 
     // Copy the sprites used by the pretty formatter
-    new CopyPlugin([
-      {
-        from: './src/resources/sprites',
-        to: './sprites',
-      },
-    ]),
-
-    // Define environment variables for runtime specific behavior
-    new webpack.DefinePlugin({
-      __DEV__: !IS_PROD,
-      'process.env': {
-        NODE_ENV: JSON.stringify(process.env['NODE_ENV']),
-      },
-    }),
-
-    // Write the style output to its own CSS file
-    new ExtractTextPlugin({
-      filename: 'style.[chunkhash].css',
-      allChunks: true,
-      // Do not extract text in development mode to enable hot reloading
-      disable: !IS_PROD,
+    new CopyPlugin({
+      patterns: [
+        {
+          from: './src/resources/sprites',
+          to: './sprites',
+        },
+      ],
     }),
 
     // Get rid of warnings for unused imports in KeySAVCore
-    new webpack.IgnorePlugin(/^(fs|crypto|path)$/),
+    new webpack.IgnorePlugin({ resourceRegExp: /^(fs|crypto|path)$/ }),
 
     // Only load moment locales corresponding to languages supported by the games
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /(de|en|fr|en|zh-cn|ko|ja)$/),
-
-    // Use the module names instead of IDs
-    // This improves their cachebility because names do not change whereas IDs are just enumerated
-    new webpack.NamedModulesPlugin(),
 
     // Add preload tags for browsers without support for service workers
     new PreloadPlugin({
@@ -213,48 +194,35 @@ module.exports = {
     }),
 
     // Generate a service worker to handle offline availability
-    new SWPrecachePlugin({
+    new GenerateSW({
       // Use a prefix to avoid collisions on localhost and GH pages
       cacheId: 'keysave',
 
       // These URLs include hashes and therefore version themselves, tce cache can be assumed correct
-      dontCacheBustUrlsMatching: /\.\w{20}\.\w+$/,
+      dontCacheBustURLsMatching: /\.\w{20}\.\w+$/,
 
       // Filename of the output file
-      filename: 'sw.js',
-
-      // Minify the service worker code in production
-      minify: IS_PROD,
-
-      // Include assets generated by Webpack
-      mergeStaticsConfig: true,
+      swDest: 'sw.js',
 
       // Do not precache sprites and localizations
-      staticFileGlobsIgnorePatterns: [/sprites\/.*\.png$/, /pkm-local\/.*\.js$/],
+      exclude: [/sprites\/.*\.png$/, /pkm-local\/.*\.js$/],
 
-      // Do not cache in development
-      handleFetch: IS_PROD,
-
-      // Cache sprites when they are requested
       runtimeCaching: [
+        // Cache sprites when they are requested
         {
           urlPattern: /sprites\/.*\.png/,
-          handler: 'cacheFirst',
+          handler: 'CacheFirst',
           options: {
-            cache: {
-              name: 'pretty-sprite-cache',
-            },
+            cacheName: 'pretty-sprite-cache',
           },
         },
 
         // Cache localizations when they are requested
         {
           urlPattern: /pkm-local\/.*\.js/,
-          handler: 'cacheFirst',
+          handler: 'CacheFirst',
           options: {
-            cache: {
-              name: 'local-cache',
-            },
+            cacheName: 'pretty-sprite-cache',
           },
         },
       ],
@@ -263,35 +231,9 @@ module.exports = {
     // Plugins specific to production mode
     ...(IS_PROD
       ? [
-          // Minify JavaScript
-          new UglifyJSPlugin({
-            uglifyOptions: {
-              ecma: 8,
-              safari10: true,
-            },
-            parallel: true,
-          }),
-
-          // Concatenate modules where possible, i.e. hoist them together into one module
-          // This enables smaller builds and faster execution
-          new webpack.optimize.ModuleConcatenationPlugin(),
-
-          // Use names for chunks instead of their IDs, this improves cachebility
-          new webpack.NamedChunksPlugin(),
-
-          // Extract all code in node_modules into a vendor chunk
-          new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendor',
-            minChunks: function(module, count) {
-              var context = module.context;
-              return context && context.indexOf('node_modules') >= 0;
-            },
-          }),
-
-          // Extract webpack boilerplate and manifest (i.e. list of chunk names)
-          // This means that the vendor or app bundle isn't invalidated when other chunks change
-          new webpack.optimize.CommonsChunkPlugin({
-            name: 'manifest',
+          // Write the style output to its own CSS file
+          new MiniCssExtractPlugin({
+            filename: 'style.[chunkhash].css',
           }),
 
           // Output an analysis of the generated chunks
@@ -303,8 +245,8 @@ module.exports = {
             // Do not open the generated output automatically
             openAnalyzer: false,
           }),
-          // These plugins are only used in development mode
         ]
+          // These plugins are only used in development mode
       : [
           // Do not emit a bundle if any errors occur
           new webpack.NoEmitOnErrorsPlugin(),
@@ -328,10 +270,6 @@ module.exports = {
 
     // Enable hot reloading
     hot: true,
-
-    // Open / when the server started
-    open: 'Google Chrome Canary',
-    openPage: '',
 
     // Show compilation errors fullscreen instead of the application
     overlay: true,

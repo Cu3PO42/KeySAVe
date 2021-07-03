@@ -19,14 +19,7 @@ const teamSelectors = [
   <MenuItem key={3} value={3} primaryText="Opponent team 3" />,
 ];
 
-const noExtExt = process.platform === 'darwin' ? '' : '*';
-const fileOptions = {
-  filters: [
-    { name: 'SAV (1MB)', extensions: ['bin', 'sav'] },
-    { name: 'Main File', extensions: [noExtExt] },
-    { name: 'Battle Video', extensions: [noExtExt] },
-  ],
-};
+const fileOptions = {};
 
 class DumpingFileOpener extends PureComponent {
   static propTypes = {
