@@ -1,6 +1,5 @@
 node_modules/
 dist/
-cache/
 release/
 npm-debug.log
 serverlib/
@@ -10,3 +9,10 @@ yarn-error.log
 .DS_STORE
 stats.json
 bundle-analysis.html
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
