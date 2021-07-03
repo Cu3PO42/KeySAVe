@@ -1,6 +1,7 @@
 {
   "presets": ["@babel/preset-react", ["@babel/preset-env", {
     "targets": ">0.25%, not dead",
+    "exclude": ["@babel/plugin-transform-regenerator"],
     "modules": false,
     "debug": false,
     "useBuiltIns": "entry",
