@@ -13,8 +13,8 @@
   ],
   "env": {
     "development": {
-      "presets": [],
       "plugins": [
+        "react-refresh/babel"
       ]
     },
     "production": {

@@ -9,6 +9,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { GenerateSW }= require('workbox-webpack-plugin');
 const PreloadPlugin = require('@vue/preload-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 
 const { NODE_ENV } = process.env;
 if (NODE_ENV !== 'production' && NODE_ENV !== 'development') {
@@ -193,40 +194,6 @@ module.exports = {
       fileBlacklist: [/sprites\/.*\.png$/, /pkm-local\/.*\.js$/],
     }),
 
-    // Generate a service worker to handle offline availability
-    new GenerateSW({
-      // Use a prefix to avoid collisions on localhost and GH pages
-      cacheId: 'keysave',
-
-      // These URLs include hashes and therefore version themselves, tce cache can be assumed correct
-      dontCacheBustURLsMatching: /\.\w{20}\.\w+$/,
-
-      // Filename of the output file
-      swDest: 'sw.js',
-
-      // Do not precache sprites and localizations
-      exclude: [/sprites\/.*\.png$/, /pkm-local\/.*\.js$/],
-
-      runtimeCaching: [
-        // Cache sprites when they are requested
-        {
-          urlPattern: /sprites\/.*\.png/,
-          handler: 'CacheFirst',
-          options: {
-            cacheName: 'pretty-sprite-cache',
-          },
-        },
-
-        // Cache localizations when they are requested
-        {
-          urlPattern: /pkm-local\/.*\.js/,
-          handler: 'CacheFirst',
-          options: {
-            cacheName: 'pretty-sprite-cache',
-          },
-        },
-      ],
-    }),
 
     // Plugins specific to production mode
     ...(IS_PROD
@@ -234,6 +201,41 @@ module.exports = {
           // Write the style output to its own CSS file
           new MiniCssExtractPlugin({
             filename: 'style.[chunkhash].css',
+          }),
+
+          // Generate a service worker to handle offline availability
+          new GenerateSW({
+            // Use a prefix to avoid collisions on localhost and GH pages
+            cacheId: 'keysave',
+
+            // These URLs include hashes and therefore version themselves, tce cache can be assumed correct
+            dontCacheBustURLsMatching: /\.\w{20}\.\w+$/,
+
+            // Filename of the output file
+            swDest: 'sw.js',
+
+            // Do not precache sprites and localizations
+            exclude: [/sprites\/.*\.png$/, /pkm-local\/.*\.js$/],
+
+            runtimeCaching: [
+              // Cache sprites when they are requested
+              {
+                urlPattern: /sprites\/.*\.png/,
+                handler: 'CacheFirst',
+                options: {
+                  cacheName: 'pretty-sprite-cache',
+                },
+              },
+
+              // Cache localizations when they are requested
+              {
+                urlPattern: /pkm-local\/.*\.js/,
+                handler: 'CacheFirst',
+                options: {
+                  cacheName: 'pretty-sprite-cache',
+                },
+              },
+            ],
           }),
 
           // Output an analysis of the generated chunks
@@ -253,6 +255,9 @@ module.exports = {
 
           // Enable hot module replacement
           new webpack.HotModuleReplacementPlugin(),
+
+          // React Fast Refresh
+          new ReactRefreshWebpackPlugin(),
         ]),
   ],
 
